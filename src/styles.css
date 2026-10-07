@@ -1496,3 +1496,35 @@ input[type="number"] {
   margin: var(--s3) 0 0;
   max-width: 62ch;
 }
+
+/* Valeur saisissable à côté du libellé d'un curseur */
+.saisie {
+  margin-left: auto;
+  display: inline-flex;
+  align-items: baseline;
+  gap: var(--s1);
+  white-space: nowrap;
+}
+.saisie input {
+  width: 7.5ch;
+  min-height: 36px;
+  padding: 0 var(--s2);
+  text-align: right;
+  font-size: var(--fs-md);
+  font-weight: 600;
+  color: var(--ink);
+  background: var(--surface);
+  border: 1px solid var(--line-control);
+  border-radius: var(--r-sm);
+  font-variant-numeric: tabular-nums;
+  -moz-appearance: textfield;
+}
+.saisie input::-webkit-inner-spin-button,
+.saisie input::-webkit-outer-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+.saisie-unite {
+  font-size: var(--fs-sm);
+  color: var(--ink-2);
+}

@@ -18,6 +18,7 @@ const fr = {
   ans: (s, n) => `${s}${N}${n < 2 ? "an" : "ans"}`,
   kmAn: (s) => `${s}${N}km/an`,
   aideOuvrir: (l) => `Aide : ${l}`,
+  unites: { kmAn: "km/an", conso: "L/100 km", ans: "ans", km: "km" },
 
   pays: { NO: "Norvège", SE: "Suède", FR: "France", ES: "Espagne", BE: "Belgique", UK: "Royaume-Uni", EU: "Moyenne UE", IT: "Italie", DE: "Allemagne", US: "États-Unis", AU: "Australie", CN: "Chine", PL: "Pologne", IN: "Inde" },
   paysOption: (nom, g) => `${nom} · réseau à ${g}${N}gCO₂e/kWh`,
@@ -247,7 +248,7 @@ const fr = {
     13: "Trajectoires d'intensité carbone des réseaux par pays.",
     17: "Données de l'onglet « Se déplacer autrement », fabrication des véhicules comprise.",
   },
-  footer: (lien) => <>Simulateur pédagogique : ordres de grandeur, incertitude d'environ ±20 %. Méthode inspirée de {lien("Carbone 4")} ; données ADEME, ICCT, Ember, Electricity Maps. Version 7, octobre 2026.</>,
+  footer: (lien) => <>Simulateur pédagogique : ordres de grandeur, incertitude d'environ ±20 %. Méthode inspirée de {lien("Carbone 4")} ; données ADEME, ICCT, Ember, Electricity Maps. Version 7.3, octobre 2026.</>,
 };
 
 const en = {
@@ -262,6 +263,7 @@ const en = {
   ans: (s, n) => `${s}${N}${n === 1 ? "year" : "years"}`,
   kmAn: (s) => `${s}${N}km/yr`,
   aideOuvrir: (l) => `Help: ${l}`,
+  unites: { kmAn: "km/yr", conso: "L/100 km", ans: "years", km: "km" },
 
   pays: { NO: "Norway", SE: "Sweden", FR: "France", ES: "Spain", BE: "Belgium", UK: "United Kingdom", EU: "EU average", IT: "Italy", DE: "Germany", US: "United States", AU: "Australia", CN: "China", PL: "Poland", IN: "India" },
   paysOption: (nom, g) => `${nom} · grid at ${g}${N}gCO₂e/kWh`,
@@ -491,7 +493,7 @@ const en = {
     13: "Country grid carbon-intensity trajectories.",
     17: "Data for the “Other ways to get around” tab, vehicle manufacturing included.",
   },
-  footer: (lien) => <>Educational simulator: orders of magnitude, uncertainty of about ±20%. Method inspired by {lien("Carbone 4")}; data from ADEME, ICCT, Ember, Electricity Maps. Version 7, October 2026.</>,
+  footer: (lien) => <>Educational simulator: orders of magnitude, uncertainty of about ±20%. Method inspired by {lien("Carbone 4")}; data from ADEME, ICCT, Ember, Electricity Maps. Version 7.3, October 2026.</>,
 };
 
 // Titres des sources dans leur langue d'origine
