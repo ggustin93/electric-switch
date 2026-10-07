@@ -1,6 +1,6 @@
 # electric-switch
 
-Simulateur pédagogique « Dois-je passer à l'électrique ? » — ACV fabrication + usage (React + Vite).
+Simulateur pédagogique « Dois-je passer à l'électrique ? » — ACV fabrication + usage (Preact + Vite, ecodesigned: EcoIndex B 77; see docs/adr/0003).
 
 Run `npm test` after any change to `src/model.js`. UI strings live only in `src/i18n.jsx` (FR + EN, same keys). Design rules: `DESIGN.md`; product facts: `PRODUCT.md`; UI work uses the project `impeccable` skill.
 

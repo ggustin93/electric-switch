@@ -21,27 +21,27 @@ colors:
   motor-diesel: "#6e6259"
 typography:
   display:
-    fontFamily: "Bricolage Grotesque, Instrument Sans, system-ui, sans-serif"
+    fontFamily: "Bricolage Grotesque, system-ui, sans-serif"
     fontSize: "2.5rem"
     fontWeight: 800
     lineHeight: 1.05
     letterSpacing: "-0.025em"
   heading:
-    fontFamily: "Bricolage Grotesque, Instrument Sans, system-ui, sans-serif"
+    fontFamily: "Bricolage Grotesque, system-ui, sans-serif"
     fontSize: "1.45rem"
     fontWeight: 600
     lineHeight: 1.2
   body:
-    fontFamily: "Instrument Sans, system-ui, sans-serif"
+    fontFamily: "system-ui, -apple-system, Segoe UI, Roboto, Helvetica Neue, Arial, sans-serif"
     fontSize: "1rem"
     fontWeight: 400
     lineHeight: 1.55
   chart:
-    fontFamily: "Instrument Sans, system-ui, sans-serif"
+    fontFamily: "system-ui, sans-serif"
     fontSize: "0.75rem"
     fontWeight: 400
   label:
-    fontFamily: "Instrument Sans, system-ui, sans-serif"
+    fontFamily: "system-ui, sans-serif"
     fontSize: "0.875rem"
     fontWeight: 600
 rounded:
@@ -92,7 +92,7 @@ Page `#f2f4f1`, surfaces white, ink `#1b231f`. All secondary text uses `--ink-2`
 
 ## Typography
 
-Two families: Bricolage Grotesque for h1, h2, verdict titles and headline figures, and Instrument Sans for everything else, with tabular numerals. Fixed rem scale with a ratio of about 1.2, with no fluid type. The h1 steps down to 2.1rem below 560 px. Nothing is set below 13 px, and prose is capped at about 65ch.
+Ecodesign (ADR 0003): Bricolage Grotesque is self-hosted as one variable file (600–800, Latin subset, 22 kB) and used for h1, h2, verdict titles and headline figures only. Everything else uses the system font (no download) with tabular numerals. No third-party font requests. Fixed rem scale with a ratio of about 1.2, with no fluid type. The h1 steps down to 2.1rem below 560 px. Nothing is set below 13 px, and prose is capped at about 65ch.
 
 ## Layout
 
@@ -120,5 +120,6 @@ Radius 3 px for bars and swatches, 6 px for controls, 12 px for cards. Pills onl
 ## Do's and Don'ts
 
 - Don't add eyebrows above headings, emoji or Unicode glyphs as icons, monospace as decoration, or coloured border-left callouts.
+- Don't add a web font, a third-party request, or a DOM-heavy component without measuring the EcoIndex (ADR 0003). Keep closed content unrendered (`Repli`) and tabs mounted on first visit only.
 - Don't animate layout properties. Motion stays at 150–400 ms and is disabled under reduced motion.
 - Do keep every user-visible string in `src/i18n.jsx`, as whole sentences: no fragment concatenation, no `.toLowerCase()` on translated words except where the dictionary allows it.

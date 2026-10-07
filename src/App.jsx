@@ -50,7 +50,6 @@ function BoutonAide({ id, label, open, setOpen }) {
   return (
     <button type="button" className="aide" aria-expanded={open} aria-controls={`${id}-aide`}
       aria-label={s.aideOuvrir(label)} onClick={() => setOpen(!open)}>
-      <svg viewBox="0 0 16 16" aria-hidden="true"><circle cx="8" cy="8" r="7" /><path d="M6.2 6.1a1.9 1.9 0 1 1 2.6 1.8c-.5.2-.8.6-.8 1.1v.4M8 11.4v.1" /></svg>
     </button>
   );
 }
@@ -154,6 +153,8 @@ const lienCarbone4 = (t) => <a href="https://www.carbone4.com/analyse-faq-voitur
 export default function App() {
   const [lang, setLang] = useState(langueInitiale);
   const [onglet, setOnglet] = useState("decision");
+  // Un onglet n'est monté qu'à sa première visite (DOM initial minimal), puis reste monté
+  const [visites, setVisites] = useState({ decision: true });
   const [vue, setVue] = useState("tout");
   // Profil partagé par tous les onglets : jamais demandé deux fois
   const [paysId, setPaysId] = useState("BE");
@@ -181,8 +182,12 @@ export default function App() {
     segId, setSegId, etatVE, setEtatVE, ageVE, setAgeVE, odo, setOdo, conv, setConv,
   };
 
-  const allerOnglet = (o) => {
+  const ouvrir = (o) => {
     setOnglet(o);
+    setVisites((v) => (v[o] ? v : { ...v, [o]: true }));
+  };
+  const allerOnglet = (o) => {
+    ouvrir(o);
     tabsRef.current[ONGLETS.indexOf(o)]?.focus();
   };
   const allerExplorer = (v) => { setVue(v); allerOnglet("explorer"); };
@@ -218,7 +223,7 @@ export default function App() {
           {ONGLETS.map((o, i) => (
             <button key={o} ref={(el) => (tabsRef.current[i] = el)} role="tab" id={`tab-${o}`}
               aria-selected={onglet === o} aria-controls={`panel-${o}`} tabIndex={onglet === o ? 0 : -1}
-              onClick={() => setOnglet(o)}>
+              onClick={() => ouvrir(o)}>
               {s.onglets[o]}
             </button>
           ))}
@@ -229,10 +234,10 @@ export default function App() {
           <Decision shared={shared} allerExplorer={allerExplorer} />
         </div>
         <div role="tabpanel" id="panel-explorer" aria-labelledby="tab-explorer" hidden={onglet !== "explorer"}>
-          <Explorer shared={shared} vue={vue} setVue={setVue} />
+          {visites.explorer && <Explorer shared={shared} vue={vue} setVue={setVue} />}
         </div>
         <div role="tabpanel" id="panel-modes" aria-labelledby="tab-modes" hidden={onglet !== "modes"}>
-          <Modes />
+          {visites.modes && <Modes />}
         </div>
 
         <Hypotheses />
@@ -378,10 +383,9 @@ function Decision({ shared, allerExplorer }) {
             <p className="bascule">{texteBascule(s, f, seuil)}</p>
             <Curseur id="etsi" label={s.etSi} value={kmAn} min={3000} max={40000} step={1000}
               onChange={setKmAn} format={f.kmAn} />
-            <details className="replie">
-              <summary>{s.commentLire}</summary>
+            <Repli className="replie" titre={s.commentLire}>
               <p className="note-petite">{s.conventions}</p>
-            </details>
+            </Repli>
           </section>
 
           <section className="carte">
@@ -814,30 +818,50 @@ function Modes() {
    HYPOTHÈSES ET SOURCES
    ============================================================ */
 
+// <details> dont le contenu n'est rendu qu'une fois ouvert : DOM initial minimal (écoconception).
+// `ancre` : un lien vers #<ancre>… ouvre le bloc puis fait défiler jusqu'à la cible.
+function Repli({ id, className, titre, ancre, children }) {
+  const [ouvert, setOuvert] = useState(false);
+  useEffect(() => {
+    if (!ancre) return;
+    const suivre = () => { if (location.hash.startsWith(`#${ancre}`)) setOuvert(true); };
+    suivre();
+    addEventListener("hashchange", suivre);
+    return () => removeEventListener("hashchange", suivre);
+  }, [ancre]);
+  useEffect(() => {
+    if (ouvert && ancre && location.hash.startsWith(`#${ancre}`)) document.querySelector(location.hash)?.scrollIntoView();
+  }, [ouvert, ancre]);
+  return (
+    <details id={id} className={className} open={ouvert} onToggle={(e) => setOuvert(e.currentTarget.open)}>
+      <summary>{titre}</summary>
+      {ouvert && children}
+    </details>
+  );
+}
+
 function Hypotheses() {
   const { s } = useT();
   return (
-    <details className="carte replie annexe">
-      <summary><h2>{s.hypTitre(s.hyp.length)}</h2></summary>
+    <Repli className="carte replie annexe" titre={<h2>{s.hypTitre(s.hyp.length)}</h2>}>
       <ol className="hyp">
         {s.hyp.map((h, i) => (
           <li key={i} id={`h${i + 1}`}>
             <strong>{s.prefixeHyp}{i + 1}. {h.t}.</strong> {h.d}{" "}
             {HYP_REFS[i].map((r) => (
-              <a key={r} className="ref" href={`#src-${r}`} onClick={() => { document.getElementById("sources").open = true; }}>[{r}]</a>
+              <a key={r} className="ref" href={`#src-${r}`}>[{r}]</a>
             ))}
           </li>
         ))}
       </ol>
-    </details>
+    </Repli>
   );
 }
 
 function Sources() {
   const { s } = useT();
   return (
-    <details id="sources" className="carte replie annexe">
-      <summary><h2>{s.sourcesTitre}</h2></summary>
+    <Repli id="sources" className="carte replie annexe" titre={<h2>{s.sourcesTitre}</h2>} ancre="src-">
       <ol className="sources">
         {SOURCES.map((src, i) => (
           <li key={i} id={`src-${i + 1}`}>
@@ -845,6 +869,6 @@ function Sources() {
           </li>
         ))}
       </ol>
-    </details>
+    </Repli>
   );
 }

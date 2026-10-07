@@ -27,6 +27,7 @@ Single page, three tabs (v7):
 
 ## Capabilities and Constraints
 
+- **Ecodesign is a product requirement:** the lowest feasible footprint for the app itself. EcoIndex is measured on every UI change (ADR 0003); currently B 77, 59 kB, 4 requests, no third party.
 - Bilingual FR / EN. Language follows the browser and is remembered locally.
 - 14 grids, 5 segments, 5 powertrains, 4 battery footprints. The model lives in `src/model.js`, has no UI text, and is covered by `npm test`.
 - Results are orders of magnitude with about ±20 % uncertainty. The verdict calls a tie under a 10 % gap (kept deliberately, because both options share most of the uncertainty).
