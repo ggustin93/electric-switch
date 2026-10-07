@@ -3,6 +3,7 @@ import { useContext, useEffect, useId, useLayoutEffect, useMemo, useRef, useStat
 import {
   PAYS, SEGMENTS, BATTERIES, MOTORS, MODES, AGE_SUGGESTION, SEUIL_SERRE, KM_AN_MAX_COMPTEUR, byId,
   mixMoyen, calc, fenetre, decider, calcConfig, departager, kmPivot, kmBascule,
+  budget, PRIX_ENERGIE, PRIX_VE_NEUF, ENTRETIEN, VALEUR_ACTUELLE_DEFAUT,
 } from "./model.js";
 import { STR, HYP_REFS, SOURCES } from "./i18n.jsx";
 import { Icone } from "./icones.jsx";
@@ -30,9 +31,11 @@ function formats(lang) {
   const n1 = nf({ maximumFractionDigits: 1 });
   const n1f = nf({ minimumFractionDigits: 1, maximumFractionDigits: 1 });
   const pc = nf({ style: "percent", maximumFractionDigits: 1 });
+  const euro = nf({ style: "currency", currency: "EUR", maximumFractionDigits: 0 });
   return {
     s, lang, n0, n1, n1f, pc,
     t: (x) => `${n1(x)}${NB}t`,
+    eur: (x) => euro(Math.round(x / 100) * 100), // arrondi à 100 € : ce sont des ordres de grandeur
     tco2: (x) => `${n1(x)}${NB}tCO₂e`,
     km: (x) => `${n0(x)}${NB}km`,
     gkm: (x) => `${n0(x)}${NB}gCO₂e/km`,
@@ -397,6 +400,9 @@ function Decision({ shared, allerExplorer }) {
             </Repli>
           </section>
 
+          <Budget carb={carb} conso={conso} horizon={v.horizon} kmAn={kmAn} seg={seg} etatVE={etatVE} ageVE={ageVE}
+            paysId={pays.id} etat={etat} />
+
           <section className="carte">
             <h2>{s.allerPlusLoin}</h2>
             <div className="actions actions-debut">
@@ -408,6 +414,71 @@ function Decision({ shared, allerExplorer }) {
         </>
       )}
     </div>
+  );
+}
+
+/* ---------- Budget : seconde lecture du verdict, prix modifiables ---------- */
+const AIDES = [
+  ["France", "https://www.ecologie.gouv.fr/politiques-publiques/coup-pouce-vehicules-particuliers-electriques"],
+  ["Royaume-Uni / UK", "https://www.gov.uk/government/publications/how-to-apply-for-vehicle-eligibility-for-the-electric-car-grant"],
+  ["Belgique / Belgium", "https://finances.belgium.be"],
+];
+
+function ChampPrix({ id, label, value, step, onChange }) {
+  return (
+    <Champ id={id} label={label}>
+      <input id={id} type="number" inputMode="decimal" min="0" step={step} value={value}
+        onInput={(e) => onChange(e.target.value === "" ? undefined : +e.target.value)} />
+    </Champ>
+  );
+}
+
+function Budget({ carb, conso, horizon, kmAn, seg, etatVE, ageVE, paysId, etat }) {
+  const f = useT();
+  const { s } = f;
+  const [sur, setSur] = useState({}); // valeurs saisies ; sinon défauts du pays et de la catégorie
+  const maj = (k) => (x) => setSur((o) => ({ ...o, [k]: x }));
+  const prix = PRIX_ENERGIE[paysId];
+  const p = {
+    carb: sur.carb ?? prix[carb], elec: sur.elec ?? prix.elec,
+    ve: sur.ve ?? PRIX_VE_NEUF[seg.id], act: sur.act ?? VALEUR_ACTUELLE_DEFAUT,
+  };
+  const b = budget({
+    carb, conso, horizon, kmAn, seg, etatVE, ageVE, prixNeufVE: p.ve, valeurActuelle: p.act,
+    prix: { [carb]: p.carb, elec: p.elec }, entretien: ENTRETIEN,
+  });
+  const d = departager(b.remplacer, b.garder);
+  const duree = f.ans(horizon);
+
+  return (
+    <section className="carte">
+      <h2>{s.budgetTitre}</h2>
+      <p className="bascule">
+        {d === "serre" && s.budgetProche(duree)}
+        {d === "a" && s.budgetMoins(f.eur(b.garder - b.remplacer), duree)}
+        {d === "b" && s.budgetPlus(f.eur(b.remplacer - b.garder), duree)}
+      </p>
+      <dl className="eco-mesures budget-totaux">
+        <div><dt>{s.budgetGarder}</dt><dd>{f.eur(b.garder)}</dd></div>
+        <div><dt>{s.budgetRemplacer(etat)}</dt><dd>{f.eur(b.remplacer)}</dd></div>
+      </dl>
+      <p className="aide-ligne">
+        {b.economieUsageAn >= 0 ? s.budgetUsageGain(f.eur(b.economieUsageAn)) : s.budgetUsagePerte(f.eur(-b.economieUsageAn))}
+      </p>
+      <Repli className="replie" titre={s.budgetHyp}>
+        <div className="budget-champs">
+          <ChampPrix id="p-carb" label={s.budgetPrixCarb(s.motor[carb].nom)} value={p.carb} step="0.01" onChange={maj("carb")} />
+          <ChampPrix id="p-elec" label={s.budgetPrixElec} value={p.elec} step="0.01" onChange={maj("elec")} />
+          <ChampPrix id="p-ve" label={s.budgetPrixVE(s.seg[seg.id].nom)} value={p.ve} step="500" onChange={maj("ve")} />
+          <ChampPrix id="p-act" label={s.budgetValeurAct} value={p.act} step="500" onChange={maj("act")} />
+        </div>
+        <p className="note-petite">{s.budgetNote}</p>
+        <p className="note-petite">
+          {s.budgetAides}{" "}
+          {AIDES.map(([n, u], i) => <span key={u}>{i > 0 && " · "}<a href={u} target="_blank" rel="noreferrer">{n}</a></span>)}
+        </p>
+      </Repli>
+    </section>
   );
 }
 

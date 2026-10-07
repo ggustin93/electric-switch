@@ -2,7 +2,7 @@ import { test } from "node:test";
 import assert from "node:assert/strict";
 import {
   PAYS, SEGMENTS, BATTERIES, MOTORS, VIE_ANS, VIE_KM, byId,
-  partFab, mixMoyen, calc, fenetre, decider, kmPivot, kmBascule,
+  partFab, mixMoyen, calc, fenetre, decider, kmPivot, kmBascule, budget,
 } from "./model.js";
 
 test("grille : empreintes finies et positives, part de fabrication dans [0,1]", () => {
@@ -83,4 +83,20 @@ test("pivot : null si jamais rattrapé, 0 si d'emblée devant", () => {
   assert.equal(kmPivot({ usage: 200, fabAttr: 10 }, { usage: 150, fabAttr: 6 }, 1e5), null);
   assert.equal(kmPivot({ usage: 20, fabAttr: 5 }, { usage: 150, fabAttr: 6 }, 1e5), 0);
   assert.ok(Math.abs(kmPivot({ usage: 50, fabAttr: 10 }, { usage: 150, fabAttr: 6 }, 1e5) - 40000) < 1e-6);
+});
+
+test("budget : énergie, revente et valeur résiduelle cohérentes", () => {
+  const base = {
+    carb: "essence", conso: 7, horizon: 5, kmAn: 12000, seg: byId(SEGMENTS, "compacte"), etatVE: "neuf", ageVE: 0,
+    prix: { essence: 1.8, diesel: 1.7, elec: 0.3 }, prixNeufVE: 35000, valeurActuelle: 5000,
+    entretien: { thermique: 0.06, electrique: 0.04 },
+  };
+  const b = budget(base);
+  assert.ok(Math.abs(b.energieGarder - 60000 * 7 * 1.8 / 100) < 1e-6);
+  assert.ok(b.residuelle < b.achat && b.residuelle > 0);
+  // plus on roule, plus l'électrique devient avantageux
+  assert.ok(budget({ ...base, kmAn: 30000 }).remplacer - budget({ ...base, kmAn: 30000 }).garder
+    < b.remplacer - b.garder);
+  // une occasion coûte moins à l'achat qu'une neuve
+  assert.ok(budget({ ...base, etatVE: "occasion", ageVE: 4 }).achat < b.achat);
 });

@@ -214,3 +214,52 @@ export function kmPivot(ev, essence, kmMax) {
   if (km <= 0) return 0;
   return km < kmMax ? km : null;
 }
+
+// --- Prix par défaut du budget (€, modifiables dans l'appli ; sources : docs/research/2026-10-budget.md) ---
+// Carburant €/L : Bulletin pétrolier UE 05/10/2026 ; GOV.UK ; EIA ; NO/CN/IN globalpetrolprices (à défaut).
+// Électricité €/kWh domestique TTC : Eurostat nrg_pc_204 2025-S2 ; UK plafond Ofgem T4 2026 ; US EIA.
+// Conversions BCE du 07/10/2026.
+export const PRIX_ENERGIE = {
+  NO: { essence: 2.78, diesel: 2.63, elec: 0.192 },
+  SE: { essence: 1.59, diesel: 2.12, elec: 0.271 },
+  FR: { essence: 2.21, diesel: 2.36, elec: 0.256 },
+  ES: { essence: 1.85, diesel: 1.92, elec: 0.267 },
+  BE: { essence: 1.96, diesel: 2.35, elec: 0.35 },
+  UK: { essence: 2.07, diesel: 2.36, elec: 0.311 },
+  EU: { essence: 2.0, diesel: 2.15, elec: 0.29 },
+  IT: { essence: 2.07, diesel: 2.27, elec: 0.297 },
+  DE: { essence: 2.14, diesel: 2.24, elec: 0.387 },
+  US: { essence: 1.03, diesel: 1.47, elec: 0.164 },
+  AU: { essence: 1.28, diesel: 1.53, elec: 0.243 },
+  CN: { essence: 1.23, diesel: 1.11, elec: 0.071 },
+  PL: { essence: 1.52, diesel: 1.76, elec: 0.271 },
+  IN: { essence: 1.0, diesel: 0.91, elec: 0.063 },
+};
+// Prix catalogue d'une électrique neuve par catégorie (France, TTC, hors aides ; ordres de grandeur, à vérifier)
+export const PRIX_VE_NEUF = { citadine: 25000, compacte: 33000, berline: 40000, suv: 40000, grandsuv: 65000 };
+// Entretien + pneus €/km (ICCT 2023, Allemagne : ID.3 0,046 vs Golf 0,054 ; arrondis)
+export const ENTRETIEN = { thermique: 0.05, electrique: 0.04 };
+export const VALEUR_ACTUELLE_DEFAUT = 5000;
+// Décote marchande d'une électrique : ≈ 50 % de valeur résiduelle à 3 ans (Berylls 2023), soit ≈ 20 %/an,
+// plus rapide que la thermique (15 %/an, H2) : choix prudent, défavorable à l'électrique.
+export const DECOTE_VE = 0.2;
+const valeurVE = (t) => Math.pow(1 - DECOTE_VE, Math.max(0, t));
+
+// --- Budget : coût net sur l'horizon de la décision (€, sans actualisation) ---
+// Garder : carburant + entretien − valeur restante de la voiture actuelle à la fin.
+// Remplacer : achat du VE − revente de la voiture actuelle maintenant + électricité + entretien
+//             − valeur résiduelle du VE à la fin. Décote : 20 %/an pour l'électrique, 15 %/an (H2) pour l'actuelle.
+// Hors périmètre : assurance, financement, aides (trop variables : liens vers les pages officielles).
+export function budget({ carb, conso, horizon, kmAn, seg, etatVE, ageVE, prix, prixNeufVE, valeurActuelle, entretien }) {
+  const km = horizon * kmAn;
+  const ageDebut = etatVE === "neuf" ? 0 : ageVE;
+  const achat = prixNeufVE * valeurVE(ageDebut);
+  const residuelle = prixNeufVE * valeurVE(ageDebut + horizon);
+  const energieGarder = (km * conso * prix[carb]) / 100;
+  const energieVE = (km * seg.ev * PERTES_CHARGE * prix.elec) / 100;
+  const garder = energieGarder + km * entretien.thermique - valeurActuelle * valeur(horizon);
+  const remplacer = achat - valeurActuelle + energieVE + km * entretien.electrique - residuelle;
+  // Économie annuelle d'usage (énergie + entretien) en passant à l'électrique
+  const economieUsageAn = (energieGarder - energieVE) / horizon + kmAn * (entretien.thermique - entretien.electrique);
+  return { km, achat, residuelle, energieGarder, energieVE, garder, remplacer, economieUsageAn };
+}
