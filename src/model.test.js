@@ -2,7 +2,7 @@ import { test } from "node:test";
 import assert from "node:assert/strict";
 import {
   PAYS, SEGMENTS, BATTERIES, MOTORS, VIE_ANS, VIE_KM, byId,
-  partFab, mixMoyen, calc, fenetre, decider, kmPivot, kmBascule, budget,
+  partFab, mixMoyen, calc, fenetre, decider, kmPivot, kmBascule, budget, departager,
 } from "./model.js";
 
 test("grille : empreintes finies et positives, part de fabrication dans [0,1]", () => {
@@ -85,6 +85,13 @@ test("pivot : null si jamais rattrapé, 0 si d'emblée devant", () => {
   assert.ok(Math.abs(kmPivot({ usage: 50, fabAttr: 10 }, { usage: 150, fabAttr: 6 }, 1e5) - 40000) < 1e-6);
 });
 
+test("départager : totaux négatifs ou nuls (budget)", () => {
+  assert.equal(departager(-500, 300), "a");
+  assert.equal(departager(0, 0), "serre");
+  assert.equal(departager(-2667, -1371), "a"); // écart réel de 1 300 € sur ~2 700 : pas « serré »
+  assert.equal(departager(100, 105), "serre"); // valeurs positives : règle inchangée
+});
+
 test("budget : énergie, revente et valeur résiduelle cohérentes", () => {
   const base = {
     carb: "essence", conso: 7, horizon: 5, kmAn: 12000, seg: byId(SEGMENTS, "compacte"), etatVE: "neuf", ageVE: 0,
@@ -97,6 +104,9 @@ test("budget : énergie, revente et valeur résiduelle cohérentes", () => {
   // plus on roule, plus l'électrique devient avantageux
   assert.ok(budget({ ...base, kmAn: 30000 }).remplacer - budget({ ...base, kmAn: 30000 }).garder
     < b.remplacer - b.garder);
+  // borne et frais annuels alourdissent l'électrique ; une décote plus faible l'allège
+  assert.ok(budget({ ...base, wallbox: 1200, autresFraisAn: 300 }).remplacer - b.remplacer === 1200 + 5 * 300);
+  assert.ok(budget({ ...base, decoteVE: 0.15 }).remplacer < b.remplacer);
   // une occasion coûte moins à l'achat qu'une neuve
   assert.ok(budget({ ...base, etatVE: "occasion", ageVE: 4 }).achat < b.achat);
 });

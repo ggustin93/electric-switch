@@ -4,6 +4,7 @@ import {
   PAYS, SEGMENTS, BATTERIES, MOTORS, MODES, AGE_SUGGESTION, SEUIL_SERRE, KM_AN_MAX_COMPTEUR, byId,
   mixMoyen, calc, fenetre, decider, calcConfig, departager, kmPivot, kmBascule,
   budget, PRIX_ENERGIE, PRIX_VE_NEUF, ENTRETIEN, VALEUR_ACTUELLE_DEFAUT,
+  WALLBOX_DEFAUT, AUTRES_FRAIS_VE_DEFAUT, DECOTE_VE_FOURCHETTE,
 } from "./model.js";
 import { STR, HYP_REFS, SOURCES } from "./i18n.jsx";
 import { Icone } from "./icones.jsx";
@@ -35,7 +36,8 @@ function formats(lang) {
   return {
     s, lang, n0, n1, n1f, pc,
     t: (x) => `${n1(x)}${NB}t`,
-    eur: (x) => euro(Math.round(x / 100) * 100), // arrondi à 100 € : ce sont des ordres de grandeur
+    eur: (x) => euro(Math.round(x / 100) * 100 || 0), // arrondi à 100 € (ordres de grandeur), jamais « −0 € »
+    eurK: (x) => euro(Math.round(x / 1000) * 1000 || 0), // titres : arrondi au millier
     tco2: (x) => `${n1(x)}${NB}tCO₂e`,
     km: (x) => `${n0(x)}${NB}km`,
     gkm: (x) => `${n0(x)}${NB}gCO₂e/km`,
@@ -400,8 +402,8 @@ function Decision({ shared, allerExplorer }) {
             </Repli>
           </section>
 
-          <Budget carb={carb} conso={conso} horizon={v.horizon} kmAn={kmAn} seg={seg} etatVE={etatVE} ageVE={ageVE}
-            paysId={pays.id} etat={etat} />
+          <Budget carb={carb} conso={conso} horizon={v.horizon} tronque={v.tronque} kmAn={kmAn} seg={seg}
+            etatVE={etatVE} ageVE={ageVE} paysId={pays.id} etat={etat} />
 
           <section className="carte">
             <h2>{s.allerPlusLoin}</h2>
@@ -433,7 +435,7 @@ function ChampPrix({ id, label, value, step, onChange }) {
   );
 }
 
-function Budget({ carb, conso, horizon, kmAn, seg, etatVE, ageVE, paysId, etat }) {
+function Budget({ carb, conso, horizon, tronque, kmAn, seg, etatVE, ageVE, paysId, etat }) {
   const f = useT();
   const { s } = f;
   const [sur, setSur] = useState({}); // valeurs saisies ; sinon défauts du pays et de la catégorie
@@ -442,35 +444,44 @@ function Budget({ carb, conso, horizon, kmAn, seg, etatVE, ageVE, paysId, etat }
   const p = {
     carb: sur.carb ?? prix[carb], elec: sur.elec ?? prix.elec,
     ve: sur.ve ?? PRIX_VE_NEUF[seg.id], act: sur.act ?? VALEUR_ACTUELLE_DEFAUT,
+    wallbox: sur.wallbox ?? WALLBOX_DEFAUT, autres: sur.autres ?? AUTRES_FRAIS_VE_DEFAUT,
   };
-  const b = budget({
+  const entrees = {
     carb, conso, horizon, kmAn, seg, etatVE, ageVE, prixNeufVE: p.ve, valeurActuelle: p.act,
-    prix: { [carb]: p.carb, elec: p.elec }, entretien: ENTRETIEN,
-  });
+    prix: { [carb]: p.carb, elec: p.elec }, entretien: ENTRETIEN, wallbox: p.wallbox, autresFraisAn: p.autres,
+  };
+  const b = budget(entrees);
   const d = departager(b.remplacer, b.garder);
   const duree = f.ans(horizon);
+  // Fourchette selon la revente (hypothèse la plus incertaine) : décote 15 % → 25 %/an
+  const [lo, hi] = DECOTE_VE_FOURCHETTE.map((decoteVE) => budget({ ...entrees, decoteVE }).remplacer - b.garder).sort((x, y) => x - y);
+  // Alternative : électrique d'occasion de 3 ans (si l'on envisageait du neuf)
+  const occ = etatVE === "neuf" ? budget({ ...entrees, etatVE: "occasion", ageVE: 3 }) : null;
+  const ecart = (x) => (x >= 0 ? s.budgetEcartPlus(f.eurK(x)) : s.budgetEcartMoins(f.eurK(-x)));
 
   return (
     <section className="carte">
       <h2>{s.budgetTitre}</h2>
       <p className="bascule">
         {d === "serre" && s.budgetProche(duree)}
-        {d === "a" && s.budgetMoins(f.eur(b.garder - b.remplacer), duree)}
-        {d === "b" && s.budgetPlus(f.eur(b.remplacer - b.garder), duree)}
+        {d !== "serre" && s.budgetVerdict(ecart(b.remplacer - b.garder), duree, f.eurK(lo), f.eurK(hi))}
       </p>
+      {tronque && <p className="aide-ligne">{s.tronque(duree)}</p>}
       <dl className="eco-mesures budget-totaux">
         <div><dt>{s.budgetGarder}</dt><dd>{f.eur(b.garder)}</dd></div>
         <div><dt>{s.budgetRemplacer(etat)}</dt><dd>{f.eur(b.remplacer)}</dd></div>
       </dl>
-      <p className="aide-ligne">
-        {b.economieUsageAn >= 0 ? s.budgetUsageGain(f.eur(b.economieUsageAn)) : s.budgetUsagePerte(f.eur(-b.economieUsageAn))}
-      </p>
+      <p className="aide-ligne">{s.budgetPourquoi(usage(s, f, b.economieUsageAn), f.eur(b.capital), duree)}</p>
+      {occ && <p className="aide-ligne">{s.budgetOccasion(ecart(occ.remplacer - occ.garder))}</p>}
+      <p className="aide-ligne">{s.budgetExclus}</p>
       <Repli className="replie" titre={s.budgetHyp}>
         <div className="budget-champs">
           <ChampPrix id="p-carb" label={s.budgetPrixCarb(s.motor[carb].nom)} value={p.carb} step="0.01" onChange={maj("carb")} />
           <ChampPrix id="p-elec" label={s.budgetPrixElec} value={p.elec} step="0.01" onChange={maj("elec")} />
           <ChampPrix id="p-ve" label={s.budgetPrixVE(s.seg[seg.id].nom)} value={p.ve} step="500" onChange={maj("ve")} />
           <ChampPrix id="p-act" label={s.budgetValeurAct} value={p.act} step="500" onChange={maj("act")} />
+          <ChampPrix id="p-wallbox" label={s.budgetWallbox} value={p.wallbox} step="100" onChange={maj("wallbox")} />
+          <ChampPrix id="p-autres" label={s.budgetAutres} value={p.autres} step="50" onChange={maj("autres")} />
         </div>
         <p className="note-petite">{s.budgetNote}</p>
         <p className="note-petite">
@@ -480,6 +491,12 @@ function Budget({ carb, conso, horizon, kmAn, seg, etatVE, ageVE, paysId, etat }
       </Repli>
     </section>
   );
+}
+
+// Usage seul (énergie + entretien), par an : « environ 800 € de moins » ou « à peu près pareil »
+function usage(s, f, parAn) {
+  if (Math.abs(parAn) < 50) return s.budgetUsagePareil;
+  return parAn > 0 ? s.budgetUsageMoins(f.eur(parAn)) : s.budgetUsagePlus(f.eur(-parAn));
 }
 
 function texteBascule(s, f, seuil) {
