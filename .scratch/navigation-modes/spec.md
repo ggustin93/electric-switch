@@ -1,6 +1,6 @@
 # Spec — Clarify the modes on arrival (v7)
 
-Status: needs-triage
+Status: resolved (v7, 2026-10-07). Remaining: the "your current car" line on the cumulative chart (P1), and measuring the "two cars" usage (P2).
 Source: UX/UI expert review, 2026-10-07 (based on Impeccable onboard/critique heuristics), plus an owner request (transport-modes page).
 
 ## Problem

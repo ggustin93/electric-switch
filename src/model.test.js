@@ -2,7 +2,7 @@ import { test } from "node:test";
 import assert from "node:assert/strict";
 import {
   PAYS, SEGMENTS, BATTERIES, MOTORS, VIE_ANS, VIE_KM, byId,
-  partFab, mixMoyen, calc, fenetre, decider, kmPivot,
+  partFab, mixMoyen, calc, fenetre, decider, kmPivot, kmBascule,
 } from "./model.js";
 
 test("grille : empreintes finies et positives, part de fabrication dans [0,1]", () => {
@@ -61,6 +61,22 @@ test("décision : horizon borné, verdict cohérent avec l'amortissement", () =>
     if (v.verdict === "remplacer") assert.ok(v.amortiAns < v.horizon);
     if (v.verdict === "garder") assert.ok(v.amortiAns > v.horizon);
   }
+});
+
+test("bascule : seuil cohérent avec le verdict, plus haut sur un réseau carboné", () => {
+  const base = { carb: "essence", conso: 6.5, annees: 5, seg: byId(SEGMENTS, "compacte"), etatVE: "neuf", ageVE: 0, decarb: true, efBatt: 73 };
+  const be = kmBascule({ ...base, pays: byId(PAYS, "BE") });
+  const pl = kmBascule({ ...base, pays: byId(PAYS, "PL") });
+  assert.ok(be > 3000 && be < 40000, `BE ${be}`);
+  assert.ok(pl === null || pl > be, `PL ${pl}`);
+  const juste = decider({ ...base, pays: byId(PAYS, "BE"), kmAn: be });
+  assert.ok(juste.tRemplacer <= juste.tGarder);
+});
+
+test("convention marginale : un neuf revendu porte 100 % de sa fabrication", () => {
+  const f = fenetre({ occasion: false, kmAn: 12000, revente: true, detention: 8, marginal: true });
+  assert.equal(f.ratioFab, 1);
+  assert.ok(fenetre({ occasion: false, kmAn: 12000, revente: true, detention: 8 }).ratioFab < 1);
 });
 
 test("pivot : null si jamais rattrapé, 0 si d'emblée devant", () => {

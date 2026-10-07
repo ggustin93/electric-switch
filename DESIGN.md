@@ -108,7 +108,8 @@ Radius 3 px for bars and swatches, 6 px for controls, 12 px for cards. Pills onl
 
 ## Components
 
-- **Tabs:** text with a 2 px accent underline, 44 px tall, roving tabindex and arrow keys. All panels stay mounted, so answers survive tab switches.
+- **Tabs:** « Ma décision · Explorer · Se déplacer autrement ». Text with a 2 px accent underline, 44 px tall, wrapping on mobile, roving tabindex and arrow keys. All panels stay mounted, so answers survive tab switches.
+- **Profile bar:** a `<details>` summary showing "Votre profil · Belgique · 12 000 km/an · compacte neuve · Modifier" that opens the shared controls.
 - **Stepper:** an `<ol>` with `aria-current="step"`. Completed steps show a drawn check and stay clickable. Focus moves to the step heading.
 - **Choices:** native radio inputs styled as segments or cards, with the whole fieldset labelled.
 - **Sliders:** label and `<output>` on one row, min and max under the track, `aria-valuetext`.

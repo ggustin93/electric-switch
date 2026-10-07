@@ -20,13 +20,17 @@ A personal decision rather than a generic "EV vs petrol" average. The car you al
 
 ## Operating Context
 
-Single page with three tabs: a four-step Decision wizard leading to a verdict, a Comparison of all powertrains (with a cumulative-emissions chart and break-even km), and a two-car Head-to-head. Annual mileage, country and battery assumptions are shared across tabs.
+Single page, three tabs (v7):
+1. **My decision**: a 4-step wizard, then the verdict, the decisive mileage threshold and a live "what if" slider.
+2. **Explore**: all powertrains, or two specific cars. Pre-filled from a shared profile (country, km/yr, category, new/used) that is never asked twice.
+3. **Other ways to get around**: an informational page with footprints per passenger-km for walking through to the plane (ADEME Impact CO₂, construction included).
 
 ## Capabilities and Constraints
 
 - Bilingual FR / EN. Language follows the browser and is remembered locally.
-- 14 grids, 5 segments, 5 powertrains, 3 battery footprints. The model lives in `src/model.js`, has no UI text, and is covered by `npm test`.
-- Results are orders of magnitude with about ±20 % uncertainty. The verdict calls a tie under a 10 % gap.
+- 14 grids, 5 segments, 5 powertrains, 4 battery footprints. The model lives in `src/model.js`, has no UI text, and is covered by `npm test`.
+- Results are orders of magnitude with about ±20 % uncertainty. The verdict calls a tie under a 10 % gap (kept deliberately, because both options share most of the uncertainty).
+- One visible convention: a new car carries 100 % of its manufacturing everywhere by default (H3). "Shared between owners" is an advanced option.
 - Open decision: brand and publication venue are **undecided**.
 
 ## Brand Commitments

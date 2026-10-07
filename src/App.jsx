@@ -1,7 +1,7 @@
 import { createContext, useContext, useEffect, useId, useLayoutEffect, useMemo, useRef, useState } from "react";
 import {
-  PAYS, SEGMENTS, BATTERIES, MOTORS, AGE_SUGGESTION, KM_AN_MAX_COMPTEUR, byId,
-  mixMoyen, calc, fenetre, decider, calcConfig, departager, kmPivot,
+  PAYS, SEGMENTS, BATTERIES, MOTORS, MODES, AGE_SUGGESTION, KM_AN_MAX_COMPTEUR, byId,
+  mixMoyen, calc, fenetre, decider, calcConfig, departager, kmPivot, kmBascule,
 } from "./model.js";
 import { STR, HYP_REFS, SOURCES } from "./i18n.jsx";
 
@@ -148,15 +148,23 @@ const Coche = () => (
    APP
    ============================================================ */
 
-const ONGLETS = ["decision", "compare", "duel"];
+const ONGLETS = ["decision", "explorer", "modes"];
+const lienCarbone4 = (t) => <a href="https://www.carbone4.com/analyse-faq-voiture-electrique" target="_blank" rel="noreferrer">{t}</a>;
 
 export default function App() {
   const [lang, setLang] = useState(langueInitiale);
   const [onglet, setOnglet] = useState("decision");
+  const [vue, setVue] = useState("tout");
+  // Profil partagé par tous les onglets : jamais demandé deux fois
   const [paysId, setPaysId] = useState("BE");
   const [kmAn, setKmAn] = useState(12000);
+  const [segId, setSegId] = useState("compacte");
+  const [etatVE, setEtatVE] = useState("neuf");
+  const [ageVE, setAgeVE] = useState(3);
+  const [odo, setOdo] = useState(50000);
   const [decarb, setDecarb] = useState(true);
   const [battId, setBattId] = useState("ue");
+  const [conv, setConv] = useState("marginale");
   const f = useMemo(() => formats(lang), [lang]);
   const { s } = f;
   const tabsRef = useRef([]);
@@ -170,7 +178,14 @@ export default function App() {
   const shared = {
     pays: byId(PAYS, paysId), paysId, setPaysId, kmAn, setKmAn, decarb, setDecarb,
     batt: byId(BATTERIES, battId), battId, setBattId,
+    segId, setSegId, etatVE, setEtatVE, ageVE, setAgeVE, odo, setOdo, conv, setConv,
   };
+
+  const allerOnglet = (o) => {
+    setOnglet(o);
+    tabsRef.current[ONGLETS.indexOf(o)]?.focus();
+  };
+  const allerExplorer = (v) => { setVue(v); allerOnglet("explorer"); };
 
   // Onglets : tabindex itinérant, flèches / Début / Fin
   const clavierOnglets = (e) => {
@@ -178,9 +193,7 @@ export default function App() {
     const j = { ArrowRight: i + 1, ArrowLeft: i - 1, Home: 0, End: ONGLETS.length - 1 }[e.key];
     if (j === undefined) return;
     e.preventDefault();
-    const k = (j + ONGLETS.length) % ONGLETS.length;
-    setOnglet(ONGLETS[k]);
-    tabsRef.current[k]?.focus();
+    allerOnglet(ONGLETS[(j + ONGLETS.length) % ONGLETS.length]);
   };
 
   return (
@@ -198,9 +211,7 @@ export default function App() {
               ))}
             </fieldset>
           </div>
-          <p className="lede">
-            {s.lede((t) => <a href="https://www.carbone4.com/analyse-faq-voiture-electrique" target="_blank" rel="noreferrer">{t}</a>)}
-          </p>
+          <p className="lede">{s.lede}</p>
         </header>
 
         <div className="onglets" role="tablist" aria-label="Sections" onKeyDown={clavierOnglets}>
@@ -213,20 +224,20 @@ export default function App() {
           ))}
         </div>
 
-        {/* Les trois onglets restent montés : leurs réponses survivent à la navigation */}
+        {/* Les onglets restent montés : leurs réponses survivent à la navigation */}
         <div role="tabpanel" id="panel-decision" aria-labelledby="tab-decision" hidden={onglet !== "decision"}>
-          <Decision shared={shared} allerComparer={() => { setOnglet("compare"); tabsRef.current[1]?.focus(); }} />
+          <Decision shared={shared} allerExplorer={allerExplorer} />
         </div>
-        <div role="tabpanel" id="panel-compare" aria-labelledby="tab-compare" hidden={onglet !== "compare"}>
-          <Comparateur shared={shared} />
+        <div role="tabpanel" id="panel-explorer" aria-labelledby="tab-explorer" hidden={onglet !== "explorer"}>
+          <Explorer shared={shared} vue={vue} setVue={setVue} />
         </div>
-        <div role="tabpanel" id="panel-duel" aria-labelledby="tab-duel" hidden={onglet !== "duel"}>
-          <Duel shared={shared} />
+        <div role="tabpanel" id="panel-modes" aria-labelledby="tab-modes" hidden={onglet !== "modes"}>
+          <Modes />
         </div>
 
         <Hypotheses />
         <Sources />
-        <footer className="pied">{s.footer}</footer>
+        <footer className="pied">{s.footer(lienCarbone4)}</footer>
       </div>
     </Ctx.Provider>
   );
@@ -236,27 +247,28 @@ function optionsPays(f) {
   return PAYS.map((p) => ({ v: p.id, label: f.s.paysOption(f.s.pays[p.id], f.n0(p.g)) }));
 }
 
+const optionsCategorie = (s, sous) => SEGMENTS.map((x) => ({ v: x.id, label: s.seg[x.id].nom, sub: sous(x) }));
+
 /* ============================================================
-   ONGLET 1 — DÉCISION
+   ONGLET 1 — MA DÉCISION
    ============================================================ */
 
-function Decision({ shared, allerComparer }) {
+function Decision({ shared, allerExplorer }) {
   const f = useT();
   const { s } = f;
-  const { pays, paysId, setPaysId, kmAn, setKmAn, decarb, batt } = shared;
+  const { pays, paysId, setPaysId, kmAn, setKmAn, decarb, batt, segId, setSegId, etatVE, setEtatVE, ageVE, setAgeVE } = shared;
   const [etape, setEtape] = useState(0);
   const [maxEtape, setMaxEtape] = useState(0);
   const [carb, setCarb] = useState("essence");
   const [conso, setConso] = useState(6.5);
   const [annees, setAnnees] = useState(5);
-  const [segId, setSegId] = useState("compacte");
-  const [etatVE, setEtatVE] = useState("neuf");
-  const [ageVE, setAgeVE] = useState(3);
   const titreRef = useRef(null);
   const etapePrec = useRef(etape);
 
   const seg = byId(SEGMENTS, segId);
-  const v = decider({ carb, conso, annees, seg, etatVE, ageVE, pays, kmAn, decarb, efBatt: batt.ef });
+  const params = { carb, conso, annees, seg, etatVE, ageVE, pays, decarb, efBatt: batt.ef };
+  const v = decider({ ...params, kmAn });
+  const seuil = etape === 3 ? kmBascule(params) : null;
   const etat = etatVE === "neuf" ? s.etatNeuve : s.etatOcc(f.n0(ageVE), ageVE);
 
   // Au changement d'étape, le focus va au titre de la nouvelle étape
@@ -266,13 +278,6 @@ function Decision({ shared, allerComparer }) {
   }, [etape]);
 
   const aller = (i) => { setEtape(i); setMaxEtape((m) => Math.max(m, i)); };
-
-  const Actions = ({ suivant = s.continuer }) => (
-    <div className="actions">
-      {etape > 0 && <button type="button" className="btn btn-texte" onClick={() => aller(etape - 1)}>{s.retour}</button>}
-      <button type="button" className="btn btn-plein" onClick={() => aller(etape + 1)}>{suivant}</button>
-    </div>
-  );
 
   return (
     <div>
@@ -314,7 +319,7 @@ function Decision({ shared, allerComparer }) {
           {etape === 2 && (
             <>
               <Choix cartes label={s.champ.categorie} aide={s.aide.categorie} value={segId} onChange={setSegId}
-                options={SEGMENTS.map((x) => ({ v: x.id, label: s.seg[x.id].nom, sub: `${x.battKwh}${NB}kWh` }))} />
+                options={optionsCategorie(s, (x) => `${x.battKwh}${NB}kWh`)} />
               <Choix label={s.champ.etat} aide={s.aide.etat} value={etatVE} onChange={setEtatVE}
                 options={[{ v: "neuf", label: s.neuve }, { v: "occasion", label: s.occasion }]} />
               {etatVE === "occasion" && (
@@ -327,8 +332,17 @@ function Decision({ shared, allerComparer }) {
             </>
           )}
 
-          <Actions suivant={etape === 2 ? s.voirVerdict : s.continuer} />
+          <div className="actions">
+            {etape > 0 && <button type="button" className="btn btn-texte" onClick={() => aller(etape - 1)}>{s.retour}</button>}
+            <button type="button" className="btn btn-plein" onClick={() => aller(etape + 1)}>{s.suivantVers[etape]}</button>
+          </div>
         </section>
+      )}
+
+      {etape === 0 && (
+        <p className="raccourci">
+          <button type="button" className="btn-lien" onClick={() => allerExplorer("tout")}>{s.pasDeVoiture}</button>
+        </p>
       )}
 
       {etape === 3 && (
@@ -361,19 +375,33 @@ function Decision({ shared, allerComparer }) {
           </section>
 
           <section className="carte">
+            <p className="bascule">{texteBascule(s, f, seuil)}</p>
+            <Curseur id="etsi" label={s.etSi} value={kmAn} min={3000} max={40000} step={1000}
+              onChange={setKmAn} format={f.kmAn} />
             <details className="replie">
               <summary>{s.commentLire}</summary>
               <p className="note-petite">{s.conventions}</p>
             </details>
-            <div className="actions actions-fin">
+          </section>
+
+          <section className="carte">
+            <h2>{s.allerPlusLoin}</h2>
+            <div className="actions actions-debut">
+              <button type="button" className="btn btn-plein" onClick={() => allerExplorer("tout")}>{s.ctaTout}</button>
+              <button type="button" className="btn btn-contour" onClick={() => allerExplorer("duel")}>{s.ctaDuel}</button>
               <button type="button" className="btn btn-texte" onClick={() => aller(0)}>{s.modifier}</button>
-              <button type="button" className="btn btn-plein" onClick={allerComparer}>{s.explorer}</button>
             </div>
           </section>
         </>
       )}
     </div>
   );
+}
+
+function texteBascule(s, f, seuil) {
+  if (seuil === null) return s.basculeJamais;
+  if (seuil <= 3000) return s.basculeToujours;
+  return s.bascule(f.kmAn(seuil));
 }
 
 function classeEtape(i, etape) {
@@ -395,28 +423,67 @@ function Colonne({ gagne, titre, t, sous }) {
 }
 
 /* ============================================================
-   ONGLET 2 — COMPARATEUR
+   ONGLET 2 — EXPLORER (toutes les motorisations / deux voitures)
    ============================================================ */
+
+function Explorer({ shared, vue, setVue }) {
+  const f = useT();
+  const { s } = f;
+  const { pays, paysId, setPaysId, kmAn, setKmAn, segId, setSegId, etatVE, setEtatVE, ageVE, setAgeVE, odo, setOdo } = shared;
+  const etat = etatVE === "neuf" ? s.etatNeuve : s.etatOcc(f.n0(ageVE), ageVE);
+  const odoMax = ageVE * KM_AN_MAX_COMPTEUR;
+
+  return (
+    <div>
+      <section className="carte">
+        <details className="replie profil">
+          <summary>
+            <span className="profil-titre">{s.profilTitre}</span>
+            <span className="profil-valeur">{s.profil({ pays: s.pays[pays.id], km: f.kmAn(kmAn), voiture: s.voitureProfil(s.seg[segId].nom, etat) })}</span>
+            <span className="profil-modifier">{s.modifierProfil}</span>
+          </summary>
+          <Liste id="paysX" label={s.champ.pays} aide={s.aide.pays} value={paysId} onChange={setPaysId} options={optionsPays(f)} />
+          <Curseur id="kmanX" label={s.champ.km} aide={s.aide.kmComp} value={kmAn} min={3000} max={40000} step={1000}
+            onChange={setKmAn} format={f.kmAn} />
+          <Choix cartes label={s.champ.categorie} value={segId} onChange={setSegId}
+            options={optionsCategorie(s, (x) => `≈${NB}${f.n0(x.masse)}${NB}kg`)} />
+          <p className="aide-ligne">{s.exemples(s.seg[segId].ex, byId(SEGMENTS, segId).battKwh)}</p>
+          <Choix label={s.champ.etat} value={etatVE} onChange={setEtatVE}
+            options={[{ v: "neuf", label: s.neuve }, { v: "occasion", label: s.occasion }]} />
+          {etatVE === "occasion" && (
+            <div className="groupe">
+              <Curseur id="ageX" label={s.champ.age} aide={s.aide.age} value={ageVE} min={1} max={12} step={1}
+                onChange={setAgeVE} format={f.ans} />
+              <Curseur id="odoX" label={s.champ.odo} aide={s.aide.odo} value={odo} min={0} max={160000} step={5000}
+                onChange={setOdo} format={f.km} />
+              {odo > odoMax && <p className="note">{s.odoBorne(f.km(odoMax))}</p>}
+            </div>
+          )}
+        </details>
+        <Choix label={s.vue} value={vue} onChange={setVue}
+          options={[{ v: "tout", label: s.vues.tout }, { v: "duel", label: s.vues.duel }]} />
+      </section>
+
+      {vue === "tout" ? <Comparateur shared={shared} /> : <Duel shared={shared} />}
+    </div>
+  );
+}
 
 function Comparateur({ shared }) {
   const f = useT();
   const { s } = f;
-  const { pays, paysId, setPaysId, kmAn, setKmAn, decarb, setDecarb, batt, battId, setBattId } = shared;
-  const [avance, setAvance] = useState(false);
-  const [segId, setSegId] = useState("compacte");
-  const [occasion, setOccasion] = useState(false);
-  const [odo, setOdo] = useState(80000);
-  const [age, setAge] = useState(6);
+  const { pays, kmAn, decarb, setDecarb, batt, battId, setBattId, segId, etatVE, ageVE, odo, conv, setConv } = shared;
   const [revente, setRevente] = useState(true);
   const [detention, setDetention] = useState(8);
   const [hybrides, setHybrides] = useState(false);
   const [phevShare, setPhevShare] = useState(0.5);
 
+  const occasion = etatVE === "occasion";
   const seg = byId(SEGMENTS, segId);
-  const fen = fenetre({ occasion, odo, age, kmAn, revente, detention });
+  const fen = fenetre({ occasion, odo, age: ageVE, kmAn, revente, detention, marginal: conv === "marginale" });
   const anneesDet = fen.kmVous / kmAn;
   const gridEff = mixMoyen(pays.g, anneesDet, decarb, pays.declin);
-  const resultats = MOTORS.filter((m) => (avance && hybrides) || !m.hybride)
+  const resultats = MOTORS.filter((m) => hybrides || !m.hybride)
     .map((m) => calc(m.id, seg, gridEff, fen.kmVous, fen.ratioFab, phevShare, batt.ef))
     .sort((a, b) => a.perKm - b.perKm);
   const ev = resultats.find((r) => r.motorId === "ev");
@@ -424,70 +491,9 @@ function Comparateur({ shared }) {
   const pivot = kmPivot(ev, essence, fen.kmVous);
   const best = resultats[0];
   const worst = resultats[resultats.length - 1];
-  const maxT = worst.totalT;
-  const odoMax = Math.max(1, age) * KM_AN_MAX_COMPTEUR;
 
   return (
     <div>
-      <section className="carte">
-        <div className="carte-tete">
-          <h2>{s.parametres}</h2>
-          <label className="interrupteur">
-            <input type="checkbox" role="switch" checked={avance} onChange={(e) => setAvance(e.target.checked)} />
-            <span>{s.avance}</span>
-          </label>
-        </div>
-
-        <Liste id="paysC" label={s.champ.pays} aide={s.aide.pays} value={paysId} onChange={setPaysId} options={optionsPays(f)} />
-        <Choix cartes label={s.champ.categorie} value={segId} onChange={setSegId}
-          options={SEGMENTS.map((x) => ({ v: x.id, label: s.seg[x.id].nom, sub: `≈${NB}${f.n0(x.masse)}${NB}kg` }))} />
-        <p className="aide-ligne">{s.exemples(s.seg[segId].ex, seg.battKwh)}</p>
-
-        <Choix label={s.champ.etat} value={occasion ? "occasion" : "neuf"} onChange={(x) => setOccasion(x === "occasion")}
-          options={[{ v: "neuf", label: s.neuve }, { v: "occasion", label: s.occasion }]} />
-
-        {occasion && (
-          <div className="groupe">
-            <Curseur id="age" label={s.champ.age} aide={s.aide.age} value={age} min={0} max={15} step={1}
-              onChange={setAge} format={f.ans} />
-            <Curseur id="odo" label={s.champ.odo} aide={s.aide.odo} value={odo} min={0} max={160000} step={5000}
-              onChange={setOdo} format={f.km} />
-            {odo > odoMax && <p className="note">{s.odoBorne(f.km(fen.odoEff))}</p>}
-          </div>
-        )}
-
-        <Curseur id="kmanC" label={s.champ.km} aide={s.aide.kmComp} value={kmAn} min={3000} max={40000} step={1000}
-          onChange={setKmAn} format={f.kmAn} />
-        {fen.borneParAge && <p className="note">{s.borneAge(f.km(fen.kmVous))}</p>}
-
-        {avance && (
-          <div className="bloc-avance">
-            <Choix label={s.champ.batterie} aide={s.aide.batterie} value={battId} onChange={setBattId}
-              options={BATTERIES.map((b) => ({ v: b.id, label: s.batt[b.id], sub: `${b.ef}${NB}kgCO₂e/kWh` }))} />
-
-            <Choix label={s.champ.destin} aide={s.aide.destin} value={revente ? "r" : "g"} onChange={(x) => setRevente(x === "r")}
-              options={[{ v: "r", label: s.champ.revendue }, { v: "g", label: s.champ.gardee }]} />
-            {revente && (
-              <>
-                <Curseur id="det" label={s.champ.detention} value={detention} min={2} max={15} step={1}
-                  onChange={setDetention} format={f.ans} />
-                <p className="note">{s.partRevente({ pc: f.pc(fen.ratioFab), a: f.age(fen.ageEff), b: f.age(fen.ageFinVous), km: f.km(fen.kmRepreneur) })}</p>
-              </>
-            )}
-
-            <Case checked={decarb} onChange={setDecarb}
-              detail={s.decarbDetail({ pays: s.pays[pays.id], taux: f.pc(pays.declin), g: f.gkwh(gridEff), duree: f.ans(anneesDet) })}>
-              {s.champ.decarb}
-            </Case>
-            <Case checked={hybrides} onChange={setHybrides}>{s.champ.hybrides}</Case>
-            {hybrides && (
-              <Choix label={s.champ.phev} aide={s.aide.phev} value={phevShare} onChange={setPhevShare}
-                options={[0.15, 0.5, 0.8].map((x) => ({ v: x, label: f.pc(x) }))} />
-            )}
-          </div>
-        )}
-      </section>
-
       <section className="verdict sombre resume" aria-live="polite">
         <p className="resume-chiffre" style={{ "--c": `var(--m-${best.motorId})` }}>{f.n0(best.perKm)}<span>gCO₂e/km</span></p>
         <p className="verdict-texte">
@@ -502,13 +508,41 @@ function Comparateur({ shared }) {
         <h2>{s.barsTitre}</h2>
         <p className="sous-titre">{s.barsSous(f.km(fen.kmVous))}</p>
         <Barres lignes={resultats.map((r) => ({
-          key: r.motorId, r, echelle: 100 / maxT,
+          key: r.motorId, r, echelle: 100 / worst.totalT,
           nom: <><span className="pastille" />{s.motor[r.motorId].nom}</>,
         }))} />
         <div className="legende">
           <span><span className="pastille pastille-fab" />{s.legFab}</span>
           <span><span className="pastille" />{s.legUse(f.gkwh(gridEff), decarb)}</span>
         </div>
+        {!occasion && <p className="aide-ligne">{s.noteConvention[conv]}</p>}
+
+        <details className="replie reglages">
+          <summary>{s.avance}</summary>
+          <Choix label={s.champ.batterie} aide={s.aide.batterie} value={battId} onChange={setBattId}
+            options={BATTERIES.map((b) => ({ v: b.id, label: s.batt[b.id], sub: `${b.ef}${NB}kgCO₂e/kWh` }))} />
+          <Choix label={s.champConvention} aide={s.aideConvention} value={conv} onChange={setConv}
+            options={[{ v: "marginale", label: s.convOptions.marginale }, { v: "partagee", label: s.convOptions.partagee }]} />
+          <Choix label={s.champ.destin} aide={s.aide.destin} value={revente ? "r" : "g"} onChange={(x) => setRevente(x === "r")}
+            options={[{ v: "r", label: s.champ.revendue }, { v: "g", label: s.champ.gardee }]} />
+          {revente && (
+            <>
+              <Curseur id="det" label={s.champ.detention} value={detention} min={2} max={15} step={1}
+                onChange={setDetention} format={f.ans} />
+              <p className="note">{s.partRevente({ pc: f.pc(fen.ratioFab), a: f.age(fen.ageEff), b: f.age(fen.ageFinVous), km: f.km(fen.kmRepreneur) })}</p>
+            </>
+          )}
+          {fen.borneParAge && <p className="note">{s.borneAge(f.km(fen.kmVous))}</p>}
+          <Case checked={decarb} onChange={setDecarb}
+            detail={s.decarbDetail({ pays: s.pays[pays.id], taux: f.pc(pays.declin), g: f.gkwh(gridEff), duree: f.ans(anneesDet) })}>
+            {s.champ.decarb}
+          </Case>
+          <Case checked={hybrides} onChange={setHybrides}>{s.champ.hybrides}</Case>
+          {hybrides && (
+            <Choix label={s.champ.phev} aide={s.aide.phev} value={phevShare} onChange={setPhevShare}
+              options={[0.15, 0.5, 0.8].map((x) => ({ v: x, label: f.pc(x) }))} />
+          )}
+        </details>
       </section>
 
       <section className="carte">
@@ -670,11 +704,11 @@ function ConfigVehicule({ lettre, cfg, setCfg }) {
 function Duel({ shared }) {
   const f = useT();
   const { s } = f;
-  const { pays, kmAn, setKmAn, decarb, batt } = shared;
+  const { pays, kmAn, decarb, batt, conv } = shared;
   const [A, setA] = useState({ segId: "compacte", motorId: "essence", etat: "occasion" });
   const [B, setB] = useState({ segId: "compacte", motorId: "ev", etat: "neuf" });
 
-  const ctx = { pays, kmAn, decarb, efBatt: batt.ef };
+  const ctx = { pays, kmAn, decarb, efBatt: batt.ef, marginal: conv === "marginale" };
   const rA = calcConfig(A, ctx);
   const rB = calcConfig(B, ctx);
   const d = departager(rA.perKm, rB.perKm);
@@ -686,11 +720,9 @@ function Duel({ shared }) {
     <div>
       <section className="carte">
         <h2>{s.duelTitre}</h2>
-        <Curseur id="kmduel" label={s.champ.km} value={kmAn} min={3000} max={40000} step={1000}
-          onChange={setKmAn} format={f.kmAn} />
         <div className="communs">
           <h3>{s.communs}</h3>
-          <ul>{s.communsListe({ km: f.kmAn(kmAn), pays: s.pays[pays.id] }).map((x) => <li key={x}>{x}</li>)}</ul>
+          <ul>{s.communsListe({ km: f.kmAn(kmAn), pays: s.pays[pays.id], conv: s.noteConvention[conv] }).map((x) => <li key={x}>{x}</li>)}</ul>
         </div>
         <div className="duel-grille">
           <ConfigVehicule lettre="A" cfg={A} setCfg={setA} />
@@ -719,6 +751,60 @@ function Duel({ shared }) {
           <span><span className="pastille pastille-fab" />{s.legFab}</span>
           <span><span className="pastille" />{s.legUse(f.gkwh(mixMoyen(pays.g, 8, decarb, pays.declin)), decarb)}</span>
         </div>
+      </section>
+    </div>
+  );
+}
+
+/* ============================================================
+   ONGLET 3 — SE DÉPLACER AUTREMENT (ADEME Impact CO₂)
+   ============================================================ */
+
+// Grammes sous 1 kg, sinon kilogrammes : un trajet en TGV ne s'affiche pas « 0 kg »
+function masseTrajet(f, grammes) {
+  if (grammes < 1000) return `${f.n0(grammes)}${NB}gCO₂e`;
+  return `${f.n1(grammes / 1000)}${NB}kgCO₂e`;
+}
+
+function Modes() {
+  const f = useT();
+  const { s } = f;
+  const [km, setKm] = useState(10);
+  const max = Math.max(...MODES.flatMap((fam) => fam.modes.map(([, g]) => g)));
+
+  return (
+    <div>
+      <section className="carte">
+        <h2>{s.modesTitre}</h2>
+        <p className="lede-carte">{s.modesIntro}</p>
+        <Curseur id="trajet" label={s.trajet} value={km} min={1} max={100} step={1} onChange={setKm} format={f.km} />
+      </section>
+
+      {MODES.map(({ famille, modes }) => (
+        <section key={famille} className="carte">
+          <h3 className="famille">{s.familles[famille]}</h3>
+          <ul className="barres modes">
+            {modes.map(([id, g]) => (
+              <li key={id}>
+                <div className="barre-tete">
+                  <span className="barre-nom">{s.modes[id]}</span>
+                  <span className="barre-val"><strong>{f.n1(g)}{NB}gCO₂e/km</strong> · {s.parTrajet(masseTrajet(f, g * km))}</span>
+                </div>
+                <div className="piste" aria-hidden="true">
+                  <div className="barre" style={{ width: `${(g / max) * 100}%` }} />
+                </div>
+              </li>
+            ))}
+          </ul>
+        </section>
+      ))}
+
+      <section className="carte">
+        <h3>{s.modesLire}</h3>
+        <ul className="notes-modes">{s.modesNotes.map((n) => <li key={n}>{n}</li>)}</ul>
+        <p className="aide-ligne">
+          <a href="https://impactco2.fr/outils/transport" target="_blank" rel="noreferrer">{s.modesSource}</a>
+        </p>
       </section>
     </div>
   );
