@@ -839,14 +839,13 @@ function Modes() {
           <p className="log-legende"><span className="trait-ref" aria-hidden="true" />{s.ordresRefLegende(s.modes[REF_ID], `${f.n1(REF)}${NB}g/km`)}</p>
           <p className="log-legende">{s.ordresLegende}</p>
         </div>
-      </section>
-
-      <section className="carte">
-        <h3>{s.modesLire}</h3>
-        <ul className="notes-modes">{s.modesNotes.map((n) => <li key={n}>{n}</li>)}</ul>
+        {/* Source toujours visible (Licence Ouverte : citer la source) ; précautions repliées */}
         <p className="aide-ligne">
           <a href="https://impactco2.fr/outils/transport" target="_blank" rel="noreferrer">{s.modesSource}</a>
         </p>
+        <Repli className="replie precautions" titre={s.modesLire}>
+          <ul className="notes-modes">{s.modesNotes.map((n) => <li key={n}>{n}</li>)}</ul>
+        </Repli>
       </section>
     </div>
   );
