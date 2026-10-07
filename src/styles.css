@@ -1156,14 +1156,118 @@ input[type="range"] {
   max-width: 62ch;
   margin: var(--s2) 0 0;
 }
-.famille {
-  font: 600 var(--fs-md) / 1.2 var(--f-display);
+/* Graphique des ordres de grandeur : échelle log, une ligne par mode, en-tête = même grille */
+.log {
+  --t1: 28.75%; /* positions log de 1, 10, 100 g/km sur 0,1 → 300 */
+  --t10: 57.5%;
+  --t100: 86.25%;
+  margin-top: var(--s4);
+  font-size: var(--fs-sm);
 }
-.modes {
-  --c: var(--accent);
+.log-ligne {
+  display: grid;
+  grid-template-columns: 20px minmax(7rem, 12rem) 1fr 7.5rem;
+  grid-template-areas: "ico nom piste val";
+  align-items: center;
+  column-gap: var(--s3);
+  min-height: 36px;
 }
-.modes .barre {
-  min-width: 2px;
+.log-lignes {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+.log-lignes .log-ligne {
+  border-top: 1px solid var(--line);
+}
+.log-lignes .log-ligne:hover {
+  background: var(--surface-2);
+}
+.icone { grid-area: ico; }
+.log-nom { grid-area: nom; }
+.log-axe,
+.log-piste {
+  grid-area: piste;
+  position: relative;
+  align-self: stretch;
+}
+.log-val {
+  grid-area: val;
+  color: var(--ink-2);
+  text-align: right;
+  white-space: nowrap;
+}
+.log-val strong {
+  color: var(--ink);
+}
+.log-entete {
+  min-height: 2.8em;
+  font-size: var(--fs-xs);
+  color: var(--ink-2);
+}
+.log-entete .log-val {
+  align-self: end;
+}
+.log-axe span {
+  position: absolute;
+  bottom: 0;
+  transform: translateX(-50%);
+}
+.log-axe .log-ref {
+  left: var(--ref);
+  bottom: 1.4em;
+  white-space: nowrap;
+  transform: translateX(-100%);
+  padding-right: var(--s1);
+  font-weight: 600;
+}
+.icone {
+  width: 20px;
+  height: 20px;
+  fill: none;
+  stroke: var(--ink-2);
+  stroke-width: 1.75;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+.icone .eclair {
+  fill: var(--accent);
+  stroke: var(--surface);
+  stroke-width: 3;
+  paint-order: stroke;
+}
+.log-piste {
+  min-height: 36px;
+  /* graduations 1, 10, 100 et ligne de référence (voiture thermique seul·e) */
+  background:
+    linear-gradient(var(--line), var(--line)) var(--t1) 0 / 1px 100% no-repeat,
+    linear-gradient(var(--line), var(--line)) var(--t10) 0 / 1px 100% no-repeat,
+    linear-gradient(var(--line), var(--line)) var(--t100) 0 / 1px 100% no-repeat,
+    repeating-linear-gradient(var(--ink-2) 0 3px, transparent 3px 6px) var(--ref) 0 / 1px 100% no-repeat;
+}
+.log-point {
+  position: absolute;
+  top: 50%;
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  background: var(--accent);
+  box-shadow: 0 0 0 2px var(--surface);
+  transform: translate(-50%, -50%);
+}
+@media (max-width: 640px) {
+  .log-ligne {
+    grid-template-columns: 20px 1fr auto;
+    grid-template-areas: "ico nom val" ". piste piste";
+    padding-block: var(--s1);
+  }
+  .log-entete {
+    grid-template-areas: ". val val" ". piste piste";
+  }
+  .log-entete .log-axe {
+    min-height: 2.8em;
+  }
+  .log-piste { min-height: 20px; }
 }
 .notes-modes {
   margin: var(--s3) 0 0;
