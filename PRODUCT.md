@@ -27,10 +27,11 @@ Single page, three tabs (v7):
 
 ## Capabilities and Constraints
 
-- **Ecodesign is a product requirement:** the lowest feasible footprint for the app itself. EcoIndex is measured on every UI change (ADR 0003); currently **A 80**: one self-contained HTML file of 52 kB, 1 request, 90 elements, no third party (ADR 0004). An in-app « Écoconception de ce site » section (footer link) states the measured figures and limits; update it after each measurement.
+- **Ecodesign is a product requirement:** the lowest feasible footprint for the app itself. EcoIndex is measured on every UI change (ADR 0003); currently **A 80**: one self-contained HTML file of 55 kB, 1 request, 90 elements, no third party (ADR 0004). An in-app « Écoconception de ce site » section (footer link) states the measured figures and limits; update it after each measurement.
 - Bilingual FR / EN. Language follows the browser and is remembered locally.
 - 14 grids, 5 segments, 5 powertrains, 4 battery footprints. The model lives in `src/model.js`, has no UI text, and is covered by `npm test`.
 - Results are orders of magnitude with about ±20 % uncertainty. The verdict calls a tie under a 10 % gap (kept deliberately, because both options share most of the uncertainty).
+- **Budget (second reading of the verdict):** net cost over the compared period (purchase, resale, energy, maintenance, remaining value), default prices per country dated and editable, H14. Insurance, financing and incentives excluded (links to official pages only).
 - One visible convention: a new car carries 100 % of its manufacturing everywhere by default (H3). "Shared between owners" is an advanced option.
 - Open decision: brand and publication venue are **undecided**.
 

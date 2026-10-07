@@ -4,7 +4,7 @@
 const N = " "; // espace insécable (typographie française)
 
 // Références [n] de chaque hypothèse H1–H13 (communes aux deux langues)
-export const HYP_REFS = [[1, 8, 14], [10], [11], [3, 8], [2, 4, 5, 6, 9], [4, 13], [6], [7, 8], [8, 12], [8, 16], [15, 16], [8], [8, 14]];
+export const HYP_REFS = [[1, 8, 14], [10], [11], [3, 8], [2, 4, 5, 6, 9], [4, 13], [6], [7, 8], [8, 12], [8, 16], [15, 16], [8], [8, 14], [18, 19, 20, 21]];
 
 const fr = {
   locale: "fr-BE",
@@ -184,12 +184,29 @@ const fr = {
   ],
   modesSource: "Source : ADEME, Impact CO₂ (impactco2.fr), données consultées le 07/10/2026, Licence Ouverte Etalab.",
 
+  // Budget
+  budgetTitre: `Et côté budget${N}?`,
+  budgetMoins: (x, d) => <>Sur {d}, passer à l'électrique vous coûterait environ <strong>{x} de moins</strong> que garder votre voiture.</>,
+  budgetPlus: (x, d) => <>Sur {d}, passer à l'électrique vous coûterait environ <strong>{x} de plus</strong> que garder votre voiture.</>,
+  budgetProche: (d) => `Sur ${d}, les deux options coûtent à peu près la même chose (moins de 10 % d'écart).`,
+  budgetGarder: "Garder votre voiture",
+  budgetRemplacer: (etat) => `Électrique ${etat}`,
+  budgetUsageGain: (x) => `En énergie et entretien seuls, l'électrique vous ferait économiser environ ${x} par an.`,
+  budgetUsagePerte: (x) => `En énergie et entretien seuls, l'électrique vous coûterait environ ${x} de plus par an.`,
+  budgetHyp: "Hypothèses de prix (modifiables)",
+  budgetPrixCarb: (c) => `Prix du carburant ${c.toLowerCase()} (€/L)`,
+  budgetPrixElec: "Prix de l'électricité à domicile (€/kWh)",
+  budgetPrixVE: (cat) => `Prix d'une électrique ${cat.toLowerCase()} neuve (€)`,
+  budgetValeurAct: "Valeur de revente de votre voiture actuelle (€)",
+  budgetNote: "Coût net sur la période : achat, revente de votre voiture, énergie et entretien (0,05 €/km thermique, 0,04 €/km électrique), moins la valeur restante des voitures à la fin. Une électrique perd environ 20 % de sa valeur par an, une thermique 15 %. Prix par défaut : carburant au 05/10/2026 (Bulletin pétrolier de l'UE), électricité 2025 (Eurostat), prix catalogue indicatifs. Non comptés : assurance, financement, aides à l'achat et recharge publique (souvent 2 fois plus chère qu'à domicile).",
+  budgetAides: "Aides à l'achat, à vérifier sur les sites officiels :",
+
   // Écoconception (mini page repliable + mention de pied de page)
-  ecoMention: "Site écoconçu : EcoIndex A (80/100), 52 Ko, une seule requête, aucun traceur",
+  ecoMention: "Site écoconçu : EcoIndex A (80/100), 55 Ko, une seule requête, aucun traceur",
   ecoTitre: "Écoconception de ce site",
   ecoIntro: "Un outil qui parle d'empreinte carbone se doit d'être sobre. Ce simulateur a été conçu pour consommer le moins possible, sur votre appareil comme sur le réseau.",
   ecoMesureTitre: "Mesure au premier chargement (07/10/2026)",
-  ecoMesures: [["Score EcoIndex", "80/100, note A"], ["Poids transféré", "52 Ko"], ["Requêtes", "1"], ["Éléments de page", "90"], ["Estimation par visite", "≈ 0,26 gCO₂e et 0,04 cl d'eau"]],
+  ecoMesures: [["Score EcoIndex", "80/100, note A"], ["Poids transféré", "55 Ko"], ["Requêtes", "1"], ["Éléments de page", "90"], ["Estimation par visite", "≈ 0,26 gCO₂e et 0,04 cl d'eau"]],
   ecoChoixTitre: "Ce qui a été fait",
   ecoChoix: [
     "Une seule page autonome : styles, code et police tiennent dans un fichier.",
@@ -220,6 +237,7 @@ const fr = {
     { t: "Hybride rechargeable", d: "Part de roulage électrique réelle : environ 45 à 50 % chez les particuliers, 11 à 15 % en flottes d'entreprise (Plötz et al., ICCT / Fraunhofer ISI, 2022). En moyenne, les émissions réelles des hybrides rechargeables valent 3,5 fois leur valeur d'homologation (Commission européenne, 2024)." },
     { t: "Hors périmètre CO₂", d: "L'entretien (pneus compris) est hors périmètre : l'ICCT l'estime à environ 4 g/km, et le surcroît d'usure des pneus lié au poids de l'électrique en est une fraction (moins de 2 % du total). C'est surtout un enjeu de particules (qualité de l'air) ; le freinage régénératif réduit au contraire les particules de freinage." },
     { t: "Incertitude", d: "Ordres de grandeur pédagogiques, incertitude globale d'environ ±20 %. Sur 200 000 km, ce modèle donne l'électrique à environ −60 % par rapport à l'essence sur la moyenne UE et −70 % en France ou en Scandinavie. L'ICCT (2025) trouve −73 % en moyenne UE, sur 240 000 km et avec un glider électrique plus léger : le modèle est volontairement prudent. Sur les réseaux très carbonés (Pologne, Inde) et à faible kilométrage, l'avantage devient mince." },
+    { t: "Budget", d: "Coût net sur la période comparée, sans actualisation : achat de l'électrique moins revente de votre voiture, énergie (prix domestiques ; recharge à domicile), entretien et pneus (0,05 €/km thermique, 0,04 €/km électrique), moins la valeur restante des voitures à la fin. Décote marchande : 20 %/an pour l'électrique, plus rapide que la thermique (15 %/an) ; choix prudent. Prix par défaut datés et modifiables ; assurance, financement et aides non comptés." },
   ],
   sourcesTitre: "Sources et références",
   sourcesNotes: {
@@ -410,12 +428,29 @@ const en = {
   ],
   modesSource: "Source: ADEME, Impact CO₂ (impactco2.fr), accessed 7 October 2026, Etalab Open Licence.",
 
+  // Budget
+  budgetTitre: "And what about cost?",
+  budgetMoins: (x, d) => <>Over {d}, switching to electric would cost you about <strong>{x} less</strong> than keeping your car.</>,
+  budgetPlus: (x, d) => <>Over {d}, switching to electric would cost you about <strong>{x} more</strong> than keeping your car.</>,
+  budgetProche: (d) => `Over ${d}, both options cost roughly the same (less than 10% apart).`,
+  budgetGarder: "Keep your car",
+  budgetRemplacer: (etat) => `${etat.charAt(0).toUpperCase()}${etat.slice(1)} electric car`,
+  budgetUsageGain: (x) => `On energy and maintenance alone, electric would save you about ${x} a year.`,
+  budgetUsagePerte: (x) => `On energy and maintenance alone, electric would cost you about ${x} more a year.`,
+  budgetHyp: "Price assumptions (editable)",
+  budgetPrixCarb: (c) => `${c} price (€/L)`,
+  budgetPrixElec: "Home electricity price (€/kWh)",
+  budgetPrixVE: (cat) => `Price of a new electric ${cat.toLowerCase()} (€)`,
+  budgetValeurAct: "Resale value of your current car (€)",
+  budgetNote: "Net cost over the period: purchase, sale of your car, energy and maintenance (€0.05/km combustion, €0.04/km electric), minus the cars' remaining value at the end. An electric car loses about 20% of its value a year, a combustion car 15%. Default prices: fuel as of 5 Oct 2026 (EU Weekly Oil Bulletin), electricity 2025 (Eurostat), indicative list prices, converted to euros. Not counted: insurance, financing, purchase incentives and public charging (often twice the home price).",
+  budgetAides: "Purchase incentives, check the official sites:",
+
   // Ecodesign (collapsible mini page + footer mention)
-  ecoMention: "Ecodesigned site: EcoIndex A (80/100), 52 kB, a single request, no trackers",
+  ecoMention: "Ecodesigned site: EcoIndex A (80/100), 55 kB, a single request, no trackers",
   ecoTitre: "How this site is ecodesigned",
   ecoIntro: "A tool about carbon footprints should be frugal itself. This simulator was designed to use as little as possible, on your device and on the network.",
   ecoMesureTitre: "Measured at first load (7 October 2026)",
-  ecoMesures: [["EcoIndex score", "80/100, grade A"], ["Transferred weight", "52 kB"], ["Requests", "1"], ["Page elements", "90"], ["Estimate per visit", "≈ 0.26 gCO₂e and 0.04 cl of water"]],
+  ecoMesures: [["EcoIndex score", "80/100, grade A"], ["Transferred weight", "55 kB"], ["Requests", "1"], ["Page elements", "90"], ["Estimate per visit", "≈ 0.26 gCO₂e and 0.04 cl of water"]],
   ecoChoixTitre: "What was done",
   ecoChoix: [
     "A single self-contained page: styles, code and font fit in one file.",
@@ -446,6 +481,7 @@ const en = {
     { t: "Plug-in hybrid", d: "Real share of electric driving: about 45 to 50% for private owners, 11 to 15% in company fleets (Plötz et al., ICCT / Fraunhofer ISI, 2022). On average, real-world plug-in hybrid emissions are 3.5 times their type-approval value (European Commission, 2024)." },
     { t: "Outside the CO₂ scope", d: "Maintenance (tyres included) is out of scope: the ICCT puts it at about 4 g/km, and the extra tyre wear from the electric car's weight is a fraction of that (under 2% of the total). It is mainly a particulate (air quality) issue; regenerative braking, on the other hand, reduces brake particulates." },
     { t: "Uncertainty", d: "Educational orders of magnitude, overall uncertainty of about ±20%. Over 200,000 km, this model puts electric at about −60% versus petrol on the EU average and −70% in France or Scandinavia. The ICCT (2025) finds −73% for the EU average, over 240,000 km and with a lighter electric glider: the model is deliberately cautious. On very carbon-intensive grids (Poland, India) and at low mileage, the advantage becomes thin." },
+    { t: "Budget", d: "Net cost over the compared period, undiscounted: purchase of the electric car minus sale of your car, energy (household prices; home charging), maintenance and tyres (€0.05/km combustion, €0.04/km electric), minus the cars' remaining value at the end. Market depreciation: 20%/yr for the electric car, faster than combustion (15%/yr); a cautious choice. Default prices dated and editable; insurance, financing and incentives not counted." },
   ],
   sourcesTitre: "Sources and references",
   sourcesNotes: {
@@ -477,6 +513,10 @@ export const SOURCES = [
   <>Plötz, P. et al. (2022). <em>Real-world usage of plug-in hybrid vehicles in Europe</em>. ICCT / Fraunhofer ISI.</>,
   <>European Commission (2024). <em>Report on real-world CO₂ emissions of cars and vans based on on-board fuel consumption monitoring data</em>, COM(2024) 122.</>,
   <>ADEME (2026). <em>Impact CO₂ — comparateur des modes de transport</em>. impactco2.fr, API v1, consulté le 07/10/2026. Licence Ouverte Etalab.</>,
+  <>European Commission (2026). <em>Weekly Oil Bulletin</em>, prices of 5 October 2026.</>,
+  <>Eurostat (2026). <em>Electricity prices for household consumers</em> (nrg_pc_204), 2025-S2, band DC.</>,
+  <>ICCT (2023). <em>Total cost of ownership of passenger cars in Germany</em> (maintenance and tyres per km).</>,
+  <>Berylls Strategy Advisors / Autovista24 (2023). <em>Residual values of battery-electric versus petrol cars after three years</em>.</>,
 ];
 
 export const STR = { fr, en };
