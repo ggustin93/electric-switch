@@ -1332,8 +1332,11 @@ input[type="range"] {
   }
   .log-piste { min-height: 20px; }
 }
+.precautions {
+  margin-top: var(--s2);
+}
 .notes-modes {
-  margin: var(--s3) 0 0;
+  margin: var(--s2) 0 0;
   padding-left: var(--s5);
   display: grid;
   gap: var(--s2);

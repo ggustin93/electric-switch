@@ -228,6 +228,7 @@ const fr = {
     6: "Carburants routiers (E10 2,69 ; B7 3,10 kgCO₂e/L) ; électricité française, mix moyen en consommation (51,9 g en 2024).",
     8: "Électrique −73 % par rapport à l'essence (63 contre 235 gCO₂e/km, moyenne UE).",
     13: "Trajectoires d'intensité carbone des réseaux par pays.",
+    17: "Données de l'onglet « Se déplacer autrement », fabrication des véhicules comprise.",
   },
   footer: (lien) => <>Simulateur pédagogique : ordres de grandeur, incertitude d'environ ±20 %. Méthode inspirée de {lien("Carbone 4")} ; données ADEME, ICCT, Ember, Electricity Maps. Version 7, octobre 2026.</>,
 };
@@ -454,6 +455,7 @@ const en = {
     6: "Road fuels (E10 2.69; B7 3.10 kgCO₂e/L); French electricity, average consumption mix (51.9 g in 2024).",
     8: "Electric −73% versus petrol (63 versus 235 gCO₂e/km, EU average).",
     13: "Country grid carbon-intensity trajectories.",
+    17: "Data for the “Other ways to get around” tab, vehicle manufacturing included.",
   },
   footer: (lien) => <>Educational simulator: orders of magnitude, uncertainty of about ±20%. Method inspired by {lien("Carbone 4")}; data from ADEME, ICCT, Ember, Electricity Maps. Version 7, October 2026.</>,
 };
@@ -476,6 +478,7 @@ export const SOURCES = [
   <>Bieker, G. (2021). <em>A global comparison of the life-cycle greenhouse gas emissions of combustion engine and electric passenger cars</em>. ICCT.</>,
   <>Plötz, P. et al. (2022). <em>Real-world usage of plug-in hybrid vehicles in Europe</em>. ICCT / Fraunhofer ISI.</>,
   <>European Commission (2024). <em>Report on real-world CO₂ emissions of cars and vans based on on-board fuel consumption monitoring data</em>, COM(2024) 122.</>,
+  <>ADEME (2026). <em>Impact CO₂ — comparateur des modes de transport</em>. impactco2.fr, API v1, consulté le 07/10/2026. Licence Ouverte Etalab.</>,
 ];
 
 export const STR = { fr, en };
