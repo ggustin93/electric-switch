@@ -1175,7 +1175,7 @@ input[type="range"] {
 }
 .log-ligne {
   display: grid;
-  grid-template-columns: 20px minmax(7rem, 12rem) 1fr 7.5rem;
+  grid-template-columns: 20px minmax(7rem, 12rem) 1fr 4.5rem;
   grid-template-areas: "ico nom piste val";
   align-items: center;
   column-gap: var(--s3);

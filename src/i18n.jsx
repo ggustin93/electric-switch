@@ -162,7 +162,6 @@ const fr = {
   // v7 — se déplacer autrement (ADEME Impact CO₂)
   modesTitre: "Se déplacer autrement",
   modesIntro: "La voiture n'est pas la seule option. Voici l'empreinte carbone par personne et par kilomètre des principaux modes de transport, fabrication des véhicules comprise.",
-  trajet: "Pour un trajet de",
   modes: {
     marche: "Marche", velo: "Vélo", vae: "Vélo électrique", trottinette: "Trottinette électrique",
     tgv: "TGV", tram: "Tram", metro: "Métro", intercites: "Train Intercités", rer: "RER / train de banlieue", busElec: "Bus électrique", ter: "Train régional (TER)", autocar: "Autocar", busThermique: "Bus thermique",
@@ -170,13 +169,11 @@ const fr = {
     scooterElec: "Scooter électrique", scooter: "Scooter thermique", moto: "Moto (plus de 250 cm³)",
     avionCO2: "Avion court-courrier, CO₂ seul", avion: "Avion court-courrier, effets hors CO₂ compris",
   },
-  ordresTitre: "Les ordres de grandeur",
   ordresSous: "gCO₂e par personne et par km, échelle logarithmique : chaque graduation vaut 10 fois la précédente.",
   comparerA: "Comparer à",
   ordresRef: (nom) => `Référence : ${nom}`,
   ordresRefLegende: (nom, g) => `Ligne pointillée : la référence choisie, ${nom} (${g}). À sa gauche, ce qui émet moins ; à sa droite, ce qui émet plus.`,
   rapport: { moins: (x) => `${x} fois moins`, plus: (x) => `${x} fois plus`, autant: "autant", ref: "référence", zero: "aucune émission" },
-  ordresColonne: (km) => `g/km · pour ${km}`,
   ordresLegende: "La couleur suit l'échelle de l'axe : chaque mode prend la teinte de sa position, de la bande dégradée sous les graduations.",
   ordresResume: (ref) => `Par rapport à « ${ref} » :`,
   modesLire: "À lire avant de comparer",
@@ -392,7 +389,6 @@ const en = {
   // v7 — other ways to get around (ADEME Impact CO₂)
   modesTitre: "Other ways to get around",
   modesIntro: "The car is not the only option. Here is the carbon footprint per person and per kilometre of the main modes of transport, vehicle manufacturing included.",
-  trajet: "For a trip of",
   modes: {
     marche: "Walking", velo: "Bike", vae: "E-bike", trottinette: "E-scooter (stand-up)",
     tgv: "High-speed train (TGV)", tram: "Tram", metro: "Metro", intercites: "Intercity train", rer: "Suburban train (RER)", busElec: "Electric bus", ter: "Regional train (TER)", autocar: "Coach", busThermique: "Diesel bus",
@@ -400,13 +396,11 @@ const en = {
     scooterElec: "Electric moped", scooter: "Petrol moped", moto: "Motorbike (over 250 cc)",
     avionCO2: "Short-haul plane, CO₂ only", avion: "Short-haul plane, incl. non-CO₂ effects",
   },
-  ordresTitre: "Orders of magnitude",
   ordresSous: "gCO₂e per person per km, logarithmic scale: each gridline is 10 times the previous one.",
   comparerA: "Compare with",
   ordresRef: (nom) => `Reference: ${nom}`,
   ordresRefLegende: (nom, g) => `Dashed line: the chosen reference, ${nom} (${g}). To its left, what emits less; to its right, what emits more.`,
   rapport: { moins: (x) => `${x} times less`, plus: (x) => `${x} times more`, autant: "about the same", ref: "reference", zero: "no emissions" },
-  ordresColonne: (km) => `g/km · for ${km}`,
   ordresLegende: "Colour follows the axis scale: each mode takes the shade of its position on the gradient strip under the gridline labels.",
   ordresResume: (ref) => `Compared with “${ref}”:`,
   modesLire: "Read before comparing",

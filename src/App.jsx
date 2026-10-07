@@ -774,12 +774,6 @@ function Duel({ shared }) {
    ONGLET 3 — SE DÉPLACER AUTREMENT (ADEME Impact CO₂)
    ============================================================ */
 
-// Grammes sous 1 kg, sinon kilogrammes : un trajet en TGV ne s'affiche pas « 0 kg »
-function masseTrajet(f, grammes) {
-  if (grammes < 1000) return `${f.n0(grammes)}${NB}g`;
-  return `${f.n1(grammes / 1000)}${NB}kg`;
-}
-
 // Échelle logarithmique 0,1 → 300 g/km : chaque ordre de grandeur occupe la même largeur
 const LOG_MIN = Math.log10(0.1);
 const LOG_MAX = Math.log10(300);
@@ -807,7 +801,6 @@ function rapport(s, f, g, ref) {
 function Modes() {
   const f = useT();
   const { s } = f;
-  const [km, setKm] = useState(10);
   const [refId, setRefId] = useState("voitureThermique");
   const ref = VALEUR_MODE[refId];
   const posRef = posLog(ref);
@@ -818,11 +811,6 @@ function Modes() {
       <section className="carte">
         <h2>{s.modesTitre}</h2>
         <p className="lede-carte">{s.modesIntro}</p>
-        <Curseur id="trajet" label={s.trajet} value={km} min={1} max={100} step={1} onChange={setKm} format={f.km} />
-      </section>
-
-      <section className="carte">
-        <h2>{s.ordresTitre}</h2>
         <p className="sous-titre">{s.ordresSous}</p>
         <Choix label={s.comparerA} value={refId} onChange={setRefId}
           options={REFERENCES.map((id) => ({ v: id, label: s.modes[id] }))} />
@@ -837,7 +825,7 @@ function Modes() {
               {[1, 10, 100].map((t) => <span key={t} style={{ left: `${posLog(t)}%` }}>{f.n0(t)}</span>)}
               <span className={posRef < 50 ? "log-ref log-ref-gauche" : "log-ref"}>{s.ordresRef(s.modes[refId])}</span>
             </span>
-            <span className="log-val">{s.ordresColonne(f.km(km))}</span>
+            <span className="log-val">gCO₂e/km</span>
           </div>
           <ol className="log-lignes">
             {TOUS_MODES.map(([id, g]) => (
@@ -848,7 +836,7 @@ function Modes() {
                   <span className="log-rapport">{id === refId ? s.rapport.ref : rapport(s, f, g, ref)}</span>
                 </span>
                 <span className="log-piste" aria-hidden="true"><span className="log-point" style={{ left: `${posLog(g)}%`, ...teinte(posLog(g)) }} /></span>
-                <span className="log-val"><strong>{f.n1(g)}</strong> · {masseTrajet(f, g * km)}</span>
+                <span className="log-val"><strong>{f.n1(g)}</strong></span>
               </li>
             ))}
           </ol>
