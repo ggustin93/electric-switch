@@ -199,6 +199,7 @@ const fr = {
   },
   budgetEcartTotal: (etat) => `Écart pour une électrique ${etat}`,
   budgetVosPrix: "Vos prix (modifiables)",
+  budgetDefautsBE: (pays) => `${pays} : seuls les prix de l'énergie sont propres à votre pays. Prix de l'électrique, borne, assurance et taxes, perte de valeur et entretien reprennent des valeurs belges : ajustez-les ci-dessous. Montants en euros.`,
   budgetMethodeTitre: "Comment on calcule",
   budgetMethode: [
     "Écart sur la période, sans actualisation : perte de valeur de l'électrique (achat et borne, moins sa valeur à la fin), moins la perte de valeur évitée sur votre voiture, plus le surcoût d'assurance net des taxes, moins les économies d'énergie et d'entretien.",
@@ -228,11 +229,11 @@ const fr = {
   budgetAidesBE: "Belgique : pas de prime à l'achat pour les particuliers en 2026 (taxes régionales réduites).",
 
   // Écoconception (mini page repliable + mention de pied de page)
-  ecoMention: "Site écoconçu : EcoIndex A (80/100), 57 Ko, une seule requête, aucun traceur",
+  ecoMention: "Site écoconçu : EcoIndex A (80/100), 59 Ko, une seule requête, aucun traceur",
   ecoTitre: "Écoconception de ce site",
   ecoIntro: "Un outil qui parle d'empreinte carbone se doit d'être sobre. Ce simulateur a été conçu pour consommer le moins possible, sur votre appareil comme sur le réseau.",
   ecoMesureTitre: "Mesure au premier chargement (07/10/2026)",
-  ecoMesures: [["Score EcoIndex", "80/100, note A"], ["Poids transféré", "57 Ko"], ["Requêtes", "1"], ["Éléments de page", "90"], ["Estimation par visite", "≈ 0,26 gCO₂e et 0,04 cl d'eau"]],
+  ecoMesures: [["Score EcoIndex", "80/100, note A"], ["Poids transféré", "59 Ko"], ["Requêtes", "1"], ["Éléments de page", "90"], ["Estimation par visite", "≈ 0,26 gCO₂e et 0,04 cl d'eau"]],
   ecoChoixTitre: "Ce qui a été fait",
   ecoChoix: [
     "Une seule page autonome : styles, code et police tiennent dans un fichier.",
@@ -245,7 +246,7 @@ const fr = {
     "Thème sombre selon votre système, animations réduites si vous le demandez.",
   ],
   ecoLimitesTitre: "Limites",
-  ecoLimites: "L'EcoIndex estime l'impact du premier chargement à partir de trois mesures (éléments, requêtes, poids) ; ce n'est ni une mesure d'énergie ni une certification. L'audit a été mené avec Green Claude (Institut du Numérique Responsable), un outil d'autodiagnostic fondé sur le RGESN 2024, qui ne vaut pas déclaration de conformité. L'hébergement n'est pas encore choisi : il devra privilégier un hébergeur transparent sur son énergie.",
+  ecoLimites: "L'EcoIndex estime l'impact du premier chargement à partir de trois mesures (éléments, requêtes, poids) ; ce n'est ni une mesure d'énergie ni une certification. L'audit a été mené avec Green Claude (Institut du Numérique Responsable), un outil d'autodiagnostic fondé sur le RGESN 2024, qui ne vaut pas déclaration de conformité. Hébergement : Cloudflare Workers, un seul fichier servi compressé (Brotli) depuis le serveur le plus proche ; nous n'avons pas vérifié de façon indépendante les engagements énergétiques de l'hébergeur.",
   ecoRefs: "Références",
 
   hypTitre: (n) => `Hypothèses (H1 à H${n})`,
@@ -469,6 +470,7 @@ const en = {
   },
   budgetEcartTotal: (etat) => `Difference for a ${etat} electric car`,
   budgetVosPrix: "Your prices (editable)",
+  budgetDefautsBE: (pays) => `${pays}: only energy prices are specific to your country. Electric car price, charger, insurance and taxes, value loss and maintenance use Belgian values: adjust them below. Amounts in euros.`,
   budgetMethodeTitre: "How we calculate",
   budgetMethode: [
     "Difference over the period, undiscounted: value lost by the electric car (purchase and charger, minus its value at the end), minus the value loss avoided on your car, plus extra insurance net of taxes, minus energy and maintenance savings.",
@@ -498,11 +500,11 @@ const en = {
   budgetAidesBE: "Belgium: no purchase premium for private buyers in 2026 (reduced regional taxes).",
 
   // Ecodesign (collapsible mini page + footer mention)
-  ecoMention: "Ecodesigned site: EcoIndex A (80/100), 57 kB, a single request, no trackers",
+  ecoMention: "Ecodesigned site: EcoIndex A (80/100), 59 kB, a single request, no trackers",
   ecoTitre: "How this site is ecodesigned",
   ecoIntro: "A tool about carbon footprints should be frugal itself. This simulator was designed to use as little as possible, on your device and on the network.",
   ecoMesureTitre: "Measured at first load (7 October 2026)",
-  ecoMesures: [["EcoIndex score", "80/100, grade A"], ["Transferred weight", "57 kB"], ["Requests", "1"], ["Page elements", "90"], ["Estimate per visit", "≈ 0.26 gCO₂e and 0.04 cl of water"]],
+  ecoMesures: [["EcoIndex score", "80/100, grade A"], ["Transferred weight", "59 kB"], ["Requests", "1"], ["Page elements", "90"], ["Estimate per visit", "≈ 0.26 gCO₂e and 0.04 cl of water"]],
   ecoChoixTitre: "What was done",
   ecoChoix: [
     "A single self-contained page: styles, code and font fit in one file.",
@@ -515,7 +517,7 @@ const en = {
     "Dark theme follows your system; animations are reduced if you ask for it.",
   ],
   ecoLimitesTitre: "Limits",
-  ecoLimites: "EcoIndex estimates the impact of the first load from three measurements (elements, requests, weight); it is neither an energy measurement nor a certification. The audit used Green Claude (Institut du Numérique Responsable), a self-assessment tool based on the French RGESN 2024 framework, which is not a declaration of conformity. Hosting is not chosen yet: it should favour a host that is transparent about its energy.",
+  ecoLimites: "EcoIndex estimates the impact of the first load from three measurements (elements, requests, weight); it is neither an energy measurement nor a certification. The audit used Green Claude (Institut du Numérique Responsable), a self-assessment tool based on the French RGESN 2024 framework, which is not a declaration of conformity. Hosting: Cloudflare Workers, a single file served compressed (Brotli) from the nearest server; we have not independently verified the host's energy commitments.",
   ecoRefs: "References",
 
   hypTitre: (n) => `Assumptions (A1 to A${n})`,

@@ -7,7 +7,10 @@ npm install
 npm run dev     # http://localhost:5173
 npm test        # model invariants (node:test)
 npm run build
+npm run deploy  # Cloudflare Workers (static assets), see wrangler.jsonc
 ```
+
+Production: https://electric-switch.guillaume-gustin-9.workers.dev
 
 - `src/model.js` holds the pure LCA model with no UI text. `src/model.test.js` covers it.
 - `src/i18n.jsx` holds every visible string (FR/EN), assumptions H1–H13 and the sources.
