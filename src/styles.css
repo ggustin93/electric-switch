@@ -45,12 +45,11 @@
   --m-essence-d: #f0865a;
   --m-diesel-d: #b3a398;
 
-  /* Ordres de grandeur (gCO2e/km par décade : <1, 1–10, 10–100, >100) — rampe neutre
-     mono-teinte, distincte des couleurs de motorisation ; validée (dataviz --ordinal) */
-  --q1: #7f8c85;
-  --q2: #4f5b55;
-  --q3: #2f3a34;
-  --q4: #1b231f;
+  /* Échelle séquentielle des ordres de grandeur (gCO2e/km, position log) : une teinte violette,
+     libre dans l'appli (aucune motorisation), interpolée en OKLab ; validée (dataviz --ordinal) */
+  --seq-lo: #a99cf2;
+  --seq-mid: #6a55d6;
+  --seq-hi: #2b1d7a;
 
   --fs-xs: 0.8125rem;
   --fs-sm: 0.875rem;
@@ -105,10 +104,9 @@
     --m-phev: #6c9be0;
     --m-essence: #f0865a;
     --m-diesel: #b3a398;
-    --q1: #5f6c65;
-    --q2: #7f8c85;
-    --q3: #a3b0a8;
-    --q4: #e8eeea;
+    --seq-lo: #4d3fae;
+    --seq-mid: #8a7cec;
+    --seq-hi: #e2ddff;
   }
 }
 
@@ -1212,7 +1210,7 @@ input[type="range"] {
   color: var(--ink);
 }
 .log-entete {
-  min-height: 2.8em;
+  min-height: 3.4em;
   font-size: var(--fs-xs);
   color: var(--ink-2);
 }
@@ -1226,7 +1224,7 @@ input[type="range"] {
 }
 .log-axe .log-ref {
   left: var(--ref);
-  bottom: 1.4em;
+  bottom: calc(9px + 1.4em);
   white-space: nowrap;
   transform: translateX(-100%);
   padding-right: var(--s1);
@@ -1262,33 +1260,32 @@ input[type="range"] {
   width: 10px;
   height: 10px;
   border-radius: 50%;
-  background: var(--q);
+  /* couleur = position sur l'échelle (même interpolation OKLab que la bande d'axe) */
+  background: color-mix(in oklab, var(--c2) var(--m), var(--c1));
   box-shadow: 0 0 0 2px var(--surface);
   transform: translate(-50%, -50%);
 }
-.q1 { --q: var(--q1); }
-.q2 { --q: var(--q2); }
-.q3 { --q: var(--q3); }
-.q4 { --q: var(--q4); }
+/* Bande dégradée sous les graduations : la légende est l'axe lui-même */
+.log-entete .log-axe::after {
+  content: "";
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  height: 5px;
+  border-radius: var(--r-xs);
+  background: linear-gradient(to right in oklab, var(--seq-lo), var(--seq-mid), var(--seq-hi));
+}
+.log-entete .log-axe span {
+  bottom: 9px;
+}
+.log-entete .log-axe .log-ref {
+  bottom: calc(9px + 1.4em);
+}
 .log-legende {
-  display: flex;
-  flex-wrap: wrap;
-  align-items: center;
-  gap: var(--s1) var(--s3);
   margin: var(--s4) 0 0;
   font-size: var(--fs-sm);
   color: var(--ink-2);
-}
-.log-legende > span {
-  display: inline-flex;
-  align-items: center;
-  gap: var(--s1);
-}
-.log-legende i {
-  width: 10px;
-  height: 10px;
-  border-radius: 50%;
-  background: var(--q);
 }
 @media (max-width: 640px) {
   .log-ligne {
@@ -1300,7 +1297,7 @@ input[type="range"] {
     grid-template-areas: ". val val" ". piste piste";
   }
   .log-entete .log-axe {
-    min-height: 2.8em;
+    min-height: 3.4em;
   }
   .log-piste { min-height: 20px; }
 }

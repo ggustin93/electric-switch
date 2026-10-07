@@ -174,7 +174,7 @@ const fr = {
   ordresSous: "gCO₂e par personne et par km, échelle logarithmique : chaque graduation vaut 10 fois la précédente.",
   ordresRef: "voiture thermique seul·e",
   ordresColonne: (km) => `g/km · pour ${km}`,
-  ordresLegende: "Teinte par ordre de grandeur :",
+  ordresLegende: "La couleur suit l'échelle de l'axe : chaque mode prend la teinte de sa position, de la bande dégradée sous les graduations.",
   ordresResume: ({ tgv, bus, velo }) => <>Par rapport à la voiture thermique seul·e : <strong>{tgv} fois moins</strong> en TGV, {bus} fois moins en bus électrique, {velo} fois moins à vélo électrique.</>,
   modesLire: "À lire avant de comparer",
   modesNotes: [
@@ -402,7 +402,7 @@ const en = {
   ordresSous: "gCO₂e per person per km, logarithmic scale: each gridline is 10 times the previous one.",
   ordresRef: "combustion car, alone",
   ordresColonne: (km) => `g/km · for ${km}`,
-  ordresLegende: "Shade by order of magnitude:",
+  ordresLegende: "Colour follows the axis scale: each mode takes the shade of its position on the gradient strip under the gridline labels.",
   ordresResume: ({ tgv, bus, velo }) => <>Compared with driving a combustion car alone: <strong>{tgv} times less</strong> by high-speed train, {bus} times less by electric bus, {velo} times less by e-bike.</>,
   modesLire: "Read before comparing",
   modesNotes: [
