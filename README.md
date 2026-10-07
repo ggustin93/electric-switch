@@ -11,5 +11,5 @@ npm run build
 
 - `src/model.js` holds the pure LCA model with no UI text. `src/model.test.js` covers it.
 - `src/i18n.jsx` holds every visible string (FR/EN), assumptions H1–H13 and the sources.
-- `src/App.jsx` is the UI. `src/styles.css` holds the design tokens (light and dark).
+- `src/App.jsx` is the UI (Preact through `preact/compat`, see ADR 0003). `src/styles.css` holds the design tokens (light and dark).
 - Docs: `PRODUCT.md`, `DESIGN.md` (Impeccable), `CONTEXT.md` (glossary), `docs/adr/`.

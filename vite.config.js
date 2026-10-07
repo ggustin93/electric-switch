@@ -1,4 +1,5 @@
 import { defineConfig } from "vite";
-import react from "@vitejs/plugin-react";
+import preact from "@preact/preset-vite";
 
-export default defineConfig({ plugins: [react()] });
+// Preact (≈ 4 ko) remplace React : `react` et `react-dom` sont aliasés vers preact/compat
+export default defineConfig({ plugins: [preact()] });
