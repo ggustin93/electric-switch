@@ -3,8 +3,7 @@ import { useContext, useEffect, useId, useLayoutEffect, useMemo, useRef, useStat
 import {
   PAYS, SEGMENTS, BATTERIES, MOTORS, MODES, AGE_SUGGESTION, SEUIL_SERRE, KM_AN_MAX_COMPTEUR, byId,
   mixMoyen, calc, fenetre, decider, calcConfig, departager, kmPivot, kmBascule,
-  budget, PRIX_ENERGIE, PRIX_VE_NEUF, ENTRETIEN, VALEUR_ACTUELLE_DEFAUT,
-  WALLBOX_DEFAUT, AUTRES_FRAIS_VE_DEFAUT, DECOTE_VE_FOURCHETTE, PAYS_ACHAT_CALIBRE,
+  budget, PRIX_ENERGIE, ENTRETIEN,
 } from "./model.js";
 import { STR, HYP_REFS, SOURCES } from "./i18n.jsx";
 import { Icone } from "./icones.jsx";
@@ -37,7 +36,6 @@ function formats(lang) {
     s, lang, n0, n1, n1f, pc,
     t: (x) => `${n1(x)}${NB}t`,
     eur: (x) => euro(Math.round(x / 100) * 100 || 0), // arrondi à 100 € (ordres de grandeur), jamais « −0 € »
-    eurK: (x) => euro(Math.round(x / 1000) * 1000 || 0), // titres : arrondi au millier
     tco2: (x) => `${n1(x)}${NB}tCO₂e`,
     km: (x) => `${n0(x)}${NB}km`,
     gkm: (x) => `${n0(x)}${NB}gCO₂e/km`,
@@ -402,8 +400,7 @@ function Decision({ shared, allerExplorer }) {
             </Repli>
           </section>
 
-          <Budget verdict={v.verdict} carb={carb} conso={conso} horizon={v.horizon} tronque={v.tronque} kmAn={kmAn} seg={seg}
-            etatVE={etatVE} ageVE={ageVE} paysId={pays.id} etat={etat} />
+          <Budget carb={carb} conso={conso} kmAn={kmAn} seg={seg} paysId={pays.id} />
 
           <section className="carte">
             <h2>{s.allerPlusLoin}</h2>
@@ -419,14 +416,7 @@ function Decision({ shared, allerExplorer }) {
   );
 }
 
-/* ---------- Budget : seconde lecture du verdict, prix modifiables ---------- */
-// Belgique : pas de prime pour les particuliers en 2026 (dit en texte, pas de lien trompeur)
-const AIDES = [
-  ["FR", "https://www.economie.gouv.fr/particuliers/achat-dun-vehicule-electrique-pouvez-vous-beneficier-de-la-prime-coup-de-pouce-vehicules-particuliers-electriques"],
-  ["UK", "https://www.gov.uk/government/publications/how-to-apply-for-vehicle-eligibility-for-the-electric-car-grant"],
-];
-const r100 = (x) => Math.round(x / 100) * 100 || 0;
-
+/* ---------- Budget à l'usage : énergie + entretien, hors prix d'achat du véhicule ---------- */
 function ChampPrix({ id, label, value, step, onChange }) {
   return (
     <Champ id={id} label={label}>
@@ -436,81 +426,38 @@ function ChampPrix({ id, label, value, step, onChange }) {
   );
 }
 
-function Budget({ verdict, carb, conso, horizon, tronque, kmAn, seg, etatVE, ageVE, paysId, etat }) {
+function Budget({ carb, conso, kmAn, seg, paysId }) {
   const f = useT();
   const { s } = f;
-  const [sur, setSur] = useState({}); // valeurs saisies ; sinon défauts du pays et de la catégorie
+  const [sur, setSur] = useState({}); // prix saisis ; sinon prix par défaut du pays
   const maj = (k) => (x) => setSur((o) => ({ ...o, [k]: x }));
-  const prix = PRIX_ENERGIE[paysId];
-  const p = {
-    carb: sur.carb ?? prix[carb], elec: sur.elec ?? prix.elec,
-    ve: sur.ve ?? PRIX_VE_NEUF[seg.id], act: sur.act ?? VALEUR_ACTUELLE_DEFAUT,
-    wallbox: sur.wallbox ?? WALLBOX_DEFAUT, autres: sur.autres ?? AUTRES_FRAIS_VE_DEFAUT,
-  };
-  const entrees = {
-    carb, conso, horizon, kmAn, seg, etatVE, ageVE, prixNeufVE: p.ve, valeurActuelle: p.act,
-    prix: { [carb]: p.carb, elec: p.elec }, entretien: ENTRETIEN, wallbox: p.wallbox, autresFraisAn: p.autres,
-  };
-  const b = budget(entrees);
-  const d = departager(b.remplacer, b.garder);
-  const duree = f.ans(horizon);
-  // Tous les montants affichés dérivent des mêmes valeurs arrondies à 100 € : ils se recoupent toujours
-  const usageTh = r100(b.usageGarderAn);
-  const usageVE = r100(b.usageVEAn);
-  // Les économies sur la période découlent du chiffre annuel affiché (1 100 €/an × 5 ans = 5 500 €)
-  const postes = Object.entries({ ...b.postes, usage: -(usageTh - usageVE) * horizon }).map(([k, v]) => [k, r100(v)]);
-  const ecartTotal = postes.reduce((x, [, v]) => x + v, 0);
-  // Fourchette selon la revente de l'électrique (décote 15 à 25 %/an, valeur centrale incluse)
-  const variantes = [...DECOTE_VE_FOURCHETTE, undefined].map((decoteVE) => budget({ ...entrees, decoteVE }).remplacer - b.garder);
-  const [lo, hi] = [Math.min(...variantes), Math.max(...variantes)].map(f.eurK);
-  // Alternative : électrique d'occasion de 3 ans (si l'on envisageait du neuf)
-  const occ = etatVE === "neuf" ? budget({ ...entrees, etatVE: "occasion", ageVE: 3 }) : null;
-  // « environ 6 000 € de plus », « environ 3 000 € de moins » ou « à peu près autant »
-  const ecart = (x) => {
-    if (Math.abs(x) < 500) return s.budgetEcartPareil;
-    return x > 0 ? s.budgetEcartPlus(f.eur(x)) : s.budgetEcartMoins(f.eur(-x));
-  };
-  const signe = (x) => (x > 0 ? `+${f.eur(x)}` : x < 0 ? `−${f.eur(-x)}` : f.eur(0));
+  const prixPays = PRIX_ENERGIE[paysId];
+  const p = { carb: sur.carb ?? prixPays[carb], elec: sur.elec ?? prixPays.elec };
+  const b = budget({ carb, conso, kmAn, seg, prix: { [carb]: p.carb, elec: p.elec }, entretien: ENTRETIEN });
+  // Montants arrondis à 100 € ; l'économie affichée est la différence des deux montants affichés
+  const th = Math.round(b.usageGarderAn / 100) * 100;
+  const ve = Math.round(b.usageVEAn / 100) * 100;
 
   return (
     <section className="carte">
       <h2>{s.budgetTitre}</h2>
-      {/* Visible : le coût d'usage (énergie + entretien), l'information utile et la plus sûre.
-          Le prix d'achat, attendu et incertain (revente), est replié. */}
-      <p className="bascule">{s.budgetUsageTitre(usage(s, f, usageTh - usageVE), f.eur(usageTh), f.eur(usageVE))}</p>
-      <p className="aide-ligne">{s.budget100(f.n1f(b.energie100Garder), f.n1f(b.energie100VE))}</p>
-      {!PAYS_ACHAT_CALIBRE.has(paysId) && <p className="aide-ligne">{s.budgetAchatHorsZone()}</p>}
-      {PAYS_ACHAT_CALIBRE.has(paysId) && <Repli className="replie" titre={s.budgetAchatTitre}>
-        <p className="note-petite">
-          {d === "serre" ? s.budgetProche(duree) : s.budgetVerdict(ecart(ecartTotal), duree, lo === hi ? null : s.budgetPlage(lo, hi))}
-        </p>
-        <dl className="budget-postes">
-          {postes.map(([k, v]) => <div key={k}><dt>{s.budgetPostes[k]}</dt><dd>{signe(v)}</dd></div>)}
-          <div className="budget-total"><dt>{s.budgetEcartTotal(etat)}</dt><dd>{signe(ecartTotal)}</dd></div>
-        </dl>
-        {occ && verdict !== "garder" && <p className="note-petite">{s.budgetOccasion(ecart(r100(occ.remplacer - occ.garder)))}</p>}
-        {horizon > 8 && <p className="note-petite">{s.budgetLongue}</p>}
-        {tronque && <p className="note-petite">{s.tronque(duree)}</p>}
-        <p className="note-petite">{s.budgetExclus}</p>
-        {paysId !== "BE" && <p className="note-petite budget-pays">{s.budgetDefautsBE(s.pays[paysId])}</p>}
-        <h3 className="budget-sous">{s.budgetVosPrix}</h3>
+      <p className="bascule">{s.budgetUsageTitre(usage(s, f, th - ve))}</p>
+      <dl className="budget-postes">
+        <div><dt>{s.budgetVotreVoiture}</dt><dd>{s.budgetLigne(f.eur(th), f.n1f(b.energie100Garder))}</dd></div>
+        <div><dt>{s.budgetElectrique}</dt><dd>{s.budgetLigne(f.eur(ve), f.n1f(b.energie100VE))}</dd></div>
+      </dl>
+      <p className="aide-ligne">{s.budgetPerimetre}</p>
+      {/* L'achat, sans prix propre à un pays : combien d'années d'économies pour amortir un écart de prix */}
+      <p className="budget-amortir">
+        {th - ve >= 50 ? s.budgetAmortir(f.eur(th - ve), f.n0(10000 / (th - ve))) : s.budgetAmortirNon}
+      </p>
+      <Repli className="replie" titre={s.budgetAjuster}>
         <div className="budget-champs">
           <ChampPrix id="p-carb" label={s.budgetPrixCarb(s.motor[carb].nom)} value={p.carb} step="0.01" onChange={maj("carb")} />
           <ChampPrix id="p-elec" label={s.budgetPrixElec} value={p.elec} step="0.01" onChange={maj("elec")} />
-          <ChampPrix id="p-ve" label={s.budgetPrixVE(s.seg[seg.id].nom)} value={p.ve} step="500" onChange={maj("ve")} />
-          <ChampPrix id="p-act" label={s.budgetValeurAct} value={p.act} step="500" onChange={maj("act")} />
-          <ChampPrix id="p-wallbox" label={s.budgetWallbox} value={p.wallbox} step="100" onChange={maj("wallbox")} />
-          <ChampPrix id="p-autres" label={s.budgetAutres} value={p.autres} step="50" onChange={maj("autres")} />
         </div>
-        <Repli className="replie" titre={s.budgetMethodeTitre}>
-          <ul className="notes-modes">{s.budgetMethode.map((l) => <li key={l}>{l}</li>)}</ul>
-        </Repli>
-        <p className="note-petite">
-          {s.budgetAides}{" "}
-          {AIDES.map(([id, u], i) => <span key={u}>{i > 0 && " · "}<a href={u} target="_blank" rel="noreferrer">{s.pays[id]}</a></span>)}
-          {" · "}{s.budgetAidesBE}
-        </p>
-      </Repli>}
+        <p className="note-petite">{s.budgetSources}</p>
+      </Repli>
     </section>
   );
 }

@@ -92,28 +92,13 @@ test("départager : totaux négatifs ou nuls (budget)", () => {
   assert.equal(departager(100, 105), "serre"); // valeurs positives : règle inchangée
 });
 
-test("budget : énergie, revente et valeur résiduelle cohérentes", () => {
-  const base = {
-    carb: "essence", conso: 7, horizon: 5, kmAn: 12000, seg: byId(SEGMENTS, "compacte"), etatVE: "neuf", ageVE: 0,
-    prix: { essence: 1.8, diesel: 1.7, elec: 0.3 }, prixNeufVE: 35000, valeurActuelle: 5000,
-    entretien: { thermique: 0.06, electrique: 0.04 },
-  };
-  const b = budget(base);
-  assert.ok(Math.abs(b.energieGarder - 60000 * 7 * 1.8 / 100) < 1e-6);
-  assert.ok(b.residuelle < b.achat && b.residuelle > 0);
+test("budget à l'usage : énergie et entretien par an, énergie aux 100 km", () => {
+  const b = budget({
+    carb: "essence", conso: 7, kmAn: 12000, seg: byId(SEGMENTS, "compacte"),
+    prix: { essence: 1.8, elec: 0.3 }, entretien: { thermique: 0.07, electrique: 0.04 },
+  });
   assert.ok(Math.abs(b.energie100Garder - 7 * 1.8) < 1e-9);
+  assert.ok(Math.abs(b.usageGarderAn - (12000 * 7 * 1.8 / 100 + 12000 * 0.07)) < 1e-6);
   assert.ok(Math.abs(b.economieUsageAn - (b.usageGarderAn - b.usageVEAn)) < 1e-9);
-  // la décomposition affichée retombe exactement sur l'écart (revue data scientist, bug A)
-  const somme = (x) => Object.values(x.postes).reduce((u, v) => u + v, 0);
-  assert.ok(Math.abs(somme(b) - (b.remplacer - b.garder)) < 1e-6);
-  const occ = budget({ ...base, etatVE: "occasion", ageVE: 3, wallbox: 1500, autresFraisAn: 300, valeurActuelle: 15000 });
-  assert.ok(Math.abs(somme(occ) - (occ.remplacer - occ.garder)) < 1e-6);
-  // plus on roule, plus l'électrique devient avantageux
-  assert.ok(budget({ ...base, kmAn: 30000 }).remplacer - budget({ ...base, kmAn: 30000 }).garder
-    < b.remplacer - b.garder);
-  // borne et frais annuels alourdissent l'électrique ; une décote plus faible l'allège
-  assert.ok(budget({ ...base, wallbox: 1200, autresFraisAn: 300 }).remplacer - b.remplacer === 1200 + 5 * 300);
-  assert.ok(budget({ ...base, decoteVE: 0.15 }).remplacer < b.remplacer);
-  // une occasion coûte moins à l'achat qu'une neuve
-  assert.ok(budget({ ...base, etatVE: "occasion", ageVE: 4 }).achat < b.achat);
+  assert.ok(b.economieUsageAn > 0); // à ces prix, l'électrique coûte moins à l'usage
 });
