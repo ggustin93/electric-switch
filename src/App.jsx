@@ -5,6 +5,7 @@ import {
   mixMoyen, calc, fenetre, decider, calcConfig, departager, kmPivot, kmBascule,
 } from "./model.js";
 import { STR, HYP_REFS, SOURCES } from "./i18n.jsx";
+import { Icone } from "./icones.jsx";
 
 /* ============================================================
    LANGUE ET FORMATS
@@ -771,15 +772,22 @@ function Duel({ shared }) {
 
 // Grammes sous 1 kg, sinon kilogrammes : un trajet en TGV ne s'affiche pas « 0 kg »
 function masseTrajet(f, grammes) {
-  if (grammes < 1000) return `${f.n0(grammes)}${NB}gCO₂e`;
-  return `${f.n1(grammes / 1000)}${NB}kgCO₂e`;
+  if (grammes < 1000) return `${f.n0(grammes)}${NB}g`;
+  return `${f.n1(grammes / 1000)}${NB}kg`;
 }
+
+// Échelle logarithmique 0,1 → 300 g/km : chaque ordre de grandeur occupe la même largeur
+const LOG_MIN = Math.log10(0.1);
+const LOG_MAX = Math.log10(300);
+const posLog = (g) => (g <= 0.1 ? 0 : ((Math.log10(g) - LOG_MIN) / (LOG_MAX - LOG_MIN)) * 100);
+const TOUS_MODES = MODES.flatMap((fam) => fam.modes).sort((a, b) => a[1] - b[1]);
+const REF_VOITURE = TOUS_MODES.find(([id]) => id === "voitureThermique")[1];
 
 function Modes() {
   const f = useT();
   const { s } = f;
   const [km, setKm] = useState(10);
-  const max = Math.max(...MODES.flatMap((fam) => fam.modes.map(([, g]) => g)));
+  const fois = (id) => f.n0(REF_VOITURE / TOUS_MODES.find(([m]) => m === id)[1]);
 
   return (
     <div>
@@ -789,24 +797,31 @@ function Modes() {
         <Curseur id="trajet" label={s.trajet} value={km} min={1} max={100} step={1} onChange={setKm} format={f.km} />
       </section>
 
-      {MODES.map(({ famille, modes }) => (
-        <section key={famille} className="carte">
-          <h3 className="famille">{s.familles[famille]}</h3>
-          <ul className="barres modes">
-            {modes.map(([id, g]) => (
-              <li key={id}>
-                <div className="barre-tete">
-                  <span className="barre-nom">{s.modes[id]}</span>
-                  <span className="barre-val"><strong>{f.n1(g)}{NB}gCO₂e/km</strong> · {s.parTrajet(masseTrajet(f, g * km))}</span>
-                </div>
-                <div className="piste" aria-hidden="true">
-                  <div className="barre" style={{ width: `${(g / max) * 100}%` }} />
-                </div>
+      <section className="carte">
+        <h2>{s.ordresTitre}</h2>
+        <p className="sous-titre">{s.ordresSous}</p>
+        <p className="bascule">{s.ordresResume({ tgv: fois("tgv"), bus: fois("busElec"), velo: fois("vae") })}</p>
+        <div className="log" style={{ "--ref": `${posLog(REF_VOITURE)}%` }}>
+          <div className="log-ligne log-entete" aria-hidden="true">
+            <span className="log-axe">
+              <span style={{ left: "0%" }}>0</span>
+              {[1, 10, 100].map((t) => <span key={t} style={{ left: `${posLog(t)}%` }}>{f.n0(t)}</span>)}
+              <span className="log-ref">{s.ordresRef}</span>
+            </span>
+            <span className="log-val">{s.ordresColonne(f.km(km))}</span>
+          </div>
+          <ol className="log-lignes">
+            {TOUS_MODES.map(([id, g]) => (
+              <li key={id} className="log-ligne">
+                <Icone mode={id} />
+                <span className="log-nom">{s.modes[id]}</span>
+                <span className="log-piste" aria-hidden="true"><span className="log-point" style={{ left: `${posLog(g)}%` }} /></span>
+                <span className="log-val"><strong>{f.n1(g)}</strong> · {masseTrajet(f, g * km)}</span>
               </li>
             ))}
-          </ul>
-        </section>
-      ))}
+          </ol>
+        </div>
+      </section>
 
       <section className="carte">
         <h3>{s.modesLire}</h3>

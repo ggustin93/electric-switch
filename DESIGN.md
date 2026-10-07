@@ -115,6 +115,8 @@ Radius 3 px for bars and swatches, 6 px for controls, 12 px for cards. Pills onl
 - **Sliders:** label and `<output>` on one row, min and max under the track, `aria-valuetext`.
 - **Help:** a 24 px "?" button with a 44 px hit area beside the label (never inside it). It expands a `--surface-2` note, and the control references it via `aria-describedby`.
 - **Verdict:** a dark block tinted per verdict, with the sentence first and two figures after; `aria-live="polite"`.
+- **Icons:** Tabler Icons paths (MIT), one stroke weight (1.75), `--ink-2`, each merged into a single `<path>` (`src/icones.jsx`). A small accent lightning bolt marks the electric variant only where a combustion twin exists (bike, bus, car, moped). Used only where they aid recognition: the transport modes.
+- **Orders-of-magnitude chart:** a log-scale dot plot (0.1 → 300 g/km, decade gridlines), one row per mode sorted ascending, a single accent colour (one series, so no legend), a dashed reference line at « voiture thermique seul·e », and the value plus per-trip mass on every row (it doubles as the table). Built in HTML/CSS (gradients for gridlines), with the axis as a header row of the same grid.
 - **Charts:** stacked bars (hatched manufacturing plus solid use) with a text breakdown. The line chart is drawn at its real width with 12 px text, direct end labels and a static pivot marker labelled in km.
 
 ## Do's and Don'ts
