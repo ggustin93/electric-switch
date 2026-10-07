@@ -25,7 +25,7 @@ Stay on **Vite**. Replace React with **Preact** through `@preact/preset-vite`, w
 - The cost would be a second framework, a rewrite of the entry and i18n routing, and more build tooling, for a gain of about 0.01 gCO₂e per visit in EcoIndex terms.
 - **Revisit Astro** if the site grows content pages (articles, a per-country FAQ, `/fr` and `/en` routes for SEO). It becomes the right tool once content outweighs the interactive tool. Meanwhile, `@preact/preset-vite` offers `prerender` should SEO need static HTML.
 
-## Not done (diminishing returns, ≈ 0.01 g/visit)
+## Not done here (superseded by ADR 0004, which reaches A with a single-page build)
 Grade A (≥ 80) would need ≈ 50 DOM nodes and 2 requests:
 - Inline the CSS (−1 request).
 - Drop the display font (−22 kB, −1 request, but it is part of the visual identity).

@@ -92,7 +92,7 @@ Page `#f2f4f1`, surfaces white, ink `#1b231f`. All secondary text uses `--ink-2`
 
 ## Typography
 
-Ecodesign (ADR 0003): Bricolage Grotesque is self-hosted as one variable file (600–800, Latin subset, 22 kB) and used for h1, h2, verdict titles and headline figures only. Everything else uses the system font (no download) with tabular numerals. No third-party font requests. Fixed rem scale with a ratio of about 1.2, with no fluid type. The h1 steps down to 2.1rem below 560 px. Nothing is set below 13 px, and prose is capped at about 65ch.
+Ecodesign (ADR 0003): Bricolage Grotesque is one variable file (600–800) subset to the app's characters (12 kB) and inlined in the page (ADR 0004) and used for h1, h2, verdict titles and headline figures only. Everything else uses the system font (no download) with tabular numerals. No third-party font requests. Fixed rem scale with a ratio of about 1.2, with no fluid type. The h1 steps down to 2.1rem below 560 px. Nothing is set below 13 px, and prose is capped at about 65ch.
 
 ## Layout
 

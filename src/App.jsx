@@ -1,4 +1,5 @@
-import { createContext, useContext, useEffect, useId, useLayoutEffect, useMemo, useRef, useState } from "react";
+import { createContext } from "preact";
+import { useContext, useEffect, useId, useLayoutEffect, useMemo, useRef, useState } from "preact/hooks";
 import {
   PAYS, SEGMENTS, BATTERIES, MOTORS, MODES, AGE_SUGGESTION, KM_AN_MAX_COMPTEUR, byId,
   mixMoyen, calc, fenetre, decider, calcConfig, departager, kmPivot, kmBascule,
@@ -84,7 +85,7 @@ function Curseur({ id, label, aide, value, min, max, step, onChange, format }) {
     <Champ id={id} label={label} aide={aide} valeur={format(value)}>
       <input id={id} type="range" min={min} max={max} step={step} value={value}
         aria-describedby={aide ? `${id}-aide` : undefined} aria-valuetext={format(value)}
-        onChange={(e) => onChange(+e.target.value)} />
+        onInput={(e) => onChange(+e.target.value)} />
       <div className="bornes" aria-hidden="true"><span>{format(min)}</span><span>{format(max)}</span></div>
     </Champ>
   );
@@ -273,7 +274,11 @@ function Decision({ shared, allerExplorer }) {
   const seg = byId(SEGMENTS, segId);
   const params = { carb, conso, annees, seg, etatVE, ageVE, pays, decarb, efBatt: batt.ef };
   const v = decider({ ...params, kmAn });
-  const seuil = etape === 3 ? kmBascule(params) : null;
+  // Le seuil ne dépend pas du kilométrage : recalculé seulement si une autre réponse change
+  const seuil = useMemo(
+    () => (etape === 3 ? kmBascule(params) : null),
+    [etape, carb, conso, annees, segId, etatVE, ageVE, pays, decarb, batt], // eslint-disable-line react-hooks/exhaustive-deps
+  );
   const etat = etatVE === "neuf" ? s.etatNeuve : s.etatOcc(f.n0(ageVE), ageVE);
 
   // Au changement d'étape, le focus va au titre de la nouvelle étape
