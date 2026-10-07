@@ -241,59 +241,17 @@ export const PRIX_ENERGIE = {
   PL: { essence: 1.52, diesel: 1.76, elec: 0.271 },
   IN: { essence: 1.0, diesel: 0.91, elec: 0.063 },
 };
-// Prix catalogue d'une électrique neuve par catégorie (France, TTC, hors aides ; ordres de grandeur, à vérifier)
-// compacte : médiane des prix belges 2026 (MG4 32 285 €, Mégane E-Tech 37 750 €, ID.3 39 990 €, autotijd.be)
-export const PRIX_VE_NEUF = { citadine: 25000, compacte: 35000, berline: 40000, suv: 40000, grandsuv: 65000 };
-// Entretien + pneus €/km : électrique neuve 0,04 (ICCT 2023 : ID.3 0,046 ; ADAC 2026 : ≥ 1/3 moins cher
-// que le thermique) ; voiture thermique ancienne déjà payée 0,07 (réparations et pièces d'usure en plus).
+// Entretien + pneus €/km : électrique 0,04 (ICCT 2023 : ID.3 0,046 ; ADAC 2026 : ≥ 1/3 moins cher que le
+// thermique) ; voiture thermique ancienne déjà payée 0,07 (réparations et pièces d'usure en plus).
 export const ENTRETIEN = { thermique: 0.07, electrique: 0.04 };
-export const VALEUR_ACTUELLE_DEFAUT = 5000;
-// Pays où les valeurs d'achat calibrées sur la Belgique restent une approximation honnête (zone euro :
-// prix catalogue à ±10 %, décote issue de données européennes). Ailleurs, le total « achat compris »
-// mêlerait des données belges à un autre marché et une autre monnaie : on ne l'affiche pas.
-export const PAYS_ACHAT_CALIBRE = new Set(["BE", "FR", "ES", "IT", "DE", "EU"]);
-export const WALLBOX_DEFAUT = 1500; // borne installée, contrôle compris (Test-Achats : 700 à 4 000 € ; ordre de grandeur)
-// Surcoût annuel net de l'électrique : assurance tous risques d'une voiture neuve (≈ +500 €/an)
-// moins taxe de circulation et contrôle technique plus bas (≈ −200 €/an en Belgique). Modifiable.
-export const AUTRES_FRAIS_VE_DEFAUT = 300;
-// Décote marchande d'une électrique ≈ 20 %/an (fourchette 15–25 %) : Autovista24 02/2026 (BEV 38,8 % à
-// 36 mois / 60 000 km, cote reprise), Fraunhofer ISI 06/2026 (40–45 % à 5 ans, prix affichés).
-// Plus rapide que la thermique (15 %/an, H2) : choix prudent, défavorable à l'électrique.
-export const DECOTE_VE = 0.2;
-export const DECOTE_VE_FOURCHETTE = [0.15, 0.25];
 
-// --- Budget : coût net sur l'horizon de la décision (€, sans actualisation) ---
-// Garder : carburant + entretien − valeur restante de la voiture actuelle à la fin.
-// Remplacer : achat du VE − revente de la voiture actuelle maintenant + électricité + entretien
-//             − valeur résiduelle du VE à la fin. Décote : 20 %/an pour l'électrique, 15 %/an (H2) pour l'actuelle.
-// Hors périmètre : assurance, financement, aides (trop variables : liens vers les pages officielles).
-export function budget({
-  carb, conso, horizon, kmAn, seg, etatVE, ageVE, prix, prixNeufVE, valeurActuelle, entretien,
-  wallbox = 0, autresFraisAn = 0, decoteVE = DECOTE_VE,
-}) {
-  const valeurVE = (t) => Math.pow(1 - decoteVE, Math.max(0, t));
-  const km = horizon * kmAn;
-  const ageDebut = etatVE === "neuf" ? 0 : ageVE;
-  const achat = prixNeufVE * valeurVE(ageDebut);
-  const residuelle = prixNeufVE * valeurVE(ageDebut + horizon);
-  const energieGarder = (km * conso * prix[carb]) / 100;
-  const energieVE = (km * seg.ev * PERTES_CHARGE * prix.elec) / 100;
-  const garder = energieGarder + km * entretien.thermique - valeurActuelle * valeur(horizon);
-  const remplacer = achat - valeurActuelle - residuelle + wallbox + energieVE + km * entretien.electrique + horizon * autresFraisAn;
-  // Coûts d'usage par an (énergie + entretien) et énergie aux 100 km : la partie la plus sûre du budget
-  const usageGarderAn = (energieGarder + km * entretien.thermique) / horizon;
-  const usageVEAn = (energieVE + km * entretien.electrique) / horizon;
+// --- Budget à l'usage (€/an) : énergie + entretien, recharge à domicile ---
+// Hors périmètre, assumé : prix d'achat du véhicule, assurance, taxes, financement (choix du propriétaire :
+// ces postes dépendent du marché de chaque pays et noieraient l'information utile ; H14).
+export function budget({ carb, conso, kmAn, seg, prix, entretien }) {
   const energie100Garder = conso * prix[carb];
   const energie100VE = seg.ev * PERTES_CHARGE * prix.elec;
-  // Décomposition exacte de l'écart (remplacer − garder) : la somme des 4 postes = l'écart
-  const postes = {
-    perteVE: achat - residuelle + wallbox, // perte de valeur de l'électrique, borne comprise
-    perteEvitee: -(valeurActuelle - valeurActuelle * valeur(horizon)), // dépréciation évitée de votre voiture
-    autres: horizon * autresFraisAn, // assurance moins taxes
-    usage: -(usageGarderAn - usageVEAn) * horizon, // économies d'énergie et d'entretien
-  };
-  return {
-    km, achat, residuelle, energieGarder, energieVE, garder, remplacer, postes,
-    usageGarderAn, usageVEAn, economieUsageAn: usageGarderAn - usageVEAn, energie100Garder, energie100VE,
-  };
+  const usageGarderAn = (kmAn * energie100Garder) / 100 + kmAn * entretien.thermique;
+  const usageVEAn = (kmAn * energie100VE) / 100 + kmAn * entretien.electrique;
+  return { usageGarderAn, usageVEAn, economieUsageAn: usageGarderAn - usageVEAn, energie100Garder, energie100VE };
 }

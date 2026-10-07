@@ -1451,12 +1451,6 @@ input[type="range"] {
 }
 
 /* Budget */
-.budget-totaux {
-  margin-top: var(--s4);
-}
-.budget-totaux dd {
-  font: 800 var(--fs-xl) / 1.1 var(--f-display);
-}
 .budget-champs {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(14rem, 1fr));
@@ -1498,19 +1492,7 @@ input[type="number"] {
   white-space: nowrap;
   font-variant-numeric: tabular-nums;
 }
-.budget-postes .budget-total {
-  border-bottom: 0;
-  font-weight: 600;
-}
-.budget-postes .budget-total dt {
-  color: var(--ink);
-}
-.budget-sous {
-  font-size: var(--fs-sm);
-  margin-top: var(--s4);
-}
-.budget-pays {
-  background: var(--surface-2);
-  border-radius: var(--r-sm);
-  padding: var(--s2) var(--s3);
+.budget-amortir {
+  margin: var(--s3) 0 0;
+  max-width: 62ch;
 }
