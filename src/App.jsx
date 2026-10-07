@@ -4,7 +4,7 @@ import {
   PAYS, SEGMENTS, BATTERIES, MOTORS, MODES, AGE_SUGGESTION, SEUIL_SERRE, KM_AN_MAX_COMPTEUR, byId,
   mixMoyen, calc, fenetre, decider, calcConfig, departager, kmPivot, kmBascule,
   budget, PRIX_ENERGIE, PRIX_VE_NEUF, ENTRETIEN, VALEUR_ACTUELLE_DEFAUT,
-  WALLBOX_DEFAUT, AUTRES_FRAIS_VE_DEFAUT, DECOTE_VE_FOURCHETTE,
+  WALLBOX_DEFAUT, AUTRES_FRAIS_VE_DEFAUT, DECOTE_VE_FOURCHETTE, PAYS_ACHAT_CALIBRE,
 } from "./model.js";
 import { STR, HYP_REFS, SOURCES } from "./i18n.jsx";
 import { Icone } from "./icones.jsx";
@@ -479,7 +479,8 @@ function Budget({ verdict, carb, conso, horizon, tronque, kmAn, seg, etatVE, age
           Le prix d'achat, attendu et incertain (revente), est replié. */}
       <p className="bascule">{s.budgetUsageTitre(usage(s, f, usageTh - usageVE), f.eur(usageTh), f.eur(usageVE))}</p>
       <p className="aide-ligne">{s.budget100(f.n1f(b.energie100Garder), f.n1f(b.energie100VE))}</p>
-      <Repli className="replie" titre={s.budgetAchatTitre}>
+      {!PAYS_ACHAT_CALIBRE.has(paysId) && <p className="aide-ligne">{s.budgetAchatHorsZone()}</p>}
+      {PAYS_ACHAT_CALIBRE.has(paysId) && <Repli className="replie" titre={s.budgetAchatTitre}>
         <p className="note-petite">
           {d === "serre" ? s.budgetProche(duree) : s.budgetVerdict(ecart(ecartTotal), duree, lo === hi ? null : s.budgetPlage(lo, hi))}
         </p>
@@ -509,7 +510,7 @@ function Budget({ verdict, carb, conso, horizon, tronque, kmAn, seg, etatVE, age
           {AIDES.map(([id, u], i) => <span key={u}>{i > 0 && " · "}<a href={u} target="_blank" rel="noreferrer">{s.pays[id]}</a></span>)}
           {" · "}{s.budgetAidesBE}
         </p>
-      </Repli>
+      </Repli>}
     </section>
   );
 }

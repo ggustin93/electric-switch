@@ -248,6 +248,10 @@ export const PRIX_VE_NEUF = { citadine: 25000, compacte: 35000, berline: 40000, 
 // que le thermique) ; voiture thermique ancienne déjà payée 0,07 (réparations et pièces d'usure en plus).
 export const ENTRETIEN = { thermique: 0.07, electrique: 0.04 };
 export const VALEUR_ACTUELLE_DEFAUT = 5000;
+// Pays où les valeurs d'achat calibrées sur la Belgique restent une approximation honnête (zone euro :
+// prix catalogue à ±10 %, décote issue de données européennes). Ailleurs, le total « achat compris »
+// mêlerait des données belges à un autre marché et une autre monnaie : on ne l'affiche pas.
+export const PAYS_ACHAT_CALIBRE = new Set(["BE", "FR", "ES", "IT", "DE", "EU"]);
 export const WALLBOX_DEFAUT = 1500; // borne installée, contrôle compris (Test-Achats : 700 à 4 000 € ; ordre de grandeur)
 // Surcoût annuel net de l'électrique : assurance tous risques d'une voiture neuve (≈ +500 €/an)
 // moins taxe de circulation et contrôle technique plus bas (≈ −200 €/an en Belgique). Modifiable.
