@@ -1292,6 +1292,23 @@ input[type="range"] {
   height: calc(1.4em + 9px);
   border-right: 1px dashed var(--ink-2);
 }
+.log-entete .log-axe .log-ref-gauche {
+  transform: none;
+  padding: 0 0 0 var(--s1);
+}
+.log-entete .log-axe .log-ref-gauche::after {
+  right: auto;
+  left: -1px;
+}
+.resume-ref {
+  margin-top: var(--s4);
+}
+.log-rapport {
+  display: block;
+  font-size: var(--fs-xs);
+  font-weight: 400;
+  color: var(--ink-2);
+}
 .log-ligne-ref {
   font-weight: 600;
   background: var(--surface-2);

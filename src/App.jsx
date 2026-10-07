@@ -1,7 +1,7 @@
 import { createContext } from "preact";
 import { useContext, useEffect, useId, useLayoutEffect, useMemo, useRef, useState } from "preact/hooks";
 import {
-  PAYS, SEGMENTS, BATTERIES, MOTORS, MODES, AGE_SUGGESTION, KM_AN_MAX_COMPTEUR, byId,
+  PAYS, SEGMENTS, BATTERIES, MOTORS, MODES, AGE_SUGGESTION, SEUIL_SERRE, KM_AN_MAX_COMPTEUR, byId,
   mixMoyen, calc, fenetre, decider, calcConfig, departager, kmPivot, kmBascule,
 } from "./model.js";
 import { STR, HYP_REFS, SOURCES } from "./i18n.jsx";
@@ -790,13 +790,28 @@ function teinte(p) {
   return { "--c1": "var(--seq-mid)", "--c2": "var(--seq-hi)", "--m": `${(p - 50) * 2}%` };
 }
 const TOUS_MODES = MODES.flatMap((fam) => fam.modes).sort((a, b) => a[1] - b[1]);
-const REF_VOITURE = TOUS_MODES.find(([id]) => id === "voitureThermique")[1];
+const VALEUR_MODE = Object.fromEntries(TOUS_MODES);
+const REFERENCES = ["voitureThermique", "voitureElec", "tgv"];
+const EXEMPLES = ["tgv", "busElec", "vae", "voitureElec", "voitureThermique"];
+
+// « 49 fois moins », « 1,5 fois plus », « autant » (écart < seuil des verdicts) par rapport à la référence
+function rapport(s, f, g, ref) {
+  if (g === 0) return s.rapport.zero;
+  const r = g / ref;
+  if (Math.abs(r - 1) < SEUIL_SERRE) return s.rapport.autant;
+  const x = r < 1 ? 1 / r : r;
+  const n = x < 10 ? f.n1(x) : f.n0(x);
+  return r < 1 ? s.rapport.moins(n) : s.rapport.plus(n);
+}
 
 function Modes() {
   const f = useT();
   const { s } = f;
   const [km, setKm] = useState(10);
-  const fois = (id) => f.n0(REF_VOITURE / TOUS_MODES.find(([m]) => m === id)[1]);
+  const [refId, setRefId] = useState("voitureThermique");
+  const ref = VALEUR_MODE[refId];
+  const posRef = posLog(ref);
+  const exemples = EXEMPLES.filter((id) => id !== refId).slice(0, 3);
 
   return (
     <div>
@@ -809,27 +824,35 @@ function Modes() {
       <section className="carte">
         <h2>{s.ordresTitre}</h2>
         <p className="sous-titre">{s.ordresSous}</p>
-        <p className="bascule">{s.ordresResume({ tgv: fois("tgv"), bus: fois("busElec"), velo: fois("vae") })}</p>
-        <div className="log" style={{ "--ref": `${posLog(REF_VOITURE)}%` }}>
+        <Choix label={s.comparerA} value={refId} onChange={setRefId}
+          options={REFERENCES.map((id) => ({ v: id, label: s.modes[id] }))} />
+        <p className="bascule resume-ref">
+          {s.ordresResume(s.modes[refId])}{" "}
+          {exemples.map((id, i) => <span key={id}>{i > 0 && " · "}{s.modes[id]} : <strong>{rapport(s, f, VALEUR_MODE[id], ref)}</strong></span>)}
+        </p>
+        <div className="log" style={{ "--ref": `${posRef}%` }}>
           <div className="log-ligne log-entete" aria-hidden="true">
             <span className="log-axe">
               <span style={{ left: "0%" }}>0</span>
               {[1, 10, 100].map((t) => <span key={t} style={{ left: `${posLog(t)}%` }}>{f.n0(t)}</span>)}
-              <span className="log-ref">{s.ordresRef}</span>
+              <span className={posRef < 50 ? "log-ref log-ref-gauche" : "log-ref"}>{s.ordresRef(s.modes[refId])}</span>
             </span>
             <span className="log-val">{s.ordresColonne(f.km(km))}</span>
           </div>
           <ol className="log-lignes">
             {TOUS_MODES.map(([id, g]) => (
-              <li key={id} className={id === "voitureThermique" ? "log-ligne log-ligne-ref" : "log-ligne"}>
+              <li key={id} className={id === refId ? "log-ligne log-ligne-ref" : "log-ligne"}>
                 <Icone mode={id} />
-                <span className="log-nom">{s.modes[id]}</span>
+                <span className="log-nom">
+                  {s.modes[id]}
+                  <span className="log-rapport">{id === refId ? s.rapport.ref : rapport(s, f, g, ref)}</span>
+                </span>
                 <span className="log-piste" aria-hidden="true"><span className="log-point" style={{ left: `${posLog(g)}%`, ...teinte(posLog(g)) }} /></span>
                 <span className="log-val"><strong>{f.n1(g)}</strong> · {masseTrajet(f, g * km)}</span>
               </li>
             ))}
           </ol>
-          <p className="log-legende"><span className="trait-ref" aria-hidden="true" />{s.ordresRefLegende(`${f.n1(REF_VOITURE)}${NB}g/km`)}</p>
+          <p className="log-legende"><span className="trait-ref" aria-hidden="true" />{s.ordresRefLegende(s.modes[refId], `${f.n1(ref)}${NB}g/km`)}</p>
           <p className="log-legende">{s.ordresLegende}</p>
         </div>
       </section>
@@ -865,7 +888,6 @@ function Ecoconception() {
         <dl className="eco-mesures">
           {s.ecoMesures.map(([k, v]) => <div key={k}><dt>{k}</dt><dd>{v}</dd></div>)}
         </dl>
-        <p className="aide-ligne">{s.ecoAvant}</p>
         <h3>{s.ecoChoixTitre}</h3>
         <ul>{s.ecoChoix.map((c) => <li key={c}>{c}</li>)}</ul>
         <h3>{s.ecoLimitesTitre}</h3>
