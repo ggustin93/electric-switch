@@ -821,7 +821,7 @@ function Modes() {
           </div>
           <ol className="log-lignes">
             {TOUS_MODES.map(([id, g]) => (
-              <li key={id} className="log-ligne">
+              <li key={id} className={id === "voitureThermique" ? "log-ligne log-ligne-ref" : "log-ligne"}>
                 <Icone mode={id} />
                 <span className="log-nom">{s.modes[id]}</span>
                 <span className="log-piste" aria-hidden="true"><span className="log-point" style={{ left: `${posLog(g)}%`, ...teinte(posLog(g)) }} /></span>
@@ -829,6 +829,7 @@ function Modes() {
               </li>
             ))}
           </ol>
+          <p className="log-legende"><span className="trait-ref" aria-hidden="true" />{s.ordresRefLegende(`${f.n1(REF_VOITURE)}${NB}g/km`)}</p>
           <p className="log-legende">{s.ordresLegende}</p>
         </div>
       </section>
