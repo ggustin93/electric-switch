@@ -780,6 +780,13 @@ function masseTrajet(f, grammes) {
 const LOG_MIN = Math.log10(0.1);
 const LOG_MAX = Math.log10(300);
 const posLog = (g) => (g <= 0.1 ? 0 : ((Math.log10(g) - LOG_MIN) / (LOG_MAX - LOG_MIN)) * 100);
+// Classe d'ordre de grandeur alignée sur les décades de l'axe (aucun seuil inventé)
+function decade(g) {
+  if (g < 1) return "q1";
+  if (g < 10) return "q2";
+  if (g < 100) return "q3";
+  return "q4";
+}
 const TOUS_MODES = MODES.flatMap((fam) => fam.modes).sort((a, b) => a[1] - b[1]);
 const REF_VOITURE = TOUS_MODES.find(([id]) => id === "voitureThermique")[1];
 
@@ -815,11 +822,16 @@ function Modes() {
               <li key={id} className="log-ligne">
                 <Icone mode={id} />
                 <span className="log-nom">{s.modes[id]}</span>
-                <span className="log-piste" aria-hidden="true"><span className="log-point" style={{ left: `${posLog(g)}%` }} /></span>
+                <span className="log-piste" aria-hidden="true"><span className={`log-point ${decade(g)}`} style={{ left: `${posLog(g)}%` }} /></span>
                 <span className="log-val"><strong>{f.n1(g)}</strong> · {masseTrajet(f, g * km)}</span>
               </li>
             ))}
           </ol>
+          <p className="log-legende">
+            {s.ordresLegende}
+            {["< 1", "1 – 10", "10 – 100", "> 100"].map((l, i) => <span key={l} className={`q${i + 1}`}><i aria-hidden="true" />{l}</span>)}
+            gCO₂e/km
+          </p>
         </div>
       </section>
 
