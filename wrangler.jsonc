@@ -1,0 +1,7 @@
+// Déploiement Cloudflare Workers, ressources statiques uniquement (pas de script Worker) :
+// la page unique dist/index.html est servie telle quelle. Commande : npm run deploy
+{
+  "name": "electric-switch",
+  "compatibility_date": "2026-10-07",
+  "assets": { "directory": "./dist" }
+}

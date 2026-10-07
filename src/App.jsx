@@ -491,6 +491,7 @@ function Budget({ verdict, carb, conso, horizon, tronque, kmAn, seg, etatVE, age
         {horizon > 8 && <p className="note-petite">{s.budgetLongue}</p>}
         {tronque && <p className="note-petite">{s.tronque(duree)}</p>}
         <p className="note-petite">{s.budgetExclus}</p>
+        {paysId !== "BE" && <p className="note-petite budget-pays">{s.budgetDefautsBE(s.pays[paysId])}</p>}
         <h3 className="budget-sous">{s.budgetVosPrix}</h3>
         <div className="budget-champs">
           <ChampPrix id="p-carb" label={s.budgetPrixCarb(s.motor[carb].nom)} value={p.carb} step="0.01" onChange={maj("carb")} />
