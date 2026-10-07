@@ -6,34 +6,38 @@
 // taux annuel de décarbonation projeté (PNIEC / AIE STEPS) — H5, H6
 export const PAYS = [
   { id: "NO", g: 30, declin: 0.005 },
-  { id: "SE", g: 40, declin: 0.005 },
+  { id: "SE", g: 30, declin: 0.005 },
   { id: "FR", g: 50, declin: 0.01 },
   { id: "ES", g: 140, declin: 0.05 },
   { id: "BE", g: 150, declin: 0.03 },
-  { id: "UK", g: 210, declin: 0.04 },
-  { id: "EU", g: 230, declin: 0.035 },
+  { id: "UK", g: 210, declin: 0.05 },
+  { id: "EU", g: 210, declin: 0.035 },
   { id: "IT", g: 300, declin: 0.035 },
-  { id: "DE", g: 380, declin: 0.045 },
-  { id: "US", g: 380, declin: 0.03 },
+  { id: "DE", g: 340, declin: 0.045 },
+  { id: "US", g: 380, declin: 0.02 },
   { id: "AU", g: 530, declin: 0.05 },
   { id: "CN", g: 560, declin: 0.035 },
   { id: "PL", g: 620, declin: 0.055 },
   { id: "IN", g: 700, declin: 0.025 },
 ];
 
-// Consommations réelles : L/100 km ; VE en kWh/100 km côté batterie
-// (pertes de recharge ajoutées à part, H10). fab = glider thermique, tCO2e.
+// Consommations réelles (ICCT 2025 / OBFCM) : L/100 km ; VE en kWh/100 km côté batterie
+// (pertes de recharge ajoutées à part, H10). Fabrication du thermique (hors batterie) :
+// 5,2 tCO2e par tonne de véhicule (Ricardo 2020, repris par l'ICCT), H9.
+const FAB_PAR_TONNE = 5.2;
 export const SEGMENTS = [
-  { id: "citadine", masse: 1150, essence: 5.5, diesel: 4.5, ev: 16.5, battKwh: 42, fabBase: 5.0 },
-  { id: "compacte", masse: 1350, essence: 6.3, diesel: 5.2, ev: 17.5, battKwh: 55, fabBase: 6.0 },
-  { id: "berline", masse: 1550, essence: 7.0, diesel: 5.8, ev: 19.0, battKwh: 75, fabBase: 7.5 },
-  { id: "suv", masse: 1650, essence: 7.8, diesel: 6.4, ev: 20.5, battKwh: 75, fabBase: 7.2 },
-  { id: "grandsuv", masse: 2200, essence: 9.5, diesel: 7.8, ev: 24.0, battKwh: 100, fabBase: 10.0 },
-];
+  { id: "citadine", masse: 1150, essence: 6.0, diesel: 5.0, ev: 16.5, battKwh: 42 },
+  { id: "compacte", masse: 1350, essence: 6.9, diesel: 5.8, ev: 17.5, battKwh: 55 },
+  { id: "berline", masse: 1550, essence: 7.6, diesel: 6.5, ev: 19.0, battKwh: 75 },
+  { id: "suv", masse: 1650, essence: 8.4, diesel: 7.1, ev: 20.5, battKwh: 75 },
+  { id: "grandsuv", masse: 2200, essence: 10.1, diesel: 8.7, ev: 24.0, battKwh: 100 },
+].map((s) => ({ ...s, fabBase: (FAB_PAR_TONNE * s.masse) / 1000 }));
 
+// kgCO2e/kWh — Argonne GREET 2024 via ICCT 2025 ; « ue » = moyenne pondérée des ventes UE (H8)
 export const BATTERIES = [
-  { id: "lfp", ef: 50 },
   { id: "nmcEU", ef: 60 },
+  { id: "lfp", ef: 65 },
+  { id: "ue", ef: 73 },
   { id: "nmcCN", ef: 80 },
 ];
 
@@ -45,7 +49,7 @@ export const MOTORS = [
   { id: "diesel", hybride: false },
 ];
 
-export const EF_ESSENCE = 2.71; // kgCO2e/L, SP95-E10 puits à la roue (H7)
+export const EF_ESSENCE = 2.69; // kgCO2e/L, SP95-E10 puits à la roue (H7)
 export const EF_DIESEL = 3.1; // kgCO2e/L, gazole B7 (H7)
 export const GLIDER_EV = 1.05; // H9
 export const PERTES_CHARGE = 1.1; // H10
@@ -92,7 +96,7 @@ export function calc(motorId, seg, gridG, kmVous, ratioFab, phevShare, efBatt) {
       usage = usageEss;
       break;
     case "diesel":
-      fabTotale = seg.fabBase + 0.2;
+      fabTotale = seg.fabBase;
       usage = usageDiesel(seg.diesel);
       break;
     case "hev":
@@ -100,7 +104,7 @@ export function calc(motorId, seg, gridG, kmVous, ratioFab, phevShare, efBatt) {
       usage = usageEss * 0.78;
       break;
     case "phev":
-      fabTotale = seg.fabBase + 0.4 + (14 * efBatt) / 1000;
+      fabTotale = seg.fabBase + 0.7 + (14 * efBatt) / 1000;
       usage = phevShare * usageElec(seg.ev * 1.12, gridG) + (1 - phevShare) * usageEss * 1.06;
       break;
     default: // ev
