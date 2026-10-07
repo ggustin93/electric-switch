@@ -140,7 +140,13 @@ export function fenetre({ occasion, odo, age, kmAn, revente, detention, marginal
 
 // Verdict entre deux empreintes : "a", "b" ou "serre" (même seuil partout)
 export function departager(a, b) {
-  if (Math.max(a, b) / Math.min(a, b) - 1 < SEUIL_SERRE) return "serre";
+  if (a > 0 && b > 0) {
+    if (Math.max(a, b) / Math.min(a, b) - 1 < SEUIL_SERRE) return "serre";
+  } else {
+    // Totaux nuls ou négatifs (budget : revente élevée) : écart rapporté à la plus grande valeur absolue
+    const m = Math.max(Math.abs(a), Math.abs(b));
+    if (m === 0 || Math.abs(a - b) / m < SEUIL_SERRE) return "serre";
+  }
   return a < b ? "a" : "b";
 }
 
@@ -237,20 +243,30 @@ export const PRIX_ENERGIE = {
 };
 // Prix catalogue d'une électrique neuve par catégorie (France, TTC, hors aides ; ordres de grandeur, à vérifier)
 export const PRIX_VE_NEUF = { citadine: 25000, compacte: 33000, berline: 40000, suv: 40000, grandsuv: 65000 };
-// Entretien + pneus €/km (ICCT 2023, Allemagne : ID.3 0,046 vs Golf 0,054 ; arrondis)
-export const ENTRETIEN = { thermique: 0.05, electrique: 0.04 };
+// Entretien + pneus €/km : électrique neuve 0,04 (ICCT 2023 : ID.3 0,046 ; ADAC 2026 : ≥ 1/3 moins cher
+// que le thermique) ; voiture thermique ancienne déjà payée 0,07 (réparations et pièces d'usure en plus).
+export const ENTRETIEN = { thermique: 0.07, electrique: 0.04 };
 export const VALEUR_ACTUELLE_DEFAUT = 5000;
-// Décote marchande d'une électrique : ≈ 50 % de valeur résiduelle à 3 ans (Berylls 2023), soit ≈ 20 %/an,
-// plus rapide que la thermique (15 %/an, H2) : choix prudent, défavorable à l'électrique.
+export const WALLBOX_DEFAUT = 1200; // borne à domicile + contrôle électrique (BE, ordre de grandeur)
+// Surcoût annuel net de l'électrique : assurance tous risques d'une voiture neuve (≈ +500 €/an)
+// moins taxe de circulation et contrôle technique plus bas (≈ −200 €/an en Belgique). Modifiable.
+export const AUTRES_FRAIS_VE_DEFAUT = 300;
+// Décote marchande d'une électrique ≈ 20 %/an (fourchette 15–25 %) : Autovista24 02/2026 (BEV 38,8 % à
+// 36 mois / 60 000 km, cote reprise), Fraunhofer ISI 06/2026 (40–45 % à 5 ans, prix affichés).
+// Plus rapide que la thermique (15 %/an, H2) : choix prudent, défavorable à l'électrique.
 export const DECOTE_VE = 0.2;
-const valeurVE = (t) => Math.pow(1 - DECOTE_VE, Math.max(0, t));
+export const DECOTE_VE_FOURCHETTE = [0.15, 0.25];
 
 // --- Budget : coût net sur l'horizon de la décision (€, sans actualisation) ---
 // Garder : carburant + entretien − valeur restante de la voiture actuelle à la fin.
 // Remplacer : achat du VE − revente de la voiture actuelle maintenant + électricité + entretien
 //             − valeur résiduelle du VE à la fin. Décote : 20 %/an pour l'électrique, 15 %/an (H2) pour l'actuelle.
 // Hors périmètre : assurance, financement, aides (trop variables : liens vers les pages officielles).
-export function budget({ carb, conso, horizon, kmAn, seg, etatVE, ageVE, prix, prixNeufVE, valeurActuelle, entretien }) {
+export function budget({
+  carb, conso, horizon, kmAn, seg, etatVE, ageVE, prix, prixNeufVE, valeurActuelle, entretien,
+  wallbox = 0, autresFraisAn = 0, decoteVE = DECOTE_VE,
+}) {
+  const valeurVE = (t) => Math.pow(1 - decoteVE, Math.max(0, t));
   const km = horizon * kmAn;
   const ageDebut = etatVE === "neuf" ? 0 : ageVE;
   const achat = prixNeufVE * valeurVE(ageDebut);
@@ -258,8 +274,10 @@ export function budget({ carb, conso, horizon, kmAn, seg, etatVE, ageVE, prix, p
   const energieGarder = (km * conso * prix[carb]) / 100;
   const energieVE = (km * seg.ev * PERTES_CHARGE * prix.elec) / 100;
   const garder = energieGarder + km * entretien.thermique - valeurActuelle * valeur(horizon);
-  const remplacer = achat - valeurActuelle + energieVE + km * entretien.electrique - residuelle;
+  // Capital : achat − revente de l'actuelle − valeur restante du VE + borne (hors coût du financement)
+  const capital = achat - valeurActuelle - residuelle + wallbox;
+  const remplacer = capital + energieVE + km * entretien.electrique + horizon * autresFraisAn;
   // Économie annuelle d'usage (énergie + entretien) en passant à l'électrique
   const economieUsageAn = (energieGarder - energieVE) / horizon + kmAn * (entretien.thermique - entretien.electrique);
-  return { km, achat, residuelle, energieGarder, energieVE, garder, remplacer, economieUsageAn };
+  return { km, achat, residuelle, capital, energieGarder, energieVE, garder, remplacer, economieUsageAn };
 }
