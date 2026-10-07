@@ -156,7 +156,7 @@ export default function App() {
   const [paysId, setPaysId] = useState("BE");
   const [kmAn, setKmAn] = useState(12000);
   const [decarb, setDecarb] = useState(true);
-  const [battId, setBattId] = useState("nmcEU");
+  const [battId, setBattId] = useState("ue");
   const f = useMemo(() => formats(lang), [lang]);
   const { s } = f;
   const tabsRef = useRef([]);

@@ -33,17 +33,17 @@ test("mix : moyenne décroissante, inchangée sans décarbonation", () => {
   assert.ok(mixMoyen(230, 12, true, 0.035) < mixMoyen(230, 6, true, 0.035));
 });
 
-test("H13 : VE vs essence sur 200 000 km — France −65 à −75 %, UE −50 à −60 %", () => {
+test("H13 : VE vs essence sur 200 000 km — France −65 à −75 %, UE −55 à −65 %", () => {
   const seg = byId(SEGMENTS, "compacte");
   const ecart = (paysId) => {
     const p = byId(PAYS, paysId);
     const g = mixMoyen(p.g, VIE_KM / 15000, true, p.declin);
-    const ev = calc("ev", seg, g, VIE_KM, 1, 0, 60);
-    const ess = calc("essence", seg, g, VIE_KM, 1, 0, 60);
+    const ev = calc("ev", seg, g, VIE_KM, 1, 0, 73);
+    const ess = calc("essence", seg, g, VIE_KM, 1, 0, 73);
     return 1 - ev.totalT / ess.totalT;
   };
   assert.ok(ecart("FR") > 0.65 && ecart("FR") < 0.75, `FR ${ecart("FR")}`);
-  assert.ok(ecart("EU") > 0.5 && ecart("EU") < 0.6, `EU ${ecart("EU")}`);
+  assert.ok(ecart("EU") > 0.55 && ecart("EU") < 0.65, `EU ${ecart("EU")}`);
 });
 
 test("décision : horizon borné, verdict cohérent avec l'amortissement", () => {
