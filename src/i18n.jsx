@@ -185,11 +185,11 @@ const fr = {
   modesSource: "Source : ADEME, Impact CO₂ (impactco2.fr), données consultées le 07/10/2026, Licence Ouverte Etalab.",
 
   // Écoconception (mini page repliable + mention de pied de page)
-  ecoMention: (lien) => <>Site écoconçu : EcoIndex A (80/100), 52 Ko, une seule requête, aucun traceur. {lien("En savoir plus")}</>,
+  ecoMention: "Site écoconçu : EcoIndex A (80/100), 52 Ko, une seule requête, aucun traceur",
   ecoTitre: "Écoconception de ce site",
   ecoIntro: "Un outil qui parle d'empreinte carbone se doit d'être sobre. Ce simulateur a été conçu pour consommer le moins possible, sur votre appareil comme sur le réseau.",
   ecoMesureTitre: "Mesure au premier chargement (07/10/2026)",
-  ecoMesures: [["Score EcoIndex", "80/100, note A"], ["Poids transféré", "52 Ko"], ["Requêtes", "1"], ["Éléments de page", "93"], ["Estimation par visite", "≈ 0,26 gCO₂e et 0,04 cl d'eau"]],
+  ecoMesures: [["Score EcoIndex", "80/100, note A"], ["Poids transféré", "52 Ko"], ["Requêtes", "1"], ["Éléments de page", "90"], ["Estimation par visite", "≈ 0,26 gCO₂e et 0,04 cl d'eau"]],
   ecoChoixTitre: "Ce qui a été fait",
   ecoChoix: [
     "Une seule page autonome : styles, code et police tiennent dans un fichier.",
@@ -411,11 +411,11 @@ const en = {
   modesSource: "Source: ADEME, Impact CO₂ (impactco2.fr), accessed 7 October 2026, Etalab Open Licence.",
 
   // Ecodesign (collapsible mini page + footer mention)
-  ecoMention: (lien) => <>Ecodesigned site: EcoIndex A (80/100), 52 kB, a single request, no trackers. {lien("Learn more")}</>,
+  ecoMention: "Ecodesigned site: EcoIndex A (80/100), 52 kB, a single request, no trackers",
   ecoTitre: "How this site is ecodesigned",
   ecoIntro: "A tool about carbon footprints should be frugal itself. This simulator was designed to use as little as possible, on your device and on the network.",
   ecoMesureTitre: "Measured at first load (7 October 2026)",
-  ecoMesures: [["EcoIndex score", "80/100, grade A"], ["Transferred weight", "52 kB"], ["Requests", "1"], ["Page elements", "93"], ["Estimate per visit", "≈ 0.26 gCO₂e and 0.04 cl of water"]],
+  ecoMesures: [["EcoIndex score", "80/100, grade A"], ["Transferred weight", "52 kB"], ["Requests", "1"], ["Page elements", "90"], ["Estimate per visit", "≈ 0.26 gCO₂e and 0.04 cl of water"]],
   ecoChoixTitre: "What was done",
   ecoChoix: [
     "A single self-contained page: styles, code and font fit in one file.",

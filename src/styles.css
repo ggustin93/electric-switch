@@ -1406,3 +1406,46 @@ input[type="range"] {
   outline-offset: 2px;
   border-radius: var(--r-sm);
 }
+
+/* Écoconception : discrète, dans le pied de page (information sur le site, pas contenu) */
+.eco-pied {
+  margin: 0 auto var(--s3);
+  text-align: left;
+  max-width: 70ch;
+}
+.eco-pied > summary {
+  justify-content: center;
+  min-height: 36px;
+  font-size: var(--fs-xs);
+  font-weight: 500;
+  color: var(--ink-2);
+}
+.eco-pied > summary::before {
+  width: 7px;
+  height: 7px;
+  border-width: 0 1.5px 1.5px 0;
+}
+.eco-pied > summary:hover {
+  color: var(--ink);
+}
+.eco-pied .eco h2 {
+  font-size: var(--fs);
+  margin-top: var(--s3);
+}
+.eco-pied .eco {
+  font-size: var(--fs-xs);
+  padding: var(--s4);
+  background: var(--surface-2);
+  border-radius: var(--r);
+}
+.eco-pied .eco-mesures div {
+  background: var(--surface);
+}
+.eco-pied .eco h2 {
+  margin-top: 0;
+  color: var(--ink);
+}
+.eco-pied .eco h3 {
+  font-size: var(--fs-sm);
+  margin-top: var(--s4);
+}

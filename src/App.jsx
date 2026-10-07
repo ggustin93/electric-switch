@@ -244,9 +244,8 @@ export default function App() {
 
         <Hypotheses />
         <Sources />
-        <Ecoconception />
         <footer className="pied">
-          <p>{s.ecoMention((t) => <a href="#ecoconception">{t}</a>)}</p>
+          <Ecoconception />
           <p>{s.footer(lienCarbone4)}</p>
         </footer>
       </div>
@@ -864,8 +863,9 @@ const REFS_ECO = [
 function Ecoconception() {
   const { s } = useT();
   return (
-    <Repli id="ecoconception" className="carte replie annexe" titre={<h2>{s.ecoTitre}</h2>} ancre="ecoconception">
+    <Repli id="ecoconception" className="replie eco-pied" titre={s.ecoMention} ancre="ecoconception">
       <div className="eco">
+        <h2>{s.ecoTitre}</h2>
         <p>{s.ecoIntro}</p>
         <h3>{s.ecoMesureTitre}</h3>
         <dl className="eco-mesures">
