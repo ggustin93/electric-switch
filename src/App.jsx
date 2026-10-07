@@ -402,7 +402,7 @@ function Decision({ shared, allerExplorer }) {
             </Repli>
           </section>
 
-          <Budget carb={carb} conso={conso} horizon={v.horizon} tronque={v.tronque} kmAn={kmAn} seg={seg}
+          <Budget verdict={v.verdict} carb={carb} conso={conso} horizon={v.horizon} tronque={v.tronque} kmAn={kmAn} seg={seg}
             etatVE={etatVE} ageVE={ageVE} paysId={pays.id} etat={etat} />
 
           <section className="carte">
@@ -435,7 +435,7 @@ function ChampPrix({ id, label, value, step, onChange }) {
   );
 }
 
-function Budget({ carb, conso, horizon, tronque, kmAn, seg, etatVE, ageVE, paysId, etat }) {
+function Budget({ verdict, carb, conso, horizon, tronque, kmAn, seg, etatVE, ageVE, paysId, etat }) {
   const f = useT();
   const { s } = f;
   const [sur, setSur] = useState({}); // valeurs saisies ; sinon défauts du pays et de la catégorie
@@ -457,24 +457,34 @@ function Budget({ carb, conso, horizon, tronque, kmAn, seg, etatVE, ageVE, paysI
   const [lo, hi] = DECOTE_VE_FOURCHETTE.map((decoteVE) => budget({ ...entrees, decoteVE }).remplacer - b.garder).sort((x, y) => x - y);
   // Alternative : électrique d'occasion de 3 ans (si l'on envisageait du neuf)
   const occ = etatVE === "neuf" ? budget({ ...entrees, etatVE: "occasion", ageVE: 3 }) : null;
-  const ecart = (x) => (x >= 0 ? s.budgetEcartPlus(f.eurK(x)) : s.budgetEcartMoins(f.eurK(-x)));
+  // « environ 6 000 € de plus », « environ 3 000 € de moins » ou « à peu près autant » (arrondi au millier)
+  const ecart = (x) => {
+    if (Math.abs(x) < 500) return s.budgetEcartPareil;
+    return x > 0 ? s.budgetEcartPlus(f.eurK(x)) : s.budgetEcartMoins(f.eurK(-x));
+  };
 
   return (
     <section className="carte">
       <h2>{s.budgetTitre}</h2>
+      {/* Visible : le coût d'usage (énergie + entretien), l'information utile et la plus sûre.
+          Le prix d'achat, attendu et incertain (revente), est replié. */}
       <p className="bascule">
-        {d === "serre" && s.budgetProche(duree)}
-        {d !== "serre" && s.budgetVerdict(ecart(b.remplacer - b.garder), duree, f.eurK(lo), f.eurK(hi))}
+        {s.budgetUsageTitre(usage(s, f, b.economieUsageAn), f.eur(b.usageVEAn), f.eur(b.usageGarderAn))}
       </p>
-      {tronque && <p className="aide-ligne">{s.tronque(duree)}</p>}
-      <dl className="eco-mesures budget-totaux">
-        <div><dt>{s.budgetGarder}</dt><dd>{f.eur(b.garder)}</dd></div>
-        <div><dt>{s.budgetRemplacer(etat)}</dt><dd>{f.eur(b.remplacer)}</dd></div>
-      </dl>
-      <p className="aide-ligne">{s.budgetPourquoi(usage(s, f, b.economieUsageAn), f.eur(b.capital), duree)}</p>
-      {occ && <p className="aide-ligne">{s.budgetOccasion(ecart(occ.remplacer - occ.garder))}</p>}
-      <p className="aide-ligne">{s.budgetExclus}</p>
-      <Repli className="replie" titre={s.budgetHyp}>
+      <p className="aide-ligne">{s.budget100(f.n1(b.energie100Garder), f.n1(b.energie100VE))}</p>
+      <Repli className="replie" titre={s.budgetAchatTitre}>
+        <p className="note-petite">
+          {d === "serre" ? s.budgetProche(duree) : s.budgetVerdict(ecart(b.remplacer - b.garder), duree, f.eurK(lo), f.eurK(hi))}
+        </p>
+        {occ && verdict !== "garder" && <p className="note-petite">{s.budgetOccasion(ecart(occ.remplacer - occ.garder))}</p>}
+        {horizon > 8 && <p className="note-petite">{s.budgetLongue}</p>}
+        {tronque && <p className="note-petite">{s.tronque(duree)}</p>}
+        <dl className="eco-mesures budget-totaux">
+          <div><dt>{s.budgetGarder}</dt><dd>{f.eur(b.garder)}</dd></div>
+          <div><dt>{s.budgetRemplacer(etat)}</dt><dd>{f.eur(b.remplacer)}</dd></div>
+        </dl>
+        <p className="note-petite">{s.budgetPourquoi(f.eur(b.capital), duree)}</p>
+        <p className="note-petite">{s.budgetExclus}</p>
         <div className="budget-champs">
           <ChampPrix id="p-carb" label={s.budgetPrixCarb(s.motor[carb].nom)} value={p.carb} step="0.01" onChange={maj("carb")} />
           <ChampPrix id="p-elec" label={s.budgetPrixElec} value={p.elec} step="0.01" onChange={maj("elec")} />
