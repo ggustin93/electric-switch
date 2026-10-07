@@ -199,7 +199,8 @@ const fr = {
   },
   budgetEcartTotal: (etat) => `Écart pour une électrique ${etat}`,
   budgetVosPrix: "Vos prix (modifiables)",
-  budgetDefautsBE: (pays) => `${pays} : seuls les prix de l'énergie sont propres à votre pays. Prix de l'électrique, borne, assurance et taxes, perte de valeur et entretien reprennent des valeurs belges : ajustez-les ci-dessous. Montants en euros.`,
+  budgetDefautsBE: (pays) => `${pays} : les prix de l'énergie sont ceux de votre pays. Prix de l'électrique, borne, assurance et taxes, perte de valeur et entretien reprennent des valeurs belges, comparables dans la zone euro : ajustez-les ci-dessous si besoin.`,
+  budgetAchatHorsZone: () => `L'estimation du prix d'achat n'est proposée que pour la zone euro, où prix des voitures et revente sont comparables. Pour votre pays, seul le coût à l'usage ci-dessus est calculé, avec vos prix locaux.`,
   budgetMethodeTitre: "Comment on calcule",
   budgetMethode: [
     "Écart sur la période, sans actualisation : perte de valeur de l'électrique (achat et borne, moins sa valeur à la fin), moins la perte de valeur évitée sur votre voiture, plus le surcoût d'assurance net des taxes, moins les économies d'énergie et d'entretien.",
@@ -470,7 +471,8 @@ const en = {
   },
   budgetEcartTotal: (etat) => `Difference for a ${etat} electric car`,
   budgetVosPrix: "Your prices (editable)",
-  budgetDefautsBE: (pays) => `${pays}: only energy prices are specific to your country. Electric car price, charger, insurance and taxes, value loss and maintenance use Belgian values: adjust them below. Amounts in euros.`,
+  budgetDefautsBE: (pays) => `${pays}: energy prices are your country's. Electric car price, charger, insurance and taxes, value loss and maintenance use Belgian values, comparable across the euro area: adjust them below if needed.`,
+  budgetAchatHorsZone: () => `The purchase-price estimate is only offered for the euro area, where car prices and resale values are comparable. For your country, only the running cost above is calculated, with your local prices.`,
   budgetMethodeTitre: "How we calculate",
   budgetMethode: [
     "Difference over the period, undiscounted: value lost by the electric car (purchase and charger, minus its value at the end), minus the value loss avoided on your car, plus extra insurance net of taxes, minus energy and maintenance savings.",
