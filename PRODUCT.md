@@ -22,7 +22,7 @@ A personal decision rather than a generic "EV vs petrol" average. The car you al
 
 Single page, three tabs (v7):
 1. **My decision**: a 4-step wizard, then the verdict, the decisive mileage threshold and a live "what if" slider.
-2. **Explore**: all powertrains, or two specific cars. Pre-filled from a shared profile (country, km/yr, category, new/used) that is never asked twice.
+2. **Compare cars** (« Comparer les voitures », code: `Explorer`): all powertrains, or two specific cars. Pre-filled from a shared profile (country, km/yr, category, new/used) that is never asked twice.
 3. **Other ways to get around**: an informational page with footprints per passenger-km for walking through to the plane (ADEME Impact CO₂, construction included).
 
 ## Capabilities and Constraints

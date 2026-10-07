@@ -14,7 +14,7 @@ const fr = {
   h1: <>Dois-je passer à <em>l'électrique</em>&nbsp;?</>,
   lede: `Une voiture électrique réduirait-elle l'empreinte carbone de vos déplacements, ou l'augmenterait-elle${N}? Quatre questions, un verdict chiffré en moins d'une minute.`,
   langue: "Langue",
-  onglets: { decision: "Ma décision", explorer: "Explorer", modes: "Se déplacer autrement" },
+  onglets: { decision: "Ma décision", explorer: "Comparer les voitures", modes: "Se déplacer autrement" },
   ans: (s, n) => `${s}${N}${n < 2 ? "an" : "ans"}`,
   kmAn: (s) => `${s}${N}km/an`,
   aideOuvrir: (l) => `Aide : ${l}`,
@@ -102,7 +102,6 @@ const fr = {
   commentLire: "Comment lire ce résultat",
   conventions: "Votre voiture actuelle est déjà fabriquée : seul son usage compte. Une électrique neuve est comptée avec toute sa fabrication (convention marginale, H3), une électrique d'occasion avec la part de valeur que vous consommez (H2). Revendue plutôt que mise à la casse, votre voiture actuelle continuerait d'émettre chez son repreneur, mais remplacerait vraisemblablement un autre véhicule : effet quasi neutre à l'échelle du parc.",
   modifier: "Modifier mes réponses",
-  explorer: "Explorer le comparateur",
 
   parametres: "Paramètres",
   avance: "Réglages avancés",
@@ -210,7 +209,7 @@ const fr = {
   hyp: [
     { t: "Durée de vie du véhicule", d: "Le premier atteint de 200 000 km ou 18 ans, proche de l'âge moyen à la casse (Belgique 18,5 ans, France 19,8). Prudent : l'ICCT retient 20 ans et 240 000 km (2025 ; 243 000 km dans l'édition 2021), ce qui favoriserait davantage l'électrique. Les batteries actuelles tiennent ces bornes : moins de 1 % de remplacements constatés sur les voitures vendues depuis 2016." },
     { t: "Allocation de la fabrication : économique (valeur consommée)", d: "La fabrication est répartie entre propriétaires successifs au prorata de la valeur du véhicule consommée pendant leur détention, avec une décote de 15 %/an (un peu plus lente que la décote réelle des premières années). L'ISO 14044 (§ 4.3.4.2) prévoit l'allocation par la valeur économique lorsqu'aucune relation physique ne permet de répartir les charges ; elle est ici transposée aux propriétaires successifs." },
-    { t: "Achat neuf : convention marginale", d: "Par défaut, l'achat d'une voiture neuve déclenche 100 % de sa fabrication, même revendue ensuite : lecture conséquentielle adaptée à une décision individuelle, et borne haute par rapport à l'allocation économique. La distinction attributionnel / conséquentiel suit Plevin et al. (2014). La comparaison est limitée à la vie restante de l'électrique. Dans « Explorer », l'option « partagée entre propriétaires » applique l'allocation économique (H2)." },
+    { t: "Achat neuf : convention marginale", d: "Par défaut, l'achat d'une voiture neuve déclenche 100 % de sa fabrication, même revendue ensuite : lecture conséquentielle adaptée à une décision individuelle, et borne haute par rapport à l'allocation économique. La distinction attributionnel / conséquentiel suit Plevin et al. (2014). La comparaison est limitée à la vie restante de l'électrique. Dans « Comparer les voitures », l'option « partagée entre propriétaires » applique l'allocation économique (H2)." },
     { t: "Repreneur", d: "En cas de revente, un repreneur poursuit la vie du véhicule à 12 000 km/an (moyenne du parc), marché de l'occasion supposé liquide. Limite connue : le kilométrage annuel réel décroît avec l'âge, ce qui surestime légèrement les kilomètres du repreneur." },
     { t: "Réseaux électriques", d: "Intensités en cycle de vie, périmètre consommation (imports inclus), 2024-2025, d'après Electricity Maps et Ember ; valeurs vérifiées à ±20 % près. France : 50 g, valeur ADEME « mix moyen, consommation » (51,9 g en 2024), plus prudente que les ≈ 32 g d'Electricity Maps ; RTE donne 19,6 g en émissions directes de production." },
     { t: "Décarbonation des réseaux : trajectoires par pays", d: "Taux annuels estimés à partir des objectifs nationaux (PNIEC) et des tendances 2024-2025 (France −1 %/an, Belgique −3 %, Allemagne −4,5 %, Pologne −5,5 %…). Ces documents publient des parts d'énergies renouvelables, pas des trajectoires en g/kWh : les taux sont donc un paramètre de sensibilité, désactivable. L'intensité est la moyenne d'une décroissance géométrique sur la période de détention." },
@@ -241,7 +240,7 @@ const en = {
   h1: <>Should I switch to <em>electric</em>?</>,
   lede: "Would an electric car cut the carbon footprint of your journeys, or raise it? Four questions, a quantified verdict in under a minute.",
   langue: "Language",
-  onglets: { decision: "My decision", explorer: "Explore", modes: "Other ways to get around" },
+  onglets: { decision: "My decision", explorer: "Compare cars", modes: "Other ways to get around" },
   ans: (s, n) => `${s}${N}${n === 1 ? "year" : "years"}`,
   kmAn: (s) => `${s}${N}km/yr`,
   aideOuvrir: (l) => `Help: ${l}`,
@@ -329,7 +328,6 @@ const en = {
   commentLire: "How to read this result",
   conventions: "Your current car is already built, so only its use counts. A new electric car carries its whole manufacturing footprint (marginal convention, A3); a used one carries the share of value you consume (A2). If sold rather than scrapped, your current car would keep emitting with its next owner, but would most likely replace another vehicle: a near-neutral effect across the fleet.",
   modifier: "Change my answers",
-  explorer: "Explore the comparison",
 
   parametres: "Settings",
   avance: "Advanced settings",
@@ -437,7 +435,7 @@ const en = {
   hyp: [
     { t: "Vehicle lifetime", d: "Whichever comes first of 200,000 km or 18 years, close to the average scrappage age (Belgium 18.5 years, France 19.8). Cautious: the ICCT uses 20 years and 240,000 km (2025; 243,000 km in the 2021 edition), which would favour electric further. Current batteries last that long: fewer than 1% of cars sold since 2016 have needed a replacement." },
     { t: "Manufacturing allocation: economic (consumed value)", d: "Manufacturing is shared between successive owners in proportion to the value of the car consumed while they own it, with 15%/yr depreciation (a little slower than real early-year depreciation). ISO 14044 (§4.3.4.2) provides for allocation by economic value when no physical relationship can split the burden; it is transposed here to successive owners." },
-    { t: "Buying new: marginal convention", d: "By default, buying a new car triggers 100% of its manufacturing, even if sold on later: a consequential reading suited to an individual decision, and an upper bound compared with economic allocation. The attributional / consequential distinction follows Plevin et al. (2014). The comparison is limited to the electric car's remaining life. In “Explore”, the “shared between owners” option applies economic allocation (A2)." },
+    { t: "Buying new: marginal convention", d: "By default, buying a new car triggers 100% of its manufacturing, even if sold on later: a consequential reading suited to an individual decision, and an upper bound compared with economic allocation. The attributional / consequential distinction follows Plevin et al. (2014). The comparison is limited to the electric car's remaining life. In “Compare cars”, the “shared between owners” option applies economic allocation (A2)." },
     { t: "Next owner", d: "If sold, a next owner keeps driving the car at 12,000 km/yr (fleet average), assuming a liquid used market. Known limitation: real annual mileage declines with age, which slightly overstates the next owner's kilometres." },
     { t: "Electricity grids", d: "Life-cycle intensities, consumption basis (imports included), 2024-2025, from Electricity Maps and Ember; values checked to within ±20%. France: 50 g, the ADEME 'average mix, consumption' value (51.9 g in 2024), more cautious than Electricity Maps' ≈ 32 g; RTE reports 19.6 g of direct generation emissions." },
     { t: "Grid decarbonisation: country trajectories", d: "Annual rates estimated from national energy and climate plans (NECPs) and 2024-2025 trends (France −1%/yr, Belgium −3%, Germany −4.5%, Poland −5.5%…). Those plans publish renewable shares, not g/kWh trajectories, so the rates are a sensitivity parameter you can switch off. Intensity is the mean of a geometric decline over the ownership period." },
