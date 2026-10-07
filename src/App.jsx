@@ -244,7 +244,11 @@ export default function App() {
 
         <Hypotheses />
         <Sources />
-        <footer className="pied">{s.footer(lienCarbone4)}</footer>
+        <Ecoconception />
+        <footer className="pied">
+          <p>{s.ecoMention((t) => <a href="#ecoconception">{t}</a>)}</p>
+          <p>{s.footer(lienCarbone4)}</p>
+        </footer>
       </div>
     </Ctx.Provider>
   );
@@ -843,6 +847,38 @@ function Modes() {
         </p>
       </section>
     </div>
+  );
+}
+
+/* ============================================================
+   ÉCOCONCEPTION (mini page repliable, ouverte par le lien du pied de page)
+   ============================================================ */
+
+const REFS_ECO = [
+  ["EcoIndex (CNUMR / GreenIT.fr)", "https://www.ecoindex.fr/"],
+  ["RGESN 2024 (Arcep, Arcom, DINUM, ADEME)", "https://www.arcep.fr/la-regulation/grands-dossiers-thematiques-transverses/lempreinte-environnementale-du-numerique/referentiel-general-ecoconception-services-numeriques.html"],
+  ["Green Claude (Institut du Numérique Responsable)", "https://github.com/Institut-du-Numerique-Responsable/green-claude"],
+];
+
+function Ecoconception() {
+  const { s } = useT();
+  return (
+    <Repli id="ecoconception" className="carte replie annexe" titre={<h2>{s.ecoTitre}</h2>} ancre="ecoconception">
+      <div className="eco">
+        <p>{s.ecoIntro}</p>
+        <h3>{s.ecoMesureTitre}</h3>
+        <dl className="eco-mesures">
+          {s.ecoMesures.map(([k, v]) => <div key={k}><dt>{k}</dt><dd>{v}</dd></div>)}
+        </dl>
+        <p className="aide-ligne">{s.ecoAvant}</p>
+        <h3>{s.ecoChoixTitre}</h3>
+        <ul>{s.ecoChoix.map((c) => <li key={c}>{c}</li>)}</ul>
+        <h3>{s.ecoLimitesTitre}</h3>
+        <p>{s.ecoLimites}</p>
+        <h3>{s.ecoRefs}</h3>
+        <ul>{REFS_ECO.map(([t, u]) => <li key={u}><a href={u} target="_blank" rel="noreferrer">{t}</a></li>)}</ul>
+      </div>
+    </Repli>
   );
 }
 

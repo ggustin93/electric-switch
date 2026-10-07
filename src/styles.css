@@ -1313,3 +1313,45 @@ input[type="range"] {
   color: var(--ink-2);
   max-width: 70ch;
 }
+
+/* Mini page écoconception */
+.eco {
+  font-size: var(--fs-sm);
+  color: var(--ink-2);
+  max-width: 70ch;
+}
+.eco h3 {
+  color: var(--ink);
+  margin: var(--s5) 0 var(--s2);
+}
+.eco p {
+  margin: var(--s3) 0 0;
+}
+.eco ul {
+  margin: 0;
+  padding-left: var(--s5);
+  display: grid;
+  gap: var(--s1);
+}
+.eco-mesures {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(9rem, 1fr));
+  gap: var(--s2);
+  margin: 0;
+}
+.eco-mesures div {
+  background: var(--surface-2);
+  border-radius: var(--r-sm);
+  padding: var(--s3);
+}
+.eco-mesures dt {
+  font-size: var(--fs-xs);
+}
+.eco-mesures dd {
+  margin: var(--s1) 0 0;
+  color: var(--ink);
+  font-weight: 600;
+}
+.pied p {
+  margin: 0 0 var(--s1);
+}

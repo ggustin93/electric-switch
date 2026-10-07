@@ -186,6 +186,28 @@ const fr = {
   ],
   modesSource: "Source : ADEME, Impact CO₂ (impactco2.fr), données consultées le 07/10/2026, Licence Ouverte Etalab.",
 
+  // Écoconception (mini page repliable + mention de pied de page)
+  ecoMention: (lien) => <>Site écoconçu : EcoIndex A (80/100), 52 Ko, une seule requête, aucun traceur. {lien("En savoir plus")}</>,
+  ecoTitre: "Écoconception de ce site",
+  ecoIntro: "Un outil qui parle d'empreinte carbone se doit d'être sobre. Ce simulateur a été conçu pour consommer le moins possible, sur votre appareil comme sur le réseau.",
+  ecoMesureTitre: "Mesure au premier chargement (07/10/2026)",
+  ecoMesures: [["Score EcoIndex", "80/100, note A"], ["Poids transféré", "52 Ko"], ["Requêtes", "1"], ["Éléments de page", "93"], ["Estimation par visite", "≈ 0,26 gCO₂e et 0,04 cl d'eau"]],
+  ecoAvant: "Avant écoconception : note E (31/100), 196 Ko, 9 requêtes, 654 éléments.",
+  ecoChoixTitre: "Ce qui a été fait",
+  ecoChoix: [
+    "Une seule page autonome : styles, code et police tiennent dans un fichier.",
+    "Bibliothèque d'interface minimale (Preact, environ 4 Ko) plutôt que React.",
+    "Une seule police, réduite aux caractères utilisés (12 Ko) ; le reste du texte utilise la police de votre appareil.",
+    "Aucun service tiers : ni traceur, ni cookie, ni statistiques, ni police externe.",
+    "Les calculs se font dans votre navigateur : aucune donnée n'est envoyée.",
+    "Contenu affiché à la demande : onglets, hypothèses et sources ne sont construits qu'à l'ouverture.",
+    "Graphiques en HTML et CSS, sans bibliothèque de graphiques.",
+    "Thème sombre selon votre système, animations réduites si vous le demandez.",
+  ],
+  ecoLimitesTitre: "Limites",
+  ecoLimites: "L'EcoIndex estime l'impact du premier chargement à partir de trois mesures (éléments, requêtes, poids) ; ce n'est ni une mesure d'énergie ni une certification. L'audit a été mené avec Green Claude (Institut du Numérique Responsable), un outil d'autodiagnostic fondé sur le RGESN 2024, qui ne vaut pas déclaration de conformité. L'hébergement n'est pas encore choisi : il devra privilégier un hébergeur transparent sur son énergie.",
+  ecoRefs: "Références",
+
   hypTitre: (n) => `Hypothèses (H1 à H${n})`,
   hyp: [
     { t: "Durée de vie du véhicule", d: "Le premier atteint de 200 000 km ou 18 ans, proche de l'âge moyen à la casse (Belgique 18,5 ans, France 19,8). Prudent : l'ICCT retient 20 ans et 240 000 km (2025 ; 243 000 km dans l'édition 2021), ce qui favoriserait davantage l'électrique. Les batteries actuelles tiennent ces bornes : moins de 1 % de remplacements constatés sur les voitures vendues depuis 2016." },
@@ -391,6 +413,28 @@ const en = {
     "Different scope from the simulator: ADEME's car is an average car. For yours, use “My decision”, which accounts for your country, consumption and vehicle lifetime.",
   ],
   modesSource: "Source: ADEME, Impact CO₂ (impactco2.fr), accessed 7 October 2026, Etalab Open Licence.",
+
+  // Ecodesign (collapsible mini page + footer mention)
+  ecoMention: (lien) => <>Ecodesigned site: EcoIndex A (80/100), 52 kB, a single request, no trackers. {lien("Learn more")}</>,
+  ecoTitre: "How this site is ecodesigned",
+  ecoIntro: "A tool about carbon footprints should be frugal itself. This simulator was designed to use as little as possible, on your device and on the network.",
+  ecoMesureTitre: "Measured at first load (7 October 2026)",
+  ecoMesures: [["EcoIndex score", "80/100, grade A"], ["Transferred weight", "52 kB"], ["Requests", "1"], ["Page elements", "93"], ["Estimate per visit", "≈ 0.26 gCO₂e and 0.04 cl of water"]],
+  ecoAvant: "Before ecodesign: grade E (31/100), 196 kB, 9 requests, 654 elements.",
+  ecoChoixTitre: "What was done",
+  ecoChoix: [
+    "A single self-contained page: styles, code and font fit in one file.",
+    "A minimal UI library (Preact, about 4 kB) instead of React.",
+    "A single font, cut down to the characters used (12 kB); the rest of the text uses your device's font.",
+    "No third-party services: no trackers, cookies, analytics or external fonts.",
+    "Calculations run in your browser: no data is sent anywhere.",
+    "Content built on demand: tabs, assumptions and sources are only rendered when opened.",
+    "Charts in HTML and CSS, without a charting library.",
+    "Dark theme follows your system; animations are reduced if you ask for it.",
+  ],
+  ecoLimitesTitre: "Limits",
+  ecoLimites: "EcoIndex estimates the impact of the first load from three measurements (elements, requests, weight); it is neither an energy measurement nor a certification. The audit used Green Claude (Institut du Numérique Responsable), a self-assessment tool based on the French RGESN 2024 framework, which is not a declaration of conformity. Hosting is not chosen yet: it should favour a host that is transparent about its energy.",
+  ecoRefs: "References",
 
   hypTitre: (n) => `Assumptions (A1 to A${n})`,
   hyp: [
