@@ -785,8 +785,10 @@ function teinte(p) {
 }
 const TOUS_MODES = MODES.flatMap((fam) => fam.modes).sort((a, b) => a[1] - b[1]);
 const VALEUR_MODE = Object.fromEntries(TOUS_MODES);
-const REFERENCES = ["voitureThermique", "voitureElec", "tgv"];
-const EXEMPLES = ["tgv", "busElec", "vae", "voitureElec", "voitureThermique"];
+// Référence fixe : la voiture thermique avec le seul conducteur, point de départ de l'utilisateur
+const REF_ID = "voitureThermique";
+const REF = VALEUR_MODE[REF_ID];
+const EXEMPLES = ["tgv", "busElec", "vae"];
 
 // « 49 fois moins », « 1,5 fois plus », « autant » (écart < seuil des verdicts) par rapport à la référence
 function rapport(s, f, g, ref) {
@@ -801,10 +803,6 @@ function rapport(s, f, g, ref) {
 function Modes() {
   const f = useT();
   const { s } = f;
-  const [refId, setRefId] = useState("voitureThermique");
-  const ref = VALEUR_MODE[refId];
-  const posRef = posLog(ref);
-  const exemples = EXEMPLES.filter((id) => id !== refId).slice(0, 3);
 
   return (
     <div>
@@ -812,35 +810,33 @@ function Modes() {
         <h2>{s.modesTitre}</h2>
         <p className="lede-carte">{s.modesIntro}</p>
         <p className="sous-titre">{s.ordresSous}</p>
-        <Choix label={s.comparerA} value={refId} onChange={setRefId}
-          options={REFERENCES.map((id) => ({ v: id, label: s.modes[id] }))} />
         <p className="bascule resume-ref">
-          {s.ordresResume(s.modes[refId])}{" "}
-          {exemples.map((id, i) => <span key={id}>{i > 0 && " · "}{s.modes[id]} : <strong>{rapport(s, f, VALEUR_MODE[id], ref)}</strong></span>)}
+          {s.ordresResume(s.modes[REF_ID])}{" "}
+          {EXEMPLES.map((id, i) => <span key={id}>{i > 0 && " · "}{s.modes[id]} : <strong>{rapport(s, f, VALEUR_MODE[id], REF)}</strong></span>)}
         </p>
-        <div className="log" style={{ "--ref": `${posRef}%` }}>
+        <div className="log" style={{ "--ref": `${posLog(REF)}%` }}>
           <div className="log-ligne log-entete" aria-hidden="true">
             <span className="log-axe">
               <span style={{ left: "0%" }}>0</span>
               {[1, 10, 100].map((t) => <span key={t} style={{ left: `${posLog(t)}%` }}>{f.n0(t)}</span>)}
-              <span className={posRef < 50 ? "log-ref log-ref-gauche" : "log-ref"}>{s.ordresRef(s.modes[refId])}</span>
+              <span className="log-ref">{s.ordresRef(s.modes[REF_ID])}</span>
             </span>
             <span className="log-val">gCO₂e/km</span>
           </div>
           <ol className="log-lignes">
             {TOUS_MODES.map(([id, g]) => (
-              <li key={id} className={id === refId ? "log-ligne log-ligne-ref" : "log-ligne"}>
+              <li key={id} className={id === REF_ID ? "log-ligne log-ligne-ref" : "log-ligne"}>
                 <Icone mode={id} />
                 <span className="log-nom">
                   {s.modes[id]}
-                  <span className="log-rapport">{id === refId ? s.rapport.ref : rapport(s, f, g, ref)}</span>
+                  <span className="log-rapport">{id === REF_ID ? s.rapport.ref : rapport(s, f, g, REF)}</span>
                 </span>
                 <span className="log-piste" aria-hidden="true"><span className="log-point" style={{ left: `${posLog(g)}%`, ...teinte(posLog(g)) }} /></span>
                 <span className="log-val"><strong>{f.n1(g)}</strong></span>
               </li>
             ))}
           </ol>
-          <p className="log-legende"><span className="trait-ref" aria-hidden="true" />{s.ordresRefLegende(s.modes[refId], `${f.n1(ref)}${NB}g/km`)}</p>
+          <p className="log-legende"><span className="trait-ref" aria-hidden="true" />{s.ordresRefLegende(s.modes[REF_ID], `${f.n1(REF)}${NB}g/km`)}</p>
           <p className="log-legende">{s.ordresLegende}</p>
         </div>
       </section>
