@@ -1281,9 +1281,31 @@ input[type="range"] {
 }
 .log-entete .log-axe .log-ref {
   bottom: calc(9px + 1.4em);
+  color: var(--ink);
+}
+/* Petit trait pointillé qui relie le libellé à la ligne de référence */
+.log-entete .log-axe .log-ref::after {
+  content: "";
+  position: absolute;
+  right: -1px;
+  top: 100%;
+  height: calc(1.4em + 9px);
+  border-right: 1px dashed var(--ink-2);
+}
+.log-ligne-ref {
+  font-weight: 600;
+  background: var(--surface-2);
+}
+.trait-ref {
+  display: inline-block;
+  width: 0;
+  height: 1em;
+  margin-right: var(--s2);
+  vertical-align: -2px;
+  border-left: 1px dashed var(--ink);
 }
 .log-legende {
-  margin: var(--s4) 0 0;
+  margin: var(--s3) 0 0;
   font-size: var(--fs-sm);
   color: var(--ink-2);
 }
