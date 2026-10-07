@@ -101,6 +101,8 @@ test("budget : énergie, revente et valeur résiduelle cohérentes", () => {
   const b = budget(base);
   assert.ok(Math.abs(b.energieGarder - 60000 * 7 * 1.8 / 100) < 1e-6);
   assert.ok(b.residuelle < b.achat && b.residuelle > 0);
+  assert.ok(Math.abs(b.energie100Garder - 7 * 1.8) < 1e-9);
+  assert.ok(Math.abs(b.economieUsageAn - (b.usageGarderAn - b.usageVEAn)) < 1e-9);
   // plus on roule, plus l'électrique devient avantageux
   assert.ok(budget({ ...base, kmAn: 30000 }).remplacer - budget({ ...base, kmAn: 30000 }).garder
     < b.remplacer - b.garder);

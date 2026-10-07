@@ -31,7 +31,7 @@ Single page, three tabs (v7):
 - Bilingual FR / EN. Language follows the browser and is remembered locally.
 - 14 grids, 5 segments, 5 powertrains, 4 battery footprints. The model lives in `src/model.js`, has no UI text, and is covered by `npm test`.
 - Results are orders of magnitude with about ±20 % uncertainty. The verdict calls a tie under a 10 % gap (kept deliberately, because both options share most of the uncertainty).
-- **Budget (second reading of the verdict):** net cost over the compared period (purchase, resale, energy, maintenance, remaining value), default prices per country dated and editable, H14. Insurance, financing and incentives excluded (links to official pages only).
+- **Budget (second reading of the verdict):** shows the **running cost** first (energy + maintenance per year, and energy per 100 km): it's the informative, least uncertain part, and everyone already knows a new car costs money. The total cost including purchase (resale range, used-EV option, editable prices) sits behind « Et le prix d'achat ? ». H14. Financing and incentives excluded (links to official pages only). Reviewed by a data scientist, a TCO expert, and UX / climate-communication / consumer-advice experts (October 2026).
 - One visible convention: a new car carries 100 % of its manufacturing everywhere by default (H3). "Shared between owners" is an advanced option.
 - Open decision: brand and publication venue are **undecided**.
 

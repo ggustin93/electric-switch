@@ -277,7 +277,13 @@ export function budget({
   // Capital : achat − revente de l'actuelle − valeur restante du VE + borne (hors coût du financement)
   const capital = achat - valeurActuelle - residuelle + wallbox;
   const remplacer = capital + energieVE + km * entretien.electrique + horizon * autresFraisAn;
-  // Économie annuelle d'usage (énergie + entretien) en passant à l'électrique
-  const economieUsageAn = (energieGarder - energieVE) / horizon + kmAn * (entretien.thermique - entretien.electrique);
-  return { km, achat, residuelle, capital, energieGarder, energieVE, garder, remplacer, economieUsageAn };
+  // Coûts d'usage par an (énergie + entretien) et énergie aux 100 km : la partie la plus sûre du budget
+  const usageGarderAn = (energieGarder + km * entretien.thermique) / horizon;
+  const usageVEAn = (energieVE + km * entretien.electrique) / horizon;
+  const energie100Garder = conso * prix[carb];
+  const energie100VE = seg.ev * PERTES_CHARGE * prix.elec;
+  return {
+    km, achat, residuelle, capital, energieGarder, energieVE, garder, remplacer,
+    usageGarderAn, usageVEAn, economieUsageAn: usageGarderAn - usageVEAn, energie100Garder, energie100VE,
+  };
 }
