@@ -103,6 +103,11 @@ test("budget : énergie, revente et valeur résiduelle cohérentes", () => {
   assert.ok(b.residuelle < b.achat && b.residuelle > 0);
   assert.ok(Math.abs(b.energie100Garder - 7 * 1.8) < 1e-9);
   assert.ok(Math.abs(b.economieUsageAn - (b.usageGarderAn - b.usageVEAn)) < 1e-9);
+  // la décomposition affichée retombe exactement sur l'écart (revue data scientist, bug A)
+  const somme = (x) => Object.values(x.postes).reduce((u, v) => u + v, 0);
+  assert.ok(Math.abs(somme(b) - (b.remplacer - b.garder)) < 1e-6);
+  const occ = budget({ ...base, etatVE: "occasion", ageVE: 3, wallbox: 1500, autresFraisAn: 300, valeurActuelle: 15000 });
+  assert.ok(Math.abs(somme(occ) - (occ.remplacer - occ.garder)) < 1e-6);
   // plus on roule, plus l'électrique devient avantageux
   assert.ok(budget({ ...base, kmAn: 30000 }).remplacer - budget({ ...base, kmAn: 30000 }).garder
     < b.remplacer - b.garder);

@@ -1476,3 +1476,36 @@ input[type="number"] {
   border-radius: var(--r-sm);
   font-variant-numeric: tabular-nums;
 }
+
+/* Budget : décomposition exacte de l'écart (les postes s'additionnent) */
+.budget-postes {
+  margin: var(--s3) 0 0;
+  font-size: var(--fs-sm);
+  max-width: 40rem;
+}
+.budget-postes div {
+  display: flex;
+  justify-content: space-between;
+  gap: var(--s4);
+  padding: var(--s1) 0;
+  border-bottom: 1px solid var(--line);
+}
+.budget-postes dt {
+  color: var(--ink-2);
+}
+.budget-postes dd {
+  margin: 0;
+  white-space: nowrap;
+  font-variant-numeric: tabular-nums;
+}
+.budget-postes .budget-total {
+  border-bottom: 0;
+  font-weight: 600;
+}
+.budget-postes .budget-total dt {
+  color: var(--ink);
+}
+.budget-sous {
+  font-size: var(--fs-sm);
+  margin-top: var(--s4);
+}

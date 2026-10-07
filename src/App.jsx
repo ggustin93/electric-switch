@@ -420,11 +420,12 @@ function Decision({ shared, allerExplorer }) {
 }
 
 /* ---------- Budget : seconde lecture du verdict, prix modifiables ---------- */
+// Belgique : pas de prime pour les particuliers en 2026 (dit en texte, pas de lien trompeur)
 const AIDES = [
-  ["France", "https://www.ecologie.gouv.fr/politiques-publiques/coup-pouce-vehicules-particuliers-electriques"],
-  ["Royaume-Uni / UK", "https://www.gov.uk/government/publications/how-to-apply-for-vehicle-eligibility-for-the-electric-car-grant"],
-  ["Belgique / Belgium", "https://finances.belgium.be"],
+  ["FR", "https://www.economie.gouv.fr/particuliers/achat-dun-vehicule-electrique-pouvez-vous-beneficier-de-la-prime-coup-de-pouce-vehicules-particuliers-electriques"],
+  ["UK", "https://www.gov.uk/government/publications/how-to-apply-for-vehicle-eligibility-for-the-electric-car-grant"],
 ];
+const r100 = (x) => Math.round(x / 100) * 100 || 0;
 
 function ChampPrix({ id, label, value, step, onChange }) {
   return (
@@ -453,38 +454,44 @@ function Budget({ verdict, carb, conso, horizon, tronque, kmAn, seg, etatVE, age
   const b = budget(entrees);
   const d = departager(b.remplacer, b.garder);
   const duree = f.ans(horizon);
-  // Fourchette selon la revente (hypothèse la plus incertaine) : décote 15 % → 25 %/an
-  const [lo, hi] = DECOTE_VE_FOURCHETTE.map((decoteVE) => budget({ ...entrees, decoteVE }).remplacer - b.garder).sort((x, y) => x - y);
+  // Tous les montants affichés dérivent des mêmes valeurs arrondies à 100 € : ils se recoupent toujours
+  const usageTh = r100(b.usageGarderAn);
+  const usageVE = r100(b.usageVEAn);
+  // Les économies sur la période découlent du chiffre annuel affiché (1 100 €/an × 5 ans = 5 500 €)
+  const postes = Object.entries({ ...b.postes, usage: -(usageTh - usageVE) * horizon }).map(([k, v]) => [k, r100(v)]);
+  const ecartTotal = postes.reduce((x, [, v]) => x + v, 0);
+  // Fourchette selon la revente de l'électrique (décote 15 à 25 %/an, valeur centrale incluse)
+  const variantes = [...DECOTE_VE_FOURCHETTE, undefined].map((decoteVE) => budget({ ...entrees, decoteVE }).remplacer - b.garder);
+  const [lo, hi] = [Math.min(...variantes), Math.max(...variantes)].map(f.eurK);
   // Alternative : électrique d'occasion de 3 ans (si l'on envisageait du neuf)
   const occ = etatVE === "neuf" ? budget({ ...entrees, etatVE: "occasion", ageVE: 3 }) : null;
-  // « environ 6 000 € de plus », « environ 3 000 € de moins » ou « à peu près autant » (arrondi au millier)
+  // « environ 6 000 € de plus », « environ 3 000 € de moins » ou « à peu près autant »
   const ecart = (x) => {
     if (Math.abs(x) < 500) return s.budgetEcartPareil;
-    return x > 0 ? s.budgetEcartPlus(f.eurK(x)) : s.budgetEcartMoins(f.eurK(-x));
+    return x > 0 ? s.budgetEcartPlus(f.eur(x)) : s.budgetEcartMoins(f.eur(-x));
   };
+  const signe = (x) => (x > 0 ? `+${f.eur(x)}` : x < 0 ? `−${f.eur(-x)}` : f.eur(0));
 
   return (
     <section className="carte">
       <h2>{s.budgetTitre}</h2>
       {/* Visible : le coût d'usage (énergie + entretien), l'information utile et la plus sûre.
           Le prix d'achat, attendu et incertain (revente), est replié. */}
-      <p className="bascule">
-        {s.budgetUsageTitre(usage(s, f, b.economieUsageAn), f.eur(b.usageVEAn), f.eur(b.usageGarderAn))}
-      </p>
-      <p className="aide-ligne">{s.budget100(f.n1(b.energie100Garder), f.n1(b.energie100VE))}</p>
+      <p className="bascule">{s.budgetUsageTitre(usage(s, f, usageTh - usageVE), f.eur(usageTh), f.eur(usageVE))}</p>
+      <p className="aide-ligne">{s.budget100(f.n1f(b.energie100Garder), f.n1f(b.energie100VE))}</p>
       <Repli className="replie" titre={s.budgetAchatTitre}>
         <p className="note-petite">
-          {d === "serre" ? s.budgetProche(duree) : s.budgetVerdict(ecart(b.remplacer - b.garder), duree, f.eurK(lo), f.eurK(hi))}
+          {d === "serre" ? s.budgetProche(duree) : s.budgetVerdict(ecart(ecartTotal), duree, lo === hi ? null : s.budgetPlage(lo, hi))}
         </p>
-        {occ && verdict !== "garder" && <p className="note-petite">{s.budgetOccasion(ecart(occ.remplacer - occ.garder))}</p>}
+        <dl className="budget-postes">
+          {postes.map(([k, v]) => <div key={k}><dt>{s.budgetPostes[k]}</dt><dd>{signe(v)}</dd></div>)}
+          <div className="budget-total"><dt>{s.budgetEcartTotal(etat)}</dt><dd>{signe(ecartTotal)}</dd></div>
+        </dl>
+        {occ && verdict !== "garder" && <p className="note-petite">{s.budgetOccasion(ecart(r100(occ.remplacer - occ.garder)))}</p>}
         {horizon > 8 && <p className="note-petite">{s.budgetLongue}</p>}
         {tronque && <p className="note-petite">{s.tronque(duree)}</p>}
-        <dl className="eco-mesures budget-totaux">
-          <div><dt>{s.budgetGarder}</dt><dd>{f.eur(b.garder)}</dd></div>
-          <div><dt>{s.budgetRemplacer(etat)}</dt><dd>{f.eur(b.remplacer)}</dd></div>
-        </dl>
-        <p className="note-petite">{s.budgetPourquoi(f.eur(b.capital), duree)}</p>
         <p className="note-petite">{s.budgetExclus}</p>
+        <h3 className="budget-sous">{s.budgetVosPrix}</h3>
         <div className="budget-champs">
           <ChampPrix id="p-carb" label={s.budgetPrixCarb(s.motor[carb].nom)} value={p.carb} step="0.01" onChange={maj("carb")} />
           <ChampPrix id="p-elec" label={s.budgetPrixElec} value={p.elec} step="0.01" onChange={maj("elec")} />
@@ -493,10 +500,13 @@ function Budget({ verdict, carb, conso, horizon, tronque, kmAn, seg, etatVE, age
           <ChampPrix id="p-wallbox" label={s.budgetWallbox} value={p.wallbox} step="100" onChange={maj("wallbox")} />
           <ChampPrix id="p-autres" label={s.budgetAutres} value={p.autres} step="50" onChange={maj("autres")} />
         </div>
-        <p className="note-petite">{s.budgetNote}</p>
+        <Repli className="replie" titre={s.budgetMethodeTitre}>
+          <ul className="notes-modes">{s.budgetMethode.map((l) => <li key={l}>{l}</li>)}</ul>
+        </Repli>
         <p className="note-petite">
           {s.budgetAides}{" "}
-          {AIDES.map(([n, u], i) => <span key={u}>{i > 0 && " · "}<a href={u} target="_blank" rel="noreferrer">{n}</a></span>)}
+          {AIDES.map(([id, u], i) => <span key={u}>{i > 0 && " · "}<a href={u} target="_blank" rel="noreferrer">{s.pays[id]}</a></span>)}
+          {" · "}{s.budgetAidesBE}
         </p>
       </Repli>
     </section>
