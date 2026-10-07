@@ -118,7 +118,8 @@ export function calc(motorId, seg, gridG, kmVous, ratioFab, phevShare, efBatt) {
 }
 
 // --- Fenêtre de détention : km parcourus et part de fabrication ---
-export function fenetre({ occasion, odo, age, kmAn, revente, detention }) {
+// marginal : un achat neuf porte 100 % de sa fabrication (H3), même revendu ensuite
+export function fenetre({ occasion, odo, age, kmAn, revente, detention, marginal = false }) {
   const ageEff = occasion ? age : 0;
   const odoEff = occasion ? Math.min(odo, Math.max(1, ageEff) * KM_AN_MAX_COMPTEUR) : 0;
   const anneesRest = Math.max(1, VIE_ANS - ageEff);
@@ -131,7 +132,7 @@ export function fenetre({ occasion, odo, age, kmAn, revente, detention }) {
   const ageMort = revente ? ageFinVous + kmRepreneur / KM_AN_PARC : ageFinVous;
   return {
     kmVous, kmRepreneur, odoEff, ageEff, ageFinVous, ageMort,
-    ratioFab: partFab(ageEff, ageFinVous, ageMort),
+    ratioFab: marginal && !occasion ? 1 : partFab(ageEff, ageFinVous, ageMort),
     // Vous gardez le véhicule jusqu'à sa limite d'âge, avant sa borne kilométrique
     borneParAge: anneesVous === anneesRest && anneesRest * kmAn < VIE_KM - odoEff,
   };
@@ -175,15 +176,35 @@ export function decider({ carb, conso, annees, seg, etatVE, ageVE, pays, kmAn, d
 }
 
 // --- Onglet Duel : une configuration { segId, motorId, etat } ---
-export function calcConfig(cfg, { pays, kmAn, decarb, efBatt }) {
+export function calcConfig(cfg, { pays, kmAn, decarb, efBatt, marginal }) {
   const seg = byId(SEGMENTS, cfg.segId);
   const f = fenetre({
     occasion: cfg.etat === "occasion", odo: DUEL.odo, age: DUEL.age,
-    kmAn, revente: true, detention: DUEL.detention,
+    kmAn, revente: true, detention: DUEL.detention, marginal,
   });
   const gridEff = mixMoyen(pays.g, f.kmVous / kmAn, decarb, pays.declin);
   return { ...calc(cfg.motorId, seg, gridEff, f.kmVous, f.ratioFab, DUEL.phevShare, efBatt), f };
 }
+
+// --- Kilométrage annuel à partir duquel remplacer devient préférable (curseur 3 000 à 40 000 km/an).
+// 3000 si l'électrique gagne déjà au minimum, null s'il ne gagne jamais.
+export function kmBascule(params) {
+  for (let kmAn = 3000; kmAn <= 40000; kmAn += 500) {
+    const v = decider({ ...params, kmAn });
+    if (v.tRemplacer <= v.tGarder) return kmAn;
+  }
+  return null;
+}
+
+// --- Autres modes de transport : gCO2e par personne et par km, fabrication comprise.
+// ADEME Impact CO₂, API v1, consultée le 07/10/2026 (réseau français ; voir docs/research).
+export const MODES = [
+  { famille: "actif", modes: [["marche", 0], ["velo", 0.2], ["vae", 11.0], ["trottinette", 24.9]] },
+  { famille: "collectif", modes: [["tgv", 2.9], ["tram", 4.3], ["metro", 4.4], ["intercites", 9.0], ["rer", 9.8], ["busElec", 21.7], ["ter", 27.7], ["autocar", 37.6], ["busThermique", 122.4]] },
+  { famille: "voiture", modes: [["covoitElec", 33.7], ["voitureElec", 67.4], ["covoitThermique", 71.1], ["voitureThermique", 142.3]] },
+  { famille: "deuxRoues", modes: [["scooterElec", 59.3], ["scooter", 76.3], ["moto", 214.7]] },
+  { famille: "avion", modes: [["avionCO2", 123.6], ["avion", 224.6]] },
+];
 
 // --- Km à partir duquel le VE passe devant l'essence : null si jamais, 0 si d'emblée ---
 export function kmPivot(ev, essence, kmMax) {
