@@ -69,13 +69,14 @@ function TexteAide({ id, open, setOpen, children }) {
 }
 
 // Champ libellé : en-tête (libellé, aide, valeur) puis contrôle
-function Champ({ id, label, aide, valeur, children }) {
+function Champ({ id, label, aide, valeur, saisie, children }) {
   const [open, setOpen] = useState(false);
   return (
     <div className="champ">
       <div className="champ-tete">
         <label htmlFor={id}>{label}</label>
         {aide && <BoutonAide id={id} label={label} open={open} setOpen={setOpen} />}
+        {saisie}
         {valeur != null && <output htmlFor={id}>{valeur}</output>}
       </div>
       {aide && <TexteAide id={id} open={open} setOpen={setOpen}>{aide}</TexteAide>}
@@ -84,9 +85,27 @@ function Champ({ id, label, aide, valeur, children }) {
   );
 }
 
-function Curseur({ id, label, aide, value, min, max, step, onChange, format }) {
+// Curseur + valeur saisissable au clavier (pas plus fin que le curseur), synchronisés.
+// Pendant la frappe, un brouillon évite de rejeter « 1 » en tapant « 12000 » ; hors bornes : ramené à la sortie.
+function Curseur({ id, label, aide, value, min, max, step, pas = step, unite, onChange, format }) {
+  const [brouillon, setBrouillon] = useState(null);
+  const valide = (x) => x !== "" && Number.isFinite(+x) && +x >= min && +x <= max;
+  const saisie = (
+    <span className="saisie">
+      <input type="number" inputMode="decimal" min={min} max={max} step={pas} value={brouillon ?? value}
+        aria-label={`${label} (${unite})`}
+        onInput={(e) => { setBrouillon(e.target.value); if (valide(e.target.value)) onChange(+e.target.value); }}
+        onBlur={() => {
+          if (brouillon !== null && !valide(brouillon) && Number.isFinite(+brouillon) && brouillon !== "") {
+            onChange(Math.min(max, Math.max(min, +brouillon)));
+          }
+          setBrouillon(null);
+        }} />
+      <span className="saisie-unite">{unite}</span>
+    </span>
+  );
   return (
-    <Champ id={id} label={label} aide={aide} valeur={format(value)}>
+    <Champ id={id} label={label} aide={aide} saisie={saisie}>
       <input id={id} type="range" min={min} max={max} step={step} value={value}
         aria-describedby={aide ? `${id}-aide` : undefined} aria-valuetext={format(value)}
         onInput={(e) => onChange(+e.target.value)} />
@@ -317,8 +336,8 @@ function Decision({ shared, allerExplorer }) {
           {etape === 0 && (
             <>
               <Liste id="pays" label={s.champ.pays} aide={s.aide.pays} value={paysId} onChange={setPaysId} options={optionsPays(f)} />
-              <Curseur id="kman" label={s.champ.km} aide={s.aide.km} value={kmAn} min={3000} max={40000} step={1000}
-                onChange={setKmAn} format={f.kmAn} />
+              <Curseur id="kman" label={s.champ.km} aide={s.aide.km} value={kmAn} min={3000} max={40000} step={500} pas={100}
+                unite={s.unites.kmAn} onChange={setKmAn} format={f.kmAn} />
             </>
           )}
 
@@ -326,9 +345,9 @@ function Decision({ shared, allerExplorer }) {
             <>
               <Choix label={s.champ.carburant} value={carb} onChange={setCarb}
                 options={[{ v: "essence", label: s.motor.essence.nom }, { v: "diesel", label: s.motor.diesel.nom }]} />
-              <Curseur id="conso" label={s.champ.conso} aide={s.aide.conso} value={conso} min={4} max={11} step={0.5}
+              <Curseur id="conso" label={s.champ.conso} aide={s.aide.conso} value={conso} min={3} max={15} step={0.1} unite={s.unites.conso}
                 onChange={setConso} format={(x) => `${f.n1f(x)}${NB}L/100${NB}km`} />
-              <Curseur id="annees" label={s.champ.annees} aide={s.aide.annees} value={annees} min={1} max={12} step={1}
+              <Curseur id="annees" label={s.champ.annees} aide={s.aide.annees} value={annees} min={1} max={12} step={1} unite={s.unites.ans}
                 onChange={setAnnees} format={f.ans} />
             </>
           )}
@@ -341,7 +360,7 @@ function Decision({ shared, allerExplorer }) {
                 options={[{ v: "neuf", label: s.neuve }, { v: "occasion", label: s.occasion }]} />
               {etatVE === "occasion" && (
                 <>
-                  <Curseur id="ageve" label={s.champ.ageAchat} value={ageVE} min={1} max={12} step={1}
+                  <Curseur id="ageve" label={s.champ.ageAchat} value={ageVE} min={1} max={12} step={1} unite={s.unites.ans}
                     onChange={setAgeVE} format={f.ans} />
                   <p className="note">{s.partOcc(f.pc(v.partVE), f.age(ageVE), f.age(ageVE + v.horizon))}</p>
                 </>
@@ -393,7 +412,7 @@ function Decision({ shared, allerExplorer }) {
 
           <section className="carte">
             <p className="bascule">{texteBascule(s, f, seuil)}</p>
-            <Curseur id="etsi" label={s.etSi} value={kmAn} min={3000} max={40000} step={1000}
+            <Curseur id="etsi" label={s.etSi} value={kmAn} min={3000} max={40000} step={500} pas={100} unite={s.unites.kmAn}
               onChange={setKmAn} format={f.kmAn} />
             <Repli className="replie" titre={s.commentLire}>
               <p className="note-petite">{s.conventions}</p>
@@ -513,7 +532,7 @@ function Explorer({ shared, vue, setVue }) {
             <span className="profil-modifier">{s.modifierProfil}</span>
           </summary>
           <Liste id="paysX" label={s.champ.pays} aide={s.aide.pays} value={paysId} onChange={setPaysId} options={optionsPays(f)} />
-          <Curseur id="kmanX" label={s.champ.km} aide={s.aide.kmComp} value={kmAn} min={3000} max={40000} step={1000}
+          <Curseur id="kmanX" label={s.champ.km} aide={s.aide.kmComp} value={kmAn} min={3000} max={40000} step={500} pas={100} unite={s.unites.kmAn}
             onChange={setKmAn} format={f.kmAn} />
           <Choix cartes label={s.champ.categorie} value={segId} onChange={setSegId}
             options={optionsCategorie(s, (x) => `≈${NB}${f.n0(x.masse)}${NB}kg`)} />
@@ -522,9 +541,9 @@ function Explorer({ shared, vue, setVue }) {
             options={[{ v: "neuf", label: s.neuve }, { v: "occasion", label: s.occasion }]} />
           {etatVE === "occasion" && (
             <div className="groupe">
-              <Curseur id="ageX" label={s.champ.age} aide={s.aide.age} value={ageVE} min={1} max={12} step={1}
+              <Curseur id="ageX" label={s.champ.age} aide={s.aide.age} value={ageVE} min={1} max={12} step={1} unite={s.unites.ans}
                 onChange={setAgeVE} format={f.ans} />
-              <Curseur id="odoX" label={s.champ.odo} aide={s.aide.odo} value={odo} min={0} max={160000} step={5000}
+              <Curseur id="odoX" label={s.champ.odo} aide={s.aide.odo} value={odo} min={0} max={160000} step={1000} pas={500} unite={s.unites.km}
                 onChange={setOdo} format={f.km} />
               {odo > odoMax && <p className="note">{s.odoBorne(f.km(odoMax))}</p>}
             </div>
@@ -597,7 +616,7 @@ function Comparateur({ shared }) {
             options={[{ v: "r", label: s.champ.revendue }, { v: "g", label: s.champ.gardee }]} />
           {revente && (
             <>
-              <Curseur id="det" label={s.champ.detention} value={detention} min={2} max={15} step={1}
+              <Curseur id="det" label={s.champ.detention} value={detention} min={2} max={15} step={1} unite={s.unites.ans}
                 onChange={setDetention} format={f.ans} />
               <p className="note">{s.partRevente({ pc: f.pc(fen.ratioFab), a: f.age(fen.ageEff), b: f.age(fen.ageFinVous), km: f.km(fen.kmRepreneur) })}</p>
             </>
