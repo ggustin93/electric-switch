@@ -17,7 +17,7 @@ Domain terms used in code (French identifiers) and UI. Use these words; avoid th
 | **Serré / tie** (`departager`, `SEUIL_SERRE`) | Gap under 10 % between two footprints. One rule for all tabs. | "match serré" |
 | **Segment / Catégorie** | Vehicle class (citadine … grand SUV). Code says *segment*, UI says *catégorie*. | "gabarit" (retired) |
 | **Kilométrage de bascule** (`kmBascule`) | The lowest km/yr (3 000 to 40 000) at which replacing beats keeping, shown under the verdict. | |
-| **Convention marginale / partagée** (`conv`) | How a new car's manufacturing is counted in Explore: 100 % (default, like Decision) or economic allocation. | |
+| **Convention marginale / partagée** (`conv`) | How a new car's manufacturing is counted in « Comparer les voitures » (`Explorer` in code): 100 % (default, like Decision) or economic allocation. | |
 | **Profil** | Shared answers (country, km/yr, category, new/used, age, odometer) lifted into `App`. | |
 | **Modes** (`MODES`) | Other transport modes, gCO₂e per passenger-km with construction, from ADEME Impact CO₂. Shown as one log-scale chart against the reference « voiture thermique seul·e ». | |
 | **Hypothèse Hn / Assumption An** | Numbered assumption. Same index in both languages, prefix differs. | |
