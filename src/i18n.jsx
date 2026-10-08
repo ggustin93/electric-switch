@@ -270,7 +270,7 @@ const fr = {
     13: "Trajectoires d'intensité carbone des réseaux par pays.",
     17: "Données de l'onglet « Se déplacer autrement », fabrication des véhicules comprise.",
   },
-  footer: (lien) => <>Simulateur pédagogique : ordres de grandeur, incertitude d'environ ±20 %. Méthode inspirée de {lien("Carbone 4")} ; données ADEME, ICCT, Ember, Electricity Maps. Version 7.3, octobre 2026.</>,
+  footer: (lien) => <>Simulateur pédagogique : ordres de grandeur, incertitude d'environ ±20 %. Méthode inspirée de {lien("Carbone 4")} ; données ADEME, ICCT, Ember, Electricity Maps. Version 7.4, octobre 2026.</>,
 };
 
 const en = {
@@ -537,7 +537,7 @@ const en = {
     13: "Country grid carbon-intensity trajectories.",
     17: "Data for the “Other ways to get around” tab, vehicle manufacturing included.",
   },
-  footer: (lien) => <>Educational simulator: orders of magnitude, uncertainty of about ±20%. Method inspired by {lien("Carbone 4")}; data from ADEME, ICCT, Ember, Electricity Maps. Version 7.3, October 2026.</>,
+  footer: (lien) => <>Educational simulator: orders of magnitude, uncertainty of about ±20%. Method inspired by {lien("Carbone 4")}; data from ADEME, ICCT, Ember, Electricity Maps. Version 7.4, October 2026.</>,
 };
 
 // Titres des sources dans leur langue d'origine
