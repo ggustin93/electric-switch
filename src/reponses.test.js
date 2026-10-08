@@ -27,12 +27,12 @@ const pc10bas = (x) => Math.floor(x * 10) * 10; // « plus de … % » : arrondi
 const CHIFFRES = {
   lede: [pc10bas(ecart("BE"))],
   questions: [
-    [Math.round(vie("BE", "ev").totalT), Math.round(vie("BE", "essence").totalT), pc10bas(ecart("BE"))],
+    [Math.round(vie("BE", "ev").totalT), Math.round(vie("BE", "essence").totalT), Math.round(ecart("BE") * 100)],
     [Math.round(kmPivot(vie("BE", "ev"), vie("BE", "essence"), VIE_KM) / 1000) * 1000, kmBascule(profil), kmBascule({ ...profil, annees: 8 })],
     [seg.battKwh, ef, r1((seg.battKwh * ef) / 1000), r1(vie("BE", "ev").fabTotale), r1(vie("BE", "essence").fabTotale)],
     [Math.round(occasion.partVE * 100), r1(occasion.tRemplacer), r1(occasion.tGarder), r1(decider(profil).tRemplacer)],
-    [pc5(ecart("BE", "phev", 0.5)), pc10bas(ecart("BE")), 15, Math.round(ecart("BE", "phev", 0.15) * 100)],
-    ["FR", "NO", "BE", "DE", "PL"].map((p) => pc5(ecart(p))),
+    [pc5(ecart("BE", "phev", 0.5)), 15, Math.round(ecart("BE", "phev", 0.15) * 100)],
+    ["FR", "NO", "BE", "DE", "PL"].map((p) => (p === "BE" ? Math.round(ecart(p) * 100) : pc5(ecart(p)))), // Belgique : chiffre exact, comme en Q1
   ],
 };
 
@@ -52,7 +52,7 @@ function contient(texte, n, locale) {
 test("les chiffres du modèle restent ceux qu'annoncent les textes (Belgique, profil par défaut)", () => {
   assert.deepEqual(CHIFFRES, {
     lede: [60],
-    questions: [[16, 44, 60], [27000, 15500, 10000], [55, 73, 4, 11.4, 7], [22, 4.2, 10.5, 13], [30, 60, 15, 3], [70, 70, 65, 50, 35]],
+    questions: [[16, 44, 63], [27000, 15500, 10000], [55, 73, 4, 11.4, 7], [22, 4.2, 10.5, 13], [30, 15, 3], [70, 70, 63, 50, 35]],
   });
 });
 

@@ -27,7 +27,7 @@ export const SOURCES = [
   <>ADEME (2026). Impact CO₂ — comparateur des modes de transport. impactco2.fr, API v1, consulté le 07/10/2026. Licence Ouverte Etalab.</>,
   <>European Commission (2026). Weekly Oil Bulletin, prices of 5 October 2026.</>,
   <>Eurostat (2026). Electricity prices for household consumers (nrg_pc_204), 2025-S2, band DC.</>,
-  <>ICCT (2023). Total cost of ownership of passenger cars in Germany (maintenance and tyres per km).</>,
+  <>Morrison, K. &amp; Wappelhorst, S. (2023). Are battery electric vehicles cost competitive? An income-based analysis for the German market. ICCT.</>,
 ];
 
 // Adresse de chaque source (même ordre que SOURCES), vérifiée joignable le 08/10/2026.
@@ -40,7 +40,7 @@ export const SOURCES_URL = [
   "https://www.electricitymaps.com/data/methodology",
   "https://base-empreinte.ademe.fr/",
   "doi:10.1038/s41467-024-54634-y",
-  "https://theicct.org/publication/electric-cars-life-cycle-analysis-emissions-europe-jul25/",
+  "https://theicct.org/wp-content/uploads/2025/07/ID-392-%E2%80%93-Life-cycle-GHG_report_final.pdf",
   "https://www.ipcc.ch/site/assets/uploads/2018/02/ipcc_wg3_ar5_annex-iii.pdf",
   "https://www.iso.org/standard/38498.html",
   "doi:10.1111/jiec.12074",
