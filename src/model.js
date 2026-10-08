@@ -152,22 +152,28 @@ export function departager(a, b) {
 // --- Onglet Décision : garder sa thermique ou passer à un VE ---
 // Neuf : convention marginale, 100 % de la fabrication (H3).
 // Occasion : allocation économique (H2). Horizon borné par la vie restante du VE (H1).
-export function decider({ carb, conso, annees, seg, etatVE, ageVE, pays, kmAn, decarb, efBatt }) {
-  const ageDebut = etatVE === "neuf" ? 0 : ageVE;
-  const horizon = Math.min(annees, VIE_KM / kmAn, VIE_ANS - ageDebut);
+export function decider({ carb, conso, annees, seg, etatVE, ageVE, odoVE = ageVE * KM_AN_PARC, pays, kmAn, decarb, efBatt }) {
+  const occasion = etatVE !== "neuf";
+  const ageDebut = occasion ? ageVE : 0;
+  // Même fenêtre que « Comparer » : le compteur réduit la vie restante (borne 200 000 km), une même règle partout
+  const fen = (detention) => fenetre({ occasion: true, odo: odoVE, age: ageVE, kmAn, revente: true, detention });
+  const odoEff = occasion ? fen(annees).odoEff : 0;
+  const horizon = Math.min(annees, (VIE_KM - odoEff) / kmAn, VIE_ANS - ageDebut);
   const km = horizon * kmAn;
   const usageVieille = carb === "diesel" ? usageDiesel(conso) : usageEssence(conso);
   const gridG = mixMoyen(pays.g, horizon, decarb, pays.declin);
   const usageVE = usageElec(seg.ev, gridG);
   const fabTot = fabEV(seg, efBatt);
-  const partVE = etatVE === "neuf" ? 1 : partFab(ageVE, ageVE + horizon, VIE_ANS);
+  const partVE = occasion ? fen(horizon).ratioFab : 1;
   const fabVE = fabTot * partVE;
   const tGarder = (usageVieille * km) / 1e6;
   const tRemplacer = fabVE + (usageVE * km) / 1e6;
   const amortiAns = usageVieille > usageVE ? (fabVE * 1e6) / ((usageVieille - usageVE) * kmAn) : Infinity;
-  const hzOcc = Math.min(horizon, VIE_ANS - AGE_SUGGESTION);
-  const tOccasion =
-    fabTot * partFab(AGE_SUGGESTION, AGE_SUGGESTION + hzOcc, VIE_ANS) + (usageVE * hzOcc * kmAn) / 1e6;
+  // Occasion suggérée : 6 ans, compteur moyen (12 000 km/an), même fenêtre
+  const odoSugg = AGE_SUGGESTION * KM_AN_PARC;
+  const hzOcc = Math.min(horizon, VIE_ANS - AGE_SUGGESTION, (VIE_KM - odoSugg) / kmAn);
+  const partOccSugg = fenetre({ occasion: true, odo: odoSugg, age: AGE_SUGGESTION, kmAn, revente: true, detention: hzOcc }).ratioFab;
+  const tOccasion = fabTot * partOccSugg + (usageVE * hzOcc * kmAn) / 1e6;
   const tGarderOcc = (usageVieille * hzOcc * kmAn) / 1e6;
   const VERDICTS = { a: "remplacer", b: "garder", serre: "serre" };
   return {

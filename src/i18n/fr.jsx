@@ -69,7 +69,7 @@ export default {
     annees: "Jusqu'à la panne majeure ou la mise à la casse. Une voiture européenne vit environ 18 ans (H1). Sa fabrication est déjà émise : seul son usage compte dans la comparaison.",
     categorie: "Détermine la masse, la consommation réelle et la taille de batterie. Le surpoids de l'électrique est compté trois fois : batterie à part, châssis +5 % et consommation réelle, pertes de recharge de 10 % ajoutées (H8 à H10).",
     etat: "Neuve : votre achat déclenche toute la fabrication (convention marginale, H3). D'occasion : la fabrication est répartie entre propriétaires selon la valeur consommée, avec une décote de 15 %/an (ISO 14044, H2). Votre part baisse donc avec l'âge à l'achat, sans effet de seuil.",
-    odo: "Borné à 30 000 km par année d'âge. La fabrication est répartie entre propriétaires selon la valeur consommée (décote de 15 %/an, H2) : une occasion presque neuve en porte l'essentiel, une occasion âgée une part faible.",
+    odo: "Celui de l'annonce. Par défaut, il est estimé à 12 000 km par an d'âge. Borné à 30 000 km par année d'âge. La fabrication est répartie entre propriétaires selon la valeur consommée (décote de 15 %/an, H2) : une occasion presque neuve en porte l'essentiel, une occasion âgée une part faible.",
     age: "Une voiture meurt aussi de vieillesse (environ 18 ans en Europe, H1). L'âge borne les kilomètres restants et fixe la part de fabrication qui vous revient.",
     batterie: "De 60 à 80 kgCO₂e par kWh de batterie selon la chimie (LFP ou NMC), l'origine des matériaux et le pays de production. Par défaut : la moyenne des ventes européennes (H8).",
     destin: "Revendue : vous portez la fabrication au prorata de la valeur consommée pendant votre détention (H2) ; le repreneur, supposé rouler 12 000 km/an (H4), porte le reste. Gardée jusqu'à la casse : vous consommez toute la valeur restante.",
@@ -82,7 +82,7 @@ export default {
   continuer: "Continuer",
   retour: "Retour",
   voirVerdict: "Voir le verdict",
-  partOcc: (pc, a, b) => <>Environ <strong>{pc}</strong> de sa fabrication vous revient (valeur consommée entre {a} et {b}). Le reste revient aux autres propriétaires.</>,
+  partOcc: (pc, a, b) => <>En l'achetant d'occasion, vous portez environ <strong>{pc}</strong> de l'impact de sa fabrication : la part de sa valeur que vous consommerez entre {a} et {b}, selon son âge et son kilométrage. Le reste revient à ses autres propriétaires.</>,
   verdictTitre: { remplacer: "Oui, passez à l'électrique", garder: "Gardez votre voiture", serre: "Trop proche pour trancher" },
   verdictRemplacer: ({ duree, km, t, amorti, etat }) => <>Sur vos {duree} à venir ({km}), une électrique {etat} émettrait <strong>{t} de moins</strong> que votre voiture. Sa fabrication est compensée après <strong>{amorti}</strong>.</>,
   verdictGarder: ({ km, etat, amorti, duree, t }) => amorti

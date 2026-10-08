@@ -69,7 +69,7 @@ export default {
     annees: "Hasta la avería grave o el desguace. Un coche europeo dura unos 18 años (H1). Su fabricación ya está emitida: en la comparación solo cuenta su uso.",
     categorie: "Determina el peso, el consumo real y el tamaño de la batería. El peso extra del eléctrico se cuenta tres veces: batería aparte, chasis +5 % y consumo real, con un 10 % de pérdidas de carga añadidas (H8 a H10).",
     etat: "Nuevo: tu compra desencadena toda la fabricación (convención marginal, H3). De segunda mano: la fabricación se reparte entre propietarios según el valor consumido, con una depreciación del 15 %/año (ISO 14044, H2). Así, tu parte baja con la antigüedad del coche al comprarlo, sin saltos bruscos.",
-    odo: "Limitado a 30 000 km por año de antigüedad. La fabricación se reparte entre propietarios según el valor consumido (depreciación del 15 %/año, H2): un coche de segunda mano casi nuevo carga con la mayor parte; uno antiguo, con una parte pequeña.",
+    odo: "El del anuncio. Por defecto se estima en 12 000 km por año de antigüedad. Limitado a 30 000 km por año de antigüedad. La fabricación se reparte entre propietarios según el valor consumido (depreciación del 15 %/año, H2): un coche de segunda mano casi nuevo carga con la mayor parte; uno antiguo, con una parte pequeña.",
     age: "Un coche también muere de viejo (unos 18 años en Europa, H1). La antigüedad limita los kilómetros restantes y fija la parte de la fabricación que te corresponde.",
     batterie: "De 60 a 80 kgCO₂e por kWh de batería según la química (LFP o NMC), el origen de los materiales y el país de producción. Por defecto: la media de las ventas europeas (H8).",
     destin: "Revendido: cargas con la fabricación en proporción al valor consumido mientras lo tienes (H2); el siguiente propietario, que se supone que recorre 12 000 km/año (H4), carga con el resto. Conservado hasta el desguace: consumes todo el valor restante.",
@@ -82,7 +82,7 @@ export default {
   continuer: "Continuar",
   retour: "Volver",
   voirVerdict: "Ver el veredicto",
-  partOcc: (pc, a, b) => <>Te corresponde aproximadamente <strong>{pc}</strong> de su fabricación (valor consumido entre {a} y {b}). El resto corresponde a los demás propietarios.</>,
+  partOcc: (pc, a, b) => <>Al comprarlo de segunda mano, asumes aproximadamente <strong>{pc}</strong> del impacto de su fabricación: la parte de su valor que consumirás entre {a} y {b}, según su antigüedad y kilometraje. El resto corresponde a sus demás propietarios.</>,
   verdictTitre: { remplacer: "Sí, pásate al eléctrico", garder: "Conserva tu coche", serre: "Demasiado igualado para decidir" },
   verdictRemplacer: ({ duree, km, t, amorti, etat }) => <>En tus próximos {duree} ({km}), un coche eléctrico {etat} emitiría <strong>{t} menos</strong> que tu coche. Su fabricación queda compensada al cabo de <strong>{amorti}</strong>.</>,
   verdictGarder: ({ km, etat, amorti, duree, t }) => amorti
