@@ -290,5 +290,5 @@ export default {
     13: "Trajectoires d'intensité carbone des réseaux par pays.",
     17: "Données de l'onglet « Se déplacer autrement », fabrication des véhicules comprise.",
   },
-  footer: (lien) => <>Simulateur pédagogique : ordres de grandeur, incertitude d'environ ±20 %. Méthode inspirée de {lien("Carbone 4")} ; données ADEME, ICCT, Ember, Electricity Maps. Version 7.4, octobre 2026.</>,
+  footer: (lien) => <>Simulateur pédagogique : ordres de grandeur, incertitude d'environ ±20 %. Méthode inspirée de {lien("Carbone 4")} ; données ADEME, ICCT, Ember, Electricity Maps. Version 7.5, octobre 2026.</>,
 };

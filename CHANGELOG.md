@@ -4,95 +4,64 @@ Notable changes to « Dois-je passer à l'électrique ? ». Format inspired by [
 
 ## [Unreleased]
 
-- **Domain switch prepared** (ticket 08): `SITE_URL` and `INDEXNOW_KEY` come from GitHub repository variables (empty = workers.dev); IndexNow ping after each deploy (`scripts/indexnow.mjs`, non-blocking). Owner checklist in the ticket.
-- **Consistency fixes after the expert review:** the battery help bubble now gives the same range as H8 (medians 62–74 kgCO₂e/kWh, over 100 depending on material origin); the used-car answer cites H2 (depreciation), not H3.
+Nothing yet.
 
-- **Expert review of the FAQ, intro and Méthode** (ticket 05 resolved): the intro says « environ 60 % » and that replacing a running car only pays off above a certain mileage; FAQ figures made exact (Belgium **63 %**, « 27 000 km au total »), assumptions named (ICCT grid 78 g/kWh and 240 000 km; H2, H3, H6, H8, H10), « sobre » dropped for plug-in hybrids; page renamed « Questions courantes » (NL, IT, ES likewise); NL title « Elektrische of benzinewagen: moet ik overstappen op elektrisch? »; H8 battery « médianes de 62 (LFP) à 74 (NMC) kgCO₂e/kWh, jusqu'à plus de 100 » [7]; source [20] retitled (Morrison & Wappelhorst 2023; H14: ADAC monthly rates converted to €/km); source [8] URL points to the report PDF. EcoIndex unchanged: tool 80.1, Questions 88.5, Méthode 80.0 (A).
-- **Trust signals** (ticket 06): « Qui a fait ce simulateur » opens the Mentions légales page (Guillaume Gustin, Pwablo, ingénieur logiciel indépendant à Bruxelles; no funding from carmakers or energy suppliers, no ads, no personal data); « Méthode mise à jour le 8 octobre 2026 »; each of the 20 sources gets a verified URL or DOI, as plain text (EcoIndex A).
-### Added
-- **Title and answer content** (ticket 05, **awaiting owner validation** of figures and wording): the tool page `<title>` names the car (« Voiture électrique ou thermique : dois-je passer à l'électrique ? », EN « Electric or petrol car: should I switch to electric? », NL, IT, ES); reading pages keep the short name (`nomSite`: « Méthode · Dois-je passer à l'électrique ? »). The intro of step 1 (also the meta description) becomes a 55-word direct answer with one model figure: in Belgium a compact EV emits **over 60 %** less than a petrol one over 200 000 km. New reading page **`/{lang}/questions/`** (« Questions fréquentes », ADR 0009 pattern, 5 languages): 6 answers of 40–80 words, each with model figures (Belgium, default profile) and its H/[n] references as text. Every figure is recomputed from `src/model.js` by `src/reponses.test.js`, which fails if the model and the texts drift apart. Footer link « Questions fréquentes » on every page, paid for without visual change: the tool content renders a fragment instead of a wrapper `<div>`, and the header « Méthode » link loses its single-link `<nav>` (the footer « Pages du site » stays the site navigation). Measured: tool pages DOM 93 → **92**, 54.6–55.6 kB → **80.2 (A)** (Écoconception page updated); Questions DOM 51, 55–56 kB → **88.5 (A)**; Méthode DOM 92, 57.5–58.9 kB → **80.1 (A)**.
-
-- **Méthode page back to EcoIndex A (80.1, was 75.5 B):** source references under each hypothesis are plain text « [1, 8, 14] » instead of 29 links, and source titles lose their italics (140 → 92 elements). The sources stay listed right below.
+## [7.5.0] — 2026-10-08
 
 ### Added
-- **Sitemap, robots and structured data** (ticket 04, `src/donnees.js`, tested): `dist/sitemap.xml` lists the 21 URLs (root, 5 simulators, 15 reading pages) with their hreflang alternates (same as `dist/_headers`), `lastmod` = date of the last commit touching the page's sources, no priority/changefreq. `dist/robots.txt` replaces Cloudflare's managed file: everything allowed, `Content-Signal: search=yes, ai-input=yes, ai-train=no`, explicit groups for Googlebot, Bingbot, OAI-SearchBot, ChatGPT-User, PerplexityBot, Claude-SearchBot and Claude-User, `Sitemap:` line. One compact JSON-LD `@graph` per page: Organization (Productions Associées ASBL / Pwablo) + WebSite + free WebApplication (EducationalApplication) on the simulators, TechArticle on Méthode, WebPage on Écoconception and Mentions; no FAQPage/HowTo. `dist/llms.txt`: short summary linking the Méthode pages. EcoIndex unchanged: the `.page` wrapper became `#root` itself, one element saved for the one `<script>` added.
+- **Dutch, Italian and Spanish** alongside French and English, one self-contained page per language (`/fr/` … `/es/`, ADR 0006):
+  - the root `/` redirects to the remembered language, else the browser's, else English;
+  - display font rebuilt to cover ñ, ¿, à, ë… (13.7 kB);
+  - a key-parity test ensures every language has the French keys.
+  - NL/IT/ES are machine-drafted: **native review still to do**.
+- **Search visibility (SEO audit 48/100 → tickets 01–07, `.scratch/seo-visibilite/`):**
+  - **pre-rendered pages** (ADR 0008): title, intro and step 1 in the raw HTML; Preact hydrates them;
+  - **real reading pages** (ADR 0009): `/{lang}/methode/`, `/ecoconception/`, `/mentions/`, `/questions/`, each with its own title, description and canonical; old `#methode` links redirect;
+  - **share preview**: one 1200×630 image per language, `og:image` + `twitter:card`;
+  - **`sitemap.xml`** (26 URLs with hreflang), **`robots.txt`** (search and AI-search bots allowed, `Content-Signal: ai-train=no`), **`llms.txt`**, one **JSON-LD** block per page (WebApplication, Organization, TechArticle);
+  - hreflang sent as HTTP `Link` headers, page by page; absolute URLs from a single `SITE_URL` variable.
+- **« Questions courantes » page** (5 languages): six sourced answers computed by the model and re-checked by three experts (data scientist, LCA, fact-checker). The tool's title becomes « Voiture électrique ou thermique : dois-je passer à l'électrique ? », and the intro gives a figured answer with its conditions.
+- **Trust signals:**
+  - « Qui a fait ce simulateur » opens the Mentions légales page (Guillaume Gustin, Pwablo, ingénieur logiciel indépendant à Bruxelles; no funding from carmakers or energy suppliers, no ads, no personal data);
+  - « Méthode mise à jour le 8 octobre 2026 »;
+  - each of the 20 sources has a verified URL or DOI.
+- **Odometer in « Ma décision »** (ADR 0007): a used EV's remaining life is capped by its odometer (200 000 km), with the same ownership window as « Comparer ».
+  - The odometer is estimated at age × 12 000 km until typed, marked « km (estimé) ».
+  - The typed value is always respected (the old 30 000 km/yr cap is removed).
+- **Help to estimate « Encore combien d'années roulerait-elle ? »** from the car's age and odometer (H1).
+- **Charging country pre-filled locally** from the time zone, then the language region, else the EU average. Nothing is sent.
+- **404 page** in 5 languages, static, no JS.
+- **Domain switch prepared** (ticket 08): `SITE_URL` and `INDEXNOW_KEY` are GitHub variables; an IndexNow ping runs after each deploy. Owner checklist in the ticket.
+
+### Changed
+- **« Comparer les voitures »:**
+  - the « Comparer » switch sits outside the cards;
+  - one main card per mode;
+  - bars and cumulative curve side by side on wide screens (5/12 – 7/12);
+  - quiet light summary panels, so the dark block is reserved for the « Ma décision » verdict;
+  - « Face-à-face » replaces « Deux voitures au choix », with each car's own age, odometer and plug-in hybrid share;
+  - « Chaque motorisation dans la même catégorie : … » is stated under the bars.
+- **Layout and typography (Impeccable critique 28/40, then layout/typeset/clarify passes):**
+  - one 60rem column edge for everything;
+  - title higher up;
+  - one intro sentence per tab, under the tabs;
+  - quieter language links;
+  - mobile tabs in three columns;
+  - one-line mobile stepper;
+  - footer in a 2 × 2 grid on mobile;
+  - reading pages uniform (full-column card, 68ch text).
+- **Background motifs:** only in the empty margins of wide screens, 5 %, whole tiles, scrolling with the page.
+- **Méthode page:** references as plain text « [1, 8, 14] », sources without italics → EcoIndex A.
+
+### Fixed
+- Battery range made consistent between H8 and the help bubble (medians 62–74 kgCO₂e/kWh, over 100 depending on material origin); source [20] retitled (Morrison & Wappelhorst 2023).
+- Touch targets ≥ 44 px; upcoming stepper steps readable (contrast 2.7 → 6.4:1); drawn select chevron; typed-value unit centred.
 
 ### Security
-- **Security headers on every response** (`dist/_headers`, generated by `build.mjs` from `src/entetes.js`, tested): HSTS (1 year, subdomains), `X-Content-Type-Options: nosniff`, `Referrer-Policy: strict-origin-when-cross-origin`, a `Permissions-Policy` denying unused features, and a strict **Content-Security-Policy** without `'unsafe-inline'`: each inline `<script>`/`<style>` of the built pages is allowed by its SHA-256 hash, computed at build time; `default-src 'none'`, font and CSS masks as `data:`, only third party `connect-src https://cloud.umami.is`, `frame-ancestors 'none'`. A `style="…"` attribute in the built HTML now fails the build (the CSP would block it).
+- Security headers on every response: HSTS, nosniff, Referrer-Policy, Permissions-Policy, and a CSP with SHA-256 hashes computed at build time (no `'unsafe-inline'`).
 
-### Added
-- **Trust signals** (ticket 06, wording awaiting owner validation): a « Qui a fait ce simulateur » section opens the Mentions légales page in the 5 languages (who, why, independence: no funding from carmakers or energy suppliers, no ads, no personal data); the Méthode intro ends with « Méthode mise à jour le 8 octobre 2026 », date formatted per language (`Intl`) from the single constant `METHODE_MAJ` in `src/i18n/commun.jsx` (also for structured data); each of the 20 sources shows its URL or DOI (`SOURCES_URL`, tested), checked reachable on 08/10/2026, as plain text, not links. Measured locally: Méthode DOM 92, 60.3 kB → 80.0 (A); Mentions DOM 60 → 86.0 (A); tool page DOM 93, 56.3 kB → 80.05 (A). Production figures on the Écoconception page to re-measure after deploy.
-- **404 page** (`dist/404.html`, `not_found_handling: "404-page"` in `wrangler.jsonc`): static, no JS, 1.4 kB, site colours (light and dark), « Page introuvable » in the 5 languages with a link back to each simulator, `noindex`.
-
-### Fixed
-- **Touch targets of 44 × 44 px** without visual change: language links (were 24–31 px wide) and, on mobile, the stepper numbers (were 24 px wide). The « ? » help buttons already had a real 44 px hit area (checked).
-- **Upcoming stepper steps readable:** the 0.6 opacity is gone (text contrast 2.7:1 → 6.4:1 light, 3.7:1 → 8.2:1 dark).
-
-### Added
-- **Real reading pages** (ADR 0009): « Méthode », « Écoconception » and « Mentions légales » are pre-rendered pages of their own in each language, `/fr/methode/`, `/fr/ecoconception/`, `/fr/mentions/` (same slugs in all 5 languages), with their own title, description, canonical and hreflang (per-path rules in `dist/_headers`, x-default `/en/<page>/`). Header, footer, « Retour au simulateur », H links in help bubbles (`/fr/methode/#h5`) and the language switch point to the real URLs. Old links `/fr/#methode`, `#methode/h5`, `#ecoconception`, `#mentions` are redirected on load, anchor kept. `src/routes.js` (tested), `mentionsIntro` (meta description, 5 languages).
-- **Pages arrive pre-rendered** (ADR 0008): `/fr/` … `/es/` contain the title, intro, tabs and step 1 in the HTML, readable by search engines, link previews and AI crawlers without JavaScript; Preact hydrates them (`hydrate`), CLS 0. The URL hash (`#methode`) and the guessed country are applied right after hydration, before paint.
-- **Canonical URL** `<link rel="canonical">` on each language page, and **absolute** hreflang URLs (5 languages + x-default) in the HTTP `Link` header and the root page, all built from one variable `SITE_URL` (`src/seo.js`, tested).
-
-- **Link preview when shared** (ticket 03): one 1200×630 image per language (`/og/<lang>.png`, 15–18 kB, Bricolage title with the green accent word, subtitle, petrol vs electric stacked bars), generated by `scripts/apercus.mjs`. Language pages carry `og:image` + `twitter:card` only (title, description and URL come from `<title>`, the meta description and the canonical link); the root page `/`, whose DOM is tiny, carries the full Open Graph set (`og:url`, `og:title`, `og:description`, image size and alt, `og:locale` + alternates). Tested (`balisesApercu`, `src/seo.js`).
-
-### Changed
-- Share preview tags paid for without visual change: `<meta name="color-scheme">` removed (the inline CSS already sets `color-scheme`), and « Ma décision » renders a fragment instead of a wrapper `<div>`. DOM stays 93, 55–56 kB → **80.1 (A)**.
-- EcoIndex of the reading pages, measured: Écoconception DOM 78, 55 kB → 81.5 (A); Mentions légales DOM 56, 54.4 kB → 87.2 (A); **Méthode DOM 140, 58 kB → 75.5 (B)**, options open in ticket 02. Tool page unchanged (DOM 93, 54.5 kB → 80.1, A). Écoconception page: « Méthode, Écoconception et Mentions légales sont des pages séparées ».
-- EcoIndex per language page: DOM 92 → 93 (canonical link), 52–53 → 54–55 kB → **80.1 (A)**, figures updated on the Écoconception page. hreflang stays in the HTTP header only: 6 more `<link>` tags would give 79.5 (B).
-
-### Added
-- **Help to answer « Encore combien d'années roulerait-elle ? »:** an optional fold « Estimer à partir de son âge et de son kilométrage » (age, odometer estimated at age × 12 000 km) gives the remaining years under H1 (18 years or 200 000 km, whichever first) at your annual mileage; « Utiliser cette estimation » sets the slider (`anneesRestantes`, tested, 5 languages).
-
-### Fixed
-- **Odometer taken into account in « Ma décision »** (ADR 0007, data-science + UX review):
-  - a used EV's remaining life is now capped by its odometer (200 000 km), as in « Comparer ». Example: 6 years / 150 000 km leaves ≈ 4.2 years, not 8;
-  - the same ownership window (`fenetre`) now applies in every tab;
-  - **the typed odometer is respected**: the old cap at 30 000 km per year of age silently replaced e.g. 90 000 km on a 2-year-old car (ride-hailing, heavy commuter) by 60 000 km; the 200 000 km end of life is the only bound now. Note « Compteur ramené à … » removed, slider up to 190 000 km;
-  - new field « Kilométrage au compteur » (used only), estimated at age × 12 000 km until the listing's value is typed, marked « km (estimé) » meanwhile (also in « Comparer »);
-  - clearer note: « En l'achetant d'occasion, vous portez environ X % de l'impact de sa fabrication… selon son âge et son kilométrage » (5 languages).
-
-### Added
-- **Dutch, Italian and Spanish**, alongside French and English (ADR 0006):
-  - one self-contained page per language: `/fr/`, `/en/`, `/nl/`, `/it/`, `/es/`;
-  - the root `/` redirects to the remembered language, else the browser's, else English;
-  - the language switch is 5 links and keeps the current reading page (`#methode`…);
-  - `hreflang` sent as an HTTP `Link` header, not as tags in the page.
-- **Charging country pre-filled** from the device's time zone (e.g. Europe/Brussels → Belgium), else the region of the browser languages (« nl-BE », « en-GB »), else the EU average. Guessed locally, nothing sent; still editable (`paysProbable`, tested).
-- **Reading pages uniform:** « Méthode », « Écoconception » and « Mentions légales » use the same full-column card and the same 68ch text measure (the ecodesign page was narrower with smaller grey text, the legal notice ran ~110 characters per line). Ecodesign figures refreshed: font 14 kB, measured 08/10/2026.
-- **Summary qualified:** « L'électrique émet le moins : … que l'essence (259), **à catégorie et âge égaux** » — it is not a general claim (5 languages).
-- **Quieter summaries in « Comparer les voitures »:** the black banners (best powertrain, Face-à-face winner) become light neutral panels with a thin border, like the cards; the dark block stays reserved for the « Ma décision » verdict.
-- **One column edge for everything, 60rem** (Impeccable layout): the results card no longer breaks out of the column (tried at 72rem, it created two misaligned left edges under left-aligned content). The shared column grows 52 → 60rem; prose keeps its reading width. Side-by-side charts split 5/12 – 7/12.
-- **PHEV electric share** back in « Réglages avancés », as its first setting (it stays in each plug-in hybrid's column in Face-à-face).
-- **« Toutes les motorisations » in one card, charts side by side:**
-  - the « Comparer » switch leaves the cards (it drives the whole tab), the answer comes first;
-  - then one card: profile, the bars and the cumulative curve **side by side on wide screens** (stacked on mobile), the PHEV slider full width since it drives both, then « Réglages avancés »;
-  - the curve legend is tighter (leftover 44 px button height removed).
-- **Face-à-face in a single container:** mode switch, profile and cars A and B now share one card (a thin rule separates the cars). In this mode the profile shows only country · km/yr, the only parts it uses (each car has its own category); « (modifiables dans le profil ci-dessus) » removed.
-- **Type hierarchy under the tab intros** (Impeccable typeset): the intro sits right under the active tab; on « Se déplacer autrement » the « Par rapport à … » summary drops to body size (it read like a second heading) and the chart subtitle no longer repeats « par personne et par km ».
-- **An intro sentence for every tab**, in the same place: « Comparer les voitures » gets one (« Comparez l'empreinte de chaque motorisation… ou mettez deux voitures précises en face-à-face »), and « Se déplacer autrement » moves its own out of the card. Its card title no longer repeats the tab name: « Empreinte par personne et par kilomètre ».
-- **Intro moved under « Ma décision »:** the sentence « En quatre questions… » now introduces that path, above the stepper; the title and the tabs come up higher.
-- **« Comparer les voitures » clarified** (Impeccable clarify):
-  - the advanced mode is now called **« Face-à-face »** (EN Head-to-head, NL Duel, IT Testa a testa, ES Cara a cara), instead of « Deux voitures au choix »; the tab keeps its name, since its default view compares 5 powertrains, not two opponents;
-  - under the bars: « Chaque motorisation dans la même catégorie : compacte neuve » — the shared category was only visible in the folded profile.
-- **Impeccable critique (28/40) applied:**
-  - the intro paragraph shows only on step 1 of « Ma décision », so answers come up higher (mobile: the « Étape suivante » button is visible without scrolling);
-  - quieter top bar: « Méthode » at the same level as the languages, aligned with the column edge;
-  - the mobile stepper stays on one line (labels of the other steps visually hidden, still read by screen readers);
-  - verdict sentence capped for reading (54ch), dropdowns capped at 34rem;
-  - background motifs softened: 5 %, a narrow tile repeated in whole tiles only (no more half icons), scrolling with the page.
-- **Wider column** (46 → 52rem) and the title higher up: charts, the duel and the 5 category cards get more room; text keeps its reading width.
-- **Quieter language switch** (Impeccable): plain text links after a thin rule, the current language underlined like the current page, no filled pill.
-- **Translation check:** a `src/i18n.test.js` test ensures every language has exactly the French keys and types.
-
-### Changed
-- **Lighter pages:** each page holds only its own language, so 51–52 kB instead of 58 kB, 92 elements, EcoIndex A (80.3). Five languages in one page would have given B (≈ 78).
-- **Display font** rebuilt from the original (same SemiBold) to cover ñ, ¿, à, ë…: 12.4 → 13.7 kB.
-- **Translations:** NL, IT and ES are machine-drafted, checked for structure and rendering. A native review is still to be done.
-- **Duel:** the plug-in hybrid electric share moves into the column of the car concerned, with its own value per car (two plug-in hybrids can be charged differently). It starts from the value set in « Toutes les motorisations ».
-
-### Fixed
-- **Background motifs barely visible:** now shown from 1024 px wide (was 1150), at 8 % opacity (was 3.5 %), closer to the column. Icons fade out gradually at the column's edge instead of leaving cut-off fragments.
-- **Dropdowns:** a drawn chevron with the same inner margin on the right as on the left, in both themes. The native arrow sat against the border.
+### Ecodesign
+- Every page stays **EcoIndex A**: tool pages 92 elements, ~56 kB; Méthode 92 elements, at the threshold (80.0); Questions, Écoconception and Mentions 81–89. 1 request per page.
 
 ## [7.4.0] — 2026-10-08
 

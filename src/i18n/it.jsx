@@ -294,5 +294,5 @@ export default {
     13: "Traiettorie di intensità di carbonio delle reti per paese.",
     17: "Dati della scheda “Spostarsi in altro modo”, produzione dei veicoli compresa.",
   },
-  footer: (lien) => <>Simulatore educativo: ordini di grandezza, incertezza di circa ±20%. Metodo ispirato a {lien("Carbone 4")}; dati ADEME, ICCT, Ember, Electricity Maps. Versione 7.4, ottobre 2026.</>,
+  footer: (lien) => <>Simulatore educativo: ordini di grandezza, incertezza di circa ±20%. Metodo ispirato a {lien("Carbone 4")}; dati ADEME, ICCT, Ember, Electricity Maps. Versione 7.5, ottobre 2026.</>,
 };

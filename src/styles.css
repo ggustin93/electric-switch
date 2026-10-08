@@ -1711,3 +1711,15 @@ input[type="number"] {
     align-items: start;
   }
 }
+
+/* Pied de page mobile : 4 liens en grille 2 × 2 équilibrée plutôt qu'un lien orphelin sur une seconde ligne */
+@media (max-width: 560px) {
+  .liens-pied {
+    display: grid;
+    grid-template-columns: repeat(2, auto);
+    justify-content: center;
+    justify-items: center;
+    column-gap: var(--s5);
+    row-gap: 0;
+  }
+}
