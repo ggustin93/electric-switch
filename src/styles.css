@@ -1564,3 +1564,16 @@ input[type="number"] {
     flex-wrap: wrap;
   }
 }
+
+/* Page Écoconception : mesures sur 2 lignes de 3 (3 lignes de 2 sur mobile), sans case orpheline */
+.lecture .eco-mesures {
+  grid-template-columns: repeat(3, 1fr);
+}
+@media (max-width: 560px) {
+  .lecture .eco-mesures {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+.lecture h2 {
+  color: var(--ink);
+}
