@@ -46,6 +46,11 @@ jobs:
           LFTP_PASSWORD: ${{ secrets.FTP_PASSWORD }}
           FTP_HOST: ${{ vars.FTP_HOST }}
           FTP_DIR: ${{ vars.FTP_DIR }}
+      - name: Vérifier en HTTPS que le site en ligne est identique au build
+        # FTP en clair : contenu altérable pendant l'envoi. Échoue si un fichier ou la CSP diffère (scripts/verifier-en-ligne.mjs).
+        run: node scripts/verifier-en-ligne.mjs
+        env:
+          SITE_URL: ${{ vars.SITE_URL }}
       - name: Signaler les URL à IndexNow
         if: vars.INDEXNOW_KEY != '' && vars.SITE_URL != ''
         run: node scripts/indexnow.mjs
