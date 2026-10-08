@@ -130,7 +130,7 @@ export default {
 
   duelTitre: "Head-to-head: two specific cars",
   communs: "Settings shared by both cars",
-  duelCommun: (km, pays) => `For your ${km}, charging: ${pays} (change them in the profile above). Each car is sold on at the end of the ownership period.`,
+  duelCommun: "Each car is sold on at the end of the ownership period.",
   vehicule: (l) => `Car ${l}`,
   duelSerre: (a, b) => <>Too close to call: <strong>{a}</strong> versus <strong>{b}</strong>, less than 10% apart, within the margin of uncertainty.</>,
   duelGagne: ({ l, desc, x }) => <><strong>Car {l}</strong> ({desc}) emits <strong>{x} times less</strong> per kilometre.</>,
@@ -150,6 +150,7 @@ export default {
   vue: "Compare",
   vues: { tout: "All powertrains", duel: "Head-to-head" },
   profil: ({ pays, km, voiture }) => `${pays} · ${km} · ${voiture}`,
+  profilCourt: ({ pays, km }) => `${pays} · ${km}`,
   profilTitre: "Your profile",
   modifierProfil: "Edit",
   voitureProfil: (cat, etat) => `${etat} ${cat.toLowerCase()}`,

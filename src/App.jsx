@@ -571,21 +571,24 @@ function Explorer({ shared, vue, setVue }) {
   const etat = etatVE === "neuf" ? s.etatNeuve : s.etatOcc(f.n0(ageVE), ageVE);
   const odoMax = ageVE * KM_AN_MAX_COMPTEUR;
 
-  return (
-    <div>
-      <p className="lede">{s.comparerIntro}</p>
-      <section className="carte">
-        <Choix label={s.vue} value={vue} onChange={setVue}
-          options={[{ v: "tout", label: s.vues.tout }, { v: "duel", label: s.vues.duel }]} />
-        <details className="replie profil">
-          <summary>
-            <span className="profil-titre">{s.profilTitre}</span>
-            <span className="profil-valeur">{s.profil({ pays: s.pays[pays.id], km: f.kmAn(kmAn), voiture: s.voitureProfil(s.seg[segId].nom, etat) })}</span>
-            <span className="profil-modifier">{s.modifierProfil}</span>
-          </summary>
-          <Liste id="paysX" label={s.champ.pays} aide={s.aide.pays} value={paysId} onChange={setPaysId} options={optionsPays(f)} />
-          <Curseur id="kmanX" label={s.champ.km} aide={s.aide.kmComp} value={kmAn} min={3000} max={40000} step={500} pas={100} unite={s.unites.kmAn}
-            onChange={setKmAn} format={f.kmAn} />
+  const duel = vue === "duel";
+  // Sélecteur de mode + profil. En face-à-face, chaque voiture a sa catégorie : le profil se réduit au pays et au kilométrage.
+  const entete = (
+    <>
+      <Choix label={s.vue} value={vue} onChange={setVue}
+        options={[{ v: "tout", label: s.vues.tout }, { v: "duel", label: s.vues.duel }]} />
+      <details className="replie profil">
+        <summary>
+          <span className="profil-titre">{s.profilTitre}</span>
+          <span className="profil-valeur">{duel
+            ? s.profilCourt({ pays: s.pays[pays.id], km: f.kmAn(kmAn) })
+            : s.profil({ pays: s.pays[pays.id], km: f.kmAn(kmAn), voiture: s.voitureProfil(s.seg[segId].nom, etat) })}</span>
+          <span className="profil-modifier">{s.modifierProfil}</span>
+        </summary>
+        <Liste id="paysX" label={s.champ.pays} aide={s.aide.pays} value={paysId} onChange={setPaysId} options={optionsPays(f)} />
+        <Curseur id="kmanX" label={s.champ.km} aide={s.aide.kmComp} value={kmAn} min={3000} max={40000} step={500} pas={100} unite={s.unites.kmAn}
+          onChange={setKmAn} format={f.kmAn} />
+        {!duel && <>
           <Choix cartes label={s.champ.categorie} value={segId} onChange={setSegId}
             options={optionsCategorie(s, (x) => `≈${NB}${f.n0(x.masse)}${NB}kg`)} />
           <p className="aide-ligne">{s.exemples(s.seg[segId].ex, byId(SEGMENTS, segId).battKwh)}</p>
@@ -600,10 +603,16 @@ function Explorer({ shared, vue, setVue }) {
               {odo > odoMax && <p className="note">{s.odoBorne(f.km(odoMax))}</p>}
             </div>
           )}
-        </details>
-      </section>
+        </>}
+      </details>
+    </>
+  );
 
-      {vue === "tout" ? <Comparateur shared={shared} /> : <Duel shared={shared} />}
+  return (
+    <div>
+      <p className="lede">{s.comparerIntro}</p>
+      {/* Face-à-face : un seul conteneur (mode, profil, voitures A et B) ; sinon le profil a sa carte et les résultats suivent */}
+      {duel ? <Duel shared={shared} entete={entete} /> : <><section className="carte">{entete}</section><Comparateur shared={shared} /></>}
     </div>
   );
 }
@@ -851,7 +860,7 @@ function ConfigVehicule({ lettre, cfg, setCfg }) {
   );
 }
 
-function Duel({ shared }) {
+function Duel({ shared, entete }) {
   const f = useT();
   const { s } = f;
   const { pays, kmAn, decarb, batt, conv, detention, setDetention, phevShare } = shared;
@@ -870,8 +879,11 @@ function Duel({ shared }) {
   return (
     <div>
       <section className="carte">
-        <h2>{s.duelTitre}</h2>
-        <p className="sous-titre">{s.duelCommun(f.kmAn(kmAn), s.pays[pays.id])}</p>
+        {entete}
+        <div className="duel-entete">
+          <h2>{s.duelTitre}</h2>
+          <p className="sous-titre">{s.duelCommun}</p>
+        </div>
         <div className="duel-grille">
           <ConfigVehicule lettre="A" cfg={A} setCfg={setA} />
           <ConfigVehicule lettre="B" cfg={B} setCfg={setB} />

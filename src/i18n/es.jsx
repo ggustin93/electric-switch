@@ -130,7 +130,7 @@ export default {
 
   duelTitre: "Cara a cara: dos coches concretos",
   communs: "Ajustes comunes a los dos coches",
-  duelCommun: (km, pays) => `Para tus ${km}, carga: ${pays} (puedes cambiarlos en el perfil de arriba). Cada coche se revende al final del tiempo de tenencia.`,
+  duelCommun: "Cada coche se revende al final del tiempo de tenencia.",
   vehicule: (l) => `Vehículo ${l}`,
   duelSerre: (a, b) => <>Demasiado igualado para decidir: <strong>{a}</strong> frente a <strong>{b}</strong>, menos de un 10 % de diferencia, dentro del margen de incertidumbre.</>,
   duelGagne: ({ l, desc, x }) => <>El <strong>vehículo {l}</strong> ({desc}) emite <strong>{x} veces menos</strong> por kilómetro.</>,
@@ -150,6 +150,7 @@ export default {
   vue: "Comparar",
   vues: { tout: "Todas las motorizaciones", duel: "Cara a cara" },
   profil: ({ pays, km, voiture }) => `${pays} · ${km} · ${voiture}`,
+  profilCourt: ({ pays, km }) => `${pays} · ${km}`,
   profilTitre: "Tu perfil",
   modifierProfil: "Cambiar",
   // virgule : évite l'accord de genre entre catégorie (« berlina ») et état (« nuevo »)
