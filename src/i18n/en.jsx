@@ -143,7 +143,6 @@ export default {
 
   // v7 — navigation, profile, richer verdict
   suivantVers: ["Next: your car", "Next: the electric car", "See the verdict"],
-  pasDeVoiture: "No car to replace? Compare all powertrains",
   allerPlusLoin: "Go further",
   ctaTout: "All powertrains for my profile",
   ctaDuel: "Head-to-head between two cars",
@@ -192,14 +191,14 @@ export default {
 
   // Budget
   budgetTitre: "And what about cost?",
-  budgetUsageTitre: (u) => <>In use, electric costs you <strong>{u}</strong>.</>,
+  budgetUsageTitre: (u, pays) => <>In use (prices: {pays}), electric costs you <strong>{u}</strong>.</>,
   budgetVotreVoiture: "Your car",
   budgetElectrique: "Electric",
   budgetLigne: (an, cent) => `${an} a year · €${cent} per 100${N}km`,
   budgetPerimetre: "Energy and maintenance, home charging. Excluding the vehicle's purchase price, insurance and taxes.",
-  budgetAmortir: (eco, ans) => `These savings first have to pay back the purchase price: every ${eco} of price difference takes one year of savings, so about ${ans} years for a €10,000 difference. If your car still runs, it's the full price that must be paid back: compare with a real quote, new or used.`,
+  budgetAmortir: (eco) => `Every ${eco} of purchase-price difference takes about a year to pay back; if your car still runs, it's the electric car's full price that must be paid back.`,
   budgetAmortirNon: "In use, electric doesn't save you money: its purchase price would not be paid back.",
-  budgetAjuster: "Adjust energy prices",
+  budgetAjuster: "Your energy prices",
   budgetSources: "Default prices: fuel as of 5 Oct 2026 (EU Weekly Oil Bulletin), household electricity Eurostat (Belgium 2026-S1, other countries 2025-S2). Maintenance: €0.07/km for an older combustion car, repairs included, €0.04/km for an electric car. With public charging, expect 1.5 to 2 times the home price (about €0.50/kWh).",
   budgetUsageMoins: (x) => `about ${x} less a year`,
   budgetUsagePlus: (x) => `about ${x} more a year`,
@@ -248,7 +247,7 @@ export default {
   ecoTitre: "How this site is ecodesigned",
   ecoIntro: "We tried to limit the resources this simulator uses, on your device and on the network. Here is what was measured, what was done, and what these figures don't tell you.",
   ecoMesureTitre: "Measured at first load, in production (8 October 2026)",
-  ecoMesures: [["EcoIndex score", "80/100 (A)"], ["Transferred weight", "57 kB"], ["Requests", "1"], ["Page elements", "92"], ["Estimated emissions per visit", "≈ 0.26 gCO₂e"], ["Estimated water per visit", "≈ 0.04 cl"]],
+  ecoMesures: [["EcoIndex score", "80/100 (A)"], ["Transferred weight", "55 kB"], ["Requests", "1"], ["Page elements", "90"], ["Estimated emissions per visit", "≈ 0.26 gCO₂e"], ["Estimated water per visit", "≈ 0.04 cl"]],
   ecoChoixTitre: "What was done",
   ecoChoix: [
     "A single self-contained page: styles, code and font fit in one file.",

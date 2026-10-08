@@ -436,12 +436,6 @@ function Decision({ shared, allerExplorer }) {
         </section>
       )}
 
-      {etape === 0 && (
-        <p className="raccourci">
-          <button type="button" className="btn-lien" onClick={() => allerExplorer("tout")}>{s.pasDeVoiture}</button>
-        </p>
-      )}
-
       {etape === 3 && (
         <>
           <section className={`verdict sombre verdict-${v.verdict}`} aria-live="polite">
@@ -521,16 +515,15 @@ function Budget({ carb, conso, kmAn, seg, paysId }) {
   return (
     <section className="carte">
       <h2>{s.budgetTitre}</h2>
-      <p className="bascule">{s.budgetUsageTitre(usage(s, f, th - ve))}</p>
+      {/* Le pays est nommé : les montants viennent de ses prix de l'énergie (choisis à l'étape 1) */}
+      <p className="bascule">{s.budgetUsageTitre(usage(s, f, th - ve), s.pays[paysId])}</p>
       <dl className="budget-postes">
         <div><dt>{s.budgetVotreVoiture}</dt><dd>{s.budgetLigne(f.eur(th), f.n1f(b.energie100Garder))}</dd></div>
         <div><dt>{s.budgetElectrique}</dt><dd>{s.budgetLigne(f.eur(ve), f.n1f(b.energie100VE))}</dd></div>
       </dl>
       <p className="aide-ligne">{s.budgetPerimetre}</p>
-      {/* L'achat, sans prix propre à un pays : combien d'années d'économies pour amortir un écart de prix */}
-      <p className="budget-amortir">
-        {th - ve >= 50 ? s.budgetAmortir(f.eur(th - ve), f.n0(10000 / (th - ve))) : s.budgetAmortirNon}
-      </p>
+      {/* L'achat, sans prix propre à un pays : un écart de prix égal aux économies annuelles s'amortit en un an */}
+      <p className="budget-amortir">{th - ve >= 50 ? s.budgetAmortir(f.eur(th - ve)) : s.budgetAmortirNon}</p>
       <Repli className="replie" titre={s.budgetAjuster}>
         <div className="budget-champs">
           <ChampPrix id="p-carb" label={s.budgetPrixCarb(s.motor[carb].nom)} value={p.carb} step="0.01" onChange={maj("carb")} />

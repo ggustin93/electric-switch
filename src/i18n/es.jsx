@@ -143,7 +143,6 @@ export default {
 
   // v7 — navegación, perfil, veredicto ampliado
   suivantVers: ["Siguiente paso: tu coche", "Siguiente paso: el eléctrico", "Ver el veredicto"],
-  pasDeVoiture: "¿No tienes coche que sustituir? Compara todas las motorizaciones",
   allerPlusLoin: "Ir más allá",
   ctaTout: "Todas las motorizaciones para mi perfil",
   ctaDuel: "Cara a cara entre dos coches",
@@ -193,14 +192,14 @@ export default {
 
   // Presupuesto
   budgetTitre: "¿Y el presupuesto?",
-  budgetUsageTitre: (u) => <>En el uso diario, el eléctrico te cuesta <strong>{u}</strong>.</>,
+  budgetUsageTitre: (u, pays) => <>En el uso diario (precios: {pays}), el eléctrico te cuesta <strong>{u}</strong>.</>,
   budgetVotreVoiture: "Tu coche",
   budgetElectrique: "En eléctrico",
   budgetLigne: (an, cent) => `${an} al año · ${cent}${N}€ cada 100${N}km`,
   budgetPerimetre: "Energía y mantenimiento, carga en casa. Sin incluir el precio de compra del vehículo, el seguro ni los impuestos.",
-  budgetAmortir: (eco, ans) => `Primero, este ahorro tiene que amortizar el precio de compra: cada ${eco} de diferencia de precio equivale a un año de ahorro, es decir, unos ${ans}${N}años para una diferencia de 10${N}000${N}€. Si tu coche todavía funciona, lo que hay que amortizar es el precio completo: compáralo con un presupuesto real, nuevo o de segunda mano.`,
+  budgetAmortir: (eco) => `Cada ${eco} de diferencia en el precio de compra tarda aproximadamente un año en amortizarse; si tu coche todavía funciona, hay que amortizar el precio completo del eléctrico.`,
   budgetAmortirNon: "En el uso diario, el eléctrico no te hace ahorrar: su precio de compra no se compensaría.",
-  budgetAjuster: "Ajustar los precios de la energía",
+  budgetAjuster: "Tus precios de la energía",
   budgetSources: "Precios por defecto: combustible a 05/10/2026 (Boletín Petrolero de la UE), electricidad doméstica de Eurostat (Bélgica 2026-S1, otros países 2025-S2). Mantenimiento: 0,07 €/km para un coche de combustión antiguo, reparaciones incluidas, y 0,04 €/km para un eléctrico. En carga pública, cuenta con 1,5 a 2 veces el precio doméstico (unos 0,50 €/kWh).",
   budgetUsageMoins: (x) => `unos ${x} menos al año`,
   budgetUsagePlus: (x) => `unos ${x} más al año`,
@@ -249,7 +248,7 @@ export default {
   ecoTitre: "Ecodiseño de este sitio",
   ecoIntro: "Hemos intentado limitar los recursos que consume este simulador, tanto en tu dispositivo como en la red. Esto es lo que se ha medido, lo que se ha hecho y lo que estas cifras no dicen.",
   ecoMesureTitre: "Medición en la primera carga, en producción (08/10/2026)",
-  ecoMesures: [["Puntuación EcoIndex", "80/100 (A)"], ["Peso transferido", "57 kB"], ["Peticiones", "1"], ["Elementos de la página", "92"], ["Emisiones estimadas por visita", "≈ 0,26 gCO₂e"], ["Agua estimada por visita", "≈ 0,04 cl"]],
+  ecoMesures: [["Puntuación EcoIndex", "80/100 (A)"], ["Peso transferido", "55 kB"], ["Peticiones", "1"], ["Elementos de la página", "90"], ["Emisiones estimadas por visita", "≈ 0,26 gCO₂e"], ["Agua estimada por visita", "≈ 0,04 cl"]],
   ecoChoixTitre: "Lo que se ha hecho",
   ecoChoix: [
     "Una única página autónoma: estilos, código y tipografía caben en un solo archivo.",

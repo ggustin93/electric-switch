@@ -143,7 +143,6 @@ export default {
 
   // v7 — navigation, profil, verdict enrichi
   suivantVers: ["Volgende stap: uw auto", "Volgende stap: de elektrische auto", "Bekijk het oordeel"],
-  pasDeVoiture: "Geen auto te vervangen? Vergelijk alle aandrijvingen",
   allerPlusLoin: "Verder gaan",
   ctaTout: "Alle aandrijvingen voor mijn profiel",
   ctaDuel: "Duel tussen twee auto's",
@@ -192,14 +191,14 @@ export default {
 
   // Budget
   budgetTitre: "En wat met het budget?",
-  budgetUsageTitre: (u) => <>In gebruik kost de elektrische auto u <strong>{u}</strong>.</>,
+  budgetUsageTitre: (u, pays) => <>In gebruik (prijzen: {pays}) kost de elektrische auto u <strong>{u}</strong>.</>,
   budgetVotreVoiture: "Uw auto",
   budgetElectrique: "Elektrisch",
   budgetLigne: (an, cent) => `${an} per jaar · €${N}${cent} per 100${N}km`,
   budgetPerimetre: "Energie en onderhoud, thuis opladen. Zonder aankoopprijs van het voertuig, verzekering en belastingen.",
-  budgetAmortir: (eco, ans) => `Deze besparingen moeten eerst de aankoopprijs terugverdienen: elke ${eco} prijsverschil vraagt een jaar besparingen, dus ongeveer ${ans}${N}jaar voor €${N}10.000 verschil. Als uw auto nog rijdt, moet de volledige prijs terugverdiend worden: vergelijk met een echte offerte, nieuw of tweedehands.`,
+  budgetAmortir: (eco) => `Elke ${eco} verschil in aankoopprijs is in ongeveer een jaar terugverdiend; rijdt uw auto nog, dan moet de volledige prijs van de elektrische auto terugverdiend worden.`,
   budgetAmortirNon: "In gebruik bespaart de elektrische auto u geen geld: de aankoopprijs zou niet terugverdiend worden.",
-  budgetAjuster: "Energieprijzen aanpassen",
+  budgetAjuster: "Uw energieprijzen",
   budgetSources: "Standaardprijzen: brandstof op 05/10/2026 (Weekly Oil Bulletin van de EU), elektriciteit voor huishoudens Eurostat (België 2026-S1, andere landen 2025-S2). Onderhoud: € 0,07/km voor een oudere benzine- of dieselauto, herstellingen inbegrepen, € 0,04/km voor een elektrische auto. Bij openbaar opladen rekent u best op 1,5 tot 2 keer de thuisprijs (ongeveer € 0,50/kWh).",
   budgetUsageMoins: (x) => `ongeveer ${x} minder per jaar`,
   budgetUsagePlus: (x) => `ongeveer ${x} meer per jaar`,
@@ -248,7 +247,7 @@ export default {
   ecoTitre: "Ecodesign van deze site",
   ecoIntro: "We hebben geprobeerd de middelen te beperken die deze simulator verbruikt, op uw toestel en op het netwerk. Hier leest u wat gemeten is, wat gedaan is, en wat deze cijfers niet zeggen.",
   ecoMesureTitre: "Meting bij de eerste keer laden, in productie (08/10/2026)",
-  ecoMesures: [["EcoIndex-score", "80/100 (A)"], ["Overgedragen gewicht", "57 kB"], ["Verzoeken", "1"], ["Pagina-elementen", "92"], ["Geschatte uitstoot per bezoek", "≈ 0,26 gCO₂e"], ["Geschat water per bezoek", "≈ 0,04 cl"]],
+  ecoMesures: [["EcoIndex-score", "80/100 (A)"], ["Overgedragen gewicht", "55 kB"], ["Verzoeken", "1"], ["Pagina-elementen", "90"], ["Geschatte uitstoot per bezoek", "≈ 0,26 gCO₂e"], ["Geschat water per bezoek", "≈ 0,04 cl"]],
   ecoChoixTitre: "Wat er gedaan is",
   ecoChoix: [
     "Eén zelfstandige pagina: stijlen, code en lettertype passen in één bestand.",
