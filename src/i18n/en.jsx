@@ -211,6 +211,8 @@ export default {
   pages: { methode: "Method", ecoconception: "Ecodesign", mentions: "Legal notice" },
   credit: (lien) => <>Designed and built by {lien}.</>,
   mentions: [
+    // Qui a fait ce simulateur : formulation à valider par le propriétaire (ticket 06)
+    ["Who made this simulator", ["Guillaume Gustin (Pwablo, pwablo.be), a biomedical engineer and independent software engineer based in Brussels, designed and built this simulator. Its purpose is educational: to give an honest answer for your situation, including when the best option is to keep your car. The simulator receives no funding from carmakers or energy suppliers, shows no ads and collects no personal data."]],
     ["Publisher", [
       "Productions Associées ASBL — Guillaume Gustin (Pwablo), working under Smart number 30546.",
       "Enterprise and VAT number: BE 0896.755.397. Rue Coenraets 72, 1060 Brussels, Belgium.",
@@ -269,6 +271,7 @@ export default {
     { t: "Running-cost budget", d: "Yearly cost of energy (household prices per country, home charging) and maintenance (€0.07/km for an older combustion car, repairs included; €0.04/km for an electric car). The vehicle's purchase price, insurance, taxes and financing are not counted: they depend on each country's market and each purchase. Default prices dated and editable." },
   ],
   sourcesTitre: "Sources and references",
+  methodeMaj: (date) => `Method updated on ${date}.`,
   sourcesNotes: {
     2: "19.6 gCO₂e/kWh direct generation emissions (2025).",
     6: "Road fuels (E10 2.69; B7 3.10 kgCO₂e/L); French electricity, average consumption mix (51.9 g in 2024).",

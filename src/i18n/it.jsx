@@ -215,6 +215,8 @@ export default {
   pages: { methode: "Metodo", ecoconception: "Ecoprogettazione", mentions: "Note legali" },
   credit: (lien) => <>Ideato e sviluppato da {lien}.</>,
   mentions: [
+    // Qui a fait ce simulateur : formulation à valider par le propriétaire (ticket 06)
+    ["Chi ha realizzato questo simulatore", ["Guillaume Gustin (Pwablo, pwablo.be), ingegnere biomedico e ingegnere del software indipendente a Bruxelles, ha progettato e sviluppato questo simulatore. Lo scopo è didattico: dare una risposta onesta alla tua situazione, anche quando l'opzione migliore è tenere la tua auto. Il simulatore non riceve finanziamenti da case automobilistiche né da fornitori di energia, non mostra pubblicità e non raccoglie dati personali."]],
     ["Editore", [
       "Productions Associées ASBL — Guillaume Gustin (Pwablo), attività esercitata con il numero Smart 30546.",
       "Numero d'impresa (BCE) e partita IVA: BE 0896.755.397. Rue Coenraets 72, 1060 Bruxelles, Belgio.",
@@ -273,6 +275,7 @@ export default {
     { t: "Budget d'uso", d: "Costo annuo dell'energia (prezzi domestici per paese, ricarica a casa) e della manutenzione (0,07 €/km per un'auto termica datata, riparazioni comprese; 0,04 €/km per un'elettrica). Il prezzo d'acquisto del veicolo, l'assicurazione, le tasse e il finanziamento non sono contati: dipendono dal mercato di ogni paese e da ogni acquisto. Prezzi di default datati e modificabili." },
   ],
   sourcesTitre: "Fonti e riferimenti",
+  methodeMaj: (date) => `Metodo aggiornato il ${date}.`,
   sourcesNotes: {
     2: "19,6 gCO₂e/kWh di emissioni dirette di produzione (2025).",
     6: "Carburanti stradali (E10 2,69; B7 3,10 kgCO₂e/L); elettricità francese, mix medio di consumo (51,9 g nel 2024).",

@@ -45,7 +45,7 @@ None yet (brand undecided).
 
 ## Evidence on Hand
 
-Sources [1]–[20] are listed in-app on the « Méthode » page (Carbone 4, RTE, SDES, Ember, Electricity Maps, ADEME, ICCT, IPCC AR5, ISO 14044, Eurostat and others), each checked against its primary source (`docs/research/`). There are no testimonials, user counts or endorsements, and none should be invented.
+Sources [1]–[20] are listed in-app on the « Méthode » page (Carbone 4, RTE, SDES, Ember, Electricity Maps, ADEME, ICCT, IPCC AR5, ISO 14044, Eurostat and others), each with its URL or DOI as plain text (`SOURCES_URL`), each checked against its primary source (`docs/research/`). There are no testimonials, user counts or endorsements, and none should be invented.
 
 ## Product Principles
 
