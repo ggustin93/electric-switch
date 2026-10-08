@@ -572,11 +572,8 @@ function Explorer({ shared, vue, setVue }) {
   const odoMax = ageVE * KM_AN_MAX_COMPTEUR;
 
   const duel = vue === "duel";
-  // Sélecteur de mode + profil. En face-à-face, chaque voiture a sa catégorie : le profil se réduit au pays et au kilométrage.
-  const entete = (
-    <>
-      <Choix label={s.vue} value={vue} onChange={setVue}
-        options={[{ v: "tout", label: s.vues.tout }, { v: "duel", label: s.vues.duel }]} />
+  // Profil en tête de la carte principale. En face-à-face, chaque voiture a sa catégorie : il se réduit au pays et au kilométrage.
+  const profil = (
       <details className="replie profil">
         <summary>
           <span className="profil-titre">{s.profilTitre}</span>
@@ -605,19 +602,22 @@ function Explorer({ shared, vue, setVue }) {
           )}
         </>}
       </details>
-    </>
   );
 
   return (
     <div>
       <p className="lede">{s.comparerIntro}</p>
-      {/* Face-à-face : un seul conteneur (mode, profil, voitures A et B) ; sinon le profil a sa carte et les résultats suivent */}
-      {duel ? <Duel shared={shared} entete={entete} /> : <><section className="carte">{entete}</section><Comparateur shared={shared} /></>}
+      {/* Le mode pilote tout l'onglet : hors carte, comme une sous-navigation. Puis une carte principale par mode. */}
+      <div className="mode">
+        <Choix label={s.vue} value={vue} onChange={setVue}
+          options={[{ v: "tout", label: s.vues.tout }, { v: "duel", label: s.vues.duel }]} />
+      </div>
+      {duel ? <Duel shared={shared} profil={profil} /> : <Comparateur shared={shared} profil={profil} />}
     </div>
   );
 }
 
-function Comparateur({ shared }) {
+function Comparateur({ shared, profil }) {
   const f = useT();
   const { s } = f;
   const { pays, kmAn, decarb, setDecarb, batt, battId, setBattId, segId, etatVE, ageVE, odo, conv, setConv,
@@ -651,19 +651,37 @@ function Comparateur({ shared }) {
         </p>
       </section>
 
+      {/* Une seule carte : profil, barres, courbe cumulée, puis les réglages avancés qui agissent sur les deux */}
       <section className="carte">
-        <h2>{s.barsTitre}</h2>
-        <p className="sous-titre">{s.barsSous(f.km(fen.kmVous), s.voitureProfil(s.seg[segId].nom, occasion ? s.etatOcc(f.n0(ageVE), ageVE) : s.etatNeuve))}</p>
-        <Barres lignes={resultats.map((r) => ({
-          key: r.motorId, r, echelle: 100 / worst.totalT,
-          nom: <><span className="pastille" />{s.motor[r.motorId].nom}</>,
-        }))} />
-        <div className="legende">
-          <span><span className="pastille pastille-fab" />{s.legFab}</span>
-          <span><span className="pastille" />{s.legUse(f.gkwh(gridEff), decarb)}</span>
+        {profil}
+        {/* Les deux graphiques côte à côte sur grand écran : la réponse d'un coup d'œil */}
+        <div className="resultats-grille">
+        <div className="section-filet">
+          <h2>{s.barsTitre}</h2>
+          <p className="sous-titre">{s.barsSous(f.km(fen.kmVous), s.voitureProfil(s.seg[segId].nom, occasion ? s.etatOcc(f.n0(ageVE), ageVE) : s.etatNeuve))}</p>
+          <Barres lignes={resultats.map((r) => ({
+            key: r.motorId, r, echelle: 100 / worst.totalT,
+            nom: <><span className="pastille" />{s.motor[r.motorId].nom}</>,
+          }))} />
+          <div className="legende">
+            <span><span className="pastille pastille-fab" />{s.legFab}</span>
+            <span><span className="pastille" />{s.legUse(f.gkwh(gridEff), decarb)}</span>
+          </div>
+          {!occasion && <p className="aide-ligne">{s.noteConvention[conv]}</p>}
         </div>
-        {!occasion && <p className="aide-ligne">{s.noteConvention[conv]}</p>}
-        {/* Hors du repli : l'hypothèse qui fait le plus varier la barre de l'hybride rechargeable */}
+
+        <div className="section-filet">
+          <h2>{s.pivotTitre}</h2>
+          <p className="sous-titre">{s.pivotSous}</p>
+          <CourbeCumulee resultats={resultats} kmMax={fen.kmVous} pivot={pivot} ev={ev} />
+          <p className="pivot" id="pivot-texte">
+            {pivot > 0 && s.pivotKm(f.km(pivot), f.ans(pivot / kmAn), f.kmAn(kmAn))}
+            {pivot === 0 && s.pivotZero}
+            {pivot === null && s.pivotJamais(f.km(fen.kmVous))}
+          </p>
+        </div>
+        </div>
+        {/* Hors du repli : agit sur les deux graphiques, donc sous la grille, en pleine largeur */}
         {hybrides && (
           <Curseur id="phev" label={s.champ.phev} aide={s.aide.phev} value={Math.round(phevShare * 100)}
             min={0} max={100} step={5} pas={1} unite="%" onChange={(x) => setPhevShare(x / 100)}
@@ -692,17 +710,6 @@ function Comparateur({ shared }) {
           </Case>
           <Case checked={hybrides} onChange={setHybrides}>{s.champ.hybrides}</Case>
         </details>
-      </section>
-
-      <section className="carte">
-        <h2>{s.pivotTitre}</h2>
-        <p className="sous-titre">{s.pivotSous}</p>
-        <CourbeCumulee resultats={resultats} kmMax={fen.kmVous} pivot={pivot} ev={ev} />
-        <p className="pivot" id="pivot-texte">
-          {pivot > 0 && s.pivotKm(f.km(pivot), f.ans(pivot / kmAn), f.kmAn(kmAn))}
-          {pivot === 0 && s.pivotZero}
-          {pivot === null && s.pivotJamais(f.km(fen.kmVous))}
-        </p>
       </section>
     </div>
   );
@@ -860,7 +867,7 @@ function ConfigVehicule({ lettre, cfg, setCfg }) {
   );
 }
 
-function Duel({ shared, entete }) {
+function Duel({ shared, profil }) {
   const f = useT();
   const { s } = f;
   const { pays, kmAn, decarb, batt, conv, detention, setDetention, phevShare } = shared;
@@ -879,8 +886,8 @@ function Duel({ shared, entete }) {
   return (
     <div>
       <section className="carte">
-        {entete}
-        <div className="duel-entete">
+        {profil}
+        <div className="section-filet">
           <h2>{s.duelTitre}</h2>
           <p className="sous-titre">{s.duelCommun}</p>
         </div>
