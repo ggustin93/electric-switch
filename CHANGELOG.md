@@ -4,6 +4,9 @@ Notable changes to « Dois-je passer à l'électrique ? ». Format inspired by [
 
 ## [Unreleased]
 
+- **Domain switch prepared** (ticket 08): `SITE_URL` and `INDEXNOW_KEY` come from GitHub repository variables (empty = workers.dev); IndexNow ping after each deploy (`scripts/indexnow.mjs`, non-blocking). Owner checklist in the ticket.
+- **Consistency fixes after the expert review:** the battery help bubble now gives the same range as H8 (medians 62–74 kgCO₂e/kWh, over 100 depending on material origin); the used-car answer cites H2 (depreciation), not H3.
+
 - **Expert review of the FAQ, intro and Méthode** (ticket 05 resolved): the intro says « environ 60 % » and that replacing a running car only pays off above a certain mileage; FAQ figures made exact (Belgium **63 %**, « 27 000 km au total »), assumptions named (ICCT grid 78 g/kWh and 240 000 km; H2, H3, H6, H8, H10), « sobre » dropped for plug-in hybrids; page renamed « Questions courantes » (NL, IT, ES likewise); NL title « Elektrische of benzinewagen: moet ik overstappen op elektrisch? »; H8 battery « médianes de 62 (LFP) à 74 (NMC) kgCO₂e/kWh, jusqu'à plus de 100 » [7]; source [20] retitled (Morrison & Wappelhorst 2023; H14: ADAC monthly rates converted to €/km); source [8] URL points to the report PDF. EcoIndex unchanged: tool 80.1, Questions 88.5, Méthode 80.0 (A).
 - **Trust signals** (ticket 06): « Qui a fait ce simulateur » opens the Mentions légales page (Guillaume Gustin, Pwablo, ingénieur logiciel indépendant à Bruxelles; no funding from carmakers or energy suppliers, no ads, no personal data); « Méthode mise à jour le 8 octobre 2026 »; each of the 20 sources gets a verified URL or DOI, as plain text (EcoIndex A).
 ### Added
