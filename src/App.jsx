@@ -10,6 +10,7 @@ import STR_PAGE from "@langue";
 import { HYP_REFS, SOURCES, LANGUES } from "./i18n/commun.jsx";
 import { Icone } from "./icones.jsx";
 import { mesurer } from "./mesure.js";
+import { chemin, ancienneAncre } from "./routes.js";
 
 /* ============================================================
    LANGUE ET FORMATS
@@ -55,20 +56,20 @@ function BoutonAide({ id, label, open, setOpen }) {
 }
 
 function TexteAide({ id, open, setOpen, children }) {
-  const { s } = useT();
+  const { s, lang } = useT();
   if (!open) return null;
   return (
     <p id={`${id}-aide`} className="aide-texte" onKeyDown={(e) => e.key === "Escape" && setOpen(false)}>
-      {lierHyp(children, s.prefixeHyp)}
+      {lierHyp(children, s.prefixeHyp, lang)}
     </p>
   );
 }
 
-// « (H5) », « H8 à H10 » dans un texte → liens vers la page Méthode (#methode/h5)
-function lierHyp(texte, prefixe) {
+// « (H5) », « H8 à H10 » dans un texte → liens vers la page Méthode (/fr/methode/#h5)
+function lierHyp(texte, prefixe, lang) {
   if (typeof texte !== "string") return texte;
   return texte.split(new RegExp(`\\b${prefixe}(\\d{1,2})\\b`)).map((morceau, i) =>
-    i % 2 === 1 ? <a key={i} href={`#methode/h${morceau}`}>{prefixe}{morceau}</a> : morceau);
+    i % 2 === 1 ? <a key={i} href={`${chemin(lang, "methode")}#h${morceau}`}>{prefixe}{morceau}</a> : morceau);
 }
 
 // Champ libellé : en-tête (libellé, aide, valeur) puis contrôle
@@ -177,16 +178,10 @@ const Coche = () => (
 const ONGLETS = ["decision", "explorer", "modes"];
 const lienCarbone4 = (t) => <a href="https://www.carbone4.com/analyse-faq-voiture-electrique" target="_blank" rel="noreferrer">{t}</a>;
 
-// Pages de lecture dans le même fichier (une seule requête) : #methode, #methode/h5, #ecoconception
-const PAGES = ["methode", "ecoconception", "mentions"];
-function lireRoute() {
-  const [page, ancre] = location.hash.slice(1).split("/");
-  return PAGES.includes(page) ? { page, ancre: ancre || null } : { page: "outil", ancre: null };
-}
-
-export default function App() {
-  // Rendu initial identique au pré-rendu du build (page outil, pays « EU ») ; corrigé avant le premier affichage hydraté
-  const [route, setRoute] = useState({ page: "outil", ancre: null });
+// page : "outil" ou une page de lecture (routes.js), donnée par le build au pré-rendu et par l'adresse au navigateur (main.jsx).
+// Chaque page de lecture est son propre fichier HTML (ADR 0009) : l'outil n'y est pas rendu.
+export default function App({ page = "outil" }) {
+  // Rendu initial identique au pré-rendu du build (pays « EU ») ; corrigé avant le premier affichage hydraté
   const [onglet, setOnglet] = useState("decision");
   // Un onglet n'est monté qu'à sa première visite (DOM initial minimal), puis reste monté
   const [visites, setVisites] = useState({ decision: true });
@@ -208,9 +203,11 @@ export default function App() {
   const { s, lang } = f;
   const tabsRef = useRef([]);
 
-  // Après hydratation, avant l'affichage : page demandée par l'ancre et pays probable du navigateur
+  // Après hydratation, avant l'affichage : ancien lien (#methode/h5) vers sa vraie page, pays probable du navigateur
   useLayoutEffect(() => {
-    setRoute(lireRoute());
+    const ancien = page === "outil" && ancienneAncre(location.hash, lang);
+    if (ancien) { location.replace(ancien); return; }
+    if (page !== "outil") mesurer("page", { nom: page, lang });
     setPaysId(paysProbable({
       fuseau: Intl.DateTimeFormat().resolvedOptions().timeZone, langues: navigator.languages ?? [navigator.language],
     }));
@@ -220,22 +217,6 @@ export default function App() {
   useEffect(() => {
     try { localStorage.setItem("lang", lang); } catch { /* stockage indisponible */ }
   }, [lang]);
-
-  useEffect(() => {
-    const suivre = () => setRoute(lireRoute());
-    addEventListener("hashchange", suivre);
-    return () => removeEventListener("hashchange", suivre);
-  }, []);
-
-  // Changement de page : titre du document, puis défilement vers l'ancre ou le haut, focus sur le titre
-  useEffect(() => {
-    document.title = route.page === "outil" ? s.titre : `${s.pages[route.page]} · ${s.titre}`;
-    if (route.page !== "outil") mesurer("page", { nom: route.page, lang });
-    const cible = route.ancre && document.getElementById(route.ancre);
-    if (cible) cible.scrollIntoView();
-    else window.scrollTo(0, 0);
-    if (route.page !== "outil") document.getElementById("titre-page")?.focus({ preventScroll: Boolean(cible) });
-  }, [route, s]);
 
   const shared = {
     pays: byId(PAYS, paysId), paysId, setPaysId, kmAn, setKmAn, decarb, setDecarb,
@@ -272,21 +253,20 @@ export default function App() {
             <h1>{s.h1}</h1>
             <div className="entete-actions">
               <nav aria-label={s.navSite}>
-                <a className="nav-site" href="#methode" aria-current={route.page === "methode" ? "page" : undefined}>{s.pages.methode}</a>
+                <a className="nav-site" href={chemin(lang, "methode")} aria-current={page === "methode" ? "page" : undefined}>{s.pages.methode}</a>
               </nav>
             <nav className="langue" aria-label={s.langue}>
-              {/* Liens vers la page de chaque langue ; l'ancre (#methode…) suit au clic */}
+              {/* Même page dans chaque langue ; l'ancre (#h5…) suit au clic */}
               {LANGUES.map(([l, nom]) => (
-                <a key={l} href={`/${l}/`} hreflang={l} lang={l} aria-label={nom} aria-current={l === lang ? "true" : undefined}
-                  onClick={(e) => { e.currentTarget.href = `/${l}/${location.hash}`; }}>{l.toUpperCase()}</a>
+                <a key={l} href={chemin(l, page)} hreflang={l} lang={l} aria-label={nom} aria-current={l === lang ? "true" : undefined}
+                  onClick={(e) => { e.currentTarget.href = chemin(l, page) + location.hash; }}>{l.toUpperCase()}</a>
               ))}
             </nav>
             </div>
           </div>
         </header>
 
-        {/* L'outil reste monté (réponses conservées) mais masqué sur les pages de lecture */}
-        <div hidden={route.page !== "outil"}>
+        {page === "outil" && <div>
         <div className="onglets" role="tablist" aria-label="Sections" onKeyDown={clavierOnglets}>
           {ONGLETS.map((o, i) => (
             <button key={o} ref={(el) => (tabsRef.current[i] = el)} role="tab" id={`tab-${o}`}
@@ -307,17 +287,17 @@ export default function App() {
         <div role="tabpanel" id="panel-modes" aria-labelledby="tab-modes" hidden={onglet !== "modes"}>
           {visites.modes && <Modes />}
         </div>
-        </div>
+        </div>}
 
-        {route.page === "methode" && <PageMethode />}
-        {route.page === "ecoconception" && <PageEco />}
-        {route.page === "mentions" && <PageMentions />}
+        {page === "methode" && <PageMethode />}
+        {page === "ecoconception" && <PageEco />}
+        {page === "mentions" && <PageMentions />}
 
         <footer className="pied">
           <nav className="liens-pied" aria-label={s.navSite}>
-            <a href="#methode">{s.pages.methode}</a>
-            <a href="#ecoconception" aria-label={s.ecoLienLong}>{s.ecoLien}</a>
-            <a href="#mentions">{s.pages.mentions}</a>
+            <a href={chemin(lang, "methode")}>{s.pages.methode}</a>
+            <a href={chemin(lang, "ecoconception")} aria-label={s.ecoLienLong}>{s.ecoLien}</a>
+            <a href={chemin(lang, "mentions")}>{s.pages.mentions}</a>
           </nav>
           <p>{s.footer(lienCarbone4)} {s.credit(<a href="https://pwablo.be" rel="author">Pwablo</a>)}</p>
         </footer>
@@ -494,7 +474,7 @@ function Decision({ shared, allerExplorer }) {
             <Curseur id="etsi" label={s.etSi} value={kmAn} min={3000} max={40000} step={500} pas={100} unite={s.unites.kmAn}
               onChange={setKmAn} format={f.kmAn} />
             <Repli className="replie" titre={s.commentLire}>
-              <p className="note-petite">{lierHyp(s.conventions, s.prefixeHyp)}</p>
+              <p className="note-petite">{lierHyp(s.conventions, s.prefixeHyp, f.lang)}</p>
             </Repli>
           </section>
 
@@ -1045,23 +1025,23 @@ function Modes() {
    ============================================================ */
 
 function RetourOutil() {
-  const { s } = useT();
-  return <a className="retour" href="#">{s.retourOutil}</a>;
+  const { s, lang } = useT();
+  return <a className="retour" href={chemin(lang)}>{s.retourOutil}</a>;
 }
 
 function PageMethode() {
-  const { s } = useT();
+  const { s, lang } = useT();
   return (
     <article className="carte lecture">
       <RetourOutil />
-      <h2 id="titre-page" tabIndex={-1}>{s.pages.methode}</h2>
+      <h2>{s.pages.methode}</h2>
       <p className="lede-carte">{s.methodeIntro}</p>
       <h3>{s.hypTitre(s.hyp.length)}</h3>
       <ol className="hyp">
         {s.hyp.map((h, i) => (
           <li key={i} id={`h${i + 1}`}>
-            <strong>{s.prefixeHyp}{i + 1}. {h.t}.</strong> {lierHyp(h.d, s.prefixeHyp)}{" "}
-            {HYP_REFS[i].map((r) => <a key={r} className="ref" href={`#methode/src-${r}`}>[{r}]</a>)}
+            <strong>{s.prefixeHyp}{i + 1}. {h.t}.</strong> {lierHyp(h.d, s.prefixeHyp, lang)}{" "}
+            {HYP_REFS[i].map((r) => <a key={r} className="ref" href={`#src-${r}`}>[{r}]</a>)}
           </li>
         ))}
       </ol>
@@ -1087,7 +1067,7 @@ function PageMentions() {
   return (
     <article className="carte lecture">
       <RetourOutil />
-      <h2 id="titre-page" tabIndex={-1}>{s.pages.mentions}</h2>
+      <h2>{s.pages.mentions}</h2>
       {s.mentions.map(([titre, lignes]) => (
         <section key={titre}>
           <h3>{titre}</h3>
@@ -1103,7 +1083,7 @@ function PageEco() {
   return (
     <article className="carte lecture eco">
       <RetourOutil />
-      <h2 id="titre-page" tabIndex={-1}>{s.ecoTitre}</h2>
+      <h2>{s.ecoTitre}</h2>
       <p className="lede-carte">{s.ecoIntro}</p>
       <h3>{s.ecoMesureTitre}</h3>
       <dl className="eco-mesures">

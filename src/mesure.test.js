@@ -3,22 +3,23 @@ import assert from "node:assert/strict";
 import { UMAMI, evenement, mesurer } from "./mesure.js";
 
 // Environnement de navigateur simulé : fetch espionné, aucune requête réelle
-function env({ dnt = null, gpc = false, hash = "" } = {}) {
+function env({ dnt = null, gpc = false, pathname = "/fr/" } = {}) {
   const appels = [];
   return {
     appels,
-    location: { hostname: "exemple.test", hash },
+    location: { hostname: "exemple.test", pathname, hash: "#h5" },
     navigator: { language: "fr-BE", doNotTrack: dnt, globalPrivacyControl: gpc },
     fetch: (url, opts) => { appels.push({ url, opts }); return Promise.resolve(); },
   };
 }
 
 test("evenement : charge utile Umami documentée, page sans ancre ni saisie", () => {
-  const e = evenement("page", { nom: "methode" }, env({ hash: "#methode/h5" }));
+  const e = evenement("page", { nom: "methode" }, env({ pathname: "/fr/methode/" }));
   assert.equal(e.type, "event");
   assert.equal(e.payload.name, "page");
   assert.equal(e.payload.url, "/methode");
   assert.deepEqual(e.payload.data, { nom: "methode" });
+  assert.equal(evenement("verdict", {}, env()).payload.url, "/");
 });
 
 test("mesurer : désactivée sans identifiant, respecte Do Not Track et GPC", () => {

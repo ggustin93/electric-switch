@@ -5,10 +5,12 @@ Notable changes to « Dois-je passer à l'électrique ? ». Format inspired by [
 ## [Unreleased]
 
 ### Added
+- **Real reading pages** (ADR 0009): « Méthode », « Écoconception » and « Mentions légales » are pre-rendered pages of their own in each language, `/fr/methode/`, `/fr/ecoconception/`, `/fr/mentions/` (same slugs in all 5 languages), with their own title, description, canonical and hreflang (per-path rules in `dist/_headers`, x-default `/en/<page>/`). Header, footer, « Retour au simulateur », H links in help bubbles (`/fr/methode/#h5`) and the language switch point to the real URLs. Old links `/fr/#methode`, `#methode/h5`, `#ecoconception`, `#mentions` are redirected on load, anchor kept. `src/routes.js` (tested), `mentionsIntro` (meta description, 5 languages).
 - **Pages arrive pre-rendered** (ADR 0008): `/fr/` … `/es/` contain the title, intro, tabs and step 1 in the HTML, readable by search engines, link previews and AI crawlers without JavaScript; Preact hydrates them (`hydrate`), CLS 0. The URL hash (`#methode`) and the guessed country are applied right after hydration, before paint.
 - **Canonical URL** `<link rel="canonical">` on each language page, and **absolute** hreflang URLs (5 languages + x-default) in the HTTP `Link` header and the root page, all built from one variable `SITE_URL` (`src/seo.js`, tested).
 
 ### Changed
+- EcoIndex of the reading pages, measured: Écoconception DOM 78, 55 kB → 81.5 (A); Mentions légales DOM 56, 54.4 kB → 87.2 (A); **Méthode DOM 140, 58 kB → 75.5 (B)**, options open in ticket 02. Tool page unchanged (DOM 93, 54.5 kB → 80.1, A). Écoconception page: « Méthode, Écoconception et Mentions légales sont des pages séparées ».
 - EcoIndex per language page: DOM 92 → 93 (canonical link), 52–53 → 54–55 kB → **80.1 (A)**, figures updated on the Écoconception page. hreflang stays in the HTTP header only: 6 more `<link>` tags would give 79.5 (B).
 
 ### Added
