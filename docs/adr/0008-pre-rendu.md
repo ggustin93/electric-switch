@@ -1,6 +1,6 @@
 # 0008 — Pre-rendered pages, canonical URL, one site-URL variable
 
-Status: accepted (2026-10-08). Extends ADR 0004 and 0006. Ticket `.scratch/seo-visibilite/issues/01`.
+Status: accepted (2026-10-08). Extends ADR 0004 and 0006. Hash routes replaced by real reading pages: ADR 0009. Ticket `.scratch/seo-visibilite/issues/01`.
 
 ## Context
 The SEO audit (score 48/100) found the language pages empty: `<div id="root">` plus JavaScript. Google renders late; Bing, link previews and AI crawlers saw 5–6 words. The domain will move from workers.dev to `electricornot.eu`.

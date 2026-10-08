@@ -5,10 +5,10 @@
 // website : identifiant public du site dans Umami Cloud (pas un secret). Vide = mesure désactivée.
 export const UMAMI = { endpoint: "https://cloud.umami.is/api/send", website: "" };
 
-// Charge utile documentée de POST /api/send. url = page de l'appli (/, /methode…), jamais une saisie.
+// Charge utile documentée de POST /api/send. url = page de l'appli sans la langue (/, /methode…), jamais une saisie ni une ancre.
 export function evenement(nom, data, env = globalThis) {
-  const loc = env.location ?? { hostname: "", hash: "" };
-  const page = (loc.hash || "").slice(1).split("/")[0];
+  const loc = env.location ?? { hostname: "", pathname: "/" };
+  const page = (loc.pathname || "").split("/")[2] || ""; // /fr/methode/ → methode ; outil → ""
   return {
     type: "event",
     payload: {

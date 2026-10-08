@@ -1,14 +1,21 @@
-// Construit une page autonome par langue (dist/fr/, dist/en/…) puis la page racine qui redirige (ADR 0006).
-import { execFileSync } from "node:child_process";
+// Construit une page autonome par langue (dist/fr/, dist/en/…, ADR 0006) et par page de lecture
+// (dist/fr/methode/…, ADR 0009), puis la page racine qui redirige.
+import { execFile } from "node:child_process";
+import { promisify } from "node:util";
 import { rmSync, writeFileSync } from "node:fs";
-import { siteUrl, alternates, enTeteLink } from "./src/seo.js";
+import { siteUrl, alternates, fichierHeaders } from "./src/seo.js";
+import { PAGES } from "./src/routes.js";
 
 const LANGUES = ["fr", "en", "nl", "it", "es"];
 const SITE = siteUrl(process.env); // SITE_URL=https://electricornot.eu npm run build
 rmSync("dist", { recursive: true, force: true });
-for (const l of LANGUES) {
-  execFileSync("npx", ["vite", "build", "--logLevel", "warn"], { stdio: "inherit", env: { ...process.env, LANGUE: l } });
-}
+// Langues en parallèle ; dans une langue, l'outil d'abord : son build vide dist/{langue}/
+await Promise.all(LANGUES.map(async (l) => {
+  for (const page of ["outil", ...PAGES]) {
+    const { stderr } = await promisify(execFile)("npx", ["vite", "build", "--logLevel", "warn"], { env: { ...process.env, LANGUE: l, PAGE: page } });
+    process.stderr.write(stderr);
+  }
+}));
 
 // Racine « / » : langue mémorisée, sinon celle du navigateur, sinon l'anglais. ≈ 1 ko, pas de JS externe.
 const liens = alternates(SITE, LANGUES).map(([l, href]) => `<link rel="alternate" hreflang="${l}" href="${href}" />`).join("\n");
@@ -33,6 +40,7 @@ location.replace("/" + l + "/" + location.hash);
 `);
 // hreflang en en-tête HTTP (Cloudflare _headers) plutôt qu'en <link> : n'alourdit pas le DOM des pages.
 // URL absolues, les mêmes que la balise canonique de chaque page (src/seo.js)
-writeFileSync("dist/_headers", `/*\n  Link: ${enTeteLink(SITE, LANGUES)}\n`);
+// Une règle par chemin exact : chaque page annonce ses propres versions linguistiques.
+writeFileSync("dist/_headers", fichierHeaders(SITE, LANGUES));
 
-console.log("dist/ :", LANGUES.map((l) => `${l}/index.html`).join(", "), "+ index.html");
+console.log(`dist/ : ${LANGUES.length} langues × ${1 + PAGES.length} pages (${["", ...PAGES].map((p) => `${p}${p && "/"}index.html`).join(", ")}) + index.html`);
