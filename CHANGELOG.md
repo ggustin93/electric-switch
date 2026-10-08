@@ -11,6 +11,7 @@ Notable changes to « Dois-je passer à l'électrique ? ». Format inspired by [
   - the language switch is 5 links and keeps the current reading page (`#methode`…);
   - `hreflang` sent as an HTTP `Link` header, not as tags in the page.
 - **Charging country pre-filled** from the device's time zone (e.g. Europe/Brussels → Belgium), else the region of the browser languages (« nl-BE », « en-GB »), else the EU average. Guessed locally, nothing sent; still editable (`paysProbable`, tested).
+- **Summary qualified:** « L'électrique émet le moins : … que l'essence (259), **à catégorie et âge égaux** » — it is not a general claim (5 languages).
 - **Quieter summaries in « Comparer les voitures »:** the black banners (best powertrain, Face-à-face winner) become light neutral panels with a thin border, like the cards; the dark block stays reserved for the « Ma décision » verdict.
 - **One column edge for everything, 60rem** (Impeccable layout): the results card no longer breaks out of the column (tried at 72rem, it created two misaligned left edges under left-aligned content). The shared column grows 52 → 60rem; prose keeps its reading width. Side-by-side charts split 5/12 – 7/12.
 - **PHEV electric share** back in « Réglages avancés », as its first setting (it stays in each plug-in hybrid's column in Face-à-face).

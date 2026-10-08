@@ -115,7 +115,7 @@ export default {
   borneAge: (km) => <>Limite di età (18 anni) raggiunto prima dei 200.000 km: la produzione si ammortizza solo su <strong>{km}</strong>.</>,
   partRevente: ({ pc, a, b, km }) => <>Porti il <strong>{pc}</strong> della produzione (valore consumato tra {a} e {b}); il nuovo proprietario ammortizza il resto su {km}.</>,
   decarbDetail: ({ pays, taux, g, duree }) => `${pays}: −${taux} all'anno, cioè ${g} in media su ${duree}.`,
-  heroComp: ({ best, perKm, x, worst }) => <><strong>{best}</strong>: le emissioni più basse, {perKm}, cioè <strong>{x} volte meno</strong> di un'{worst}.</>,
+  heroComp: ({ best, perKm, x, worst }) => <><strong>{best}</strong>: le emissioni più basse, {perKm}, cioè <strong>{x} volte meno</strong> di un'{worst}, a parità di categoria ed età.</>,
   barsTitre: "Impronta totale per motorizzazione",
   barsSous: (km, voiture) => `Ogni motorizzazione nella stessa categoria: ${voiture}. Tonnellate di CO₂e sui tuoi ${km}, produzione (tratteggiata) poi utilizzo.`,
   barDetail: (fab, use) => `produzione ${fab} + utilizzo ${use}`,

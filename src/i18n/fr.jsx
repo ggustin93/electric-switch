@@ -111,7 +111,7 @@ export default {
   borneAge: (km) => <>Limite d'âge (18 ans) atteinte avant 200 000 km : la fabrication s'amortit sur <strong>{km}</strong> seulement.</>,
   partRevente: ({ pc, a, b, km }) => <>Vous portez <strong>{pc}</strong> de la fabrication (valeur consommée entre {a} et {b}) ; le repreneur amortit le reste sur {km}.</>,
   decarbDetail: ({ pays, taux, g, duree }) => `${pays} : −${taux} par an, soit ${g} en moyenne sur ${duree}.`,
-  heroComp: ({ best, perKm, x, worst }) => <><strong>{best}</strong> émet le moins : {perKm}, soit <strong>{x} fois moins</strong> que {worst}.</>,
+  heroComp: ({ best, perKm, x, worst }) => <><strong>{best}</strong> émet le moins : {perKm}, soit <strong>{x} fois moins</strong> que {worst}, à catégorie et âge égaux.</>,
   barsTitre: "Empreinte totale par motorisation",
   barsSous: (km, voiture) => `Chaque motorisation dans la même catégorie${N}: ${voiture}. Tonnes de CO₂e sur vos ${km}, fabrication (hachurée) puis usage.`,
   barDetail: (fab, use) => `fabrication ${fab} + usage ${use}`,
