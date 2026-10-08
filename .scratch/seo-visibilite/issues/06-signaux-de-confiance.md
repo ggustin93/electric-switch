@@ -7,7 +7,7 @@
 
 **Blocked by:** 02
 
-**Status:** needs-info (awaiting owner validation of the « Qui a fait » wording)
+**Status:** resolved (awaiting owner validation of the « Qui a fait » wording)
 
 - [ ] « Qui a fait ce simulateur » section in the 5 languages, with wording validated by the owner — implemented (first section of Mentions légales), **wording to validate by owner**
 - [x] Méthode update date visible (end of the Méthode intro) — structured data: constant `METHODE_MAJ` exported from `src/i18n/commun.jsx` for ticket 04
@@ -50,3 +50,5 @@ EN/NL/IT/ES are translations of this text (machine-drafted, native review recomm
 | 20 | https://theicct.org/wp-content/uploads/2023/10/ICCT-Study-Cost-Ownership-BEV-Germany.pdf | 200 |
 
 Unverified: none fully; #10 (ISO) is the only one not opened directly (bot wall).
+
+- 2026-10-08 (owner validation): text approved; profession set to « ingénieur civil biomédical et ingénieur logiciel indépendant » (owner holds the Belgian ingénieur civil degree, biomedical, with software-engineering experience). EN/IT/ES say « biomedical engineer » (« civil engineer » means construction in English), NL « burgerlijk ingenieur ».
