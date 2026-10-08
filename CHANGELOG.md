@@ -11,6 +11,10 @@ Notable changes to « Dois-je passer à l'électrique ? ». Format inspired by [
   - the language switch is 5 links and keeps the current reading page (`#methode`…);
   - `hreflang` sent as an HTTP `Link` header, not as tags in the page.
 - **Charging country pre-filled** from the device's time zone (e.g. Europe/Brussels → Belgium), else the region of the browser languages (« nl-BE », « en-GB »), else the EU average. Guessed locally, nothing sent; still editable (`paysProbable`, tested).
+- **« Toutes les motorisations » in one card, charts side by side:**
+  - the « Comparer » switch leaves the cards (it drives the whole tab), the answer comes first;
+  - then one card: profile, the bars and the cumulative curve **side by side on wide screens** (stacked on mobile), the PHEV slider full width since it drives both, then « Réglages avancés »;
+  - the curve legend is tighter (leftover 44 px button height removed).
 - **Face-à-face in a single container:** mode switch, profile and cars A and B now share one card (a thin rule separates the cars). In this mode the profile shows only country · km/yr, the only parts it uses (each car has its own category); « (modifiables dans le profil ci-dessus) » removed.
 - **Type hierarchy under the tab intros** (Impeccable typeset): the intro sits right under the active tab; on « Se déplacer autrement » the « Par rapport à … » summary drops to body size (it read like a second heading) and the chart subtitle no longer repeats « par personne et par km ».
 - **An intro sentence for every tab**, in the same place: « Comparer les voitures » gets one (« Comparez l'empreinte de chaque motorisation… ou mettez deux voitures précises en face-à-face »), and « Se déplacer autrement » moves its own out of the card. Its card title no longer repeats the tab name: « Empreinte par personne et par kilomètre ».
