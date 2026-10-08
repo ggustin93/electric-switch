@@ -1713,3 +1713,25 @@ input[type="number"] {
     row-gap: 0;
   }
 }
+
+/* Mobile (Impeccable adapt) : chaque pixel de largeur compte.
+   - langues : pas de débordement dans la marge (ES ne colle plus au bord), cibles 36 × 44 px (≥ 24 px, WCAG 2.2) ;
+   - cartes et verdict : 16 px de remplissage au lieu de 24, le contenu gagne 16 px de large ;
+   - phrases-réponses au corps du texte : le verdict tient en moins de lignes, les chiffres arrivent plus tôt. */
+@media (max-width: 560px) {
+  .langue {
+    margin-right: 0;
+  }
+  .langue a {
+    min-width: 36px;
+  }
+  .carte,
+  .verdict {
+    padding: var(--s4);
+  }
+  .verdict-texte,
+  .bascule {
+    font-size: var(--fs);
+    line-height: 1.55;
+  }
+}

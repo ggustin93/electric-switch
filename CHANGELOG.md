@@ -9,6 +9,7 @@ Notable changes to « Dois-je passer à l'électrique ? ». Format inspired by [
 - **Budget block simplified:** the answer names the country whose energy prices are used (« À l'usage (prix : Belgique), … »); the payback paragraph becomes one sentence (no more « 9 ans pour 10 000 € » example); the fold is called « Vos prix de l'énergie ». 5 languages.
 
 ### Fixed
+- **Mobile view (Impeccable adapt):** the language links no longer touch the screen edge; cards and verdict use 16 px padding, so content gains 16 px of width; the verdict sentence drops to body size (9 → 6 lines, figures in the first screen).
 - **« Modifier mes réponses »** (Aller plus loin): no horizontal padding, so its text lines up with the buttons' edge instead of sitting ~24 px to the right; on desktop it now fits on the same row.
 
 ### Removed
