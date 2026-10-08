@@ -208,34 +208,35 @@ h1 em {
   }
 }
 
-/* Sélecteur de langue : segment compact */
+/* Sélecteur de langue : liens texte discrets (réglage qu'on touche une fois), séparés de « Méthode » par un filet.
+   Langue active : même marque que la page courante (encre + soulignement accent), pas de remplissage. */
 .langue {
   display: inline-flex;
   flex-shrink: 0;
-  border: 1px solid var(--line-control);
-  border-radius: var(--r-pill);
-  padding: 2px;
+  padding-left: var(--s2);
+  border-left: 1px solid var(--line);
 }
 .langue a {
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  min-height: 36px;
-  min-width: 40px;
-  padding: 0 var(--s2);
-  border-radius: var(--r-pill);
+  min-height: 44px;
+  min-width: 32px;
+  padding: 0 2px;
   font-size: var(--fs-sm);
-  font-weight: 600;
+  font-weight: 500;
   color: var(--ink-2);
   text-decoration: none;
-  transition: background var(--dur-1), color var(--dur-1);
+  box-shadow: inset 0 -2px 0 transparent;
+  transition: color var(--dur-1), box-shadow var(--dur-1);
 }
 .langue a:hover {
   color: var(--ink);
 }
 .langue a[aria-current="true"] {
-  background: var(--accent);
-  color: var(--accent-ink);
+  color: var(--ink);
+  font-weight: 600;
+  box-shadow: inset 0 -2px 0 var(--accent);
 }
 
 /* ============================================================

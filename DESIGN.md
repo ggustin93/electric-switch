@@ -96,7 +96,7 @@ Ecodesign (ADR 0003): Bricolage Grotesque is one variable file (600–800) subse
 
 ## Layout
 
-Header: « Méthode » and the language links (FR EN NL IT ES, current one filled in accent) sit in a slim right-aligned bar **above** the h1 (`column-reverse`, h1 stays first in the DOM), so « Dois-je passer à l'électrique ? » fits on one line on desktop. Single 46rem column with a 16 px gutter.
+Header: « Méthode » and the language links (FR EN NL IT ES as quiet `--ink-2` text after a 1 px rule; the current one in ink with the accent underline, like the current page: a set-once setting must not compete with the title) sit in a slim right-aligned bar **above** the h1 (`column-reverse`, h1 stays first in the DOM), so « Dois-je passer à l'électrique ? » fits on one line on desktop. Single 46rem column with a 16 px gutter.
 Background: very faint Tabler mobility icons (walk, bike, train, bus, car, scooter) **in the empty margins of wide screens only** (≥ 64rem). It's `body::before`, `--ink` at 8 % opacity (3.5 % was invisible on many screens), drawn as a CSS mask: an SVG tile intersected with a gradient that blanks the central column. 0 DOM nodes, theme-aware. Sections are cards spaced 16 px apart. Fields are spaced 24 px apart. Two-up grids (verdict figures, duel configs) stack below 560 / 16rem.
 
 ## Elevation & Depth
