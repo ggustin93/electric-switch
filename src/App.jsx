@@ -641,7 +641,7 @@ function Comparateur({ shared, profil }) {
 
   return (
     <div>
-      <section className="verdict sombre resume" aria-live="polite">
+      <section className="verdict clair resume" aria-live="polite">
         <p className="resume-chiffre" style={{ "--c": `var(--m-${best.motorId})` }}>{f.n0(best.perKm)}<span>gCO₂e/km</span></p>
         <p className="verdict-texte">
           {s.heroComp({
@@ -903,7 +903,7 @@ function Duel({ shared, profil }) {
         </details>
       </section>
 
-      <section className="verdict sombre" aria-live="polite">
+      <section className="verdict clair" aria-live="polite">
         <p className="verdict-texte">
           {d === "serre"
             ? s.duelSerre(f.gkm(rA.perKm), f.gkm(rB.perKm))
