@@ -4,6 +4,8 @@ Notable changes to « Dois-je passer à l'électrique ? ». Format inspired by [
 
 ## [Unreleased]
 
+- **Trust signals** (ticket 06): « Qui a fait ce simulateur » opens the Mentions légales page (Guillaume Gustin, Pwablo, ingénieur logiciel indépendant à Bruxelles; no funding from carmakers or energy suppliers, no ads, no personal data); « Méthode mise à jour le 8 octobre 2026 »; each of the 20 sources gets a verified URL or DOI, as plain text (EcoIndex A).
+
 - **Méthode page back to EcoIndex A (80.1, was 75.5 B):** source references under each hypothesis are plain text « [1, 8, 14] » instead of 29 links, and source titles lose their italics (140 → 92 elements). The sources stay listed right below.
 
 ### Added

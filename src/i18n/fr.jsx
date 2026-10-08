@@ -212,7 +212,7 @@ export default {
   credit: (lien) => <>Conçu et développé par {lien}.</>,
   mentions: [
     // Qui a fait ce simulateur : formulation à valider par le propriétaire (ticket 06)
-    ["Qui a fait ce simulateur", ["Guillaume Gustin (Pwablo, pwablo.be), ingénieur civil biomédical et ingénieur logiciel indépendant à Bruxelles, a conçu et développé ce simulateur. Son but est pédagogique : donner une réponse honnête à votre situation, y compris quand la meilleure option est de garder votre voiture. Le simulateur ne reçoit aucun financement de constructeurs automobiles ni de fournisseurs d'énergie, n'affiche aucune publicité et ne collecte aucune donnée personnelle."]],
+    ["Qui a fait ce simulateur", ["Guillaume Gustin (Pwablo, pwablo.be), ingénieur logiciel indépendant à Bruxelles, a conçu et développé ce simulateur. Son but est pédagogique : donner une réponse honnête à votre situation, y compris quand la meilleure option est de garder votre voiture. Le simulateur ne reçoit aucun financement de constructeurs automobiles ni de fournisseurs d'énergie, n'affiche aucune publicité et ne collecte aucune donnée personnelle."]],
     ["Éditeur", [
       "Productions Associées ASBL — Guillaume Gustin (Pwablo), activité exercée sous le numéro Smart 30546.",
       "BCE et TVA : BE 0896.755.397. Rue Coenraets 72, 1060 Bruxelles, Belgique.",
