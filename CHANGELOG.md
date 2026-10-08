@@ -11,6 +11,12 @@ Notable changes to « Dois-je passer à l'électrique ? ». Format inspired by [
   - the language switch is 5 links and keeps the current reading page (`#methode`…);
   - `hreflang` sent as an HTTP `Link` header, not as tags in the page.
 - **Charging country pre-filled** from the device's time zone (e.g. Europe/Brussels → Belgium), else the region of the browser languages (« nl-BE », « en-GB »), else the EU average. Guessed locally, nothing sent; still editable (`paysProbable`, tested).
+- **Impeccable critique (28/40) applied:**
+  - the intro paragraph shows only on step 1 of « Ma décision », so answers come up higher (mobile: the « Étape suivante » button is visible without scrolling);
+  - quieter top bar: « Méthode » at the same level as the languages, aligned with the column edge;
+  - the mobile stepper stays on one line (labels of the other steps visually hidden, still read by screen readers);
+  - verdict sentence capped for reading (54ch), dropdowns capped at 34rem;
+  - background motifs softened: 5 %, a narrow tile repeated in whole tiles only (no more half icons), scrolling with the page.
 - **Wider column** (46 → 52rem) and the title higher up: charts, the duel and the 5 category cards get more room; text keeps its reading width.
 - **Quieter language switch** (Impeccable): plain text links after a thin rule, the current language underlined like the current page, no filled pill.
 - **Translation check:** a `src/i18n.test.js` test ensures every language has exactly the French keys and types.
