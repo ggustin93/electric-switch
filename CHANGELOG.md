@@ -21,10 +21,13 @@ Notable changes to « Dois-je passer à l'électrique ? ». Format inspired by [
 - **Hybrids** are shown by default in « Comparer les voitures ».
 - **Title on one line:** « Méthode » and FR/EN sit in a slim bar above it.
 - **« Comparer : Toutes les motorisations / Deux voitures au choix »** moved to the top of the tab (it was below the profile and easy to miss).
+- **Plug-in hybrid electric share** slider moved out of « Réglages avancés », right under the bars (and under the two cars in the duel when one is a plug-in hybrid): it was hard to find.
+- **Mobile tabs:** three equal columns, icon above the label (the third tab no longer wraps onto its own line).
 - **Footer link to the Ecodesign page:** « EcoIndex A » (accessible name « Écoconception, EcoIndex A »).
 - **Search Console:** deferred until there is a custom domain.
 
 ### Fixed
+- **UI polish:** unit vertically centred on the typed-value field; budget rows aligned with the card (stacked on mobile); space under « Et côté budget ? »; full-width « Aller plus loin » buttons on mobile; no focus box around headings focused by script.
 - **Chart line styles and axis labels lost** since dropping `preact/compat` (SVG attributes in camelCase). Thick electric/petrol lines, dashed hybrids/diesel, and the axes are back.
 
 ### Security
