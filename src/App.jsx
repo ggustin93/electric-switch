@@ -1,9 +1,9 @@
 import { createContext } from "preact";
 import { useContext, useEffect, useId, useLayoutEffect, useMemo, useRef, useState } from "preact/hooks";
 import {
-  PAYS, SEGMENTS, BATTERIES, MOTORS, MODES, AGE_SUGGESTION, SEUIL_SERRE, KM_AN_MAX_COMPTEUR, byId,
+  PAYS, SEGMENTS, BATTERIES, MOTORS, MODES, AGE_SUGGESTION, SEUIL_SERRE, byId,
   mixMoyen, calc, fenetre, decider, calcConfig, departager, kmPivot, kmBascule,
-  budget, PRIX_ENERGIE, ENTRETIEN, paysProbable, KM_AN_PARC,
+  budget, PRIX_ENERGIE, ENTRETIEN, paysProbable, KM_AN_PARC, anneesRestantes,
 } from "./model.js";
 // Une page par langue (ADR 0006) : « @langue » pointe vers le dictionnaire de la page construite
 import STR_PAGE from "@langue";
@@ -338,6 +338,11 @@ function Decision({ shared, allerExplorer }) {
   const [carb, setCarb] = useState("essence");
   const [conso, setConso] = useState(6.5);
   const [annees, setAnnees] = useState(5);
+  // Aide facultative pour estimer les années restantes de la voiture actuelle (compteur estimé tant qu'il n'est pas saisi)
+  const [ageAct, setAgeAct] = useState(10);
+  const [kmActSaisi, setKmAct] = useState(null);
+  const kmAct = kmActSaisi ?? ageAct * KM_AN_PARC;
+  const estAnnees = anneesRestantes({ age: ageAct, km: kmAct, kmAn });
   const titreRef = useRef(null);
   const etapePrec = useRef(etape);
 
@@ -399,6 +404,20 @@ function Decision({ shared, allerExplorer }) {
                 onChange={setConso} format={(x) => `${f.n1f(x)}${NB}L/100${NB}km`} />
               <Curseur id="annees" label={s.champ.annees} aide={s.aide.annees} value={annees} min={1} max={12} step={1} unite={s.unites.ans}
                 onChange={setAnnees} format={f.ans} />
+              <Repli className="replie estimer" titre={s.estimerTitre}>
+                <div className="groupe">
+                <Curseur id="ageact" label={s.champ.ageActuelle} value={ageAct} min={1} max={25} step={1} unite={s.unites.ans}
+                  onChange={setAgeAct} format={f.ans} />
+                <Curseur id="kmact" label={s.champ.odo} value={kmAct} min={0} max={300000} step={5000} pas={500}
+                  unite={kmActSaisi === null ? s.unites.kmEstime : s.unites.km} onChange={setKmAct} format={f.km} />
+                <p className="note">{s.estimation(f.ans(estAnnees))}</p>
+                <div className="actions actions-debut">
+                  <button type="button" className="btn btn-contour" disabled={estAnnees === annees} onClick={() => setAnnees(estAnnees)}>
+                    {s.utiliserEstimation}
+                  </button>
+                </div>
+                </div>
+              </Repli>
             </>
           )}
 
@@ -412,10 +431,9 @@ function Decision({ shared, allerExplorer }) {
                 <>
                   <Curseur id="ageve" label={s.champ.ageAchat} value={ageVE} min={1} max={12} step={1} unite={s.unites.ans}
                     onChange={setAgeVE} format={f.ans} />
-                  <Curseur id="odove" label={s.champ.odo} aide={s.aide.odo} value={odo} min={0} max={160000} step={1000} pas={500}
+                  <Curseur id="odove" label={s.champ.odo} aide={s.aide.odo} value={odo} min={0} max={190000} step={1000} pas={500}
                     unite={odoEstime ? s.unites.kmEstime : s.unites.km}
                     onChange={setOdo} format={f.km} />
-                  {odo > ageVE * KM_AN_MAX_COMPTEUR && <p className="note">{s.odoBorne(f.km(ageVE * KM_AN_MAX_COMPTEUR))}</p>}
                   <p className="note">{s.partOcc(f.pc(v.partVE), f.age(ageVE), f.age(ageVE + v.horizon))}</p>
                 </>
               )}
@@ -574,7 +592,6 @@ function Explorer({ shared, vue, setVue }) {
   const { s } = f;
   const { pays, paysId, setPaysId, kmAn, setKmAn, segId, setSegId, etatVE, setEtatVE, ageVE, setAgeVE, odo, odoEstime, setOdo } = shared;
   const etat = etatVE === "neuf" ? s.etatNeuve : s.etatOcc(f.n0(ageVE), ageVE);
-  const odoMax = ageVE * KM_AN_MAX_COMPTEUR;
 
   const duel = vue === "duel";
   // Profil en tête de la carte principale. En face-à-face, chaque voiture a sa catégorie : il se réduit au pays et au kilométrage.
@@ -600,10 +617,9 @@ function Explorer({ shared, vue, setVue }) {
             <div className="groupe">
               <Curseur id="ageX" label={s.champ.age} aide={s.aide.age} value={ageVE} min={1} max={12} step={1} unite={s.unites.ans}
                 onChange={setAgeVE} format={f.ans} />
-              <Curseur id="odoX" label={s.champ.odo} aide={s.aide.odo} value={odo} min={0} max={160000} step={1000} pas={500}
+              <Curseur id="odoX" label={s.champ.odo} aide={s.aide.odo} value={odo} min={0} max={190000} step={1000} pas={500}
                 unite={odoEstime ? s.unites.kmEstime : s.unites.km}
                 onChange={setOdo} format={f.km} />
-              {odo > odoMax && <p className="note">{s.odoBorne(f.km(odoMax))}</p>}
             </div>
           )}
         </>}
@@ -865,7 +881,7 @@ function ConfigVehicule({ lettre, cfg, setCfg }) {
         <div className="groupe">
           <Curseur id={`${id}-age`} label={s.champ.age} value={cfg.age} min={1} max={12} step={1} unite={s.unites.ans}
             onChange={(v) => setCfg({ ...cfg, age: v })} format={f.ans} />
-          <Curseur id={`${id}-odo`} label={s.champ.odo} value={cfg.odo} min={0} max={160000} step={1000} pas={500} unite={s.unites.km}
+          <Curseur id={`${id}-odo`} label={s.champ.odo} value={cfg.odo} min={0} max={190000} step={1000} pas={500} unite={s.unites.km}
             onChange={(v) => setCfg({ ...cfg, odo: v })} format={f.km} />
         </div>
       )}

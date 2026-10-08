@@ -2,7 +2,7 @@ import { test } from "node:test";
 import assert from "node:assert/strict";
 import {
   PAYS, SEGMENTS, BATTERIES, MOTORS, VIE_ANS, VIE_KM, byId,
-  partFab, mixMoyen, calc, fenetre, decider, kmPivot, kmBascule, budget, departager, calcConfig, paysProbable, KM_AN_PARC,
+  partFab, mixMoyen, calc, fenetre, decider, kmPivot, kmBascule, budget, departager, calcConfig, paysProbable, KM_AN_PARC, anneesRestantes,
 } from "./model.js";
 
 test("grille : empreintes finies et positives, part de fabrication dans [0,1]", () => {
@@ -143,6 +143,15 @@ test("decider : l'occasion suit la fenêtre de « Comparer » (compteur, borne 2
   assert.equal(decider({ ...base, etatVE: "occasion", ageVE: 4 }).partVE, occ(4, 4 * KM_AN_PARC).partVE);
   // neuf : inchangé
   assert.equal(decider({ ...base, etatVE: "neuf", ageVE: 0 }).partVE, 1);
-  // compteur borné à 30 000 km par année d'âge (1 an, 160 000 km saisis → 30 000 km retenus)
-  assert.equal(fenetre({ occasion: true, odo: 160000, age: 1, kmAn: 12000, revente: true, detention: 8 }).odoEff, 30000);
+  // le compteur saisi est respecté, même très élevé pour l'âge (VTC, gros rouleur) : seule la fin de vie le borne
+  assert.equal(fenetre({ occasion: true, odo: 90000, age: 2, kmAn: 12000, revente: true, detention: 8 }).odoEff, 90000);
+  const vtc = occ(2, 90000);
+  assert.ok(Math.abs(vtc.horizon - Math.min(8, 110000 / 12000)) < 1e-9);
+});
+
+test("anneesRestantes : 18 ans ou 200 000 km, la première borne, entre 1 et 12 ans", () => {
+  assert.equal(anneesRestantes({ age: 10, km: 120000, kmAn: 12000 }), 7); // 8 ans d'âge, 6,7 ans de km
+  assert.equal(anneesRestantes({ age: 15, km: 90000, kmAn: 12000 }), 3); // borne d'âge
+  assert.equal(anneesRestantes({ age: 2, km: 20000, kmAn: 10000 }), 12); // plafonné à l'échelle du curseur
+  assert.equal(anneesRestantes({ age: 20, km: 250000, kmAn: 12000 }), 1); // déjà en fin de vie
 });

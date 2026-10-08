@@ -4,10 +4,14 @@ Notable changes to « Dois-je passer à l'électrique ? ». Format inspired by [
 
 ## [Unreleased]
 
+### Added
+- **Help to answer « Encore combien d'années roulerait-elle ? »:** an optional fold « Estimer à partir de son âge et de son kilométrage » (age, odometer estimated at age × 12 000 km) gives the remaining years under H1 (18 years or 200 000 km, whichever first) at your annual mileage; « Utiliser cette estimation » sets the slider (`anneesRestantes`, tested, 5 languages).
+
 ### Fixed
 - **Odometer taken into account in « Ma décision »** (ADR 0007, data-science + UX review):
   - a used EV's remaining life is now capped by its odometer (200 000 km), as in « Comparer ». Example: 6 years / 150 000 km leaves ≈ 4.2 years, not 8;
   - the same ownership window (`fenetre`) now applies in every tab;
+  - **the typed odometer is respected**: the old cap at 30 000 km per year of age silently replaced e.g. 90 000 km on a 2-year-old car (ride-hailing, heavy commuter) by 60 000 km; the 200 000 km end of life is the only bound now. Note « Compteur ramené à … » removed, slider up to 190 000 km;
   - new field « Kilométrage au compteur » (used only), estimated at age × 12 000 km until the listing's value is typed, marked « km (estimé) » meanwhile (also in « Comparer »);
   - clearer note: « En l'achetant d'occasion, vous portez environ X % de l'impact de sa fabrication… selon son âge et son kilométrage » (5 languages).
 
