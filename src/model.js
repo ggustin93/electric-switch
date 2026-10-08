@@ -59,7 +59,6 @@ export const KM_AN_PARC = 12000; // H4
 export const DECOTE = 0.15; // H2
 export const SEUIL_SERRE = 0.1; // écart relatif sous lequel deux options sont « à égalité »
 export const AGE_SUGGESTION = 6; // âge du VE d'occasion suggéré dans le verdict « garder »
-export const KM_AN_MAX_COMPTEUR = 30000; // borne réaliste compteur / âge (occasion)
 
 export const byId = (list, id) => list.find((x) => x.id === id);
 
@@ -120,7 +119,8 @@ export function calc(motorId, seg, gridG, kmVous, ratioFab, phevShare, efBatt) {
 // marginal : un achat neuf porte 100 % de sa fabrication (H3), même revendu ensuite
 export function fenetre({ occasion, odo, age, kmAn, revente, detention, marginal = false }) {
   const ageEff = occasion ? age : 0;
-  const odoEff = occasion ? Math.min(odo, Math.max(1, ageEff) * KM_AN_MAX_COMPTEUR) : 0;
+  // Le compteur saisi (celui de l'annonce) est respecté : la vraie borne est la fin de vie à 200 000 km
+  const odoEff = occasion ? odo : 0;
   const anneesRest = Math.max(1, VIE_ANS - ageEff);
   const anneesVous = revente ? Math.min(detention, anneesRest) : anneesRest;
   const kmVous = Math.max(3000, Math.min(VIE_KM - odoEff, anneesVous * kmAn));
@@ -135,6 +135,13 @@ export function fenetre({ occasion, odo, age, kmAn, revente, detention, marginal
     // Vous gardez le véhicule jusqu'à sa limite d'âge, avant sa borne kilométrique
     borneParAge: anneesVous === anneesRest && anneesRest * kmAn < VIE_KM - odoEff,
   };
+}
+
+// Années qu'une voiture peut encore rouler (H1 : 18 ans ou 200 000 km, la première borne atteinte),
+// arrondies et ramenées à l'échelle du curseur (1 à 12 ans)
+export function anneesRestantes({ age, km, kmAn }) {
+  const reste = Math.min(VIE_ANS - age, (VIE_KM - km) / kmAn);
+  return Math.min(12, Math.max(1, Math.round(reste)));
 }
 
 // Verdict entre deux empreintes : "a", "b" ou "serre" (même seuil partout)
