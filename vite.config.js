@@ -5,7 +5,8 @@ import preact from "@preact/preset-vite";
 import { h } from "preact";
 import { renderToString } from "preact-render-to-string";
 import { siteUrl, balisesApercu } from "./src/seo.js";
-import { chemin } from "./src/routes.js";
+import { chemin, LANGUES } from "./src/routes.js";
+import { jsonLd, dateGit, sourcesPage } from "./src/donnees.js";
 
 // Une page par langue (ADR 0006) : LANGUE=nl vite build → dist/nl/index.html avec le seul dictionnaire néerlandais.
 // Une page de lecture par fichier (ADR 0009) : LANGUE=nl PAGE=methode vite build → dist/nl/methode/index.html.
@@ -26,7 +27,7 @@ function prerendu() {
       const { module } = await runnerImport(fileURLToPath(new URL("./src/App.jsx", import.meta.url)), {
         resolve: { alias }, oxc: { jsx: { runtime: "automatic", importSource: "preact" } }, logLevel: "warn",
       });
-      return html.replace('<div id="root"></div>', () => `<div id="root">${renderToString(h(module.default, { page: PAGE }))}</div>`);
+      return html.replace('<div id="root" class="page"></div>', () => `<div id="root" class="page">${renderToString(h(module.default, { page: PAGE }))}</div>`);
     },
   };
 }
@@ -77,7 +78,9 @@ function enteteLangue() {
         .replace('<html lang="fr">', `<html lang="${LANGUE}">`)
         .replace(/<title>.*?<\/title>/, `<title>${echapper(s.titre)}</title>`)
         .replace(/<meta name="description" content=".*?" \/>/, `<meta name="description" content="${echapper(s.lede)}" />`)
-        .replace("</head>", `<link rel="canonical" href="${SITE}${chemin(LANGUE, PAGE)}" />\n${balisesApercu(SITE, LANGUE)}\n  </head>`);
+        .replace("</head>", `<link rel="canonical" href="${SITE}${chemin(LANGUE, PAGE)}" />\n${balisesApercu(SITE, LANGUE)}\n${jsonLd(SITE, LANGUE, PAGE, {
+          titre: s.titre, description: s.lede, nomSite: cle("titre"), langues: LANGUES, date: PAGE === "outil" ? undefined : dateGit(sourcesPage(LANGUE)),
+        })}\n  </head>`);
     },
   };
 }
