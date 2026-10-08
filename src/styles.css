@@ -773,7 +773,7 @@ input[type="range"] {
    le seul moment fort du parcours ; ici le grand chiffre coloré suffit. */
 .verdict.clair {
   background: var(--surface-2);
-  border-color: transparent;
+  border: 1px solid var(--line);
 }
 .clair .verdict-texte strong {
   color: var(--ink);
