@@ -27,7 +27,7 @@ Single page, three tabs (v7):
 
 ## Capabilities and Constraints
 
-- **Ecodesign is a product requirement:** the lowest feasible footprint for the app itself. EcoIndex is measured on every UI change (ADR 0003); currently **A 80**: one self-contained HTML file of 58 kB (measured in production), 1 request, 92 elements, 51–52 kB per language page (80.3; still close to the ceiling: measure before adding elements at load), no third party (ADR 0004, 0006). An in-app « Écoconception de ce site » section (footer link) states the measured figures and limits; update it after each measurement.
+- **Ecodesign is a product requirement:** the lowest feasible footprint for the app itself. EcoIndex is measured on every UI change (ADR 0003); currently **A 80**: 1 request, 92 elements, 51–52 kB per language page (80.3; still close to the ceiling: measure before adding elements at load), no third party (ADR 0004, 0006). An in-app « Écoconception de ce site » section (footer link) states the measured figures and limits; update it after each measurement.
 - **Audience measurement:** Umami Cloud (EU), events only (verdict, tab, reading page), no cookie, nothing at load, DNT/GPC respected. Visits without interaction are not counted. Search Console deferred until a custom domain.
 - **Charging country pre-filled** locally (time zone, then language region, else EU average); nothing is sent, and it can be changed at step 1.
 - **Five languages: FR, EN, NL, IT, ES**, one self-contained page each (`/fr/`…, ADR 0006). The root `/` redirects to the remembered language, else the browser's, else English. NL/IT/ES are machine-drafted: **native review recommended** before announcing them, especially the hypotheses and the legal notice.
