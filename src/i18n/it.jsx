@@ -173,7 +173,7 @@ export default {
     scooterElec: "Scooter elettrico", scooter: "Scooter termico", moto: "Moto (oltre 250 cm³)",
     avionCO2: "Aereo a corto raggio, solo CO₂", avion: "Aereo a corto raggio, effetti non CO₂ compresi",
   },
-  ordresSous: "gCO₂e per persona e per km, scala logaritmica: ogni tacca vale 10 volte la precedente.",
+  ordresSous: "In gCO₂e, su scala logaritmica: ogni tacca vale 10 volte la precedente.",
   ordresRef: (nom) => `Riferimento: ${nom}`,
   ordresRefLegende: (nom, g) => `Linea tratteggiata: il riferimento, ${nom} (${g}). A sinistra, ciò che emette meno; a destra, ciò che emette di più.`,
   rapport: { moins: (x) => `${x} volte meno`, plus: (x) => `${x} volte di più`, autant: "più o meno uguale", ref: "riferimento", zero: "nessuna emissione" },

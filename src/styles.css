@@ -198,9 +198,10 @@ h1 em {
   color: var(--accent);
 }
 .lede {
+  /* Intro de l'onglet actif : rattachée aux onglets (espace réduit au-dessus), puis le contenu */
   color: var(--ink-2);
   max-width: 62ch;
-  margin: 0 0 var(--s4);
+  margin: calc(-1 * var(--s1)) 0 var(--s4);
 }
 @media (max-width: 560px) {
   h1 {
@@ -1286,7 +1287,10 @@ h2 + .bascule {
   border-right: 1px dashed var(--ink-2);
 }
 .resume-ref {
-  margin-top: var(--s4);
+  /* Synthèse, pas un titre : taille du corps, chiffres en gras ; le titre de carte reste le seul grand texte */
+  margin-top: var(--s3);
+  font-size: var(--fs);
+  line-height: 1.55;
 }
 .log-rapport {
   display: block;

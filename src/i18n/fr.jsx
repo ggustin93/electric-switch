@@ -169,7 +169,7 @@ export default {
     scooterElec: "Scooter électrique", scooter: "Scooter thermique", moto: "Moto (plus de 250 cm³)",
     avionCO2: "Avion court-courrier, CO₂ seul", avion: "Avion court-courrier, effets hors CO₂ compris",
   },
-  ordresSous: "gCO₂e par personne et par km, échelle logarithmique : chaque graduation vaut 10 fois la précédente.",
+  ordresSous: "En gCO₂e, sur une échelle logarithmique : chaque graduation vaut 10 fois la précédente.",
   ordresRef: (nom) => `Référence : ${nom}`,
   ordresRefLegende: (nom, g) => `Ligne pointillée : la référence, ${nom} (${g}). À sa gauche, ce qui émet moins ; à sa droite, ce qui émet plus.`,
   rapport: { moins: (x) => `${x} fois moins`, plus: (x) => `${x} fois plus`, autant: "autant", ref: "référence", zero: "aucune émission" },

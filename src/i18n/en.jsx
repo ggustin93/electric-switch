@@ -169,7 +169,7 @@ export default {
     scooterElec: "Electric moped", scooter: "Petrol moped", moto: "Motorbike (over 250 cc)",
     avionCO2: "Short-haul plane, CO₂ only", avion: "Short-haul plane, incl. non-CO₂ effects",
   },
-  ordresSous: "gCO₂e per person per km, logarithmic scale: each gridline is 10 times the previous one.",
+  ordresSous: "In gCO₂e, on a logarithmic scale: each gridline is 10 times the previous one.",
   ordresRef: (nom) => `Reference: ${nom}`,
   ordresRefLegende: (nom, g) => `Dashed line: the reference, ${nom} (${g}). To its left, what emits less; to its right, what emits more.`,
   rapport: { moins: (x) => `${x} times less`, plus: (x) => `${x} times more`, autant: "about the same", ref: "reference", zero: "no emissions" },
