@@ -6,7 +6,7 @@ Life-cycle simulator in five languages (FR, EN, NL, IT, ES): keep your petrol/di
 npm install
 npm run dev     # http://localhost:5173
 npm test        # model invariants (node:test)
-npm run build   # one page per language: dist/{fr,en,nl,it,es}/ + root redirect (ADR 0006)
+npm run build   # one page per language: dist/{fr,en,nl,it,es}/ + root redirect (ADR 0006), 404.html, _headers
 LANGUE=nl npm run dev   # develop another language
 npm run deploy  # manual deploy to Cloudflare Workers (static assets), see wrangler.jsonc
 ```
@@ -17,7 +17,7 @@ Production: https://electric-switch.guillaume-gustin-9.workers.dev
 - `src/i18n/<lang>.jsx` holds every visible string of one language (French is the source), assumptions H1–H14 and the « Mentions légales ». `src/i18n/commun.jsx` holds the sources and the language list. `src/i18n.test.js` checks that every language has the French keys.
 - `src/mesure.js` sends optional cookieless Umami events (off until the website ID is set). `src/mesure.test.js` covers it.
 - `src/App.jsx` is the UI (plain Preact without `preact/compat`, so SVG attributes are kebab-case; see ADR 0003). Reading pages are hash routes: `#methode`, `#ecoconception`, `#mentions`. `src/styles.css` holds the design tokens (light and dark).
-- Production build = **one self-contained `dist/<lang>/index.html` per language** (CSS, JS and font inlined, EcoIndex A, see ADR 0004, 0006), **pre-rendered**: the first screen is already in the HTML and Preact hydrates it (ADR 0008).
+- Production build = **one self-contained `dist/<lang>/index.html` per language** (CSS, JS and font inlined, EcoIndex A, see ADR 0004, 0006), **pre-rendered**: the first screen is already in the HTML and Preact hydrates it (ADR 0008). Also a static `dist/404.html` served for unknown URLs, and `dist/_headers`: hreflang `Link` plus security headers, with a hash-based CSP computed from the built pages (`src/entetes.js`). Any new inline `<script>`/`<style>` is picked up automatically; a `style="…"` attribute in the HTML fails the build.
 - **Site URL:** one build variable, `SITE_URL` (default `https://electric-switch.guillaume-gustin-9.workers.dev`, see `src/seo.js`). It feeds each page's `<link rel="canonical">` and the absolute hreflang URLs of the `Link` header (`dist/_headers`). Domain switch: `SITE_URL=https://electricornot.eu npm run build`, no code change.
 - Docs: `PRODUCT.md`, `DESIGN.md` (Impeccable), `CONTEXT.md` (glossary), `docs/adr/` (0005: hosting), `docs/research/` (sourced checks), `CHANGELOG.md`.
 
