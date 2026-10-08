@@ -160,7 +160,8 @@ export default {
   noteConvention: { marginale: "Coche nuevo: se te atribuye el 100 % de su fabricación, como en «Mi decisión» (H3).", partagee: "Coche nuevo: fabricación repartida con los siguientes propietarios según el valor consumido (H2)." },
 
   // v7 — moverse de otra forma (ADEME Impact CO₂)
-  modesTitre: "Moverse de otra forma",
+  modesTitre: "Huella por persona y por kilómetro",
+  comparerIntro: "Compara la huella de cada motorización para tu perfil, fabricación incluida, o enfrenta dos coches concretos cara a cara.",
   modesIntro: "El coche no es la única opción. Esta es la huella de carbono por persona y por kilómetro de los principales medios de transporte, fabricación de los vehículos incluida.",
   modes: {
     marche: "A pie", velo: "Bicicleta", vae: "Bicicleta eléctrica", trottinette: "Patinete eléctrico",
