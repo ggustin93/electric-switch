@@ -220,7 +220,7 @@ export default {
       "Número de empresa (BCE) e IVA: BE 0896.755.397. Rue Coenraets 72, 1060 Bruselas, Bélgica.",
       "Contacto: hello@pwablo.be. Responsable de la publicación: Guillaume Gustin.",
     ]],
-    ["Alojamiento", ["Cloudflare, Inc., 101 Townsend Street, San Francisco, CA 94107, Estados Unidos (Cloudflare Workers)."]],
+    ["Alojamiento", ["Infomaniak Network SA, Rue Eugène-Marziano 25, 1227 Les Acacias (GE), Suiza."]],
     ["Datos personales", [
       "El simulador no pide ni guarda ningún dato personal: los cálculos se hacen en tu navegador. Tu elección de idioma se guarda solo en tu dispositivo.",
       "Medición de audiencia: Umami Cloud (alojado en la Unión Europea), sin cookies ni identificadores; algunos eventos anónimos (veredicto obtenido, páginas abiertas); se respeta «Do Not Track». Para cualquier consulta: hello@pwablo.be.",
@@ -262,7 +262,7 @@ export default {
     "Tema oscuro según tu sistema y animaciones reducidas si así lo pides.",
   ],
   ecoLimitesTitre: "Límites",
-  ecoLimites: "El EcoIndex estima el impacto de la primera carga a partir de tres medidas (elementos, peticiones, peso); no es ni una medición de energía ni una certificación. La auditoría se hizo con Green Claude (Institut du Numérique Responsable), una herramienta de autodiagnóstico basada en el marco francés RGESN 2024, que no equivale a una declaración de conformidad. Alojamiento: Cloudflare Workers, un único archivo servido comprimido (Brotli) desde el servidor más cercano; no hemos verificado de forma independiente los compromisos energéticos del proveedor de alojamiento. La medición de audiencia no cuenta las visitas sin interacción.",
+  ecoLimites: "El EcoIndex estima el impacto de la primera carga a partir de tres medidas (elementos, peticiones, peso); no es ni una medición de energía ni una certificación. La auditoría se hizo con Green Claude (Institut du Numérique Responsable), una herramienta de autodiagnóstico basada en el marco francés RGESN 2024, que no equivale a una declaración de conformidad. Alojamiento: Infomaniak, en Suiza, un único archivo servido comprimido; el proveedor publica compromisos ambientales (energía, recuperación de calor) que no hemos verificado de forma independiente. La medición de audiencia no cuenta las visitas sin interacción.",
   ecoRefs: "Referencias",
 
   hypTitre: (n) => `Hipótesis (H1 a H${n})`,

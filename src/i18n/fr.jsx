@@ -219,7 +219,7 @@ export default {
       "BCE et TVA : BE 0896.755.397. Rue Coenraets 72, 1060 Bruxelles, Belgique.",
       "Contact : hello@pwablo.be. Responsable de la publication : Guillaume Gustin.",
     ]],
-    ["Hébergement", ["Cloudflare, Inc., 101 Townsend Street, San Francisco, CA 94107, États-Unis (Cloudflare Workers)."]],
+    ["Hébergement", ["Infomaniak Network SA, Rue Eugène-Marziano 25, 1227 Les Acacias (GE), Suisse."]],
     ["Données personnelles", [
       "Le simulateur ne demande ni ne conserve aucune donnée personnelle : les calculs se font dans votre navigateur. Votre choix de langue est mémorisé sur votre appareil uniquement.",
       "Mesure d'audience : Umami Cloud (hébergé dans l'Union européenne), sans cookie ni identifiant ; quelques événements anonymes (verdict obtenu, pages ouvertes) ; « Do Not Track » respecté. Pour toute question : hello@pwablo.be.",
@@ -261,7 +261,7 @@ export default {
     "Thème sombre selon votre système, animations réduites si vous le demandez.",
   ],
   ecoLimitesTitre: "Limites",
-  ecoLimites: "L'EcoIndex estime l'impact du premier chargement à partir de trois mesures (éléments, requêtes, poids) ; ce n'est ni une mesure d'énergie ni une certification. L'audit a été mené avec Green Claude (Institut du Numérique Responsable), un outil d'autodiagnostic fondé sur le RGESN 2024, qui ne vaut pas déclaration de conformité. Hébergement : Cloudflare Workers, un seul fichier servi compressé (Brotli) depuis le serveur le plus proche ; nous n'avons pas vérifié de façon indépendante les engagements énergétiques de l'hébergeur. La mesure d'audience ne compte pas les visites sans interaction.",
+  ecoLimites: "L'EcoIndex estime l'impact du premier chargement à partir de trois mesures (éléments, requêtes, poids) ; ce n'est ni une mesure d'énergie ni une certification. L'audit a été mené avec Green Claude (Institut du Numérique Responsable), un outil d'autodiagnostic fondé sur le RGESN 2024, qui ne vaut pas déclaration de conformité. Hébergement : Infomaniak, en Suisse, un seul fichier servi compressé ; l'hébergeur publie des engagements environnementaux (énergie, récupération de chaleur) que nous n'avons pas vérifiés de façon indépendante. La mesure d'audience ne compte pas les visites sans interaction.",
   ecoRefs: "Références",
 
   hypTitre: (n) => `Hypothèses (H1 à H${n})`,

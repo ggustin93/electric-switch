@@ -219,7 +219,7 @@ export default {
       "Enterprise and VAT number: BE 0896.755.397. Rue Coenraets 72, 1060 Brussels, Belgium.",
       "Contact: hello@pwablo.be. Publication manager: Guillaume Gustin.",
     ]],
-    ["Hosting", ["Cloudflare, Inc., 101 Townsend Street, San Francisco, CA 94107, United States (Cloudflare Workers)."]],
+    ["Hosting", ["Infomaniak Network SA, Rue Eugène-Marziano 25, 1227 Les Acacias (GE), Switzerland."]],
     ["Personal data", [
       "The simulator neither asks for nor stores any personal data: calculations run in your browser. Your language choice is remembered on your device only.",
       "Audience measurement: Umami Cloud (hosted in the European Union), no cookies or identifiers; a few anonymous events (verdict reached, pages opened); “Do Not Track” respected. Questions: hello@pwablo.be.",
@@ -261,7 +261,7 @@ export default {
     "Dark theme follows your system; animations are reduced if you ask for it.",
   ],
   ecoLimitesTitre: "Limits",
-  ecoLimites: "EcoIndex estimates the impact of the first load from three measurements (elements, requests, weight); it is neither an energy measurement nor a certification. The audit used Green Claude (Institut du Numérique Responsable), a self-assessment tool based on the French RGESN 2024 framework, which is not a declaration of conformity. Hosting: Cloudflare Workers, a single file served compressed (Brotli) from the nearest server; we have not independently verified the host's energy commitments. The audience measurement does not count visits without interaction.",
+  ecoLimites: "EcoIndex estimates the impact of the first load from three measurements (elements, requests, weight); it is neither an energy measurement nor a certification. The audit used Green Claude (Institut du Numérique Responsable), a self-assessment tool based on the French RGESN 2024 framework, which is not a declaration of conformity. Hosting: Infomaniak, in Switzerland, a single file served compressed; the host publishes environmental commitments (energy, heat recovery) that we have not independently verified. The audience measurement does not count visits without interaction.",
   ecoRefs: "References",
 
   hypTitre: (n) => `Assumptions (A1 to A${n})`,

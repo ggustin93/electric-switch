@@ -15,7 +15,7 @@ export const sourcesPage = (lang) => ["src/App.jsx", "src/model.js", "src/i18n/c
 
 const echapperXml = (t) => t.replaceAll("&", "&amp;").replaceAll("<", "&lt;").replaceAll('"', "&quot;");
 
-// La racine, puis chaque page dans chaque langue, avec ses versions linguistiques (mêmes hreflang que dist/_headers).
+// La racine, puis chaque page dans chaque langue, avec ses versions linguistiques (mêmes hreflang que dist/.htaccess).
 // date(lang) → lastmod ou undefined (lang null : la racine). Ni priority ni changefreq (ignorés par Google).
 export function sitemap(site, langues, date = () => undefined) {
   const url = (loc, page, d) => `<url><loc>${echapperXml(loc)}</loc>${d ? `<lastmod>${d}</lastmod>` : ""}${alternates(site, langues, page)
@@ -28,7 +28,7 @@ ${[url(`${site}/`, "outil", date(null)),
 `;
 }
 
-// Remplace le robots.txt géré par Cloudflare : moteurs de recherche et IA de recherche/réponse admis,
+// robots.txt du site : moteurs de recherche et IA de recherche/réponse admis,
 // pas d'entraînement (Content-Signal). Un robot nommé ignore le groupe « * » : le signal est répété.
 export const ROBOTS_NOMMES = ["Googlebot", "Bingbot", "OAI-SearchBot", "ChatGPT-User", "PerplexityBot", "Claude-SearchBot", "Claude-User"];
 export const robots = (site) => `User-agent: *

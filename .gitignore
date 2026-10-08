@@ -2,7 +2,6 @@ node_modules
 dist
 .impeccable/config.local.json
 .claude/worktrees/
-.wrangler/
 
 # secrets locaux (jamais commités)
 .env

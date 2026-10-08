@@ -4,7 +4,7 @@ import { PAGES, chemin } from "./routes.js";
 // Utilisé au build seulement (vite.config.js, build.mjs), jamais dans le JS envoyé au navigateur.
 import { readFileSync } from "node:fs";
 
-export const SITE_URL_DEFAUT = "https://electric-switch.guillaume-gustin-9.workers.dev";
+export const SITE_URL_DEFAUT = "https://electricornot.eu";
 
 export const siteUrl = (env) => (env.SITE_URL || SITE_URL_DEFAUT).replace(/\/+$/, "");
 
@@ -18,7 +18,7 @@ export const alternates = (site, langues, page = "outil") => [
 export const enTeteLink = (site, langues, page) =>
   alternates(site, langues, page).map(([l, href]) => `<${href}>; rel="alternate"; hreflang="${l}"`).join(", ");
 
-// dist/_headers (Cloudflare) : une règle par chemin exact, chacun avec les hreflang de sa propre page
+// Texte au format _headers, traduit en dist/.htaccess (src/entetes.js) : une règle par chemin exact, chacun avec les hreflang de sa propre page
 export const fichierHeaders = (site, langues) =>
   ["outil", ...PAGES].flatMap((page) =>
     [...(page === "outil" ? ["/"] : []), ...langues.map((l) => chemin(l, page))]

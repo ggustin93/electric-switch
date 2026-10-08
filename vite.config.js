@@ -57,7 +57,7 @@ function pageUnique() {
 }
 
 // <html lang>, titre, description et URL canonique propres à la langue et à la page.
-// Les liens hreflang passent par l'en-tête HTTP Link (dist/_headers) : 6 balises <link> de plus
+// Les liens hreflang passent par l'en-tête HTTP Link (dist/.htaccess) : 6 balises <link> de plus
 // feraient passer la page en EcoIndex B (ADR 0006, 0008). Seule la canonique est dans le <head>.
 function enteteLangue() {
   const echapper = (t) => t.replaceAll("&", "&amp;").replaceAll('"', "&quot;").replaceAll("<", "&lt;");

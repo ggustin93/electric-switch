@@ -223,7 +223,7 @@ export default {
       "Numero d'impresa (BCE) e partita IVA: BE 0896.755.397. Rue Coenraets 72, 1060 Bruxelles, Belgio.",
       "Contatto: hello@pwablo.be. Responsabile della pubblicazione: Guillaume Gustin.",
     ]],
-    ["Hosting", ["Cloudflare, Inc., 101 Townsend Street, San Francisco, CA 94107, Stati Uniti (Cloudflare Workers)."]],
+    ["Hosting", ["Infomaniak Network SA, Rue Eugène-Marziano 25, 1227 Les Acacias (GE), Svizzera."]],
     ["Dati personali", [
       "Il simulatore non chiede né conserva alcun dato personale: i calcoli avvengono nel tuo browser. La tua scelta della lingua è memorizzata solo sul tuo dispositivo.",
       "Misurazione del pubblico: Umami Cloud (ospitato nell'Unione europea), senza cookie né identificativi; alcuni eventi anonimi (verdetto ottenuto, pagine aperte); “Do Not Track” rispettato. Per qualsiasi domanda: hello@pwablo.be.",
@@ -265,7 +265,7 @@ export default {
     "Tema scuro secondo il tuo sistema, animazioni ridotte se lo richiedi.",
   ],
   ecoLimitesTitre: "Limiti",
-  ecoLimites: "L'EcoIndex stima l'impatto del primo caricamento a partire da tre misure (elementi, richieste, peso); non è né una misura dell'energia né una certificazione. L'audit è stato condotto con Green Claude (Institut du Numérique Responsable), uno strumento di autodiagnosi basato sul RGESN 2024 francese, che non vale come dichiarazione di conformità. Hosting: Cloudflare Workers, un solo file servito compresso (Brotli) dal server più vicino; non abbiamo verificato in modo indipendente gli impegni energetici dell'hosting. La misurazione del pubblico non conta le visite senza interazione.",
+  ecoLimites: "L'EcoIndex stima l'impatto del primo caricamento a partire da tre misure (elementi, richieste, peso); non è né una misura dell'energia né una certificazione. L'audit è stato condotto con Green Claude (Institut du Numérique Responsable), uno strumento di autodiagnosi basato sul RGESN 2024 francese, che non vale come dichiarazione di conformità. Hosting: Infomaniak, in Svizzera, un solo file servito compresso; l'hosting pubblica impegni ambientali (energia, recupero di calore) che non abbiamo verificato in modo indipendente. La misurazione del pubblico non conta le visite senza interazione.",
   ecoRefs: "Riferimenti",
 
   hypTitre: (n) => `Ipotesi (da I1 a I${n})`,

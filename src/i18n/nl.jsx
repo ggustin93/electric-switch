@@ -219,7 +219,7 @@ export default {
       "KBO- en btw-nummer: BE 0896.755.397. Rue Coenraets 72, 1060 Brussel, België.",
       "Contact: hello@pwablo.be. Verantwoordelijke uitgever: Guillaume Gustin.",
     ]],
-    ["Hosting", ["Cloudflare, Inc., 101 Townsend Street, San Francisco, CA 94107, Verenigde Staten (Cloudflare Workers)."]],
+    ["Hosting", ["Infomaniak Network SA, Rue Eugène-Marziano 25, 1227 Les Acacias (GE), Zwitserland."]],
     ["Persoonsgegevens", [
       "De simulator vraagt en bewaart geen persoonsgegevens: de berekeningen gebeuren in uw browser. Uw taalkeuze wordt alleen op uw toestel onthouden.",
       "Bezoekersmeting: Umami Cloud (gehost in de Europese Unie), zonder cookies of identificatoren; enkele anonieme gebeurtenissen (oordeel verkregen, pagina's geopend); ‘Do Not Track’ wordt gerespecteerd. Voor vragen: hello@pwablo.be.",
@@ -261,7 +261,7 @@ export default {
     "Donker thema volgens uw systeem, minder animaties als u daarom vraagt.",
   ],
   ecoLimitesTitre: "Beperkingen",
-  ecoLimites: "De EcoIndex schat de impact van de eerste keer laden op basis van drie metingen (elementen, verzoeken, gewicht); het is geen energiemeting en geen certificering. De audit is uitgevoerd met Green Claude (Institut du Numérique Responsable), een zelfevaluatie-instrument gebaseerd op het Franse RGESN 2024, dat geen conformiteitsverklaring is. Hosting: Cloudflare Workers, één bestand dat gecomprimeerd (Brotli) wordt geserveerd vanaf de dichtstbijzijnde server; we hebben de energie-engagementen van de host niet onafhankelijk gecontroleerd. De bezoekersmeting telt geen bezoeken zonder interactie.",
+  ecoLimites: "De EcoIndex schat de impact van de eerste keer laden op basis van drie metingen (elementen, verzoeken, gewicht); het is geen energiemeting en geen certificering. De audit is uitgevoerd met Green Claude (Institut du Numérique Responsable), een zelfevaluatie-instrument gebaseerd op het Franse RGESN 2024, dat geen conformiteitsverklaring is. Hosting: Infomaniak, in Zwitserland, één bestand dat gecomprimeerd wordt geserveerd; de host publiceert milieu-engagementen (energie, warmterecuperatie) die we niet onafhankelijk hebben gecontroleerd. De bezoekersmeting telt geen bezoeken zonder interactie.",
   ecoRefs: "Referenties",
 
   hypTitre: (n) => `Aannames (A1 tot A${n})`,

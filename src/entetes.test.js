@@ -1,7 +1,7 @@
 import { test } from "node:test";
 import assert from "node:assert/strict";
 import { createHash } from "node:crypto";
-import { entetesSecurite } from "./entetes.js";
+import { entetesSecurite, versHtaccess } from "./entetes.js";
 
 const sha = (t) => `'sha256-${createHash("sha256").update(t).digest("base64")}'`;
 const page = `<!doctype html><html><head><style>body{color:red}</style>
@@ -27,7 +27,7 @@ test("CSP : rien par défaut, police et masques en data:, Umami seul tiers, pas 
     "base-uri 'none'", "form-action 'none'", "frame-ancestors 'none'"]) assert.ok(c.includes(d), d);
 });
 
-test("en-têtes de sécurité attendus, une ligne indentée chacun (format Cloudflare _headers)", () => {
+test("en-têtes de sécurité attendus, une ligne indentée chacun (format _headers, traduit en .htaccess)", () => {
   const t = entetesSecurite([page]);
   for (const e of ["Strict-Transport-Security: max-age=31536000; includeSubDomains", "X-Content-Type-Options: nosniff",
     "Referrer-Policy: strict-origin-when-cross-origin", "Permissions-Policy: camera=()"]) assert.ok(t.includes(`  ${e}`), e);
@@ -36,4 +36,13 @@ test("en-têtes de sécurité attendus, une ligne indentée chacun (format Cloud
 
 test("un attribut style= serait bloqué par la CSP : la construction échoue", () => {
   assert.throws(() => entetesSecurite(['<div style="color:red"></div>']), /style/);
+});
+
+test(".htaccess : en-têtes globaux, Link par chemin (index.html compris), guillemets échappés, https canonique", () => {
+  const h = versHtaccess(`/*\n  X-Content-Type-Options: nosniff\n/fr/\n  Link: <https://e.eu/fr/>; rel="alternate"; hreflang="fr"\n`, "https://e.eu");
+  assert.match(h, /^Header always set X-Content-Type-Options "nosniff"$/m);
+  assert.ok(h.includes(`<If "%{REQUEST_URI} =~ m#^/fr/(index\\.html)?$#">\n  Header always set Link "<https://e.eu/fr/>; rel=\\"alternate\\"; hreflang=\\"fr\\""\n</If>`));
+  assert.ok(h.includes("RewriteCond %{HTTP_HOST} !=e.eu\nRewriteRule ^ https://e.eu%{REQUEST_URI} [R=301,L]"));
+  assert.match(h, /^ErrorDocument 404 \/404\.html$/m);
+  assert.equal(h.split("<IfModule mod_headers.c>").length, 2);
 });

@@ -1,4 +1,4 @@
-// En-têtes de sécurité (Cloudflare _headers, appliqués à toutes les réponses). Exécuté par build.mjs, pas dans la page.
+// En-têtes de sécurité (appliqués à toutes les réponses, écrits dans dist/.htaccess). Exécuté par build.mjs, pas dans la page.
 // CSP stricte sans 'unsafe-inline' : la page unique (ADR 0004) n'a que des <script>/<style> en ligne,
 // autorisés un à un par leur empreinte SHA-256, calculée sur les pages finales de dist/.
 import { createHash } from "node:crypto";
@@ -34,4 +34,33 @@ export function entetesSecurite(pages) {
     "Permissions-Policy: camera=(), microphone=(), geolocation=(), payment=(), usb=(), accelerometer=(), gyroscope=(), magnetometer=(), browsing-topics=()",
     `Content-Security-Policy: ${csp}`,
   ].map((l) => `  ${l}\n`).join("");
+}
+
+// dist/.htaccess (Apache, Infomaniak, ADR 0010) : traduit le texte au format _headers ci-dessus (+ fichierHeaders, src/seo.js).
+// Bloc « /* » → toutes les réponses ; chemin exact → <If>, index.html compris (DirectoryIndex sert /fr/ par /fr/index.html).
+// <IfModule mod_headers.c> : sans le module, le site reste en ligne (pas d'erreur 500), les en-têtes manquent ; vérifier par curl -I.
+export function versHtaccess(texte, site) {
+  const valeur = (v) => `"${v.replaceAll("\\", "\\\\").replaceAll('"', '\\"')}"`;
+  const regles = [];
+  for (const ligne of texte.split("\n").filter(Boolean)) {
+    const entete = ligne.match(/^ {2}([\w-]+): (.*)$/);
+    if (!entete) regles.push({ chemin: ligne, entetes: [] });
+    else regles.at(-1).entetes.push(`Header always set ${entete[1]} ${valeur(entete[2])}`);
+  }
+  const blocs = regles.flatMap(({ chemin, entetes }) => chemin === "/*" ? entetes
+    : [`<If "%{REQUEST_URI} =~ m#^${chemin}(index\\.html)?$#">`, ...entetes.map((e) => `  ${e}`), "</If>"]);
+  return [
+    "ErrorDocument 404 /404.html",
+    // http:// et tout autre nom d'hôte (www., IP) → https://domaine canonique, en 301
+    "RewriteEngine On",
+    "RewriteCond %{HTTPS} off [OR]",
+    `RewriteCond %{HTTP_HOST} !=${new URL(site).host}`,
+    `RewriteRule ^ ${site}%{REQUEST_URI} [R=301,L]`,
+    "<IfModule mod_headers.c>",
+    // Revalidation à chaque visite, 304 si l'ETag n'a pas changé (ADR 0004) ; gzip est actif par défaut chez Infomaniak
+    'Header always set Cache-Control "public, max-age=0, must-revalidate"',
+    ...blocs,
+    "</IfModule>",
+    "",
+  ].join("\n");
 }

@@ -4,7 +4,7 @@ import { execFile } from "node:child_process";
 import { promisify } from "node:util";
 import { cpSync, readdirSync, readFileSync, rmSync, writeFileSync } from "node:fs";
 import { siteUrl, alternates, fichierHeaders, balisesApercu, lireDico } from "./src/seo.js";
-import { entetesSecurite } from "./src/entetes.js";
+import { entetesSecurite, versHtaccess } from "./src/entetes.js";
 import { PAGES, LANGUES } from "./src/routes.js";
 import { sitemap, robots, llmsTxt, dateGit, sourcesPage } from "./src/donnees.js";
 import { cleValide } from "./src/indexnow.js";
@@ -43,7 +43,7 @@ location.replace("/" + l + "/" + location.hash);
 </body>
 </html>
 `);
-// Page 404 (wrangler.jsonc : not_found_handling) : HTML statique sans JS, jetons du site, clair + sombre, 5 langues.
+// Page 404 (ErrorDocument du .htaccess) : HTML statique sans JS, jetons du site, clair + sombre, 5 langues.
 const INTROUVABLE = {
   fr: ["Page introuvable.", "Retour au simulateur"],
   en: ["Page not found.", "Back to the simulator"],
@@ -83,11 +83,11 @@ writeFileSync("dist/llms.txt", llmsTxt(SITE, LANGUES.map((l) => ({
   lang: l, titre: lireDico(l, "titre"), lede: lireDico(l, "lede"), intro: lireDico(l, "methodeIntro"),
 }))));
 
-// hreflang en en-tête HTTP (Cloudflare _headers) plutôt qu'en <link> : n'alourdit pas le DOM des pages.
+// hreflang en en-tête HTTP (dist/.htaccess, Apache chez Infomaniak) plutôt qu'en <link> : n'alourdit pas le DOM des pages.
 // URL absolues, les mêmes que la balise canonique de chaque page (src/seo.js)
 // En-têtes de sécurité (CSP calculée sur toutes les pages finales : à garder en dernier, après toute écriture de HTML),
 // puis une règle hreflang par chemin exact : chaque page annonce ses propres versions linguistiques.
 const pages = readdirSync("dist", { recursive: true }).filter((f) => f.endsWith(".html")).map((f) => readFileSync(`dist/${f}`, "utf8"));
-writeFileSync("dist/_headers", `/*\n${entetesSecurite(pages)}${fichierHeaders(SITE, LANGUES)}`);
+writeFileSync("dist/.htaccess", versHtaccess(`/*\n${entetesSecurite(pages)}${fichierHeaders(SITE, LANGUES)}`, SITE));
 
-console.log(`dist/ : ${LANGUES.length} langues × ${1 + PAGES.length} pages (${["", ...PAGES].map((p) => `${p}${p && "/"}index.html`).join(", ")}) + index.html, 404.html, og/, sitemap.xml, robots.txt, llms.txt, _headers`);
+console.log(`dist/ : ${LANGUES.length} langues × ${1 + PAGES.length} pages (${["", ...PAGES].map((p) => `${p}${p && "/"}index.html`).join(", ")}) + index.html, 404.html, og/, sitemap.xml, robots.txt, llms.txt, .htaccess`);
