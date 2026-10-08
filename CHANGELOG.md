@@ -30,6 +30,9 @@ Notable changes to « Dois-je passer à l'électrique ? ». Format inspired by [
 - **UI polish:** unit vertically centred on the typed-value field; budget rows aligned with the card (stacked on mobile); space under « Et côté budget ? »; full-width « Aller plus loin » buttons on mobile; no focus box around headings focused by script.
 - **Chart line styles and axis labels lost** since dropping `preact/compat` (SVG attributes in camelCase). Thick electric/petrol lines, dashed hybrids/diesel, and the axes are back.
 
+### Docs
+- ADR 0005 (hosting on Cloudflare Workers, Cloudflare, Inc.; EU-only processing is Enterprise-only; European exit options). CONTEXT glossary: Duel, durée de détention, part électrique PHEV, page de lecture. PRODUCT, DESIGN, README and ADR 0004 updated (EcoIndex 93 elements = 80.01, the ceiling).
+
 ### Security
 - `.env` added to `.gitignore` (local secrets are never committed); the CI token is stored as a GitHub secret only.
 - `cloudflare/wrangler-action` pinned to a commit SHA (v4.1.3); Dependabot for the actions.
