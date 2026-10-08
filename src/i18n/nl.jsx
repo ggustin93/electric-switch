@@ -169,7 +169,7 @@ export default {
     scooterElec: "Elektrische scooter", scooter: "Benzinescooter", moto: "Motorfiets (meer dan 250 cc)",
     avionCO2: "Vliegtuig korte afstand, alleen CO₂", avion: "Vliegtuig korte afstand, inclusief niet-CO₂-effecten",
   },
-  ordresSous: "gCO₂e per persoon en per km, logaritmische schaal: elke streep is 10 keer zoveel waard als de vorige.",
+  ordresSous: "In gCO₂e, op een logaritmische schaal: elke streep is 10 keer zoveel waard als de vorige.",
   ordresRef: (nom) => `Referentie: ${nom}`,
   ordresRefLegende: (nom, g) => `Stippellijn: de referentie, ${nom} (${g}). Links ervan wat minder uitstoot, rechts ervan wat meer uitstoot.`,
   rapport: { moins: (x) => `${x} keer minder`, plus: (x) => `${x} keer meer`, autant: "evenveel", ref: "referentie", zero: "geen uitstoot" },
