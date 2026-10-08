@@ -9,9 +9,10 @@ export default {
   locale: "en-GB",
   prefixeHyp: "A",
   age: (s) => `age ${s}`,
-  titre: "Should I switch to electric?",
+  titre: "Electric or petrol car: should I switch to electric?",
+  nomSite: "Should I switch to electric?",
   h1: <>Should I switch to <em>electric</em>?</>,
-  lede: "In four questions, find out whether an electric car would really cut your carbon footprint, and what it would change to your everyday budget. Battery manufacturing included.",
+  lede: "In Belgium, over its whole life (200,000 km), an electric compact car emits over 60% less greenhouse gas than a petrol one, battery manufacturing included. But replacing a car that still runs does not always pay off: check your own case in four questions, everyday budget included.",
   langue: "Language",
   onglets: { decision: "My decision", explorer: "Compare cars", modes: "Other ways to get around" },
   ans: (s, n) => `${s}${N}${n === 1 ? "year" : "years"}`,
@@ -208,7 +209,7 @@ export default {
 
   // Ecodesign (collapsible mini page + footer mention)
   navSite: "Site pages",
-  pages: { methode: "Method", ecoconception: "Ecodesign", mentions: "Legal notice" },
+  pages: { methode: "Method", ecoconception: "Ecodesign", mentions: "Legal notice", questions: "Common questions" },
   credit: (lien) => <>Designed and built by {lien}.</>,
   mentions: [
     ["Publisher", [
@@ -230,12 +231,22 @@ export default {
   retourOutil: "Back to the simulator",
   methodeIntro: "How the simulator calculates. Every assumption is numbered and sourced; the A1, A2… mentions in the help bubbles link here.",
   mentionsIntro: "Publisher, hosting, personal data (none is collected), liability and licences of the “Should I switch to electric?” simulator.",
+  // Questions-réponses (ticket 05) : chiffres du modèle, vérifiés par src/reponses.test.js
+  questionsIntro: "Six common questions about electric cars, answered with the simulator's figures for Belgium. Every figure comes from the model; the references A1, A2… and [1], [2]… point to the assumptions and sources on the Method page.",
+  questions: [
+    ["Does an electric car really emit less?", "Yes, over its whole life. In Belgium, over 200,000 km, a new electric compact emits about 16 tCO₂e, battery manufacturing included, against 44 t for a petrol compact: over 60% less. The ICCT even finds −73% on the EU average, with more favourable assumptions; the simulator is deliberately cautious (A13) [8, 14]."],
+    ["From how many km a year?", "It depends on what you replace. Between two new cars, the electric one overtakes petrol after about 27,000 km in Belgium. But to replace a petrol car (6.5 L/100 km) that would run for another 5 years, a new electric car only wins above about 15,500 km a year, and from 10,000 km a year if yours could still run for 8 years (A1, A3) [1, 8, 11]."],
+    ["What about building the battery?", "It weighs heavily, and it is counted. The 55 kWh battery of a compact car emits about 4 tCO₂e to build (73 kgCO₂e per kWh, the European sales average). In all, building the electric car emits 11.4 t, against 7 t for a petrol one. This surplus is paid back on the road, after about 27,000 km in Belgium. No recycling credit is deducted (A8, A9) [7, 8, 12]."],
+    ["Is a used electric car better?", "Often, yes. Second-hand, it only carries part of its manufacturing, according to the value you use up (15% depreciation a year). To replace a petrol car that would run for another 5 years, at 12,000 km a year in Belgium, a 6-year-old electric car leaves you about 22% of its manufacturing: 4.2 t in all, against 10.5 t by keeping your car and 13 t with a new electric one (A2, A3) [10, 11]."],
+    ["What about plug-in hybrids?", "They are only frugal when plugged in. Over 200,000 km in Belgium, with 50% of km driven on electricity (private owners achieve 45 to 50%), a plug-in hybrid emits about 30% less than a petrol car, against over 60% for an electric one. At 15%, the top of the range seen in company fleets (11 to 15%), the gap falls to about 3% (A11) [15, 16]."],
+    ["Does my country change the answer?", "Yes, through the electricity that charges the battery. Over 200,000 km, an electric compact emits about 70% less than a petrol one in France or Norway, 65% in Belgium, 50% in Germany and 35% in Poland, where the grid is still very carbon-intensive. Each grid's planned decarbonisation is included; pick your country in the first question (A5, A6) [4, 5, 13]."],
+  ],
   ecoLien: "EcoIndex A",
   ecoLienLong: "Ecodesign, EcoIndex A",
   ecoTitre: "How this site is ecodesigned",
   ecoIntro: "We tried to limit the resources this simulator uses, on your device and on the network. Here is what was measured, what was done, and what these figures don't tell you.",
   ecoMesureTitre: "Measured at first load, in production (8 October 2026)",
-  ecoMesures: [["EcoIndex score", "80/100 (A)"], ["Transferred weight", "55 kB"], ["Requests", "1"], ["Page elements", "93"], ["Estimated emissions per visit", "≈ 0.26 gCO₂e"], ["Estimated water per visit", "≈ 0.04 cl"]],
+  ecoMesures: [["EcoIndex score", "80/100 (A)"], ["Transferred weight", "55 kB"], ["Requests", "1"], ["Page elements", "92"], ["Estimated emissions per visit", "≈ 0.26 gCO₂e"], ["Estimated water per visit", "≈ 0.04 cl"]],
   ecoChoixTitre: "What was done",
   ecoChoix: [
     "A single self-contained page: styles, code and font fit in one file.",

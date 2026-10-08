@@ -9,9 +9,10 @@ export default {
   locale: "nl-BE",
   prefixeHyp: "A",
   age: (s, n) => `${s}${N}jaar`,
-  titre: "Moet ik overstappen op elektrisch?",
+  titre: "Elektrische auto of benzine: moet ik overstappen?",
+  nomSite: "Moet ik overstappen op elektrisch?",
   h1: <>Moet ik overstappen op <em>elektrisch</em>?</>,
-  lede: "Ontdek in vier vragen of een elektrische auto uw CO₂-voetafdruk echt zou verkleinen, en wat hij zou veranderen aan uw dagelijkse budget. Inclusief de productie van de batterij.",
+  lede: "In België stoot een elektrische compacte auto over zijn hele leven (200.000 km) meer dan 60% minder broeikasgassen uit dan een benzineauto, productie van de batterij inbegrepen. Maar een auto vervangen die nog rijdt, loont niet altijd: controleer het voor uw situatie in vier vragen, dagelijks budget inbegrepen.",
   langue: "Taal",
   onglets: { decision: "Mijn beslissing", explorer: "Auto's vergelijken", modes: "Anders verplaatsen" },
   ans: (s, n) => `${s}${N}jaar`,
@@ -208,7 +209,7 @@ export default {
 
   // Écoconception (mini page repliable + mention de pied de page)
   navSite: "Pagina's van de site",
-  pages: { methode: "Methode", ecoconception: "Ecodesign", mentions: "Juridische informatie" },
+  pages: { methode: "Methode", ecoconception: "Ecodesign", mentions: "Juridische informatie", questions: "Veelgestelde vragen" },
   credit: (lien) => <>Ontworpen en ontwikkeld door {lien}.</>,
   mentions: [
     ["Uitgever", [
@@ -230,12 +231,22 @@ export default {
   retourOutil: "Terug naar de simulator",
   methodeIntro: "Hoe de simulator rekent. Elke aanname is genummerd en heeft een bron; de vermeldingen A1, A2… in de hulpballonnen verwijzen hiernaar.",
   mentionsIntro: "Uitgever, hosting, persoonsgegevens (er worden er geen verzameld), aansprakelijkheid en licenties van de simulator ‘Moet ik overstappen op elektrisch?’.",
+  // Questions-réponses (ticket 05) : chiffres du modèle, vérifiés par src/reponses.test.js
+  questionsIntro: "Zes veelgestelde vragen over de elektrische auto, beantwoord met de cijfers van de simulator voor België. Elk cijfer komt uit het model; de verwijzingen A1, A2… en [1], [2]… duiden de aannames en bronnen op de pagina Methode aan.",
+  questions: [
+    ["Stoot een elektrische auto echt minder uit?", "Ja, over zijn hele leven. In België stoot een nieuwe elektrische compacte auto over 200.000 km ongeveer 16 tCO₂e uit, productie van de batterij inbegrepen, tegenover 44 t voor een compacte benzineauto: meer dan 60% minder. De ICCT komt zelfs op −73% voor het EU-gemiddelde, met gunstigere aannames; de simulator is bewust voorzichtig (A13) [8, 14]."],
+    ["Vanaf hoeveel km per jaar?", "Dat hangt af van wat u vervangt. Tussen twee nieuwe auto's haalt de elektrische de benzineauto in België in na ongeveer 27.000 km. Maar om een benzineauto (6,5 L/100 km) te vervangen die nog 5 jaar zou rijden, wint een nieuwe elektrische pas boven ongeveer 15.500 km per jaar, en vanaf 10.000 km per jaar als uw auto nog 8 jaar mee zou kunnen (A1, A3) [1, 8, 11]."],
+    ["En de productie van de batterij?", "Die weegt zwaar, en ze wordt meegeteld. De batterij van 55 kWh van een compacte auto stoot bij de productie ongeveer 4 tCO₂e uit (73 kgCO₂e per kWh, gemiddelde van de Europese verkoop). In totaal stoot de productie van de elektrische auto 11,4 t uit, tegenover 7 t voor een benzineauto. Dat verschil wordt onderweg terugverdiend, in België na ongeveer 27.000 km. Er wordt geen recyclagekrediet afgetrokken (A8, A9) [7, 8, 12]."],
+    ["Is een tweedehands elektrische auto beter?", "Vaak wel. Tweedehands draagt hij maar een deel van zijn productie, naar de waarde die u verbruikt (afschrijving van 15% per jaar). Om een benzineauto te vervangen die nog 5 jaar zou rijden, aan 12.000 km per jaar in België, draagt u met een elektrische auto van 6 jaar oud ongeveer 22% van zijn productie: 4,2 t in totaal, tegenover 10,5 t als u uw auto houdt en 13 t met een nieuwe elektrische (A2, A3) [10, 11]."],
+    ["En de plug-inhybride?", "Die is alleen zuinig als hij wordt opgeladen. Over 200.000 km in België, met 50% elektrisch gereden kilometers (particulieren halen 45 tot 50%), stoot hij ongeveer 30% minder uit dan een benzineauto, tegenover meer dan 60% voor een elektrische. Bij 15%, de bovenkant van wat in bedrijfsvloten wordt vastgesteld (11 tot 15%), daalt het verschil tot ongeveer 3% (A11) [15, 16]."],
+    ["Verandert mijn land het antwoord?", "Ja, via de elektriciteit waarmee de batterij wordt geladen. Over 200.000 km stoot een elektrische compacte auto ongeveer 70% minder uit dan een benzineauto in Frankrijk of Noorwegen, 65% in België, 50% in Duitsland en 35% in Polen, waar het net nog sterk koolstofintensief is. De geplande verduurzaming van elk net is inbegrepen; kies uw land bij de eerste vraag (A5, A6) [4, 5, 13]."],
+  ],
   ecoLien: "EcoIndex A",
   ecoLienLong: "Ecodesign, EcoIndex A",
   ecoTitre: "Ecodesign van deze site",
   ecoIntro: "We hebben geprobeerd de middelen te beperken die deze simulator verbruikt, op uw toestel en op het netwerk. Hier leest u wat gemeten is, wat gedaan is, en wat deze cijfers niet zeggen.",
   ecoMesureTitre: "Meting bij de eerste keer laden, in productie (08/10/2026)",
-  ecoMesures: [["EcoIndex-score", "80/100 (A)"], ["Overgedragen gewicht", "55 kB"], ["Verzoeken", "1"], ["Pagina-elementen", "93"], ["Geschatte uitstoot per bezoek", "≈ 0,26 gCO₂e"], ["Geschat water per bezoek", "≈ 0,04 cl"]],
+  ecoMesures: [["EcoIndex-score", "80/100 (A)"], ["Overgedragen gewicht", "55 kB"], ["Verzoeken", "1"], ["Pagina-elementen", "92"], ["Geschatte uitstoot per bezoek", "≈ 0,26 gCO₂e"], ["Geschat water per bezoek", "≈ 0,04 cl"]],
   ecoChoixTitre: "Wat er gedaan is",
   ecoChoix: [
     "Eén zelfstandige pagina: stijlen, code en lettertype passen in één bestand.",

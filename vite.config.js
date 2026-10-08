@@ -67,10 +67,11 @@ function enteteLangue() {
       const source = readFileSync(new URL(`./src/i18n/${LANGUE}.jsx`, import.meta.url), "utf8");
       const lire = (motif) => JSON.parse(source.match(new RegExp(motif, "m"))[1]);
       const cle = (c) => lire(`^  ${c}: (".*"),$`);
-      // Page de lecture : « Méthode · Dois-je passer à l'électrique ? », description = son introduction
-      const intro = { outil: "lede", methode: "methodeIntro", ecoconception: "ecoIntro", mentions: "mentionsIntro" }[PAGE];
+      // Outil : titre complet (« Voiture électrique ou thermique : … »). Page de lecture : son nom suivi du
+      // nom court du site (« Méthode · Dois-je passer à l'électrique ? »), description = son introduction
+      const intro = { outil: "lede", methode: "methodeIntro", ecoconception: "ecoIntro", mentions: "mentionsIntro", questions: "questionsIntro" }[PAGE];
       const s = {
-        titre: PAGE === "outil" ? cle("titre") : `${lire(`^  pages: \\{.*\\b${PAGE}: ("[^"]*")`)} · ${cle("titre")}`,
+        titre: PAGE === "outil" ? cle("titre") : `${lire(`^  pages: \\{.*\\b${PAGE}: ("[^"]*")`)} · ${cle("nomSite")}`,
         lede: cle(intro),
       };
       return html
