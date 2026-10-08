@@ -32,4 +32,5 @@ Measured on the production build: **DOM 87, 1 request, 47.7 kB → 81 (A), 0.26 
     --layout-features=kern --no-hinting --desubroutinize --flavor=woff2 --output-file=src/assets/bricolage.woff2
   ```
   A missing glyph falls back to `system-ui`; the page does not break.
-- Hosting is still undecided. Prefer a host that is transparent about its energy (ECO-HEB-01) with Brotli enabled (ECO-HEB-02).
+- Hosting: decided in ADR 0005 (Cloudflare Workers static assets).
+- Update 2026-10-08: **DOM 93, 1 request, 57.8 kB → 80.01 (A)**. That's the ceiling: a 94th element at load gives 79.9 (B). Measure before adding anything to the first screen (header, footer, step 1).

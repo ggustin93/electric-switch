@@ -96,7 +96,8 @@ Ecodesign (ADR 0003): Bricolage Grotesque is one variable file (600–800) subse
 
 ## Layout
 
-Single 46rem column with a 16 px gutter. Sections are cards spaced 16 px apart. Fields are spaced 24 px apart. Two-up grids (verdict figures, duel configs) stack below 560 / 16rem.
+Header: « Méthode » and FR/EN sit in a slim right-aligned bar **above** the h1 (`column-reverse`, h1 stays first in the DOM), so « Dois-je passer à l'électrique ? » fits on one line on desktop. Single 46rem column with a 16 px gutter.
+Background: very faint Tabler mobility icons (walk, bike, train, bus, car, scooter) **in the empty margins of wide screens only** (≥ 72rem). It's `body::before`, `--ink` at 3.5 % opacity, drawn as a CSS mask: an SVG tile intersected with a gradient that blanks the central column. 0 DOM nodes, theme-aware. Sections are cards spaced 16 px apart. Fields are spaced 24 px apart. Two-up grids (verdict figures, duel configs) stack below 560 / 16rem.
 
 ## Elevation & Depth
 
@@ -108,17 +109,20 @@ Radius 3 px for bars and swatches, 6 px for controls, 12 px for cards. Pills onl
 
 ## Components
 
-- **Tabs:** « Ma décision · Comparer les voitures · Se déplacer autrement » (each with a Tabler icon drawn as a CSS mask: balance, bar chart, route). Labels name the task, not the action: « Explorer » was renamed for clarity. Text with a 2 px accent underline, 44 px tall, wrapping on mobile, roving tabindex and arrow keys. All panels stay mounted, so answers survive tab switches.
-- **Site navigation:** a « Méthode » link in the header (an `aria-current` underline, like the tabs) and a row of links in the footer (« Méthode · Écoconception »). The reading pages (`#methode`, `#ecoconception`) are **Read** surfaces: prose capped at 68ch, Bricolage h3s, numbered anchors, and a « Retour au simulateur » link. The tool stays mounted but hidden while they are shown.
+- **Tabs:** « Ma décision · Comparer les voitures · Se déplacer autrement » (each with a Tabler icon drawn as a CSS mask: balance, bar chart, route). Labels name the task, not the action: « Explorer » was renamed for clarity. Text with a 2 px accent underline, 44 px tall. Below 560 px they become three equal columns with the icon above a wrapping label. Roving tabindex and arrow keys. All panels stay mounted, so answers survive tab switches.
+- **Site navigation:** a « Méthode » link in the header (an `aria-current` underline, like the tabs) and a row of links in the footer (« Méthode · EcoIndex A · Mentions légales »), then the disclaimer paragraph ending with the credit « Conçu et développé par Pwablo. » (same paragraph: one element less, see the EcoIndex budget). The reading pages (`#methode`, `#ecoconception`, `#mentions`) are **Read** surfaces: prose capped at 68ch, Bricolage h3s, numbered anchors, and a « Retour au simulateur » link. The tool stays mounted but hidden while they are shown.
 - **Profile bar:** a `<details>` summary showing "Votre profil · Belgique · 12 000 km/an · compacte neuve · Modifier" that opens the shared controls.
 - **Stepper:** an `<ol>` with `aria-current="step"`. Completed steps show a drawn check and stay clickable. Focus moves to the step heading.
 - **Choices:** native radio inputs styled as segments or cards, with the whole fieldset labelled.
-- **Sliders:** label and `<output>` on one row, min and max under the track, `aria-valuetext`.
+- **Sliders:** label and a typable number field on one row (unit centred on the field, value clamped on blur), min and max under the track, `aria-valuetext`. A slider that drives a visible result (e.g. the PHEV electric share) stays **outside** « Réglages avancés ».
 - **Help:** a 24 px "?" button with a 44 px hit area beside the label (never inside it). It expands a `--surface-2` note, and the control references it via `aria-describedby`.
 - **Verdict:** a dark block tinted per verdict, with the sentence first and two figures after; `aria-live="polite"`.
 - **Icons:** Tabler Icons paths (MIT), one stroke weight (1.75), `--ink-2`, each merged into a single `<path>` (`src/icones.jsx`). A small accent lightning bolt marks the electric variant only where a combustion twin exists (bike, bus, car, moped). Used only where they aid recognition: the transport modes.
 - **Orders-of-magnitude chart:** a log-scale dot plot (0.1 → 300 g/km, decade gridlines), one row per mode sorted ascending. Dot colour **follows its position on the log axis**, continuously. It uses a sequential violet ramp (`--seq-lo/mid/hi`, interpolated in OKLab, light: lilac → indigo; dark: reversed lightness). Violet is the one hue no powertrain uses. The ramp was validated with the dataviz `--ordinal` check on 6 samples in both themes, low end ≥ 2:1, and position and value always carry the information too. The legend is a gradient strip drawn under the axis labels. Deliberately not green→red: it would clash with the powertrain colours (orange = petrol, green = electric), fail red-green colour blindness and read as a moral verdict, a dashed reference line at « voiture thermique seul·e » (the user's status quo; fixed: a selector was tried and dropped as low value), with the ratio to it under each mode name (« 49 fois moins », « autant » within the 10 % tie rule), and the value plus per-trip mass on every row (it doubles as the table). Built in HTML/CSS (gradients for gridlines), with the axis as a header row of the same grid.
-- **Charts:** stacked bars (hatched manufacturing plus solid use) with a text breakdown. The line chart is drawn at its real width with 12 px text, direct end labels and a static pivot marker labelled in km.
+- **Charts:** stacked bars (hatched manufacturing plus solid use) with a text breakdown. The line chart is drawn at its real width with 12 px text, direct end labels and a static pivot marker labelled in km. **All lines are always visible**, with a static legend (`<ul>`, dash swatch + full name). Click-to-highlight buttons were tried and dropped as confusing.
+- **Budget rows:** `<dl>` aligned with the card. Below 40rem each value goes under its label.
+- **« Aller plus loin »:** primary, secondary and text buttons. Full width below 40rem.
+- **Script-focused headings** (step and page changes, `tabindex="-1"`) show no focus ring: they aren't controls.
 
 ## Do's and Don'ts
 

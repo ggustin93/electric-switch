@@ -13,9 +13,10 @@ npm run deploy  # manual deploy to Cloudflare Workers (static assets), see wrang
 Production: https://electric-switch.guillaume-gustin-9.workers.dev
 
 - `src/model.js` holds the pure LCA model with no UI text. `src/model.test.js` covers it.
-- `src/i18n.jsx` holds every visible string (FR/EN), assumptions H1–H13 and the sources.
-- `src/App.jsx` is the UI (Preact through `preact/compat`, see ADR 0003). `src/styles.css` holds the design tokens (light and dark).
+- `src/i18n.jsx` holds every visible string (FR/EN), assumptions H1–H14, the sources and the « Mentions légales ».
+- `src/mesure.js` sends optional cookieless Umami events (off until the website ID is set). `src/mesure.test.js` covers it.
+- `src/App.jsx` is the UI (plain Preact without `preact/compat`, so SVG attributes are kebab-case; see ADR 0003). Reading pages are hash routes: `#methode`, `#ecoconception`, `#mentions`. `src/styles.css` holds the design tokens (light and dark).
 - Production build = **one self-contained `dist/index.html`** (CSS, JS and font inlined, EcoIndex A, see ADR 0004).
-- Docs: `PRODUCT.md`, `DESIGN.md` (Impeccable), `CONTEXT.md` (glossary), `docs/adr/`.
+- Docs: `PRODUCT.md`, `DESIGN.md` (Impeccable), `CONTEXT.md` (glossary), `docs/adr/` (0005: hosting), `docs/research/` (sourced checks), `CHANGELOG.md`.
 
 **Continuous deployment:** every push to `main` runs the tests, then deploys (`.github/workflows/deploy.yml`). One-time setup: GitHub secret `CLOUDFLARE_API_TOKEN` (Cloudflare template « Edit Cloudflare Workers ») and variable `CLOUDFLARE_ACCOUNT_ID`.
