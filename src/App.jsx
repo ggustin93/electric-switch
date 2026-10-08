@@ -645,7 +645,7 @@ function Comparateur({ shared }) {
 
       <section className="carte">
         <h2>{s.barsTitre}</h2>
-        <p className="sous-titre">{s.barsSous(f.km(fen.kmVous))}</p>
+        <p className="sous-titre">{s.barsSous(f.km(fen.kmVous), s.voitureProfil(s.seg[segId].nom, occasion ? s.etatOcc(f.n0(ageVE), ageVE) : s.etatNeuve))}</p>
         <Barres lignes={resultats.map((r) => ({
           key: r.motorId, r, echelle: 100 / worst.totalT,
           nom: <><span className="pastille" />{s.motor[r.motorId].nom}</>,
