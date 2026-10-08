@@ -11,6 +11,7 @@ Notable changes to « Dois-je passer à l'électrique ? ». Format inspired by [
   - the language switch is 5 links and keeps the current reading page (`#methode`…);
   - `hreflang` sent as an HTTP `Link` header, not as tags in the page.
 - **Charging country pre-filled** from the device's time zone (e.g. Europe/Brussels → Belgium), else the region of the browser languages (« nl-BE », « en-GB »), else the EU average. Guessed locally, nothing sent; still editable (`paysProbable`, tested).
+- **Wider column** (46 → 52rem) and the title higher up: charts, the duel and the 5 category cards get more room; text keeps its reading width.
 - **Quieter language switch** (Impeccable): plain text links after a thin rule, the current language underlined like the current page, no filled pill.
 - **Translation check:** a `src/i18n.test.js` test ensures every language has exactly the French keys and types.
 
