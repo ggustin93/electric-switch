@@ -1682,3 +1682,10 @@ input[type="number"] {
     font-size: var(--fs-xs);
   }
 }
+
+/* Face-à-face : mode et profil en tête du même conteneur, puis la section des deux voitures, séparée par un filet */
+.duel-entete {
+  margin-top: var(--s5);
+  padding-top: var(--s5);
+  border-top: 1px solid var(--line);
+}

@@ -134,7 +134,7 @@ export default {
 
   duelTitre: "Testa a testa: due auto precise",
   communs: "Impostazioni comuni alle due auto",
-  duelCommun: (km, pays) => `Per i tuoi ${km}, ricarica: ${pays} (modificabili nel profilo qui sopra). Ogni auto viene rivenduta al termine della durata del possesso.`,
+  duelCommun: "Ogni auto viene rivenduta al termine della durata del possesso.",
   vehicule: (l) => `Veicolo ${l}`,
   duelSerre: (a, b) => <>Troppo vicini per decidere: <strong>{a}</strong> contro <strong>{b}</strong>, meno del 10% di differenza, entro il margine di incertezza.</>,
   duelGagne: ({ l, desc, x }) => <>Il <strong>veicolo {l}</strong> ({desc}) emette <strong>{x} volte meno</strong> per chilometro.</>,
@@ -154,6 +154,7 @@ export default {
   vue: "Confronta",
   vues: { tout: "Tutte le motorizzazioni", duel: "Testa a testa" },
   profil: ({ pays, km, voiture }) => `${pays} · ${km} · ${voiture}`,
+  profilCourt: ({ pays, km }) => `${pays} · ${km}`,
   profilTitre: "Il tuo profilo",
   modifierProfil: "Modifica",
   voitureProfil: (cat, etat) => `${cat.toLowerCase()} ${accorda(cat, etat)}`,

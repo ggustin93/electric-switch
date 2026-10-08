@@ -130,7 +130,7 @@ export default {
 
   duelTitre: "Duel: twee specifieke auto's",
   communs: "Gemeenschappelijke instellingen voor beide auto's",
-  duelCommun: (km, pays) => `Voor uw ${km}, opladen: ${pays} (aan te passen in het profiel hierboven). Elke auto wordt doorverkocht aan het einde van de eigendomsperiode.`,
+  duelCommun: "Elke auto wordt doorverkocht aan het einde van de eigendomsperiode.",
   vehicule: (l) => `Voertuig ${l}`,
   duelSerre: (a, b) => <>Te nipt om te beslissen: <strong>{a}</strong> tegenover <strong>{b}</strong>, minder dan 10% verschil, binnen de onzekerheidsmarge.</>,
   duelGagne: ({ l, desc, x }) => <><strong>Voertuig {l}</strong> ({desc}) stoot <strong>{x} keer minder</strong> uit per kilometer.</>,
@@ -150,6 +150,7 @@ export default {
   vue: "Vergelijken",
   vues: { tout: "Alle aandrijvingen", duel: "Duel" },
   profil: ({ pays, km, voiture }) => `${pays} · ${km} · ${voiture}`,
+  profilCourt: ({ pays, km }) => `${pays} · ${km}`,
   profilTitre: "Uw profiel",
   modifierProfil: "Wijzigen",
   voitureProfil: (cat, etat) => `${etat} ${cat.toLowerCase()}`,

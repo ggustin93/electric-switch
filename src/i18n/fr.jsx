@@ -130,7 +130,7 @@ export default {
 
   duelTitre: `Face-à-face${N}: deux voitures précises`,
   communs: "Réglages communs aux deux voitures",
-  duelCommun: (km, pays) => `Pour vos ${km}, recharge : ${pays} (modifiables dans le profil ci-dessus). Chaque voiture est revendue au terme de la durée de détention.`,
+  duelCommun: "Chaque voiture est revendue au terme de la durée de détention.",
   vehicule: (l) => `Véhicule ${l}`,
   duelSerre: (a, b) => <>Trop proche pour trancher : <strong>{a}</strong> contre <strong>{b}</strong>, moins de 10 % d'écart, dans la marge d'incertitude.</>,
   duelGagne: ({ l, desc, x }) => <>Le <strong>véhicule {l}</strong> ({desc}) émet <strong>{x} fois moins</strong> par kilomètre.</>,
@@ -150,6 +150,7 @@ export default {
   vue: "Comparer",
   vues: { tout: "Toutes les motorisations", duel: "Face-à-face" },
   profil: ({ pays, km, voiture }) => `${pays} · ${km} · ${voiture}`,
+  profilCourt: ({ pays, km }) => `${pays} · ${km}`,
   profilTitre: "Votre profil",
   modifierProfil: "Modifier",
   voitureProfil: (cat, etat) => `${cat.toLowerCase()} ${etat}`,
