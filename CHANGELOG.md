@@ -11,6 +11,7 @@ Notable changes to « Dois-je passer à l'électrique ? ». Format inspired by [
   - the language switch is 5 links and keeps the current reading page (`#methode`…);
   - `hreflang` sent as an HTTP `Link` header, not as tags in the page.
 - **Charging country pre-filled** from the device's time zone (e.g. Europe/Brussels → Belgium), else the region of the browser languages (« nl-BE », « en-GB »), else the EU average. Guessed locally, nothing sent; still editable (`paysProbable`, tested).
+- **Side-by-side split 2/5 – 3/5:** compact bars, the cumulative curve gets the room.
 - **Results card wider on large screens** (up to 72rem, breaking out of the 52rem reading column): the side-by-side charts breathe, text keeps its measure. Background motifs step aside while it is shown.
 - **PHEV electric share** back in « Réglages avancés », as its first setting (it stays in each plug-in hybrid's column in Face-à-face).
 - **« Toutes les motorisations » in one card, charts side by side:**
