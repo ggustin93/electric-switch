@@ -1,11 +1,32 @@
-import { defineConfig } from "vite";
+import { defineConfig, runnerImport } from "vite";
 import { readFileSync } from "node:fs";
 import { fileURLToPath } from "node:url";
 import preact from "@preact/preset-vite";
+import { h } from "preact";
+import { renderToString } from "preact-render-to-string";
+import { siteUrl } from "./src/seo.js";
 
 // Une page par langue (ADR 0006) : LANGUE=nl vite build → dist/nl/index.html avec le seul dictionnaire néerlandais.
 // Sans LANGUE (dev, preview) : français, et `vite preview` sert tout dist/.
 const LANGUE = process.env.LANGUE || "fr";
+const SITE = siteUrl(process.env);
+const alias = { "@langue": fileURLToPath(new URL(`./src/i18n/${LANGUE}.jsx`, import.meta.url)) };
+
+// Pré-rendu : la page arrive avec le premier écran (titre, intro, onglets, étape 1) déjà dans #root,
+// lisible sans JS par les moteurs et les aperçus de liens ; main.jsx l'hydrate. Rendu déterministe :
+// l'appli ne lit l'ancre et le pays du navigateur qu'après hydratation (App.jsx).
+function prerendu() {
+  return {
+    name: "prerendu",
+    apply: "build",
+    async transformIndexHtml(html) {
+      const { module } = await runnerImport(fileURLToPath(new URL("./src/App.jsx", import.meta.url)), {
+        resolve: { alias }, oxc: { jsx: { runtime: "automatic", importSource: "preact" } }, logLevel: "warn",
+      });
+      return html.replace('<div id="root"></div>', () => `<div id="root">${renderToString(h(module.default))}</div>`);
+    },
+  };
+}
 
 // Page unique : CSS, JS et police sont intégrés au HTML → une seule requête (ADR 0004)
 function pageUnique() {
@@ -31,8 +52,9 @@ function pageUnique() {
   };
 }
 
-// <html lang>, titre et description propres à la langue de la page.
-// Les liens hreflang passent par l'en-tête HTTP Link (dist/_headers) : 0 élément DOM (EcoIndex)
+// <html lang>, titre, description et URL canonique propres à la langue de la page.
+// Les liens hreflang passent par l'en-tête HTTP Link (dist/_headers) : 6 balises <link> de plus
+// feraient passer la page en EcoIndex B (ADR 0006, 0008). Seule la canonique est dans le <head>.
 function enteteLangue() {
   const echapper = (t) => t.replaceAll("&", "&amp;").replaceAll('"', "&quot;").replaceAll("<", "&lt;");
   return {
@@ -45,15 +67,16 @@ function enteteLangue() {
       return html
         .replace('<html lang="fr">', `<html lang="${LANGUE}">`)
         .replace(/<title>.*?<\/title>/, `<title>${echapper(s.titre)}</title>`)
-        .replace(/<meta name="description" content=".*?" \/>/, `<meta name="description" content="${echapper(s.lede)}" />`);
+        .replace(/<meta name="description" content=".*?" \/>/, `<meta name="description" content="${echapper(s.lede)}" />`)
+        .replace("</head>", `<link rel="canonical" href="${SITE}/${LANGUE}/" />\n  </head>`);
     },
   };
 }
 
 // Preact sans couche de compatibilité React (−4 ko)
 export default defineConfig({
-  plugins: [preact({ reactAliasesEnabled: false }), enteteLangue(), pageUnique()],
-  resolve: { alias: { "@langue": fileURLToPath(new URL(`./src/i18n/${LANGUE}.jsx`, import.meta.url)) } },
+  plugins: [preact({ reactAliasesEnabled: false }), enteteLangue(), prerendu(), pageUnique()],
+  resolve: { alias },
   build: {
     assetsInlineLimit: 64 * 1024,
     outDir: process.env.LANGUE ? `dist/${LANGUE}` : "dist",

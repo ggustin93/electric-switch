@@ -234,7 +234,7 @@ export default {
   ecoTitre: "Ecodesign van deze site",
   ecoIntro: "We hebben geprobeerd de middelen te beperken die deze simulator verbruikt, op uw toestel en op het netwerk. Hier leest u wat gemeten is, wat gedaan is, en wat deze cijfers niet zeggen.",
   ecoMesureTitre: "Meting bij de eerste keer laden, in productie (08/10/2026)",
-  ecoMesures: [["EcoIndex-score", "80/100 (A)"], ["Overgedragen gewicht", "52 kB"], ["Verzoeken", "1"], ["Pagina-elementen", "92"], ["Geschatte uitstoot per bezoek", "≈ 0,26 gCO₂e"], ["Geschat water per bezoek", "≈ 0,04 cl"]],
+  ecoMesures: [["EcoIndex-score", "80/100 (A)"], ["Overgedragen gewicht", "55 kB"], ["Verzoeken", "1"], ["Pagina-elementen", "93"], ["Geschatte uitstoot per bezoek", "≈ 0,26 gCO₂e"], ["Geschat water per bezoek", "≈ 0,04 cl"]],
   ecoChoixTitre: "Wat er gedaan is",
   ecoChoix: [
     "Eén zelfstandige pagina: stijlen, code en lettertype passen in één bestand.",

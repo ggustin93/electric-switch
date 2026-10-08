@@ -9,7 +9,7 @@ The owner wanted Dutch (half of Belgium), Italian and Spanish next to FR/EN. Eac
 - **One self-contained page per language:** `/fr/`, `/en/`, `/nl/`, `/it/`, `/es/`. Each contains only its own dictionary. `build.mjs` runs `LANGUE=<l> vite build` five times; the `@langue` alias points to `src/i18n/<l>.jsx`.
 - **Root `/`:** a tiny redirect page (≈ 1 kB). It picks the remembered language (`localStorage.lang`), else the browser's, else English, and keeps the hash (`#methode`…).
 - **Language switch:** five links (`<a hreflang lang aria-current>`), no longer radios. Clicking one keeps the current hash.
-- **hreflang:** sent as an HTTP `Link` header (`dist/_headers`), not as `<link>` tags. Six tags would have added 6 elements and grade B (79.85).
+- **hreflang:** sent as an HTTP `Link` header (`dist/_headers`), not as `<link>` tags. Six tags would have added 6 elements and grade B (79.85). Absolute URLs from `SITE_URL` since ADR 0008.
 - **Dictionaries:** `src/i18n/{fr,en,nl,it,es}.jsx` share the same keys, checked by `src/i18n.test.js` (same keys and types as French). `src/i18n/commun.jsx` holds what every language shares: `HYP_REFS`, `SOURCES` (original-language titles) and `LANGUES`.
 - **Display font:** rebuilt from the Google Fonts variable source, instanced at weight 600, opsz 14, wdth 100 (identical to the previous static SemiBold), then subset to the characters of all five dictionaries: 12.4 → 13.7 kB.
 

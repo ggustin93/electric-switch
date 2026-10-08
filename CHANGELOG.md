@@ -5,6 +5,13 @@ Notable changes to « Dois-je passer à l'électrique ? ». Format inspired by [
 ## [Unreleased]
 
 ### Added
+- **Pages arrive pre-rendered** (ADR 0008): `/fr/` … `/es/` contain the title, intro, tabs and step 1 in the HTML, readable by search engines, link previews and AI crawlers without JavaScript; Preact hydrates them (`hydrate`), CLS 0. The URL hash (`#methode`) and the guessed country are applied right after hydration, before paint.
+- **Canonical URL** `<link rel="canonical">` on each language page, and **absolute** hreflang URLs (5 languages + x-default) in the HTTP `Link` header and the root page, all built from one variable `SITE_URL` (`src/seo.js`, tested).
+
+### Changed
+- EcoIndex per language page: DOM 92 → 93 (canonical link), 52–53 → 54–55 kB → **80.1 (A)**, figures updated on the Écoconception page. hreflang stays in the HTTP header only: 6 more `<link>` tags would give 79.5 (B).
+
+### Added
 - **Help to answer « Encore combien d'années roulerait-elle ? »:** an optional fold « Estimer à partir de son âge et de son kilométrage » (age, odometer estimated at age × 12 000 km) gives the remaining years under H1 (18 years or 200 000 km, whichever first) at your annual mileage; « Utiliser cette estimation » sets the slider (`anneesRestantes`, tested, 5 languages).
 
 ### Fixed
