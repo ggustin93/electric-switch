@@ -5,12 +5,13 @@ import { PAGES, chemin, pageDuChemin, ancienneAncre } from "./routes.js";
 test("chemin : /{langue}/ pour l'outil, /{langue}/{page}/ pour une page de lecture", () => {
   assert.equal(chemin("fr"), "/fr/");
   assert.equal(chemin("nl", "outil"), "/nl/");
-  assert.deepEqual(PAGES.map((p) => chemin("fr", p)), ["/fr/methode/", "/fr/ecoconception/", "/fr/mentions/"]);
+  assert.deepEqual(PAGES.map((p) => chemin("fr", p)), ["/fr/methode/", "/fr/ecoconception/", "/fr/mentions/", "/fr/questions/"]);
 });
 
 test("pageDuChemin : la page servie se lit dans l'adresse, avec ou sans barre finale", () => {
   assert.equal(pageDuChemin("/fr/methode/"), "methode");
   assert.equal(pageDuChemin("/nl/mentions"), "mentions");
+  assert.equal(pageDuChemin("/es/questions/"), "questions");
   assert.equal(pageDuChemin("/fr/"), "outil");
   assert.equal(pageDuChemin("/"), "outil");
   assert.equal(pageDuChemin("/fr/inconnue/"), "outil");

@@ -9,9 +9,10 @@ export default {
   locale: "fr-BE",
   prefixeHyp: "H",
   age: (s, n) => `${s}${N}${n < 2 ? "an" : "ans"}`,
-  titre: "Dois-je passer à l'électrique ?",
+  titre: "Voiture électrique ou thermique : dois-je passer à l'électrique ?",
+  nomSite: "Dois-je passer à l'électrique ?",
   h1: <>Dois-je passer à <em>l'électrique</em>&nbsp;?</>,
-  lede: "En quatre questions, sachez si une électrique réduirait vraiment votre empreinte carbone, et ce qu'elle changerait à votre budget au quotidien. Fabrication de la batterie comprise.",
+  lede: "En Belgique, une compacte électrique émet sur toute sa vie (200 000 km) plus de 60 % de gaz à effet de serre en moins qu'une essence, fabrication de la batterie comprise. Mais remplacer une voiture qui roule encore n'est pas toujours gagnant : vérifiez-le pour votre cas en quatre questions, budget au quotidien compris.",
   langue: "Langue",
   onglets: { decision: "Ma décision", explorer: "Comparer les voitures", modes: "Se déplacer autrement" },
   ans: (s, n) => `${s}${N}${n < 2 ? "an" : "ans"}`,
@@ -208,7 +209,7 @@ export default {
 
   // Écoconception (mini page repliable + mention de pied de page)
   navSite: "Pages du site",
-  pages: { methode: "Méthode", ecoconception: "Écoconception", mentions: "Mentions légales" },
+  pages: { methode: "Méthode", ecoconception: "Écoconception", mentions: "Mentions légales", questions: "Questions fréquentes" },
   credit: (lien) => <>Conçu et développé par {lien}.</>,
   mentions: [
     // Qui a fait ce simulateur : formulation à valider par le propriétaire (ticket 06)
@@ -232,12 +233,22 @@ export default {
   retourOutil: "Retour au simulateur",
   methodeIntro: "Comment le simulateur calcule. Chaque hypothèse est numérotée et sourcée ; les mentions H1, H2… des bulles d'aide renvoient ici.",
   mentionsIntro: "Éditeur, hébergement, données personnelles (aucune n'est collectée), responsabilité et licences du simulateur « Dois-je passer à l'électrique ? ».",
+  // Questions-réponses (ticket 05) : chiffres du modèle, vérifiés par src/reponses.test.js
+  questionsIntro: "Six questions fréquentes sur la voiture électrique, avec les réponses chiffrées du simulateur pour la Belgique. Chaque chiffre vient du modèle ; les renvois H1, H2… et [1], [2]… désignent les hypothèses et les sources de la page Méthode.",
+  questions: [
+    ["L'électrique émet-elle vraiment moins ?", "Oui, sur l'ensemble de sa vie. En Belgique, sur 200 000 km, une compacte électrique neuve émet environ 16 tCO₂e, fabrication de la batterie comprise, contre 44 t pour une compacte essence : plus de 60 % de moins. L'ICCT trouve même −73 % en moyenne européenne, avec des hypothèses plus favorables ; le simulateur reste volontairement prudent (H13) [8, 14]."],
+    ["À partir de combien de km par an ?", "Tout dépend de ce que vous remplacez. Entre deux voitures neuves, l'électrique passe devant l'essence après environ 27 000 km en Belgique. Mais pour remplacer une essence (6,5 L/100 km) qui roulerait encore 5 ans, une électrique neuve ne l'emporte qu'au-delà d'environ 15 500 km/an, et dès 10 000 km/an si votre voiture pouvait encore rouler 8 ans (H1, H3) [1, 8, 11]."],
+    ["Et la fabrication de la batterie ?", "Elle pèse lourd, et elle est comptée. La batterie de 55 kWh d'une compacte émet environ 4 tCO₂e à la fabrication (73 kgCO₂e par kWh, moyenne des ventes européennes). Au total, fabriquer l'électrique émet 11,4 t, contre 7 t pour une essence. Ce surplus se rattrape à l'usage, après environ 27 000 km en Belgique. Aucun crédit de recyclage n'est déduit (H8, H9) [7, 8, 12]."],
+    ["Une électrique d'occasion, c'est mieux ?", "Souvent, oui. D'occasion, elle ne porte qu'une part de sa fabrication, selon la valeur que vous en consommez (décote de 15 %/an). Pour remplacer une essence qui roulerait encore 5 ans, à 12 000 km/an en Belgique, vous portez avec une électrique de 6 ans environ 22 % de sa fabrication : 4,2 t en tout, contre 10,5 t en gardant votre voiture et 13 t avec une électrique neuve (H2, H3) [10, 11]."],
+    ["Et l'hybride rechargeable ?", "Il n'est sobre que s'il est branché. Sur 200 000 km en Belgique, avec 50 % de roulage électrique (les particuliers en font 45 à 50 %), il émet environ 30 % de moins qu'une essence, contre plus de 60 % pour une électrique. À 15 %, le haut de la fourchette constatée en flottes d'entreprise (11 à 15 %), l'écart tombe à environ 3 % (H11) [15, 16]."],
+    ["Mon pays change-t-il la réponse ?", "Oui, par l'électricité qui recharge la batterie. Sur 200 000 km, une compacte électrique émet environ 70 % de moins qu'une essence en France ou en Norvège, 65 % en Belgique, 50 % en Allemagne et 35 % en Pologne, où le réseau reste très carboné. La décarbonation prévue de chaque réseau est comprise ; choisissez votre pays à la première question (H5, H6) [4, 5, 13]."],
+  ],
   ecoLien: "EcoIndex A",
   ecoLienLong: "Écoconception, EcoIndex A",
   ecoTitre: "Écoconception de ce site",
   ecoIntro: "Nous avons cherché à limiter les ressources que consomme ce simulateur, sur votre appareil comme sur le réseau. Voici ce qui a été mesuré, ce qui a été fait, et ce que ces chiffres ne disent pas.",
   ecoMesureTitre: "Mesure au premier chargement, en production (08/10/2026)",
-  ecoMesures: [["Score EcoIndex", "80/100 (A)"], ["Poids transféré", "55 Ko"], ["Requêtes", "1"], ["Éléments de page", "93"], ["Émissions estimées par visite", "≈ 0,26 gCO₂e"], ["Eau estimée par visite", "≈ 0,04 cl"]],
+  ecoMesures: [["Score EcoIndex", "80/100 (A)"], ["Poids transféré", "55 Ko"], ["Requêtes", "1"], ["Éléments de page", "92"], ["Émissions estimées par visite", "≈ 0,26 gCO₂e"], ["Eau estimée par visite", "≈ 0,04 cl"]],
   ecoChoixTitre: "Ce qui a été fait",
   ecoChoix: [
     "Une seule page autonome : styles, code et police tiennent dans un fichier.",

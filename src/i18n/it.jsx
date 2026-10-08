@@ -13,9 +13,10 @@ export default {
   locale: "it-IT",
   prefixeHyp: "I",
   age: (s) => `${s}${N}${s === "1" ? "anno" : "anni"}`,
-  titre: "Devo passare all'elettrico?",
+  titre: "Auto elettrica o a benzina: devo passare all'elettrico?",
+  nomSite: "Devo passare all'elettrico?",
   h1: <>Devo passare <em>all'elettrico</em>?</>,
-  lede: "In quattro domande, scopri se un'auto elettrica ridurrebbe davvero la tua impronta di carbonio e cosa cambierebbe nel tuo budget di tutti i giorni. Produzione della batteria compresa.",
+  lede: "In Belgio, nell'arco della sua vita (200.000 km), un'auto elettrica compatta emette oltre il 60% di gas serra in meno di una a benzina, produzione della batteria compresa. Ma sostituire un'auto che funziona ancora non conviene sempre: verificalo per il tuo caso in quattro domande, budget quotidiano compreso.",
   langue: "Lingua",
   onglets: { decision: "La mia decisione", explorer: "Confronta le auto", modes: "Spostarsi in altro modo" },
   ans: (s) => `${s}${N}${s === "1" ? "anno" : "anni"}`,
@@ -212,7 +213,7 @@ export default {
 
   // Ecoprogettazione (mini pagina richiudibile + menzione a piè di pagina)
   navSite: "Pagine del sito",
-  pages: { methode: "Metodo", ecoconception: "Ecoprogettazione", mentions: "Note legali" },
+  pages: { methode: "Metodo", ecoconception: "Ecoprogettazione", mentions: "Note legali", questions: "Domande frequenti" },
   credit: (lien) => <>Ideato e sviluppato da {lien}.</>,
   mentions: [
     // Qui a fait ce simulateur : formulation à valider par le propriétaire (ticket 06)
@@ -236,12 +237,22 @@ export default {
   retourOutil: "Torna al simulatore",
   methodeIntro: "Come calcola il simulatore. Ogni ipotesi è numerata e documentata con le fonti; i riferimenti I1, I2… nei fumetti di aiuto rimandano qui.",
   mentionsIntro: "Editore, hosting, dati personali (nessuno viene raccolto), responsabilità e licenze del simulatore «Devo passare all'elettrico?».",
+  // Questions-réponses (ticket 05) : chiffres du modèle, vérifiés par src/reponses.test.js
+  questionsIntro: "Sei domande frequenti sull'auto elettrica, con le risposte in cifre del simulatore per il Belgio. Ogni cifra viene dal modello; i riferimenti I1, I2… e [1], [2]… indicano le ipotesi e le fonti della pagina Metodo.",
+  questions: [
+    ["L'auto elettrica emette davvero meno?", "Sì, sull'intera vita. In Belgio, su 200.000 km, un'auto elettrica compatta nuova emette circa 16 tCO₂e, produzione della batteria compresa, contro 44 t per una compatta a benzina: oltre il 60% in meno. L'ICCT trova addirittura −73% sulla media europea, con ipotesi più favorevoli; il simulatore resta volutamente prudente (I13) [8, 14]."],
+    ["A partire da quanti km all'anno?", "Dipende da cosa sostituisci. Tra due auto nuove, l'elettrica supera la benzina dopo circa 27.000 km in Belgio. Ma per sostituire un'auto a benzina (6,5 L/100 km) che viaggerebbe ancora 5 anni, un'elettrica nuova conviene solo oltre circa 15.500 km all'anno, e già da 10.000 km all'anno se la tua auto potesse durare ancora 8 anni (I1, I3) [1, 8, 11]."],
+    ["E la produzione della batteria?", "Pesa molto, ed è contata. La batteria da 55 kWh di un'auto compatta emette circa 4 tCO₂e per essere prodotta (73 kgCO₂e per kWh, media delle vendite europee). In tutto, produrre l'elettrica emette 11,4 t, contro 7 t per un'auto a benzina. Questo surplus si recupera con l'uso, dopo circa 27.000 km in Belgio. Nessun credito di riciclo viene detratto (I8, I9) [7, 8, 12]."],
+    ["Un'elettrica usata è meglio?", "Spesso sì. Usata, porta solo una parte della sua produzione, secondo il valore che consumi (svalutazione del 15% all'anno). Per sostituire un'auto a benzina che viaggerebbe ancora 5 anni, a 12.000 km all'anno in Belgio, con un'elettrica di 6 anni ti spetta circa il 22% della sua produzione: 4,2 t in tutto, contro 10,5 t tenendo la tua auto e 13 t con un'elettrica nuova (I2, I3) [10, 11]."],
+    ["E l'ibrida plug-in?", "È sobria solo se viene ricaricata. Su 200.000 km in Belgio, con il 50% dei km percorsi in elettrico (i privati ne fanno dal 45 al 50%), emette circa il 30% in meno di un'auto a benzina, contro oltre il 60% per un'elettrica. Al 15%, il massimo osservato nelle flotte aziendali (dall'11 al 15%), il divario scende a circa il 3% (I11) [15, 16]."],
+    ["Il mio paese cambia la risposta?", "Sì, attraverso l'elettricità che ricarica la batteria. Su 200.000 km, un'auto elettrica compatta emette circa il 70% in meno di una a benzina in Francia o in Norvegia, il 65% in Belgio, il 50% in Germania e il 35% in Polonia, dove la rete resta molto carbonica. La decarbonizzazione prevista di ogni rete è inclusa; scegli il tuo paese alla prima domanda (I5, I6) [4, 5, 13]."],
+  ],
   ecoLien: "EcoIndex A",
   ecoLienLong: "Ecoprogettazione, EcoIndex A",
   ecoTitre: "Ecoprogettazione di questo sito",
   ecoIntro: "Abbiamo cercato di limitare le risorse che questo simulatore consuma, sul tuo dispositivo come sulla rete. Ecco cosa è stato misurato, cosa è stato fatto e cosa questi numeri non dicono.",
   ecoMesureTitre: "Misura al primo caricamento, in produzione (08/10/2026)",
-  ecoMesures: [["Punteggio EcoIndex", "80/100 (A)"], ["Peso trasferito", "55 kB"], ["Richieste", "1"], ["Elementi della pagina", "93"], ["Emissioni stimate per visita", "≈ 0,26 gCO₂e"], ["Acqua stimata per visita", "≈ 0,04 cl"]],
+  ecoMesures: [["Punteggio EcoIndex", "80/100 (A)"], ["Peso trasferito", "55 kB"], ["Richieste", "1"], ["Elementi della pagina", "92"], ["Emissioni stimate per visita", "≈ 0,26 gCO₂e"], ["Acqua stimata per visita", "≈ 0,04 cl"]],
   ecoChoixTitre: "Cosa è stato fatto",
   ecoChoix: [
     "Una sola pagina autonoma: stili, codice e font stanno in un unico file.",

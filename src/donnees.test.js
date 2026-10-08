@@ -1,14 +1,15 @@
 import { test } from "node:test";
 import assert from "node:assert/strict";
 import { sitemap, robots, ROBOTS_NOMMES, llmsTxt, jsonLd, dateGit } from "./donnees.js";
+import { PAGES } from "./routes.js";
 
 const LANGUES = ["fr", "en", "nl", "it", "es"];
 const lireJsonLd = (balise) => JSON.parse(balise.match(/^<script type="application\/ld\+json">(.*)<\/script>$/)[1]);
 
-test("sitemap : la racine + 5 outils + 15 pages de lecture, URL absolues", () => {
+test("sitemap : la racine + 5 outils + 5 × chaque page de lecture, URL absolues", () => {
   const xml = sitemap("https://x.eu", LANGUES);
   const locs = [...xml.matchAll(/<loc>(.*?)<\/loc>/g)].map((m) => m[1]);
-  assert.equal(locs.length, 21);
+  assert.equal(locs.length, 1 + LANGUES.length * (1 + PAGES.length));
   assert.equal(locs[0], "https://x.eu/");
   assert.ok(locs.includes("https://x.eu/nl/") && locs.includes("https://x.eu/es/mentions/"));
   assert.match(xml, /^<\?xml version="1.0" encoding="UTF-8"\?>\n<urlset xmlns="http:\/\/www.sitemaps.org\/schemas\/sitemap\/0.9" xmlns:xhtml="http:\/\/www.w3.org\/1999\/xhtml">/);
