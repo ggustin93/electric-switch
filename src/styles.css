@@ -1408,47 +1408,6 @@ input[type="range"] {
 }
 
 /* Écoconception : discrète, dans le pied de page (information sur le site, pas contenu) */
-.eco-pied {
-  margin: 0 auto var(--s3);
-  text-align: left;
-  max-width: 70ch;
-}
-.eco-pied > summary {
-  justify-content: center;
-  min-height: 36px;
-  font-size: var(--fs-xs);
-  font-weight: 500;
-  color: var(--ink-2);
-}
-.eco-pied > summary::before {
-  width: 7px;
-  height: 7px;
-  border-width: 0 1.5px 1.5px 0;
-}
-.eco-pied > summary:hover {
-  color: var(--ink);
-}
-.eco-pied .eco h2 {
-  font-size: var(--fs);
-  margin-top: var(--s3);
-}
-.eco-pied .eco {
-  font-size: var(--fs-xs);
-  padding: var(--s4);
-  background: var(--surface-2);
-  border-radius: var(--r);
-}
-.eco-pied .eco-mesures div {
-  background: var(--surface);
-}
-.eco-pied .eco h2 {
-  margin-top: 0;
-  color: var(--ink);
-}
-.eco-pied .eco h3 {
-  font-size: var(--fs-sm);
-  margin-top: var(--s4);
-}
 
 /* Budget */
 .budget-champs {
@@ -1527,4 +1486,81 @@ input[type="number"] {
 .saisie-unite {
   font-size: var(--fs-sm);
   color: var(--ink-2);
+}
+
+/* Navigation du site : lien Méthode dans l'en-tête, liens de pied de page, pages de lecture */
+.entete-actions {
+  display: flex;
+  align-items: center;
+  gap: var(--s3);
+  flex-shrink: 0;
+}
+.nav-site {
+  display: inline-flex;
+  align-items: center;
+  min-height: 44px;
+  padding: 0 var(--s1);
+  font-size: var(--fs-sm);
+  font-weight: 600;
+  color: var(--ink);
+  text-decoration: none;
+  box-shadow: inset 0 -2px 0 transparent;
+}
+.nav-site:hover,
+.nav-site[aria-current="page"] {
+  box-shadow: inset 0 -2px 0 var(--accent);
+}
+.liens-pied {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: var(--s1) var(--s5);
+  margin-bottom: var(--s3);
+}
+.liens-pied a {
+  display: inline-flex;
+  align-items: center;
+  min-height: 44px;
+  font-weight: 600;
+}
+.lecture {
+  padding-bottom: var(--s6);
+}
+.lecture h3 {
+  font: 600 var(--fs-md) / 1.25 var(--f-display);
+  margin: var(--s6) 0 var(--s3);
+}
+.lecture .hyp,
+.lecture .sources {
+  font-size: var(--fs);
+  max-width: 68ch;
+}
+.lecture .hyp li:target,
+.lecture .sources li:target {
+  scroll-margin-top: var(--s4);
+}
+.retour {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--s2);
+  min-height: 44px;
+  margin-bottom: var(--s2);
+  font-size: var(--fs-sm);
+  font-weight: 600;
+}
+.retour::before {
+  content: "";
+  width: 8px;
+  height: 8px;
+  border-left: 2px solid currentColor;
+  border-bottom: 2px solid currentColor;
+  transform: rotate(45deg);
+}
+.eco.lecture {
+  font-size: var(--fs);
+}
+@media (max-width: 560px) {
+  .entete-haut {
+    flex-wrap: wrap;
+  }
 }

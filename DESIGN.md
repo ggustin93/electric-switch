@@ -109,6 +109,7 @@ Radius 3 px for bars and swatches, 6 px for controls, 12 px for cards. Pills onl
 ## Components
 
 - **Tabs:** « Ma décision · Comparer les voitures · Se déplacer autrement » (each with a Tabler icon drawn as a CSS mask: balance, bar chart, route). Labels name the task, not the action: « Explorer » was renamed for clarity. Text with a 2 px accent underline, 44 px tall, wrapping on mobile, roving tabindex and arrow keys. All panels stay mounted, so answers survive tab switches.
+- **Site navigation:** a « Méthode » link in the header (an `aria-current` underline, like the tabs) and a row of links in the footer (« Méthode · Écoconception »). The reading pages (`#methode`, `#ecoconception`) are **Read** surfaces: prose capped at 68ch, Bricolage h3s, numbered anchors, and a « Retour au simulateur » link. The tool stays mounted but hidden while they are shown.
 - **Profile bar:** a `<details>` summary showing "Votre profil · Belgique · 12 000 km/an · compacte neuve · Modifier" that opens the shared controls.
 - **Stepper:** an `<ol>` with `aria-current="step"`. Completed steps show a drawn check and stay clickable. Focus moves to the step heading.
 - **Choices:** native radio inputs styled as segments or cards, with the whole fieldset labelled.

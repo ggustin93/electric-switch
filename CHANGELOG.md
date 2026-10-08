@@ -4,7 +4,17 @@ Notable changes to « Dois-je passer à l'électrique ? ». Format inspired by [
 
 ## [Unreleased]
 
+### Security
+- `.env` added to `.gitignore` (local secrets are never committed); the CI token is stored as a GitHub secret only.
+- `cloudflare/wrangler-action` pinned to a commit SHA (v4.1.3); Dependabot for the actions.
+
 ### Added
+- **Reading pages « Méthode » and « Écoconception »:**
+  - linked from the header (« Méthode », next to FR/EN) and from the footer;
+  - kept in the same file (`#methode`, `#methode/h5`, `#ecoconception`), so still 1 request;
+  - answers are kept when you switch pages, and the browser Back button works;
+  - the H1, H2… mentions in the help bubbles and hypotheses are links;
+  - the folds at the bottom of the tool page are gone (Impeccable reading: Read mode is separated from Operate mode).
 - **Automatic deployment:** each push to `main` installs, runs the tests, builds and deploys to Cloudflare Workers (GitHub Actions, `cloudflare/wrangler-action@v4`). Nothing goes live if a test fails.
 
 ## [7.3.0] — 2026-10-07
