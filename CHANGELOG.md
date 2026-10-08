@@ -8,7 +8,7 @@ Notable changes to « Dois-je passer à l'électrique ? ». Format inspired by [
 - **Odometer taken into account in « Ma décision »** (ADR 0007, data-science + UX review):
   - a used EV's remaining life is now capped by its odometer (200 000 km), as in « Comparer ». Example: 6 years / 150 000 km leaves ≈ 4.2 years, not 8;
   - the same ownership window (`fenetre`) now applies in every tab;
-  - new field « Kilométrage au compteur » (used only), estimated at age × 12 000 km until the listing's value is typed;
+  - new field « Kilométrage au compteur » (used only), estimated at age × 12 000 km until the listing's value is typed, marked « km (estimé) » meanwhile (also in « Comparer »);
   - clearer note: « En l'achetant d'occasion, vous portez environ X % de l'impact de sa fabrication… selon son âge et son kilométrage » (5 languages).
 
 ### Added

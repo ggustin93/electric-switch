@@ -17,7 +17,7 @@ export default {
   ans: (s, n) => `${s}${N}jaar`,
   kmAn: (s) => `${s}${N}km/jaar`,
   aideOuvrir: (l) => `Hulp: ${l}`,
-  unites: { kmAn: "km/jaar", conso: "L/100 km", ans: "jaar", km: "km" },
+  unites: { kmAn: "km/jaar", conso: "L/100 km", ans: "jaar", km: "km", kmEstime: "km (geschat)" },
 
   pays: { NO: "Noorwegen", SE: "Zweden", FR: "Frankrijk", ES: "Spanje", BE: "België", UK: "Verenigd Koninkrijk", EU: "EU-gemiddelde", IT: "Italië", DE: "Duitsland", US: "Verenigde Staten", AU: "Australië", CN: "China", PL: "Polen", IN: "India" },
   paysOption: (nom, g) => `${nom} · net met ${g}${N}gCO₂e/kWh`,

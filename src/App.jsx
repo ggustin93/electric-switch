@@ -233,7 +233,7 @@ export default function App() {
   const shared = {
     pays: byId(PAYS, paysId), paysId, setPaysId, kmAn, setKmAn, decarb, setDecarb,
     batt: byId(BATTERIES, battId), battId, setBattId,
-    segId, setSegId, etatVE, setEtatVE, ageVE, setAgeVE, odo: odoSaisi ?? ageVE * KM_AN_PARC, setOdo, conv, setConv,
+    segId, setSegId, etatVE, setEtatVE, ageVE, setAgeVE, odo: odoSaisi ?? ageVE * KM_AN_PARC, odoEstime: odoSaisi === null, setOdo, conv, setConv,
     detention, setDetention, phevShare, setPhevShare,
   };
 
@@ -332,7 +332,7 @@ const optionsCategorie = (s, sous) => SEGMENTS.map((x) => ({ v: x.id, label: s.s
 function Decision({ shared, allerExplorer }) {
   const f = useT();
   const { s } = f;
-  const { pays, paysId, setPaysId, kmAn, setKmAn, decarb, batt, segId, setSegId, etatVE, setEtatVE, ageVE, setAgeVE, odo, setOdo } = shared;
+  const { pays, paysId, setPaysId, kmAn, setKmAn, decarb, batt, segId, setSegId, etatVE, setEtatVE, ageVE, setAgeVE, odo, odoEstime, setOdo } = shared;
   const [etape, setEtape] = useState(0);
   const [maxEtape, setMaxEtape] = useState(0);
   const [carb, setCarb] = useState("essence");
@@ -412,7 +412,8 @@ function Decision({ shared, allerExplorer }) {
                 <>
                   <Curseur id="ageve" label={s.champ.ageAchat} value={ageVE} min={1} max={12} step={1} unite={s.unites.ans}
                     onChange={setAgeVE} format={f.ans} />
-                  <Curseur id="odove" label={s.champ.odo} aide={s.aide.odo} value={odo} min={0} max={160000} step={1000} pas={500} unite={s.unites.km}
+                  <Curseur id="odove" label={s.champ.odo} aide={s.aide.odo} value={odo} min={0} max={160000} step={1000} pas={500}
+                    unite={odoEstime ? s.unites.kmEstime : s.unites.km}
                     onChange={setOdo} format={f.km} />
                   {odo > ageVE * KM_AN_MAX_COMPTEUR && <p className="note">{s.odoBorne(f.km(ageVE * KM_AN_MAX_COMPTEUR))}</p>}
                   <p className="note">{s.partOcc(f.pc(v.partVE), f.age(ageVE), f.age(ageVE + v.horizon))}</p>
@@ -571,7 +572,7 @@ function Colonne({ gagne, titre, t, sous }) {
 function Explorer({ shared, vue, setVue }) {
   const f = useT();
   const { s } = f;
-  const { pays, paysId, setPaysId, kmAn, setKmAn, segId, setSegId, etatVE, setEtatVE, ageVE, setAgeVE, odo, setOdo } = shared;
+  const { pays, paysId, setPaysId, kmAn, setKmAn, segId, setSegId, etatVE, setEtatVE, ageVE, setAgeVE, odo, odoEstime, setOdo } = shared;
   const etat = etatVE === "neuf" ? s.etatNeuve : s.etatOcc(f.n0(ageVE), ageVE);
   const odoMax = ageVE * KM_AN_MAX_COMPTEUR;
 
@@ -599,7 +600,8 @@ function Explorer({ shared, vue, setVue }) {
             <div className="groupe">
               <Curseur id="ageX" label={s.champ.age} aide={s.aide.age} value={ageVE} min={1} max={12} step={1} unite={s.unites.ans}
                 onChange={setAgeVE} format={f.ans} />
-              <Curseur id="odoX" label={s.champ.odo} aide={s.aide.odo} value={odo} min={0} max={160000} step={1000} pas={500} unite={s.unites.km}
+              <Curseur id="odoX" label={s.champ.odo} aide={s.aide.odo} value={odo} min={0} max={160000} step={1000} pas={500}
+                unite={odoEstime ? s.unites.kmEstime : s.unites.km}
                 onChange={setOdo} format={f.km} />
               {odo > odoMax && <p className="note">{s.odoBorne(f.km(odoMax))}</p>}
             </div>
