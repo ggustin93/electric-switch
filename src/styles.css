@@ -358,7 +358,7 @@ h2 {
 h2:focus {
   outline: none;
 }
-h2:focus-visible {
+h2:not([tabindex="-1"]):focus-visible {
   outline: 2px solid var(--focus);
   outline-offset: 4px;
 }
@@ -1102,6 +1102,9 @@ input[type="range"] {
   line-height: 1.45;
   max-width: 60ch;
 }
+h2 + .bascule {
+  margin-top: var(--s2);
+}
 
 /* Barre de profil : résumé repliable */
 .profil > summary {
@@ -1414,10 +1417,10 @@ input[type="number"] {
 .budget-postes {
   margin: var(--s3) 0 0;
   font-size: var(--fs-sm);
-  max-width: 40rem;
 }
 .budget-postes div {
   display: flex;
+  flex-wrap: wrap;
   justify-content: space-between;
   gap: var(--s4);
   padding: var(--s1) 0;
@@ -1425,9 +1428,10 @@ input[type="number"] {
 }
 .budget-postes dt {
   color: var(--ink-2);
+  white-space: nowrap;
 }
 .budget-postes dd {
-  margin: 0;
+  margin: 0 0 0 auto;
   white-space: nowrap;
   font-variant-numeric: tabular-nums;
 }
@@ -1440,7 +1444,7 @@ input[type="number"] {
 .saisie {
   margin-left: auto;
   display: inline-flex;
-  align-items: baseline;
+  align-items: center;
   gap: var(--s1);
   white-space: nowrap;
 }
@@ -1593,4 +1597,39 @@ input[type="number"] {
 }
 .carte > .champ:first-child + .profil {
   margin-top: var(--s4);
+}
+
+/* « Aller plus loin » sur mobile : boutons pleine largeur, même gabarit */
+@media (max-width: 40rem) {
+  .actions-debut .btn {
+    flex: 1 1 100%;
+  }
+}
+@media (max-width: 40rem) {
+  .budget-postes div {
+    flex-direction: column;
+    gap: 0;
+  }
+  .budget-postes dd {
+    margin-left: 0;
+  }
+}
+
+/* Onglets sur mobile : trois colonnes égales, icône au-dessus du libellé (plus de retour à la ligne bancal) */
+@media (max-width: 560px) {
+  .onglets {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    column-gap: var(--s1);
+  }
+  .onglets [role="tab"] {
+    flex-direction: column;
+    justify-content: center;
+    gap: var(--s1);
+    padding: var(--s2) 2px;
+    font-size: var(--fs-sm);
+    line-height: 1.2;
+    white-space: normal;
+    text-align: center;
+  }
 }

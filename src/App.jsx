@@ -658,6 +658,12 @@ function Comparateur({ shared }) {
           <span><span className="pastille" />{s.legUse(f.gkwh(gridEff), decarb)}</span>
         </div>
         {!occasion && <p className="aide-ligne">{s.noteConvention[conv]}</p>}
+        {/* Hors du repli : l'hypothèse qui fait le plus varier la barre de l'hybride rechargeable */}
+        {hybrides && (
+          <Curseur id="phev" label={s.champ.phev} aide={s.aide.phev} value={Math.round(phevShare * 100)}
+            min={0} max={100} step={5} pas={1} unite="%" onChange={(x) => setPhevShare(x / 100)}
+            format={(x) => f.pc(x / 100)} />
+        )}
 
         <details className="replie reglages">
           <summary>{s.avance}</summary>
@@ -680,11 +686,6 @@ function Comparateur({ shared }) {
             {s.champ.decarb}
           </Case>
           <Case checked={hybrides} onChange={setHybrides}>{s.champ.hybrides}</Case>
-          {hybrides && (
-            <Curseur id="phev" label={s.champ.phev} aide={s.aide.phev} value={Math.round(phevShare * 100)}
-              min={0} max={100} step={5} pas={1} unite="%" onChange={(x) => setPhevShare(x / 100)}
-              format={(x) => f.pc(x / 100)} />
-          )}
         </details>
       </section>
 
@@ -873,16 +874,16 @@ function Duel({ shared }) {
           <ConfigVehicule lettre="A" cfg={A} setCfg={setA} />
           <ConfigVehicule lettre="B" cfg={B} setCfg={setB} />
         </div>
+        {[A, B].some((c) => c.motorId === "phev") && (
+          <Curseur id="phevD" label={s.champ.phev} aide={s.aide.phev} value={Math.round(phevShare * 100)}
+            min={0} max={100} step={5} pas={1} unite="%" onChange={(x) => setPhevShare(x / 100)}
+            format={(x) => f.pc(x / 100)} />
+        )}
         {(A.etat === "neuf" || B.etat === "neuf") && <p className="aide-ligne">{s.noteConvention[conv]}</p>}
         <details className="replie reglages">
           <summary>{s.communs}</summary>
           <Curseur id="detD" label={s.champ.detention} value={detention} min={2} max={15} step={1} unite={s.unites.ans}
             onChange={setDetention} format={f.ans} />
-          {[A, B].some((c) => c.motorId === "phev") && (
-            <Curseur id="phevD" label={s.champ.phev} aide={s.aide.phev} value={Math.round(phevShare * 100)}
-              min={0} max={100} step={5} pas={1} unite="%" onChange={(x) => setPhevShare(x / 100)}
-              format={(x) => f.pc(x / 100)} />
-          )}
         </details>
       </section>
 
