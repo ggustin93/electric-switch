@@ -185,7 +185,8 @@ function lireRoute() {
 }
 
 export default function App() {
-  const [route, setRoute] = useState(lireRoute);
+  // Rendu initial identique au pré-rendu du build (page outil, pays « EU ») ; corrigé avant le premier affichage hydraté
+  const [route, setRoute] = useState({ page: "outil", ancre: null });
   const [onglet, setOnglet] = useState("decision");
   // Un onglet n'est monté qu'à sa première visite (DOM initial minimal), puis reste monté
   const [visites, setVisites] = useState({ decision: true });
@@ -193,9 +194,7 @@ export default function App() {
   const [detention, setDetention] = useState(8);
   const [phevShare, setPhevShare] = useState(0.5);
   // Profil partagé par tous les onglets : jamais demandé deux fois
-  const [paysId, setPaysId] = useState(() => paysProbable({
-    fuseau: Intl.DateTimeFormat().resolvedOptions().timeZone, langues: navigator.languages ?? [navigator.language],
-  }));
+  const [paysId, setPaysId] = useState(() => paysProbable());
   const [kmAn, setKmAn] = useState(12000);
   const [segId, setSegId] = useState("compacte");
   const [etatVE, setEtatVE] = useState("neuf");
@@ -208,6 +207,14 @@ export default function App() {
   const f = useMemo(() => formats(STR_PAGE), []);
   const { s, lang } = f;
   const tabsRef = useRef([]);
+
+  // Après hydratation, avant l'affichage : page demandée par l'ancre et pays probable du navigateur
+  useLayoutEffect(() => {
+    setRoute(lireRoute());
+    setPaysId(paysProbable({
+      fuseau: Intl.DateTimeFormat().resolvedOptions().timeZone, langues: navigator.languages ?? [navigator.language],
+    }));
+  }, []);
 
   // Mémorise la langue de la page : la racine « / » y renverra lors de la prochaine visite
   useEffect(() => {
