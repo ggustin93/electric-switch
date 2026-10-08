@@ -7,6 +7,7 @@ import { siteUrl, alternates, fichierHeaders, balisesApercu, lireDico } from "./
 import { entetesSecurite } from "./src/entetes.js";
 import { PAGES, LANGUES } from "./src/routes.js";
 import { sitemap, robots, llmsTxt, dateGit, sourcesPage } from "./src/donnees.js";
+import { cleValide } from "./src/indexnow.js";
 
 const SITE = siteUrl(process.env); // SITE_URL=https://electricornot.eu npm run build
 rmSync("dist", { recursive: true, force: true });
@@ -76,6 +77,8 @@ ${Object.entries(INTROUVABLE).map(([l, [texte, retour]]) => `<p lang="${l}">${te
 // Pour les moteurs et les IA (src/donnees.js) : lastmod = dernier commit touchant les sources de la page
 writeFileSync("dist/sitemap.xml", sitemap(SITE, LANGUES, (l) => dateGit(l ? sourcesPage(l) : ["build.mjs"])));
 writeFileSync("dist/robots.txt", robots(SITE));
+// Clé IndexNow servie à la racine (variable INDEXNOW_KEY, publique par conception ; scripts/indexnow.mjs l'utilise après déploiement)
+if (cleValide(process.env.INDEXNOW_KEY)) writeFileSync(`dist/${process.env.INDEXNOW_KEY}.txt`, process.env.INDEXNOW_KEY);
 writeFileSync("dist/llms.txt", llmsTxt(SITE, LANGUES.map((l) => ({
   lang: l, titre: lireDico(l, "titre"), lede: lireDico(l, "lede"), intro: lireDico(l, "methodeIntro"),
 }))));
