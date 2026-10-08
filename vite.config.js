@@ -4,7 +4,7 @@ import { fileURLToPath } from "node:url";
 import preact from "@preact/preset-vite";
 import { h } from "preact";
 import { renderToString } from "preact-render-to-string";
-import { siteUrl } from "./src/seo.js";
+import { siteUrl, balisesApercu } from "./src/seo.js";
 
 // Une page par langue (ADR 0006) : LANGUE=nl vite build → dist/nl/index.html avec le seul dictionnaire néerlandais.
 // Sans LANGUE (dev, preview) : français, et `vite preview` sert tout dist/.
@@ -68,7 +68,7 @@ function enteteLangue() {
         .replace('<html lang="fr">', `<html lang="${LANGUE}">`)
         .replace(/<title>.*?<\/title>/, `<title>${echapper(s.titre)}</title>`)
         .replace(/<meta name="description" content=".*?" \/>/, `<meta name="description" content="${echapper(s.lede)}" />`)
-        .replace("</head>", `<link rel="canonical" href="${SITE}/${LANGUE}/" />\n  </head>`);
+        .replace("</head>", `<link rel="canonical" href="${SITE}/${LANGUE}/" />\n${balisesApercu(SITE, LANGUE)}\n  </head>`);
     },
   };
 }
