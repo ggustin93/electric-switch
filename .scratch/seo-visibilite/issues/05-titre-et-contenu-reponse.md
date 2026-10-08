@@ -7,7 +7,7 @@
 
 **Blocked by:** 01
 
-**Status:** needs-info (awaiting owner validation of figures and wording)
+**Status:** resolved
 
 - [ ] Title revised in the 5 languages (FR: « Voiture électrique ou thermique : dois-je passer à l'électrique ? »)
 - [ ] Direct answer of ~40–60 words with a number taken from the model, plus 4–6 Q&As, each with a source from the Méthode
@@ -50,3 +50,5 @@
 **Écoconception (mesuré, build local + preview, agent-browser après 2,5 s)** : le lien « Questions fréquentes » du pied est payé sans changement visuel (contenu de l'outil en fragment au lieu d'un `<div>` ; le lien « Méthode » de l'en-tête n'a plus de `<nav>` à lui seul). Outil : DOM 93 → 92, 54,6–55,6 ko → 80,2 (A), page Écoconception mise à jour (92 éléments). Questions : DOM 51, 54,9–55,9 ko → 88,5 (A). Méthode : DOM 92, 57,5–58,9 ko → 80,1 (A, toujours au plafond). Écoconception 81,4 (A), Mentions 86,9 (A).
 
 Note : la page racine (`build.mjs`) utilise toujours `titre` EN pour `og:title`/`og:site_name` (désormais le titre long) ; non modifié pour ne pas croiser le ticket 04.
+
+**Relecture experte (08/10/2026), appliquée :** intro « environ 60 % … si le réseau continue de se décarboner », remplacer n'est gagnant « qu'au-delà d'un certain kilométrage » ; Q1 « 16 t contre 44 t, soit 63 % de moins », hypothèses ICCT nommées (78 g/kWh en moyenne sur la vie, 240 000 km), dépendance à H6 et H8 ; Q2 « 27 000 km parcourus au total (moins de deux ans à 15 000 km/an) », toute la fabrication imputée (H3) ; Q3 « au total », consommations réelles et non WLTP (H10) ; Q4 « Dans le profil par défaut, oui », allocation économique (H2) ; Q5 sans « sobre » ; Q6 Belgique 63 % (arrondi simple dans `reponses.test.js`), réfs [4, 5, 6, 13] ; intro de page « Chaque résultat chiffré est calculé par le modèle ; les autres chiffres viennent des sources » ; page, lien de pied et `<title>` « Questions courantes » (NL « Veelvoorkomende vragen », IT « Domande comuni », ES « Preguntas habituales », EN inchangé) ; titre NL « Elektrische of benzinewagen: moet ik overstappen op elektrisch? », « benzinewagen » dans l'intro et la FAQ ; IT « ad alta intensità di carbonio » ; H8 « médianes de 62 (LFP) à 74 (NMC) kgCO₂e/kWh, jusqu'à plus de 100 selon l'origine des matériaux [7] » (mention Argonne GREET retirée) ; source [20] retitrée (Morrison & Wappelhorst 2023), H14 « forfaits mensuels ADAC, convertis en €/km » ; URL de [8] vers le PDF du rapport (200, application/pdf). Mesuré : outil DOM 92, 56,7 ko → 80,1 (A) ; Questions DOM 51, 57,1 ko → 88,5 (A) ; Méthode DOM 92, 60,4–60,9 ko → 80,0 (A, au plafond). Non modifié : l'aide « batterie » de l'outil dit toujours « De 60 à 80 kgCO₂e par kWh ».
