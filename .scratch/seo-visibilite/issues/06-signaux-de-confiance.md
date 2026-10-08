@@ -52,3 +52,4 @@ EN/NL/IT/ES are translations of this text (machine-drafted, native review recomm
 Unverified: none fully; #10 (ISO) is the only one not opened directly (bot wall).
 
 - 2026-10-08 (owner validation): text approved; profession set to « ingénieur civil biomédical et ingénieur logiciel indépendant » (owner holds the Belgian ingénieur civil degree, biomedical, with software-engineering experience). EN/IT/ES say « biomedical engineer » (« civil engineer » means construction in English), NL « burgerlijk ingenieur ».
+- 2026-10-08 (owner): simplified to « ingénieur logiciel indépendant à Bruxelles » (no specialty).
