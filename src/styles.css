@@ -1077,7 +1077,7 @@ input[type="range"] {
 }
 
 /* ============================================================
-   v7 — profil, raccourcis, verdict enrichi, autres modes
+   v7 — profil, verdict enrichi, autres modes
    ============================================================ */
 .btn-contour {
   border: 1px solid var(--line-control);
@@ -1086,25 +1086,6 @@ input[type="range"] {
 }
 .btn-contour:hover {
   border-color: var(--ink);
-}
-.btn-lien {
-  min-height: 44px;
-  padding: 0;
-  border: 0;
-  background: none;
-  color: var(--accent);
-  font-weight: 600;
-  text-decoration: underline;
-  text-underline-offset: 3px;
-  text-decoration-thickness: 1px;
-  text-align: left;
-}
-.btn-lien:hover {
-  text-decoration-thickness: 2px;
-}
-.raccourci {
-  margin: calc(-1 * var(--s2)) 0 var(--s4);
-  font-size: var(--fs-sm);
 }
 .actions-debut {
   justify-content: flex-start;

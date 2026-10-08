@@ -147,7 +147,6 @@ export default {
 
   // v7 — navigazione, profilo, verdetto arricchito
   suivantVers: ["Passo successivo: la tua auto", "Passo successivo: l'elettrica", "Vedi il verdetto"],
-  pasDeVoiture: "Nessuna auto da sostituire? Confronta tutte le motorizzazioni",
   allerPlusLoin: "Approfondisci",
   ctaTout: "Tutte le motorizzazioni per il mio profilo",
   ctaDuel: "Testa a testa tra due auto",
@@ -196,14 +195,14 @@ export default {
 
   // Budget
   budgetTitre: "E per il budget?",
-  budgetUsageTitre: (u) => <>Nell'uso, l'elettrica ti costa <strong>{u}</strong>.</>,
+  budgetUsageTitre: (u, pays) => <>Nell'uso (prezzi: {pays}), l'elettrica ti costa <strong>{u}</strong>.</>,
   budgetVotreVoiture: "La tua auto",
   budgetElectrique: "In elettrico",
   budgetLigne: (an, cent) => `${an} all'anno · ${cent}${N}€ ogni 100${N}km`,
   budgetPerimetre: "Energia e manutenzione, ricarica a casa. Esclusi prezzo d'acquisto del veicolo, assicurazione e tasse.",
-  budgetAmortir: (eco, ans) => `Questi risparmi devono prima ripagare il prezzo d'acquisto: ogni ${eco} di differenza di prezzo corrisponde a un anno di risparmi, cioè circa ${ans}${N}anni per 10.000${N}€ di differenza. Se la tua auto funziona ancora, è il prezzo intero che va ripagato: confronta con un preventivo reale, nuova o usata.`,
+  budgetAmortir: (eco) => `Ogni ${eco} di differenza nel prezzo d'acquisto si ripaga in circa un anno; se la tua auto funziona ancora, va ripagato il prezzo intero dell'elettrica.`,
   budgetAmortirNon: "Nell'uso, l'elettrica non ti fa risparmiare: il suo prezzo d'acquisto non verrebbe compensato.",
-  budgetAjuster: "Modifica i prezzi dell'energia",
+  budgetAjuster: "I tuoi prezzi dell'energia",
   budgetSources: "Prezzi di default: carburante al 05/10/2026 (Bollettino petrolifero dell'UE), elettricità domestica Eurostat (Belgio 2026-S1, altri paesi 2025-S2). Manutenzione: 0,07 €/km per un'auto termica datata, riparazioni comprese, 0,04 €/km per un'elettrica. Con la ricarica pubblica, conta da 1,5 a 2 volte il prezzo domestico (circa 0,50 €/kWh).",
   budgetUsageMoins: (x) => `circa ${x} in meno all'anno`,
   budgetUsagePlus: (x) => `circa ${x} in più all'anno`,
@@ -252,7 +251,7 @@ export default {
   ecoTitre: "Ecoprogettazione di questo sito",
   ecoIntro: "Abbiamo cercato di limitare le risorse che questo simulatore consuma, sul tuo dispositivo come sulla rete. Ecco cosa è stato misurato, cosa è stato fatto e cosa questi numeri non dicono.",
   ecoMesureTitre: "Misura al primo caricamento, in produzione (08/10/2026)",
-  ecoMesures: [["Punteggio EcoIndex", "80/100 (A)"], ["Peso trasferito", "55 kB"], ["Richieste", "1"], ["Elementi della pagina", "92"], ["Emissioni stimate per visita", "≈ 0,26 gCO₂e"], ["Acqua stimata per visita", "≈ 0,04 cl"]],
+  ecoMesures: [["Punteggio EcoIndex", "80/100 (A)"], ["Peso trasferito", "55 kB"], ["Richieste", "1"], ["Elementi della pagina", "90"], ["Emissioni stimate per visita", "≈ 0,26 gCO₂e"], ["Acqua stimata per visita", "≈ 0,04 cl"]],
   ecoChoixTitre: "Cosa è stato fatto",
   ecoChoix: [
     "Una sola pagina autonoma: stili, codice e font stanno in un unico file.",

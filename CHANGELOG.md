@@ -4,7 +4,11 @@ Notable changes to « Dois-je passer à l'électrique ? ». Format inspired by [
 
 ## [Unreleased]
 
-Nothing yet.
+### Changed
+- **Budget block simplified:** the answer names the country whose energy prices are used (« À l'usage (prix : Belgique), … »); the payback paragraph becomes one sentence (no more « 9 ans pour 10 000 € » example); the fold is called « Vos prix de l'énergie ». 5 languages.
+
+### Removed
+- **« Pas de voiture à remplacer ? Comparez toutes les motorisations »** under step 1: redundant with the « Comparer les voitures » tab. The tool page drops to 90 elements (more EcoIndex headroom).
 
 ## [7.5.0] — 2026-10-08
 

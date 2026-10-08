@@ -143,7 +143,6 @@ export default {
 
   // v7 — navigation, profil, verdict enrichi
   suivantVers: ["Étape suivante : votre voiture", "Étape suivante : l'électrique", "Voir le verdict"],
-  pasDeVoiture: `Pas de voiture à remplacer${N}? Comparez toutes les motorisations`,
   allerPlusLoin: "Aller plus loin",
   ctaTout: "Toutes les motorisations pour mon profil",
   ctaDuel: "Face-à-face entre deux voitures",
@@ -192,14 +191,14 @@ export default {
 
   // Budget
   budgetTitre: `Et côté budget${N}?`,
-  budgetUsageTitre: (u) => <>À l'usage, l'électrique vous coûte <strong>{u}</strong>.</>,
+  budgetUsageTitre: (u, pays) => <>À l'usage (prix : {pays}), l'électrique vous coûte <strong>{u}</strong>.</>,
   budgetVotreVoiture: "Votre voiture",
   budgetElectrique: "En électrique",
   budgetLigne: (an, cent) => `${an} par an · ${cent}${N}€ aux 100${N}km`,
   budgetPerimetre: "Énergie et entretien, recharge à domicile. Hors prix d'achat du véhicule, assurance et taxes.",
-  budgetAmortir: (eco, ans) => `Ces économies doivent d'abord amortir le prix d'achat : chaque tranche de ${eco} d'écart de prix représente un an d'économies, soit environ ${ans}${N}ans pour 10${N}000${N}€ d'écart. Si votre voiture roule encore, c'est son prix entier qu'il faut amortir : comparez avec un devis réel, neuf ou d'occasion.`,
+  budgetAmortir: (eco) => `Chaque tranche de ${eco} d'écart de prix d'achat met environ un an à s'amortir ; si votre voiture roule encore, c'est le prix entier de l'électrique qu'il faut amortir.`,
   budgetAmortirNon: "À l'usage, l'électrique ne vous fait pas économiser : son prix d'achat ne serait pas compensé.",
-  budgetAjuster: "Ajuster les prix de l'énergie",
+  budgetAjuster: "Vos prix de l'énergie",
   budgetSources: "Prix par défaut : carburant au 05/10/2026 (Bulletin pétrolier de l'UE), électricité domestique Eurostat (Belgique 2026-S1, autres pays 2025-S2). Entretien : 0,07 €/km pour une thermique ancienne, réparations comprises, 0,04 €/km pour une électrique. En recharge publique, comptez 1,5 à 2 fois le prix domestique (environ 0,50 €/kWh).",
   budgetUsageMoins: (x) => `environ ${x} de moins par an`,
   budgetUsagePlus: (x) => `environ ${x} de plus par an`,
@@ -248,7 +247,7 @@ export default {
   ecoTitre: "Écoconception de ce site",
   ecoIntro: "Nous avons cherché à limiter les ressources que consomme ce simulateur, sur votre appareil comme sur le réseau. Voici ce qui a été mesuré, ce qui a été fait, et ce que ces chiffres ne disent pas.",
   ecoMesureTitre: "Mesure au premier chargement, en production (08/10/2026)",
-  ecoMesures: [["Score EcoIndex", "80/100 (A)"], ["Poids transféré", "55 Ko"], ["Requêtes", "1"], ["Éléments de page", "92"], ["Émissions estimées par visite", "≈ 0,26 gCO₂e"], ["Eau estimée par visite", "≈ 0,04 cl"]],
+  ecoMesures: [["Score EcoIndex", "80/100 (A)"], ["Poids transféré", "55 Ko"], ["Requêtes", "1"], ["Éléments de page", "90"], ["Émissions estimées par visite", "≈ 0,26 gCO₂e"], ["Eau estimée par visite", "≈ 0,04 cl"]],
   ecoChoixTitre: "Ce qui a été fait",
   ecoChoix: [
     "Une seule page autonome : styles, code et police tiennent dans un fichier.",
