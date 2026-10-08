@@ -184,7 +184,7 @@ const ONGLETS = ["decision", "explorer", "modes"];
 const lienCarbone4 = (t) => <a href="https://www.carbone4.com/analyse-faq-voiture-electrique" target="_blank" rel="noreferrer">{t}</a>;
 
 // Pages de lecture dans le même fichier (une seule requête) : #methode, #methode/h5, #ecoconception
-const PAGES = ["methode", "ecoconception"];
+const PAGES = ["methode", "ecoconception", "mentions"];
 function lireRoute() {
   const [page, ancre] = location.hash.slice(1).split("/");
   return PAGES.includes(page) ? { page, ancre: ancre || null } : { page: "outil", ancre: null };
@@ -197,6 +197,8 @@ export default function App() {
   // Un onglet n'est monté qu'à sa première visite (DOM initial minimal), puis reste monté
   const [visites, setVisites] = useState({ decision: true });
   const [vue, setVue] = useState("tout");
+  const [detention, setDetention] = useState(8);
+  const [phevShare, setPhevShare] = useState(0.5);
   // Profil partagé par tous les onglets : jamais demandé deux fois
   const [paysId, setPaysId] = useState("BE");
   const [kmAn, setKmAn] = useState(12000);
@@ -236,6 +238,7 @@ export default function App() {
     pays: byId(PAYS, paysId), paysId, setPaysId, kmAn, setKmAn, decarb, setDecarb,
     batt: byId(BATTERIES, battId), battId, setBattId,
     segId, setSegId, etatVE, setEtatVE, ageVE, setAgeVE, odo, setOdo, conv, setConv,
+    detention, setDetention, phevShare, setPhevShare,
   };
 
   const ouvrir = (o) => {
@@ -307,13 +310,15 @@ export default function App() {
 
         {route.page === "methode" && <PageMethode />}
         {route.page === "ecoconception" && <PageEco />}
+        {route.page === "mentions" && <PageMentions />}
 
         <footer className="pied">
           <nav className="liens-pied" aria-label={s.navSite}>
             <a href="#methode">{s.pages.methode}</a>
             <a href="#ecoconception" aria-label={s.ecoLienLong}>{s.ecoLien}</a>
+            <a href="#mentions">{s.pages.mentions}</a>
           </nav>
-          <p>{s.footer(lienCarbone4)}</p>
+          <p>{s.footer(lienCarbone4)} {s.credit(<a href="https://pwablo.be" rel="author">Pwablo</a>)}</p>
         </footer>
       </div>
     </Ctx.Provider>
@@ -574,6 +579,8 @@ function Explorer({ shared, vue, setVue }) {
   return (
     <div>
       <section className="carte">
+        <Choix label={s.vue} value={vue} onChange={setVue}
+          options={[{ v: "tout", label: s.vues.tout }, { v: "duel", label: s.vues.duel }]} />
         <details className="replie profil">
           <summary>
             <span className="profil-titre">{s.profilTitre}</span>
@@ -598,8 +605,6 @@ function Explorer({ shared, vue, setVue }) {
             </div>
           )}
         </details>
-        <Choix label={s.vue} value={vue} onChange={setVue}
-          options={[{ v: "tout", label: s.vues.tout }, { v: "duel", label: s.vues.duel }]} />
       </section>
 
       {vue === "tout" ? <Comparateur shared={shared} /> : <Duel shared={shared} />}
@@ -610,11 +615,10 @@ function Explorer({ shared, vue, setVue }) {
 function Comparateur({ shared }) {
   const f = useT();
   const { s } = f;
-  const { pays, kmAn, decarb, setDecarb, batt, battId, setBattId, segId, etatVE, ageVE, odo, conv, setConv } = shared;
+  const { pays, kmAn, decarb, setDecarb, batt, battId, setBattId, segId, etatVE, ageVE, odo, conv, setConv,
+    detention, setDetention, phevShare, setPhevShare } = shared;
   const [revente, setRevente] = useState(true);
-  const [detention, setDetention] = useState(8);
   const [hybrides, setHybrides] = useState(true); // affichés par défaut : la comparaison est plus complète
-  const [phevShare, setPhevShare] = useState(0.5);
 
   const occasion = etatVE === "occasion";
   const seg = byId(SEGMENTS, segId);
@@ -735,9 +739,6 @@ function CourbeCumulee({ resultats, kmMax, pivot, ev }) {
   const { s } = f;
   const boite = useRef(null);
   const [W, setW] = useState(640);
-  const [survol, setSurvol] = useState(null);
-  const [fixe, setFixe] = useState(null);
-  const actif = survol ?? fixe;
 
   useLayoutEffect(() => {
     const el = boite.current;
@@ -785,7 +786,7 @@ function CourbeCumulee({ resultats, kmMax, pivot, ev }) {
         <text className="axe" x={W - PAD.r} y={H - 2} text-anchor="end">{s.axeX}</text>
         <text className="axe" x={PAD.l - 8} y={12}>{s.axeY}</text>
         {resultats.map((r) => (
-          <g key={r.motorId} className="ligne" style={{ "--c": `var(--m-${r.motorId})`, opacity: actif && actif !== r.motorId ? 0.15 : 1 }}>
+          <g key={r.motorId} className="ligne" style={{ "--c": `var(--m-${r.motorId})` }}>
             <line x1={x(0)} y1={y(r.fabAttr)} x2={x(kmMax)} y2={y(fin(r))}
               stroke-width={r.motorId === "ev" || r.motorId === "essence" ? 3 : 2} stroke-dasharray={tirets(r.motorId)} />
             <circle cx={x(0)} cy={y(r.fabAttr)} r="4" />
@@ -793,7 +794,7 @@ function CourbeCumulee({ resultats, kmMax, pivot, ev }) {
         ))}
         {etiquettes.map((e) => (
           <text key={e.id} className="fin-ligne" x={W - PAD.r + 8} y={e.y + 4}
-            style={{ "--c": `var(--m-${e.id})`, opacity: actif && actif !== e.id ? 0.15 : 1 }}>
+            style={{ "--c": `var(--m-${e.id})` }}>
             {s.motor[e.id].court}
           </text>
         ))}
@@ -806,17 +807,15 @@ function CourbeCumulee({ resultats, kmMax, pivot, ev }) {
           </g>
         )}
       </svg>
-      <p className="legende-titre" id="legende-courbe">{s.legendeCourbe}</p>
-      <div className="legende-courbe" role="group" aria-labelledby="legende-courbe">
+      {/* Légende statique : toutes les courbes restent visibles (les boutons de mise en évidence prêtaient à confusion) */}
+      <ul className="legende-courbe" aria-label={s.legendeCourbe}>
         {resultats.map((r) => (
-          <button key={r.motorId} type="button" aria-pressed={fixe === r.motorId} style={{ "--c": `var(--m-${r.motorId})` }}
-            onMouseEnter={() => setSurvol(r.motorId)} onMouseLeave={() => setSurvol(null)}
-            onClick={() => setFixe(fixe === r.motorId ? null : r.motorId)}>
+          <li key={r.motorId} style={{ "--c": `var(--m-${r.motorId})` }}>
             <svg width="18" height="4" aria-hidden="true"><line x1="0" y1="2" x2="18" y2="2" stroke-dasharray={tirets(r.motorId) ? "4 3" : undefined} /></svg>
             {s.motor[r.motorId].nom}
-          </button>
+          </li>
         ))}
-      </div>
+      </ul>
     </div>
   );
 }
@@ -826,7 +825,8 @@ function CourbeCumulee({ resultats, kmMax, pivot, ev }) {
    ============================================================ */
 
 function ConfigVehicule({ lettre, cfg, setCfg }) {
-  const { s } = useT();
+  const f = useT();
+  const { s } = f;
   const id = useId();
   return (
     <div className="config">
@@ -836,7 +836,15 @@ function ConfigVehicule({ lettre, cfg, setCfg }) {
       <Liste id={`${id}-mot`} label={s.champ.motorisation} value={cfg.motorId} onChange={(v) => setCfg({ ...cfg, motorId: v })}
         options={MOTORS.map((m) => ({ v: m.id, label: s.motor[m.id].nom }))} />
       <Choix label={s.champ.etat} value={cfg.etat} onChange={(v) => setCfg({ ...cfg, etat: v })}
-        options={[{ v: "neuf", label: s.neuve }, { v: "occasion", label: s.occDuel }]} />
+        options={[{ v: "neuf", label: s.neuve }, { v: "occasion", label: s.occasion }]} />
+      {cfg.etat === "occasion" && (
+        <div className="groupe">
+          <Curseur id={`${id}-age`} label={s.champ.age} value={cfg.age} min={1} max={12} step={1} unite={s.unites.ans}
+            onChange={(v) => setCfg({ ...cfg, age: v })} format={f.ans} />
+          <Curseur id={`${id}-odo`} label={s.champ.odo} value={cfg.odo} min={0} max={160000} step={1000} pas={500} unite={s.unites.km}
+            onChange={(v) => setCfg({ ...cfg, odo: v })} format={f.km} />
+        </div>
+      )}
     </div>
   );
 }
@@ -844,11 +852,11 @@ function ConfigVehicule({ lettre, cfg, setCfg }) {
 function Duel({ shared }) {
   const f = useT();
   const { s } = f;
-  const { pays, kmAn, decarb, batt, conv } = shared;
-  const [A, setA] = useState({ segId: "compacte", motorId: "essence", etat: "occasion" });
-  const [B, setB] = useState({ segId: "compacte", motorId: "ev", etat: "neuf" });
+  const { pays, kmAn, decarb, batt, conv, detention, setDetention, phevShare, setPhevShare } = shared;
+  const [A, setA] = useState({ segId: "compacte", motorId: "essence", etat: "occasion", age: 6, odo: 80000 });
+  const [B, setB] = useState({ segId: "compacte", motorId: "ev", etat: "neuf", age: 6, odo: 80000 });
 
-  const ctx = { pays, kmAn, decarb, efBatt: batt.ef, marginal: conv === "marginale" };
+  const ctx = { pays, kmAn, decarb, efBatt: batt.ef, marginal: conv === "marginale", detention, phevShare };
   const rA = calcConfig(A, ctx);
   const rB = calcConfig(B, ctx);
   const d = departager(rA.perKm, rB.perKm);
@@ -860,14 +868,22 @@ function Duel({ shared }) {
     <div>
       <section className="carte">
         <h2>{s.duelTitre}</h2>
-        <div className="communs">
-          <h3>{s.communs}</h3>
-          <ul>{s.communsListe({ km: f.kmAn(kmAn), pays: s.pays[pays.id], conv: s.noteConvention[conv] }).map((x) => <li key={x}>{x}</li>)}</ul>
-        </div>
+        <p className="sous-titre">{s.duelCommun(f.kmAn(kmAn), s.pays[pays.id])}</p>
         <div className="duel-grille">
           <ConfigVehicule lettre="A" cfg={A} setCfg={setA} />
           <ConfigVehicule lettre="B" cfg={B} setCfg={setB} />
         </div>
+        {(A.etat === "neuf" || B.etat === "neuf") && <p className="aide-ligne">{s.noteConvention[conv]}</p>}
+        <details className="replie reglages">
+          <summary>{s.communs}</summary>
+          <Curseur id="detD" label={s.champ.detention} value={detention} min={2} max={15} step={1} unite={s.unites.ans}
+            onChange={setDetention} format={f.ans} />
+          {[A, B].some((c) => c.motorId === "phev") && (
+            <Curseur id="phevD" label={s.champ.phev} aide={s.aide.phev} value={Math.round(phevShare * 100)}
+              min={0} max={100} step={5} pas={1} unite="%" onChange={(x) => setPhevShare(x / 100)}
+              format={(x) => f.pc(x / 100)} />
+          )}
+        </details>
       </section>
 
       <section className="verdict sombre" aria-live="polite">
@@ -978,7 +994,7 @@ function Modes() {
 }
 
 /* ============================================================
-   PAGES DE LECTURE : MÉTHODE ET SOURCES, ÉCOCONCEPTION
+   PAGES DE LECTURE : MÉTHODE ET SOURCES, ÉCOCONCEPTION, MENTIONS LÉGALES
    ============================================================ */
 
 function RetourOutil() {
@@ -1017,6 +1033,23 @@ const REFS_ECO = [
   ["RGESN 2024 (Arcep, Arcom, DINUM, ADEME)", "https://www.arcep.fr/la-regulation/grands-dossiers-thematiques-transverses/lempreinte-environnementale-du-numerique/referentiel-general-ecoconception-services-numeriques.html"],
   ["Green Claude (Institut du Numérique Responsable)", "https://github.com/Institut-du-Numerique-Responsable/green-claude"],
 ];
+
+// Éditeur repris des mentions légales de pwablo.be (pwablo.be/terms) ; rien d'inventé
+function PageMentions() {
+  const { s } = useT();
+  return (
+    <article className="carte lecture">
+      <RetourOutil />
+      <h2 id="titre-page" tabIndex={-1}>{s.pages.mentions}</h2>
+      {s.mentions.map(([titre, lignes]) => (
+        <section key={titre}>
+          <h3>{titre}</h3>
+          {lignes.map((l, i) => <p key={i}>{l}</p>)}
+        </section>
+      ))}
+    </article>
+  );
+}
 
 function PageEco() {
   const { s } = useT();

@@ -2,7 +2,7 @@ import { test } from "node:test";
 import assert from "node:assert/strict";
 import {
   PAYS, SEGMENTS, BATTERIES, MOTORS, VIE_ANS, VIE_KM, byId,
-  partFab, mixMoyen, calc, fenetre, decider, kmPivot, kmBascule, budget, departager,
+  partFab, mixMoyen, calc, fenetre, decider, kmPivot, kmBascule, budget, departager, calcConfig,
 } from "./model.js";
 
 test("grille : empreintes finies et positives, part de fabrication dans [0,1]", () => {
@@ -101,4 +101,12 @@ test("budget à l'usage : énergie et entretien par an, énergie aux 100 km", ()
   assert.ok(Math.abs(b.usageGarderAn - (12000 * 7 * 1.8 / 100 + 12000 * 0.07)) < 1e-6);
   assert.ok(Math.abs(b.economieUsageAn - (b.usageGarderAn - b.usageVEAn)) < 1e-9);
   assert.ok(b.economieUsageAn > 0); // à ces prix, l'électrique coûte moins à l'usage
+});
+
+test("calcConfig : âge, compteur, détention et part PHEV sont pris en compte", () => {
+  const ctx = { pays: PAYS[0], kmAn: 12000, decarb: true, efBatt: 75, marginal: true, detention: 8, phevShare: 0.5 };
+  const occ = (age, odo) => calcConfig({ segId: "compacte", motorId: "ev", etat: "occasion", age, odo }, ctx).perKm;
+  assert.notEqual(occ(2, 20000), occ(10, 150000));
+  const phev = (phevShare) => calcConfig({ segId: "compacte", motorId: "phev", etat: "neuf" }, { ...ctx, phevShare }).perKm;
+  assert.ok(phev(0.9) < phev(0.1));
 });
