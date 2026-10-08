@@ -646,6 +646,15 @@ input[type="range"] {
 .btn-texte:hover {
   text-decoration-thickness: 2px;
 }
+/* Lien texte aligné à gauche (« Aller plus loin ») : pas de remplissage horizontal, son texte s'aligne sur le bord des boutons */
+.actions-debut .btn-texte {
+  padding-inline: 0;
+}
+@media (min-width: 561px) {
+  .actions-debut .btn-texte {
+    margin-left: var(--s3);
+  }
+}
 @media (max-width: 560px) {
   .actions .btn-plein {
     flex: 1 1 100%;

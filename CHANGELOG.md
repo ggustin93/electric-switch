@@ -8,6 +8,9 @@ Notable changes to « Dois-je passer à l'électrique ? ». Format inspired by [
 - **Hosting moved to Infomaniak** (ADR 0010, replaces 0005): `electricornot.eu` on the free Starter web hosting that comes with the domain (Switzerland, Infomaniak Network SA). `build.mjs` writes `dist/.htaccess` instead of Cloudflare's `_headers` (same security headers, CSP hashes and per-page hreflang `Link`, plus 404 page, 301 to `https://electricornot.eu`, gzip, revalidation with 304; `versHtaccess`, `src/entetes.js`, tested). Deploy mirrors `dist/` over FTP with `lftp` (Starter offers no TLS), then checks over HTTPS that every file and the CSP match the build (`scripts/verifier-en-ligne.mjs`); wrangler removed. « Mentions légales » host block and the hosting sentence of « Écoconception » updated in the 5 languages.
 - **Budget block simplified:** the answer names the country whose energy prices are used (« À l'usage (prix : Belgique), … »); the payback paragraph becomes one sentence (no more « 9 ans pour 10 000 € » example); the fold is called « Vos prix de l'énergie ». 5 languages.
 
+### Fixed
+- **« Modifier mes réponses »** (Aller plus loin): no horizontal padding, so its text lines up with the buttons' edge instead of sitting ~24 px to the right; on desktop it now fits on the same row.
+
 ### Removed
 - **« Pas de voiture à remplacer ? Comparez toutes les motorisations »** under step 1: redundant with the « Comparer les voitures » tab. The tool page drops to 90 elements (more EcoIndex headroom).
 
