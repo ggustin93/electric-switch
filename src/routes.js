@@ -1,6 +1,7 @@
 // Pages du site (ADR 0009) : l'outil en /{langue}/, chaque page de lecture en /{langue}/{page}/,
 // pré-rendue dans son propre fichier HTML. Mêmes adresses dans toutes les langues.
 export const PAGES = ["methode", "ecoconception", "mentions"];
+export const LANGUES = ["fr", "en", "nl", "it", "es"];
 
 export const chemin = (lang, page = "outil") => `/${lang}/${page === "outil" ? "" : `${page}/`}`;
 

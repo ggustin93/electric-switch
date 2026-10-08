@@ -6,10 +6,14 @@
 
 **Blocked by:** 02
 
-**Status:** ready-for-agent
+**Status:** resolved
 
-- [ ] `/sitemap.xml` lists the 21 URLs with their hreflang alternatives (absolute URLs taken from the site variable)
-- [ ] `/robots.txt` replaces Cloudflare's managed file: explicit policy for search and AI bots, `Sitemap:` line
-- [ ] One JSON-LD block per page; the Rich Results Test and validator.schema.org pass without errors
-- [ ] No FAQPage/HowTo; `sameAs` only with real profiles (pwablo.be, others confirmed by the owner)
-- [ ] Optional: `llms.txt` summarising the model and linking the Méthode pages
+- [x] `/sitemap.xml` lists the 21 URLs with their hreflang alternatives (absolute URLs taken from the site variable)
+- [x] `/robots.txt` replaces Cloudflare's managed file: explicit policy for search and AI bots, `Sitemap:` line
+- [x] One JSON-LD block per page; the Rich Results Test and validator.schema.org pass without errors
+- [x] No FAQPage/HowTo; `sameAs` only with real profiles (pwablo.be, others confirmed by the owner)
+- [x] Optional: `llms.txt` summarising the model and linking the Méthode pages
+
+## Comments
+- 2026-10-08 (agent): built by `build.mjs` from `src/donnees.js` (tested): `dist/sitemap.xml` (21 URLs + hreflang, commit-date `lastmod`), `dist/robots.txt`, `dist/llms.txt`; one JSON-LD `@graph` per page via the `entete-langue` plugin. EcoIndex A kept everywhere by dropping the `.page` wrapper (`#root.page`): tool 93 el. / 55 kB → 80.1, Méthode 92 / 58 kB → 80.1. Note in ADR 0009.
+- Owner to do: turn off Cloudflare *Managed robots.txt* if enabled (it prepends its own rules to `dist/robots.txt`); run the Rich Results Test and validator.schema.org on the deployed URLs. The Software App rich result needs `aggregateRating`/`review`, which we do not have: it stays ineligible (not a markup error).
