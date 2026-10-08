@@ -1,6 +1,6 @@
 import { test } from "node:test";
 import assert from "node:assert/strict";
-import { SITE_URL_DEFAUT, siteUrl, alternates, enTeteLink, balisesApercu, lireDico, SOUS_TITRE, LOCALE_OG } from "./seo.js";
+import { SITE_URL_DEFAUT, siteUrl, alternates, enTeteLink, fichierHeaders, balisesApercu, lireDico, SOUS_TITRE, LOCALE_OG } from "./seo.js";
 
 test("siteUrl : variable SITE_URL, sinon l'URL par défaut, sans barre finale", () => {
   assert.equal(siteUrl({}), SITE_URL_DEFAUT);
@@ -10,6 +10,12 @@ test("siteUrl : variable SITE_URL, sinon l'URL par défaut, sans barre finale", 
 test("alternates : une URL absolue par langue, puis x-default vers la racine", () => {
   assert.deepEqual(alternates("https://x.eu", ["fr", "en"]), [
     ["fr", "https://x.eu/fr/"], ["en", "https://x.eu/en/"], ["x-default", "https://x.eu/"],
+  ]);
+});
+
+test("alternates d'une page de lecture : ses versions linguistiques, x-default vers l'anglais", () => {
+  assert.deepEqual(alternates("https://x.eu", ["fr", "en"], "methode"), [
+    ["fr", "https://x.eu/fr/methode/"], ["en", "https://x.eu/en/methode/"], ["x-default", "https://x.eu/en/methode/"],
   ]);
 });
 
@@ -40,4 +46,20 @@ test("balisesApercu : jeu complet pour la page racine, locale et alternatives, t
 
 test("lireDico : chaîne simple d'un dictionnaire", () => {
   assert.equal(lireDico("en", "titre"), "Should I switch to electric?");
+});
+
+test("fichierHeaders : chaque chemin porte les hreflang de sa propre page, jamais ceux d'une autre", () => {
+  const regles = Object.fromEntries(fichierHeaders("https://x.eu", ["fr", "nl"])
+    .split("\n").reduce((acc, ligne) => {
+      if (ligne.startsWith("/")) acc.push([ligne, ""]);
+      else if (ligne.trim()) acc.at(-1)[1] += ligne.trim();
+      return acc;
+    }, []));
+  assert.deepEqual(Object.keys(regles), [
+    "/", "/fr/", "/nl/", "/fr/methode/", "/nl/methode/", "/fr/ecoconception/", "/nl/ecoconception/", "/fr/mentions/", "/nl/mentions/",
+  ]);
+  assert.equal(regles["/nl/"], `Link: ${enTeteLink("https://x.eu", ["fr", "nl"])}`);
+  assert.equal(regles["/fr/methode/"], regles["/nl/methode/"]);
+  assert.equal(regles["/fr/methode/"], `Link: ${enTeteLink("https://x.eu", ["fr", "nl"], "methode")}`);
+  assert.ok(!regles["/fr/mentions/"].includes("/methode/"));
 });
