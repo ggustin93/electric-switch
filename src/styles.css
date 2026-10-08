@@ -172,7 +172,7 @@ fieldset {
 }
 
 .page {
-  max-width: 52rem; /* graphiques et duel plus à l'aise ; la prose garde sa mesure (max-width en ch) */
+  max-width: 60rem; /* une seule colonne pour tout (pas de débordement) ; la prose garde sa mesure (max-width en ch) */
   margin: 0 auto;
   padding: var(--s3) var(--s4) var(--s7);
 }
@@ -1590,7 +1590,7 @@ input[type="number"] {
 /* Motifs de mobilité très discrets, uniquement dans les marges vides des grands écrans.
    Deux pseudo-éléments (0 nœud DOM), un par marge ; `space` ne pose que des tuiles entières,
    donc aucune icône coupée au bord de la colonne. Ils défilent avec la page (pas de calque fixe). */
-@media (min-width: 72rem) {
+@media (min-width: 82rem) {
   body {
     position: relative;
   }
@@ -1600,7 +1600,7 @@ input[type="number"] {
     position: absolute;
     top: 0;
     bottom: 0;
-    width: calc(50% - 27rem);
+    width: calc(50% - 31rem);
     z-index: -1;
     pointer-events: none;
     background: var(--ink);
@@ -1612,11 +1612,6 @@ input[type="number"] {
   }
   body::after {
     right: 0;
-  }
-  /* Carte élargie (Comparer) : les motifs s'écartent pour ne pas passer dessous */
-  body:has(.carte.large)::before,
-  body:has(.carte.large)::after {
-    width: calc(50% - 37rem);
   }
 }
 
@@ -1701,12 +1696,9 @@ input[type="number"] {
 
 /* Comparer : barres et courbe cumulée côte à côte quand la place le permet */
 @media (min-width: 64rem) {
-  .carte.large {
-    margin-inline: calc((100% - min(72rem, 100vw - 4rem)) / 2);
-  }
   .resultats-grille {
     display: grid;
-    grid-template-columns: 2fr 3fr; /* barres compactes, la courbe prend la place */
+    grid-template-columns: 5fr 7fr; /* barres compactes, la courbe prend la place */
     column-gap: var(--s6);
     align-items: start;
   }

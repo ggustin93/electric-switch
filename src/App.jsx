@@ -651,9 +651,8 @@ function Comparateur({ shared, profil }) {
         </p>
       </section>
 
-      {/* Une seule carte : profil, barres, courbe cumulée, puis les réglages avancés qui agissent sur les deux.
-          Elle déborde de la colonne sur grand écran : les données prennent la place, le texte garde sa mesure. */}
-      <section className="carte large">
+      {/* Une seule carte : profil, barres, courbe cumulée, puis les réglages avancés qui agissent sur les deux */}
+      <section className="carte">
         {profil}
         {/* Les deux graphiques côte à côte sur grand écran : la réponse d'un coup d'œil */}
         <div className="resultats-grille">
