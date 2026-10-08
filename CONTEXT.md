@@ -1,3 +1,5 @@
+| **Questions frÃ©quentes** (`questions`, `questionsIntro`) | Reading page `/{lang}/questions/` (ticket 05): 6 short answers with model figures for Belgium and the default profile, H/[n] references as text. Its figures are recomputed from the model by `src/reponses.test.js`. | "FAQ" (ok in prose; no FAQPage markup) |
+| **Nom du site** (`nomSite`) vs **titre** (`titre`) | `titre` is the tool page `<title>` (Â« Voiture Ã©lectrique ou thermique : â¦ Â»); `nomSite` is the short name composed after a reading page name (Â« MÃ©thode Â· Dois-je passer Ã  l'Ã©lectrique ? Â»). The visible `h1` is a separate key. | |
 # Context — glossary
 
 Domain terms used in code (French identifiers) and UI. Use these words; avoid the listed synonyms.
@@ -27,4 +29,6 @@ Domain terms used in code (French identifiers) and UI. Use these words; avoid th
 | **Hypothèse Hn / Assumption An** | Numbered assumption (H1–H14). Same index in both languages, prefix differs. | |
 | **Pays probable** (`paysProbable`) | Default charging country guessed in the browser: time zone first, then the region of the browser languages, else `EU`. Never sent. | "geolocation" (there is none) |
 | **Langue de page** (`@langue`, `LANGUES`) | Each language is its own built page (`/fr/`…), with only its dictionary inside. Switching language means navigating to the same page in the other language, keeping the anchor (ADR 0006, 0009). | "locale switch" |
-| **Page de lecture** (`page`, `PAGES`, `src/routes.js`) | A real pre-rendered page per language: `/fr/methode/`, `/fr/ecoconception/`, `/fr/mentions/` (same slugs everywhere), own title, description, canonical and hreflang. The tool is not on it; « Retour au simulateur » goes back to `/fr/`. Old `#methode…` links redirect (ADR 0009). | "subpage", "hash route" |
+| **Page de lecture** (`page`, `PAGES`, `src/routes.js`) | A real pre-rendered page per language: `/fr/methode/`, `/fr/ecoconception/`, `/fr/mentions/`, `/fr/questions/` (same slugs everywhere), own title, description, canonical and hreflang. The tool is not on it; « Retour au simulateur » goes back to `/fr/`. Old `#methode…` links redirect (ADR 0009). | "subpage", "hash route" |
+| **Questions fréquentes** (`questions`, `questionsIntro`) | Reading page `/{lang}/questions/` (ticket 05): 6 short answers with model figures for Belgium and the default profile, H/[n] references as text. Its figures are recomputed from the model by `src/reponses.test.js`. | "FAQ" (ok in prose; no FAQPage markup) |
+| **Titre / nom du site** (`titre`, `nomSite`) | `titre` is the tool page `<title>` (« Voiture électrique ou thermique : … »); `nomSite` is the short name composed after a reading page's name (« Méthode · Dois-je passer à l'électrique ? »). The visible `h1` is a separate key. | |
