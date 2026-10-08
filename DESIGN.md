@@ -96,7 +96,7 @@ Ecodesign (ADR 0003): Bricolage Grotesque is one variable file (600–800) subse
 
 ## Layout
 
-Header: « Méthode » and FR/EN sit in a slim right-aligned bar **above** the h1 (`column-reverse`, h1 stays first in the DOM), so « Dois-je passer à l'électrique ? » fits on one line on desktop. Single 46rem column with a 16 px gutter.
+Header: « Méthode » and the language links (FR EN NL IT ES, current one filled in accent) sit in a slim right-aligned bar **above** the h1 (`column-reverse`, h1 stays first in the DOM), so « Dois-je passer à l'électrique ? » fits on one line on desktop. Single 46rem column with a 16 px gutter.
 Background: very faint Tabler mobility icons (walk, bike, train, bus, car, scooter) **in the empty margins of wide screens only** (≥ 64rem). It's `body::before`, `--ink` at 8 % opacity (3.5 % was invisible on many screens), drawn as a CSS mask: an SVG tile intersected with a gradient that blanks the central column. 0 DOM nodes, theme-aware. Sections are cards spaced 16 px apart. Fields are spaced 24 px apart. Two-up grids (verdict figures, duel configs) stack below 560 / 16rem.
 
 ## Elevation & Depth
@@ -129,4 +129,4 @@ Radius 3 px for bars and swatches, 6 px for controls, 12 px for cards. Pills onl
 - Don't add eyebrows above headings, emoji or Unicode glyphs as icons, monospace as decoration, or coloured border-left callouts.
 - Don't add a web font, a third-party request, or a DOM-heavy component without measuring the EcoIndex (ADR 0003). Keep closed content unrendered (`Repli`) and tabs mounted on first visit only.
 - Don't animate layout properties. Motion stays at 150–400 ms and is disabled under reduced motion.
-- Do keep every user-visible string in `src/i18n.jsx`, as whole sentences: no fragment concatenation, no `.toLowerCase()` on translated words except where the dictionary allows it.
+- Do keep every user-visible string in `src/i18n/<lang>.jsx` (all five languages, same keys), as whole sentences: no fragment concatenation, no `.toLowerCase()` on translated words except where the dictionary allows it.

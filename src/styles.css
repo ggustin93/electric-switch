@@ -216,22 +216,26 @@ h1 em {
   border-radius: var(--r-pill);
   padding: 2px;
 }
-.langue .option-corps {
+.langue a {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
   min-height: 36px;
-  min-width: 44px;
-  padding: 0 var(--s3);
-  border: 0;
+  min-width: 40px;
+  padding: 0 var(--s2);
   border-radius: var(--r-pill);
   font-size: var(--fs-sm);
   font-weight: 600;
-  background: transparent;
+  color: var(--ink-2);
+  text-decoration: none;
+  transition: background var(--dur-1), color var(--dur-1);
 }
-.langue input:checked + .option-corps {
-  background: var(--ink);
-  color: var(--bg);
+.langue a:hover {
+  color: var(--ink);
 }
-.langue input:checked + .option-corps::before {
-  display: none;
+.langue a[aria-current="true"] {
+  background: var(--accent);
+  color: var(--accent-ink);
 }
 
 /* ============================================================

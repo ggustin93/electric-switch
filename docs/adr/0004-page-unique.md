@@ -33,4 +33,5 @@ Measured on the production build: **DOM 87, 1 request, 47.7 kB → 81 (A), 0.26 
   ```
   A missing glyph falls back to `system-ui`; the page does not break.
 - Hosting: decided in ADR 0005 (Cloudflare Workers static assets).
+- Since ADR 0006 there is one single page **per language** (`dist/<lang>/index.html`), and the font subset covers all five dictionaries (see 0006 for the regeneration command).
 - Update 2026-10-08: **DOM 93, 1 request, 57.8 kB → 80.01 (A)**. That's the ceiling: a 94th element at load gives 79.9 (B). Measure before adding anything to the first screen (header, footer, step 1).

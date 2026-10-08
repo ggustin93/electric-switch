@@ -8,7 +8,7 @@ web
 
 ## Users
 
-General public, French- and English-speaking, who own a petrol or diesel car and wonder whether switching to electric lowers their carbon footprint. Non-experts: they want a defensible answer in about a minute, then optionally dig into the numbers.
+General public, speaking French, English, Dutch, Italian or Spanish, who own a petrol or diesel car and wonder whether switching to electric lowers their carbon footprint. Non-experts: they want a defensible answer in about a minute, then optionally dig into the numbers.
 
 ## Product Purpose
 
@@ -27,9 +27,9 @@ Single page, three tabs (v7):
 
 ## Capabilities and Constraints
 
-- **Ecodesign is a product requirement:** the lowest feasible footprint for the app itself. EcoIndex is measured on every UI change (ADR 0003); currently **A 80**: one self-contained HTML file of 58 kB (measured in production), 1 request, 93 elements (80.01: **any extra element at load drops it to B**), no third party (ADR 0004). An in-app « Écoconception de ce site » section (footer link) states the measured figures and limits; update it after each measurement.
+- **Ecodesign is a product requirement:** the lowest feasible footprint for the app itself. EcoIndex is measured on every UI change (ADR 0003); currently **A 80**: one self-contained HTML file of 58 kB (measured in production), 1 request, 92 elements, 51–52 kB per language page (80.3; still close to the ceiling: measure before adding elements at load), no third party (ADR 0004, 0006). An in-app « Écoconception de ce site » section (footer link) states the measured figures and limits; update it after each measurement.
 - **Audience measurement:** Umami Cloud (EU), events only (verdict, tab, reading page), no cookie, nothing at load, DNT/GPC respected. Visits without interaction are not counted. Search Console deferred until a custom domain.
-- Bilingual FR / EN. Language follows the browser and is remembered locally.
+- **Five languages: FR, EN, NL, IT, ES**, one self-contained page each (`/fr/`…, ADR 0006). The root `/` redirects to the remembered language, else the browser's, else English. NL/IT/ES are machine-drafted: **native review recommended** before announcing them, especially the hypotheses and the legal notice.
 - 14 grids, 5 segments, 5 powertrains, 4 battery footprints. The model lives in `src/model.js`, has no UI text, and is covered by `npm test`.
 - Results are orders of magnitude with about ±20 % uncertainty. The verdict calls a tie under a 10 % gap (kept deliberately, because both options share most of the uncertainty).
 - **Budget (second reading of the verdict):** shows the **running cost** only (energy + maintenance per year, and energy per 100 km): it's the informative, least uncertain part, and everyone already knows a new car costs money. The purchase price is **not estimated** (purchase-side data would be Belgian everywhere else): one computed sentence says how many years of savings a price gap represents (« chaque tranche de 1 100 € d'écart = un an d'économies ») and invites comparing with a real quote. Promise adjusted to « ce qu'elle changerait à votre budget au quotidien ». Decision validated by a UX expert and a consumer advisor (October 2026). Reviewed by a data scientist, a TCO expert, and UX / climate-communication / consumer-advice experts (October 2026).
