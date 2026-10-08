@@ -376,7 +376,7 @@ function Decision({ shared, allerExplorer }) {
   const aller = (i) => { setEtape(i); setMaxEtape((m) => Math.max(m, i)); };
 
   return (
-    <div>
+    <>
       {/* Intro du parcours « Ma décision » : seulement avant de commencer, ensuite elle repousserait les réponses */}
       {etape === 0 && <p className="lede">{s.lede}</p>}
       <ol className="etapes" aria-label={s.etapeSur(etape + 1, 4)}>
@@ -510,7 +510,7 @@ function Decision({ shared, allerExplorer }) {
           </section>
         </>
       )}
-    </div>
+    </>
   );
 }
 
