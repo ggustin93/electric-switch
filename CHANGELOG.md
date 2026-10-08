@@ -11,6 +11,9 @@ Notable changes to « Dois-je passer à l'électrique ? ». Format inspired by [
   - the language switch is 5 links and keeps the current reading page (`#methode`…);
   - `hreflang` sent as an HTTP `Link` header, not as tags in the page.
 - **Charging country pre-filled** from the device's time zone (e.g. Europe/Brussels → Belgium), else the region of the browser languages (« nl-BE », « en-GB »), else the EU average. Guessed locally, nothing sent; still editable (`paysProbable`, tested).
+- **« Comparer les voitures » clarified** (Impeccable clarify):
+  - the advanced mode is now called **« Face-à-face »** (EN Head-to-head, NL Duel, IT Testa a testa, ES Cara a cara), instead of « Deux voitures au choix »; the tab keeps its name, since its default view compares 5 powertrains, not two opponents;
+  - under the bars: « Chaque motorisation dans la même catégorie : compacte neuve » — the shared category was only visible in the folded profile.
 - **Impeccable critique (28/40) applied:**
   - the intro paragraph shows only on step 1 of « Ma décision », so answers come up higher (mobile: the « Étape suivante » button is visible without scrolling);
   - quieter top bar: « Méthode » at the same level as the languages, aligned with the column edge;
