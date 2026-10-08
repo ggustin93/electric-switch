@@ -60,7 +60,6 @@ export const DECOTE = 0.15; // H2
 export const SEUIL_SERRE = 0.1; // écart relatif sous lequel deux options sont « à égalité »
 export const AGE_SUGGESTION = 6; // âge du VE d'occasion suggéré dans le verdict « garder »
 export const KM_AN_MAX_COMPTEUR = 30000; // borne réaliste compteur / âge (occasion)
-export const DUEL = { odo: 80000, age: 6, detention: 8, phevShare: 0.5 };
 
 export const byId = (list, id) => list.find((x) => x.id === id);
 
@@ -182,14 +181,14 @@ export function decider({ carb, conso, annees, seg, etatVE, ageVE, pays, kmAn, d
 }
 
 // --- Onglet Duel : une configuration { segId, motorId, etat } ---
-export function calcConfig(cfg, { pays, kmAn, decarb, efBatt, marginal }) {
+export function calcConfig(cfg, { pays, kmAn, decarb, efBatt, marginal, detention, phevShare }) {
   const seg = byId(SEGMENTS, cfg.segId);
   const f = fenetre({
-    occasion: cfg.etat === "occasion", odo: DUEL.odo, age: DUEL.age,
-    kmAn, revente: true, detention: DUEL.detention, marginal,
+    occasion: cfg.etat === "occasion", odo: cfg.odo, age: cfg.age,
+    kmAn, revente: true, detention, marginal,
   });
   const gridEff = mixMoyen(pays.g, f.kmVous / kmAn, decarb, pays.declin);
-  return { ...calc(cfg.motorId, seg, gridEff, f.kmVous, f.ratioFab, DUEL.phevShare, efBatt), f };
+  return { ...calc(cfg.motorId, seg, gridEff, f.kmVous, f.ratioFab, phevShare, efBatt), f };
 }
 
 // --- Kilométrage annuel à partir duquel remplacer devient préférable (curseur 3 000 à 40 000 km/an).

@@ -11,10 +11,16 @@ Notable changes to « Dois-je passer à l'électrique ? ». Format inspired by [
   - « Do Not Track » and GPC respected (`src/mesure.js`, tested);
   - **turned off until the Umami site ID is filled in.**
 - **Plug-in hybrid electric share:** a 0–100 % slider, also typable, instead of 3 buttons.
-- **Cumulative chart legend:** visible title and full names (« Hybride rechargeable » instead of « PHEV »).
+- **Cumulative chart legend:** full names (« Hybride rechargeable » instead of « PHEV »), static; every line always visible (the highlight buttons were confusing).
+- **« Mentions légales » page** (`#mentions`, footer link): publisher (from pwablo.be/terms), host, personal data, liability, credits and licences.
+- **Credit** in the footer: « Conçu et développé par Pwablo ».
+- **Discreet mobility motifs** in the empty margins of wide screens only (CSS mask, 0 DOM nodes, theme colour).
+- **Duel « Deux voitures au choix »:** each used car has its own age and odometer; ownership period and plug-in hybrid electric share are editable (« Réglages communs ») and shared with « Toutes les motorisations ». Previously fixed at 6 years, 80 000 km, 8 years, 50 %, and they ignored the sliders.
 
 ### Changed
 - **Hybrids** are shown by default in « Comparer les voitures ».
+- **Title on one line:** « Méthode » and FR/EN sit in a slim bar above it.
+- **« Comparer : Toutes les motorisations / Deux voitures au choix »** moved to the top of the tab (it was below the profile and easy to miss).
 - **Footer link to the Ecodesign page:** « EcoIndex A » (accessible name « Écoconception, EcoIndex A »).
 - **Search Console:** deferred until there is a custom domain.
 
