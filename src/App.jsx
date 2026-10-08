@@ -7,6 +7,7 @@ import {
 } from "./model.js";
 import { STR, HYP_REFS, SOURCES } from "./i18n.jsx";
 import { Icone } from "./icones.jsx";
+import { mesurer } from "./mesure.js";
 
 /* ============================================================
    LANGUE ET FORMATS
@@ -224,6 +225,7 @@ export default function App() {
   // Changement de page : titre du document, puis défilement vers l'ancre ou le haut, focus sur le titre
   useEffect(() => {
     document.title = route.page === "outil" ? s.titre : `${s.pages[route.page]} · ${s.titre}`;
+    if (route.page !== "outil") mesurer("page", { nom: route.page, lang });
     const cible = route.ancre && document.getElementById(route.ancre);
     if (cible) cible.scrollIntoView();
     else window.scrollTo(0, 0);
@@ -237,6 +239,7 @@ export default function App() {
   };
 
   const ouvrir = (o) => {
+    if (!visites[o]) mesurer("onglet", { nom: o, lang });
     setOnglet(o);
     setVisites((v) => (v[o] ? v : { ...v, [o]: true }));
   };
@@ -308,7 +311,7 @@ export default function App() {
         <footer className="pied">
           <nav className="liens-pied" aria-label={s.navSite}>
             <a href="#methode">{s.pages.methode}</a>
-            <a href="#ecoconception">{s.ecoLien}</a>
+            <a href="#ecoconception" aria-label={s.ecoLienLong}>{s.ecoLien}</a>
           </nav>
           <p>{s.footer(lienCarbone4)}</p>
         </footer>
@@ -352,6 +355,10 @@ function Decision({ shared, allerExplorer }) {
   // Au changement d'étape, le focus va au titre de la nouvelle étape
   useEffect(() => {
     if (etapePrec.current !== etape) titreRef.current?.focus();
+    if (etape === 3 && etapePrec.current !== 3) {
+      // Valeurs grossières uniquement (kilométrage arrondi à 5 000 km) : rien d'identifiant
+      mesurer("verdict", { verdict: v.verdict, pays: pays.id, segment: segId, etat: etatVE, km: Math.round(kmAn / 5000) * 5000, lang: f.lang });
+    }
     etapePrec.current = etape;
   }, [etape]);
 
@@ -606,7 +613,7 @@ function Comparateur({ shared }) {
   const { pays, kmAn, decarb, setDecarb, batt, battId, setBattId, segId, etatVE, ageVE, odo, conv, setConv } = shared;
   const [revente, setRevente] = useState(true);
   const [detention, setDetention] = useState(8);
-  const [hybrides, setHybrides] = useState(false);
+  const [hybrides, setHybrides] = useState(true); // affichés par défaut : la comparaison est plus complète
   const [phevShare, setPhevShare] = useState(0.5);
 
   const occasion = etatVE === "occasion";
@@ -670,8 +677,9 @@ function Comparateur({ shared }) {
           </Case>
           <Case checked={hybrides} onChange={setHybrides}>{s.champ.hybrides}</Case>
           {hybrides && (
-            <Choix label={s.champ.phev} aide={s.aide.phev} value={phevShare} onChange={setPhevShare}
-              options={[0.15, 0.5, 0.8].map((x) => ({ v: x, label: f.pc(x) }))} />
+            <Curseur id="phev" label={s.champ.phev} aide={s.aide.phev} value={Math.round(phevShare * 100)}
+              min={0} max={100} step={5} pas={1} unite="%" onChange={(x) => setPhevShare(x / 100)}
+              format={(x) => f.pc(x / 100)} />
           )}
         </details>
       </section>
@@ -768,18 +776,18 @@ function CourbeCumulee({ resultats, kmMax, pivot, ev }) {
         {ticksY.map((t) => (
           <g key={t}>
             <line className="grille" x1={PAD.l} x2={W - PAD.r} y1={y(t)} y2={y(t)} />
-            <text className="axe" x={PAD.l - 8} y={y(t) + 4} textAnchor="end">{t}</text>
+            <text className="axe" x={PAD.l - 8} y={y(t) + 4} text-anchor="end">{t}</text>
           </g>
         ))}
         {ticksX.map((km, i) => (
-          <text key={i} className="axe" x={x(km)} y={H - PAD.b + 18} textAnchor="middle">{kLabel(km)}</text>
+          <text key={i} className="axe" x={x(km)} y={H - PAD.b + 18} text-anchor="middle">{kLabel(km)}</text>
         ))}
-        <text className="axe" x={W - PAD.r} y={H - 2} textAnchor="end">{s.axeX}</text>
+        <text className="axe" x={W - PAD.r} y={H - 2} text-anchor="end">{s.axeX}</text>
         <text className="axe" x={PAD.l - 8} y={12}>{s.axeY}</text>
         {resultats.map((r) => (
           <g key={r.motorId} className="ligne" style={{ "--c": `var(--m-${r.motorId})`, opacity: actif && actif !== r.motorId ? 0.15 : 1 }}>
             <line x1={x(0)} y1={y(r.fabAttr)} x2={x(kmMax)} y2={y(fin(r))}
-              strokeWidth={r.motorId === "ev" || r.motorId === "essence" ? 3 : 2} strokeDasharray={tirets(r.motorId)} />
+              stroke-width={r.motorId === "ev" || r.motorId === "essence" ? 3 : 2} stroke-dasharray={tirets(r.motorId)} />
             <circle cx={x(0)} cy={y(r.fabAttr)} r="4" />
           </g>
         ))}
@@ -791,20 +799,21 @@ function CourbeCumulee({ resultats, kmMax, pivot, ev }) {
         ))}
         {pivot > 0 && (
           <g className="pivot-marque">
-            <line x1={x(pivot)} x2={x(pivot)} y1={y(pivotY)} y2={H - PAD.b} strokeDasharray="3 4" />
+            <line x1={x(pivot)} x2={x(pivot)} y1={y(pivotY)} y2={H - PAD.b} stroke-dasharray="3 4" />
             <circle cx={x(pivot)} cy={y(pivotY)} r="6" className="anneau" />
             <circle cx={x(pivot)} cy={y(pivotY)} r="3" />
-            <text x={x(pivot)} y={y(pivotY) - 12} textAnchor="middle">{f.km(pivot)}</text>
+            <text x={x(pivot)} y={y(pivotY) - 12} text-anchor="middle">{f.km(pivot)}</text>
           </g>
         )}
       </svg>
-      <div className="legende-courbe" role="group" aria-label={s.surligner}>
+      <p className="legende-titre" id="legende-courbe">{s.legendeCourbe}</p>
+      <div className="legende-courbe" role="group" aria-labelledby="legende-courbe">
         {resultats.map((r) => (
           <button key={r.motorId} type="button" aria-pressed={fixe === r.motorId} style={{ "--c": `var(--m-${r.motorId})` }}
             onMouseEnter={() => setSurvol(r.motorId)} onMouseLeave={() => setSurvol(null)}
             onClick={() => setFixe(fixe === r.motorId ? null : r.motorId)}>
-            <svg width="18" height="4" aria-hidden="true"><line x1="0" y1="2" x2="18" y2="2" strokeDasharray={tirets(r.motorId) ? "4 3" : undefined} /></svg>
-            {s.motor[r.motorId].court}
+            <svg width="18" height="4" aria-hidden="true"><line x1="0" y1="2" x2="18" y2="2" stroke-dasharray={tirets(r.motorId) ? "4 3" : undefined} /></svg>
+            {s.motor[r.motorId].nom}
           </button>
         ))}
       </div>

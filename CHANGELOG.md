@@ -4,6 +4,23 @@ Notable changes to « Dois-je passer à l'électrique ? ». Format inspired by [
 
 ## [Unreleased]
 
+### Added
+- **Lightweight audience measurement (Umami Cloud, EU):**
+  - no script, cookie or request at load, so EcoIndex stays A;
+  - 3 anonymous events, sent only on action: verdict reached (coarse values: country, category, new/used, km rounded to 5 000), tab opened, reading page opened;
+  - « Do Not Track » and GPC respected (`src/mesure.js`, tested);
+  - **turned off until the Umami site ID is filled in.**
+- **Plug-in hybrid electric share:** a 0–100 % slider, also typable, instead of 3 buttons.
+- **Cumulative chart legend:** visible title and full names (« Hybride rechargeable » instead of « PHEV »).
+
+### Changed
+- **Hybrids** are shown by default in « Comparer les voitures ».
+- **Footer link to the Ecodesign page:** « EcoIndex A » (accessible name « Écoconception, EcoIndex A »).
+- **Search Console:** deferred until there is a custom domain.
+
+### Fixed
+- **Chart line styles and axis labels lost** since dropping `preact/compat` (SVG attributes in camelCase). Thick electric/petrol lines, dashed hybrids/diesel, and the axes are back.
+
 ### Security
 - `.env` added to `.gitignore` (local secrets are never committed); the CI token is stored as a GitHub secret only.
 - `cloudflare/wrangler-action` pinned to a commit SHA (v4.1.3); Dependabot for the actions.

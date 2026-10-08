@@ -1577,3 +1577,8 @@ input[type="number"] {
 .lecture h2 {
   color: var(--ink);
 }
+.legende-titre {
+  margin: var(--s3) 0 0;
+  font-size: var(--fs-sm);
+  color: var(--ink-2);
+}
