@@ -159,7 +159,8 @@ export default {
   noteConvention: { marginale: "Nieuwe auto: 100% van de productie wordt aan u toegewezen, zoals in ‘Mijn beslissing’ (A3).", partagee: "Nieuwe auto: productie gedeeld met de volgende eigenaars volgens de verbruikte waarde (A2)." },
 
   // v7 — se déplacer autrement (ADEME Impact CO₂)
-  modesTitre: "Anders verplaatsen",
+  modesTitre: "Voetafdruk per persoon per kilometer",
+  comparerIntro: "Vergelijk de voetafdruk van elke aandrijving voor uw profiel, productie inbegrepen, of laat twee specifieke auto's het tegen elkaar opnemen in een duel.",
   modesIntro: "De auto is niet de enige optie. Hier ziet u de CO₂-voetafdruk per persoon en per kilometer van de belangrijkste vervoerswijzen, inclusief de productie van de voertuigen.",
   modes: {
     marche: "Te voet", velo: "Fiets", vae: "Elektrische fiets", trottinette: "Elektrische step",

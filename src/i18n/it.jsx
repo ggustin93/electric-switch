@@ -163,7 +163,8 @@ export default {
   noteConvention: { marginale: "Auto nuova: il 100% della sua produzione è attribuito a te, come in “La mia decisione” (I3).", partagee: "Auto nuova: produzione condivisa con i proprietari successivi in base al valore consumato (I2)." },
 
   // v7 — spostarsi in altro modo (ADEME Impact CO₂)
-  modesTitre: "Spostarsi in altro modo",
+  modesTitre: "Impronta per persona e per chilometro",
+  comparerIntro: "Confronta l'impronta di ogni motorizzazione per il tuo profilo, produzione compresa, oppure metti due auto precise testa a testa.",
   modesIntro: "L'auto non è l'unica opzione. Ecco l'impronta di carbonio per persona e per chilometro dei principali mezzi di trasporto, produzione dei veicoli compresa.",
   modes: {
     marche: "A piedi", velo: "Bicicletta", vae: "Bici elettrica", trottinette: "Monopattino elettrico",

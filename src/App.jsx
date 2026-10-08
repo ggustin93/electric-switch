@@ -573,6 +573,7 @@ function Explorer({ shared, vue, setVue }) {
 
   return (
     <div>
+      <p className="lede">{s.comparerIntro}</p>
       <section className="carte">
         <Choix label={s.vue} value={vue} onChange={setVue}
           options={[{ v: "tout", label: s.vues.tout }, { v: "duel", label: s.vues.duel }]} />
@@ -945,9 +946,10 @@ function Modes() {
 
   return (
     <div>
+      {/* Même place que l'intro des autres onglets : sous les onglets, avant le contenu */}
+      <p className="lede">{s.modesIntro}</p>
       <section className="carte">
         <h2>{s.modesTitre}</h2>
-        <p className="lede-carte">{s.modesIntro}</p>
         <p className="sous-titre">{s.ordresSous}</p>
         <p className="bascule resume-ref">
           {s.ordresResume(s.modes[REF_ID])}{" "}

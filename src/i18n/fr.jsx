@@ -159,7 +159,8 @@ export default {
   noteConvention: { marginale: "Voiture neuve : 100 % de sa fabrication vous est attribuée, comme dans « Ma décision » (H3).", partagee: "Voiture neuve : fabrication partagée avec les propriétaires suivants selon la valeur consommée (H2)." },
 
   // v7 — se déplacer autrement (ADEME Impact CO₂)
-  modesTitre: "Se déplacer autrement",
+  modesTitre: "Empreinte par personne et par kilomètre",
+  comparerIntro: "Comparez l'empreinte de chaque motorisation pour votre profil, fabrication comprise, ou mettez deux voitures précises en face-à-face.",
   modesIntro: "La voiture n'est pas la seule option. Voici l'empreinte carbone par personne et par kilomètre des principaux modes de transport, fabrication des véhicules comprise.",
   modes: {
     marche: "Marche", velo: "Vélo", vae: "Vélo électrique", trottinette: "Trottinette électrique",

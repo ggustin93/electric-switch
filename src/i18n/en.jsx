@@ -159,7 +159,8 @@ export default {
   noteConvention: { marginale: "New car: 100% of its manufacturing is attributed to you, as in “My decision” (A3).", partagee: "New car: manufacturing shared with the next owners according to consumed value (A2)." },
 
   // v7 — other ways to get around (ADEME Impact CO₂)
-  modesTitre: "Other ways to get around",
+  modesTitre: "Footprint per person per kilometre",
+  comparerIntro: "Compare the footprint of every powertrain for your profile, manufacturing included, or put two specific cars head-to-head.",
   modesIntro: "The car is not the only option. Here is the carbon footprint per person and per kilometre of the main modes of transport, vehicle manufacturing included.",
   modes: {
     marche: "Walking", velo: "Bike", vae: "E-bike", trottinette: "E-scooter (stand-up)",
