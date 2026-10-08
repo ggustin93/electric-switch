@@ -1049,6 +1049,7 @@ input[type="range"] {
 .sources {
   list-style: decimal;
   padding-left: var(--s5);
+  overflow-wrap: anywhere; /* URL des sources en texte : pas de défilement horizontal sur mobile */
 }
 .hyp strong {
   color: var(--ink);

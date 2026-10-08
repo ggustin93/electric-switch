@@ -211,6 +211,8 @@ export default {
   pages: { methode: "Méthode", ecoconception: "Écoconception", mentions: "Mentions légales" },
   credit: (lien) => <>Conçu et développé par {lien}.</>,
   mentions: [
+    // Qui a fait ce simulateur : formulation à valider par le propriétaire (ticket 06)
+    ["Qui a fait ce simulateur", ["Guillaume Gustin (Pwablo, pwablo.be), ingénieur civil biomédical et ingénieur logiciel indépendant à Bruxelles, a conçu et développé ce simulateur. Son but est pédagogique : donner une réponse honnête à votre situation, y compris quand la meilleure option est de garder votre voiture. Le simulateur ne reçoit aucun financement de constructeurs automobiles ni de fournisseurs d'énergie, n'affiche aucune publicité et ne collecte aucune donnée personnelle."]],
     ["Éditeur", [
       "Productions Associées ASBL — Guillaume Gustin (Pwablo), activité exercée sous le numéro Smart 30546.",
       "BCE et TVA : BE 0896.755.397. Rue Coenraets 72, 1060 Bruxelles, Belgique.",
@@ -269,6 +271,7 @@ export default {
     { t: "Budget à l'usage", d: "Coût annuel d'énergie (prix domestiques par pays, recharge à domicile) et d'entretien (0,07 €/km pour une thermique ancienne, réparations comprises ; 0,04 €/km pour une électrique). Le prix d'achat du véhicule, l'assurance, les taxes et le financement ne sont pas comptés : ils dépendent du marché de chaque pays et de chaque achat. Prix par défaut datés et modifiables." },
   ],
   sourcesTitre: "Sources et références",
+  methodeMaj: (date) => `Méthode mise à jour le ${date}.`,
   sourcesNotes: {
     2: "19,6 gCO₂e/kWh en émissions directes de production (2025).",
     6: "Carburants routiers (E10 2,69 ; B7 3,10 kgCO₂e/L) ; électricité française, mix moyen en consommation (51,9 g en 2024).",

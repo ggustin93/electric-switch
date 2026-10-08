@@ -211,6 +211,8 @@ export default {
   pages: { methode: "Methode", ecoconception: "Ecodesign", mentions: "Juridische informatie" },
   credit: (lien) => <>Ontworpen en ontwikkeld door {lien}.</>,
   mentions: [
+    // Qui a fait ce simulateur : formulation à valider par le propriétaire (ticket 06)
+    ["Wie maakte deze simulator", ["Guillaume Gustin (Pwablo, pwablo.be), burgerlijk ingenieur biomedische technologie en zelfstandig software-ingenieur in Brussel, heeft deze simulator ontworpen en gebouwd. Het doel is educatief: een eerlijk antwoord geven op uw situatie, ook wanneer uw huidige auto houden de beste keuze is. De simulator krijgt geen financiering van autofabrikanten of energieleveranciers, toont geen advertenties en verzamelt geen persoonsgegevens."]],
     ["Uitgever", [
       "Productions Associées ASBL — Guillaume Gustin (Pwablo), activiteit uitgeoefend onder Smart-nummer 30546.",
       "KBO- en btw-nummer: BE 0896.755.397. Rue Coenraets 72, 1060 Brussel, België.",
@@ -269,6 +271,7 @@ export default {
     { t: "Budget in gebruik", d: "Jaarlijkse kosten voor energie (huishoudprijzen per land, thuis opladen) en onderhoud (€ 0,07/km voor een oudere benzine- of dieselauto, herstellingen inbegrepen; € 0,04/km voor een elektrische auto). De aankoopprijs van het voertuig, verzekering, belastingen en financiering worden niet meegeteld: die hangen af van de markt in elk land en van elke aankoop. Standaardprijzen gedateerd en aanpasbaar." },
   ],
   sourcesTitre: "Bronnen en referenties",
+  methodeMaj: (date) => `Methode bijgewerkt op ${date}.`,
   sourcesNotes: {
     2: "19,6 gCO₂e/kWh aan directe uitstoot van de productie (2025).",
     6: "Wegbrandstoffen (E10 2,69; B7 3,10 kgCO₂e/L); Franse elektriciteit, gemiddelde verbruiksmix (51,9 g in 2024).",
