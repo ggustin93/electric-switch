@@ -1352,12 +1352,7 @@ h2 + .bascule {
   max-width: 70ch;
 }
 
-/* Mini page écoconception */
-.eco {
-  font-size: var(--fs-sm);
-  color: var(--ink-2);
-  max-width: 70ch;
-}
+/* Page écoconception : même largeur et même texte que les autres pages de lecture (voir .lecture) */
 .eco h3 {
   color: var(--ink);
   margin: var(--s5) 0 var(--s2);
@@ -1536,6 +1531,13 @@ input[type="number"] {
 }
 .lecture {
   padding-bottom: var(--s6);
+}
+/* Pages de lecture (Méthode, Écoconception, Mentions légales) : carte de la largeur de la colonne,
+   texte courant limité à une même mesure de lecture */
+.lecture p,
+.lecture ul,
+.lecture ol {
+  max-width: 68ch;
 }
 .lecture h3 {
   font: 600 var(--fs-md) / 1.25 var(--f-display);

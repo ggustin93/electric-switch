@@ -11,6 +11,7 @@ Notable changes to « Dois-je passer à l'électrique ? ». Format inspired by [
   - the language switch is 5 links and keeps the current reading page (`#methode`…);
   - `hreflang` sent as an HTTP `Link` header, not as tags in the page.
 - **Charging country pre-filled** from the device's time zone (e.g. Europe/Brussels → Belgium), else the region of the browser languages (« nl-BE », « en-GB »), else the EU average. Guessed locally, nothing sent; still editable (`paysProbable`, tested).
+- **Reading pages uniform:** « Méthode », « Écoconception » and « Mentions légales » use the same full-column card and the same 68ch text measure (the ecodesign page was narrower with smaller grey text, the legal notice ran ~110 characters per line). Ecodesign figures refreshed: font 14 kB, measured 08/10/2026.
 - **Summary qualified:** « L'électrique émet le moins : … que l'essence (259), **à catégorie et âge égaux** » — it is not a general claim (5 languages).
 - **Quieter summaries in « Comparer les voitures »:** the black banners (best powertrain, Face-à-face winner) become light neutral panels with a thin border, like the cards; the dark block stays reserved for the « Ma décision » verdict.
 - **One column edge for everything, 60rem** (Impeccable layout): the results card no longer breaks out of the column (tried at 72rem, it created two misaligned left edges under left-aligned content). The shared column grows 52 → 60rem; prose keeps its reading width. Side-by-side charts split 5/12 – 7/12.
