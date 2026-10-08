@@ -60,12 +60,20 @@ function BoutonAide({ id, label, open, setOpen }) {
 }
 
 function TexteAide({ id, open, setOpen, children }) {
+  const { s } = useT();
   if (!open) return null;
   return (
     <p id={`${id}-aide`} className="aide-texte" onKeyDown={(e) => e.key === "Escape" && setOpen(false)}>
-      {children}
+      {lierHyp(children, s.prefixeHyp)}
     </p>
   );
+}
+
+// « (H5) », « H8 à H10 » dans un texte → liens vers la page Méthode (#methode/h5)
+function lierHyp(texte, prefixe) {
+  if (typeof texte !== "string") return texte;
+  return texte.split(new RegExp(`\\b${prefixe}(\\d{1,2})\\b`)).map((morceau, i) =>
+    i % 2 === 1 ? <a key={i} href={`#methode/h${morceau}`}>{prefixe}{morceau}</a> : morceau);
 }
 
 // Champ libellé : en-tête (libellé, aide, valeur) puis contrôle
@@ -174,8 +182,16 @@ const Coche = () => (
 const ONGLETS = ["decision", "explorer", "modes"];
 const lienCarbone4 = (t) => <a href="https://www.carbone4.com/analyse-faq-voiture-electrique" target="_blank" rel="noreferrer">{t}</a>;
 
+// Pages de lecture dans le même fichier (une seule requête) : #methode, #methode/h5, #ecoconception
+const PAGES = ["methode", "ecoconception"];
+function lireRoute() {
+  const [page, ancre] = location.hash.slice(1).split("/");
+  return PAGES.includes(page) ? { page, ancre: ancre || null } : { page: "outil", ancre: null };
+}
+
 export default function App() {
   const [lang, setLang] = useState(langueInitiale);
+  const [route, setRoute] = useState(lireRoute);
   const [onglet, setOnglet] = useState("decision");
   // Un onglet n'est monté qu'à sa première visite (DOM initial minimal), puis reste monté
   const [visites, setVisites] = useState({ decision: true });
@@ -196,9 +212,23 @@ export default function App() {
 
   useEffect(() => {
     document.documentElement.lang = lang;
-    document.title = s.titre;
     try { localStorage.setItem("lang", lang); } catch { /* stockage indisponible */ }
-  }, [lang, s]);
+  }, [lang]);
+
+  useEffect(() => {
+    const suivre = () => setRoute(lireRoute());
+    addEventListener("hashchange", suivre);
+    return () => removeEventListener("hashchange", suivre);
+  }, []);
+
+  // Changement de page : titre du document, puis défilement vers l'ancre ou le haut, focus sur le titre
+  useEffect(() => {
+    document.title = route.page === "outil" ? s.titre : `${s.pages[route.page]} · ${s.titre}`;
+    const cible = route.ancre && document.getElementById(route.ancre);
+    if (cible) cible.scrollIntoView();
+    else window.scrollTo(0, 0);
+    if (route.page !== "outil") document.getElementById("titre-page")?.focus({ preventScroll: Boolean(cible) });
+  }, [route, s]);
 
   const shared = {
     pays: byId(PAYS, paysId), paysId, setPaysId, kmAn, setKmAn, decarb, setDecarb,
@@ -231,6 +261,10 @@ export default function App() {
         <header className="entete">
           <div className="entete-haut">
             <h1>{s.h1}</h1>
+            <div className="entete-actions">
+              <nav aria-label={s.navSite}>
+                <a className="nav-site" href="#methode" aria-current={route.page === "methode" ? "page" : undefined}>{s.pages.methode}</a>
+              </nav>
             <fieldset className="langue" aria-label={s.langue}>
               {["fr", "en"].map((l) => (
                 <label key={l} className="option">
@@ -239,10 +273,13 @@ export default function App() {
                 </label>
               ))}
             </fieldset>
+            </div>
           </div>
-          <p className="lede">{s.lede}</p>
+          {route.page === "outil" && <p className="lede">{s.lede}</p>}
         </header>
 
+        {/* L'outil reste monté (réponses conservées) mais masqué sur les pages de lecture */}
+        <div hidden={route.page !== "outil"}>
         <div className="onglets" role="tablist" aria-label="Sections" onKeyDown={clavierOnglets}>
           {ONGLETS.map((o, i) => (
             <button key={o} ref={(el) => (tabsRef.current[i] = el)} role="tab" id={`tab-${o}`}
@@ -263,11 +300,16 @@ export default function App() {
         <div role="tabpanel" id="panel-modes" aria-labelledby="tab-modes" hidden={onglet !== "modes"}>
           {visites.modes && <Modes />}
         </div>
+        </div>
 
-        <Hypotheses />
-        <Sources />
+        {route.page === "methode" && <PageMethode />}
+        {route.page === "ecoconception" && <PageEco />}
+
         <footer className="pied">
-          <Ecoconception />
+          <nav className="liens-pied" aria-label={s.navSite}>
+            <a href="#methode">{s.pages.methode}</a>
+            <a href="#ecoconception">{s.ecoLien}</a>
+          </nav>
           <p>{s.footer(lienCarbone4)}</p>
         </footer>
       </div>
@@ -415,7 +457,7 @@ function Decision({ shared, allerExplorer }) {
             <Curseur id="etsi" label={s.etSi} value={kmAn} min={3000} max={40000} step={500} pas={100} unite={s.unites.kmAn}
               onChange={setKmAn} format={f.kmAn} />
             <Repli className="replie" titre={s.commentLire}>
-              <p className="note-petite">{s.conventions}</p>
+              <p className="note-petite">{lierHyp(s.conventions, s.prefixeHyp)}</p>
             </Repli>
           </section>
 
@@ -927,8 +969,39 @@ function Modes() {
 }
 
 /* ============================================================
-   ÉCOCONCEPTION (mini page repliable, ouverte par le lien du pied de page)
+   PAGES DE LECTURE : MÉTHODE ET SOURCES, ÉCOCONCEPTION
    ============================================================ */
+
+function RetourOutil() {
+  const { s } = useT();
+  return <a className="retour" href="#">{s.retourOutil}</a>;
+}
+
+function PageMethode() {
+  const { s } = useT();
+  return (
+    <article className="carte lecture">
+      <RetourOutil />
+      <h2 id="titre-page" tabIndex={-1}>{s.pages.methode}</h2>
+      <p className="lede-carte">{s.methodeIntro}</p>
+      <h3>{s.hypTitre(s.hyp.length)}</h3>
+      <ol className="hyp">
+        {s.hyp.map((h, i) => (
+          <li key={i} id={`h${i + 1}`}>
+            <strong>{s.prefixeHyp}{i + 1}. {h.t}.</strong> {lierHyp(h.d, s.prefixeHyp)}{" "}
+            {HYP_REFS[i].map((r) => <a key={r} className="ref" href={`#methode/src-${r}`}>[{r}]</a>)}
+          </li>
+        ))}
+      </ol>
+      <h3>{s.sourcesTitre}</h3>
+      <ol className="sources">
+        {SOURCES.map((src, i) => (
+          <li key={i} id={`src-${i + 1}`}>{src}{s.sourcesNotes[i + 1] && <> {s.sourcesNotes[i + 1]}</>}</li>
+        ))}
+      </ol>
+    </article>
+  );
+}
 
 const REFS_ECO = [
   ["EcoIndex (CNUMR / GreenIT.fr)", "https://www.ecoindex.fr/"],
@@ -936,83 +1009,34 @@ const REFS_ECO = [
   ["Green Claude (Institut du Numérique Responsable)", "https://github.com/Institut-du-Numerique-Responsable/green-claude"],
 ];
 
-function Ecoconception() {
+function PageEco() {
   const { s } = useT();
   return (
-    <Repli id="ecoconception" className="replie eco-pied" titre={s.ecoMention} ancre="ecoconception">
-      <div className="eco">
-        <h2>{s.ecoTitre}</h2>
-        <p>{s.ecoIntro}</p>
-        <h3>{s.ecoMesureTitre}</h3>
-        <dl className="eco-mesures">
-          {s.ecoMesures.map(([k, v]) => <div key={k}><dt>{k}</dt><dd>{v}</dd></div>)}
-        </dl>
-        <h3>{s.ecoChoixTitre}</h3>
-        <ul>{s.ecoChoix.map((c) => <li key={c}>{c}</li>)}</ul>
-        <h3>{s.ecoLimitesTitre}</h3>
-        <p>{s.ecoLimites}</p>
-        <h3>{s.ecoRefs}</h3>
-        <ul>{REFS_ECO.map(([t, u]) => <li key={u}><a href={u} target="_blank" rel="noreferrer">{t}</a></li>)}</ul>
-      </div>
-    </Repli>
+    <article className="carte lecture eco">
+      <RetourOutil />
+      <h2 id="titre-page" tabIndex={-1}>{s.ecoTitre}</h2>
+      <p className="lede-carte">{s.ecoIntro}</p>
+      <h3>{s.ecoMesureTitre}</h3>
+      <dl className="eco-mesures">
+        {s.ecoMesures.map(([k, v]) => <div key={k}><dt>{k}</dt><dd>{v}</dd></div>)}
+      </dl>
+      <h3>{s.ecoChoixTitre}</h3>
+      <ul>{s.ecoChoix.map((c) => <li key={c}>{c}</li>)}</ul>
+      <h3>{s.ecoLimitesTitre}</h3>
+      <p>{s.ecoLimites}</p>
+      <h3>{s.ecoRefs}</h3>
+      <ul>{REFS_ECO.map(([t, u]) => <li key={u}><a href={u} target="_blank" rel="noreferrer">{t}</a></li>)}</ul>
+    </article>
   );
 }
 
-/* ============================================================
-   HYPOTHÈSES ET SOURCES
-   ============================================================ */
-
-// <details> dont le contenu n'est rendu qu'une fois ouvert : DOM initial minimal (écoconception).
-// `ancre` : un lien vers #<ancre>… ouvre le bloc puis fait défiler jusqu'à la cible.
-function Repli({ id, className, titre, ancre, children }) {
+// <details> dont le contenu n'est rendu qu'une fois ouvert : DOM initial minimal (écoconception)
+function Repli({ id, className, titre, children }) {
   const [ouvert, setOuvert] = useState(false);
-  useEffect(() => {
-    if (!ancre) return;
-    const suivre = () => { if (location.hash.startsWith(`#${ancre}`)) setOuvert(true); };
-    suivre();
-    addEventListener("hashchange", suivre);
-    return () => removeEventListener("hashchange", suivre);
-  }, [ancre]);
-  useEffect(() => {
-    if (ouvert && ancre && location.hash.startsWith(`#${ancre}`)) document.querySelector(location.hash)?.scrollIntoView();
-  }, [ouvert, ancre]);
   return (
     <details id={id} className={className} open={ouvert} onToggle={(e) => setOuvert(e.currentTarget.open)}>
       <summary>{titre}</summary>
       {ouvert && children}
     </details>
-  );
-}
-
-function Hypotheses() {
-  const { s } = useT();
-  return (
-    <Repli className="carte replie annexe" titre={<h2>{s.hypTitre(s.hyp.length)}</h2>}>
-      <ol className="hyp">
-        {s.hyp.map((h, i) => (
-          <li key={i} id={`h${i + 1}`}>
-            <strong>{s.prefixeHyp}{i + 1}. {h.t}.</strong> {h.d}{" "}
-            {HYP_REFS[i].map((r) => (
-              <a key={r} className="ref" href={`#src-${r}`}>[{r}]</a>
-            ))}
-          </li>
-        ))}
-      </ol>
-    </Repli>
-  );
-}
-
-function Sources() {
-  const { s } = useT();
-  return (
-    <Repli id="sources" className="carte replie annexe" titre={<h2>{s.sourcesTitre}</h2>} ancre="src-">
-      <ol className="sources">
-        {SOURCES.map((src, i) => (
-          <li key={i} id={`src-${i + 1}`}>
-            {src}{s.sourcesNotes[i + 1] && <> {s.sourcesNotes[i + 1]}</>}
-          </li>
-        ))}
-      </ol>
-    </Repli>
   );
 }

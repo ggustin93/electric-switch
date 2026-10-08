@@ -203,7 +203,11 @@ const fr = {
   budgetPrixElec: "Électricité à domicile (€/kWh)",
 
   // Écoconception (mini page repliable + mention de pied de page)
-  ecoMention: "Site écoconçu : EcoIndex A (80/100), 58 Ko, une seule requête, aucun traceur",
+  navSite: "Pages du site",
+  pages: { methode: "Méthode", ecoconception: "Écoconception" },
+  retourOutil: "Retour au simulateur",
+  methodeIntro: "Comment le simulateur calcule. Chaque hypothèse est numérotée et sourcée ; les mentions H1, H2… des bulles d'aide renvoient ici.",
+  ecoLien: "Écoconception : EcoIndex A, 58 Ko, aucun traceur",
   ecoTitre: "Écoconception de ce site",
   ecoIntro: "Un outil qui parle d'empreinte carbone se doit d'être sobre. Ce simulateur a été conçu pour consommer le moins possible, sur votre appareil comme sur le réseau.",
   ecoMesureTitre: "Mesure au premier chargement (07/10/2026)",
@@ -448,7 +452,11 @@ const en = {
   budgetPrixElec: "Home electricity (€/kWh)",
 
   // Ecodesign (collapsible mini page + footer mention)
-  ecoMention: "Ecodesigned site: EcoIndex A (80/100), 58 kB, a single request, no trackers",
+  navSite: "Site pages",
+  pages: { methode: "Method", ecoconception: "Ecodesign" },
+  retourOutil: "Back to the simulator",
+  methodeIntro: "How the simulator calculates. Every assumption is numbered and sourced; the A1, A2… mentions in the help bubbles link here.",
+  ecoLien: "Ecodesign: EcoIndex A, 58 kB, no trackers",
   ecoTitre: "How this site is ecodesigned",
   ecoIntro: "A tool about carbon footprints should be frugal itself. This simulator was designed to use as little as possible, on your device and on the network.",
   ecoMesureTitre: "Measured at first load (7 October 2026)",
