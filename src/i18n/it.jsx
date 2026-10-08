@@ -21,7 +21,7 @@ export default {
   ans: (s) => `${s}${N}${s === "1" ? "anno" : "anni"}`,
   kmAn: (s) => `${s}${N}km/anno`,
   aideOuvrir: (l) => `Aiuto: ${l}`,
-  unites: { kmAn: "km/anno", conso: "L/100 km", ans: "anni", km: "km" },
+  unites: { kmAn: "km/anno", conso: "L/100 km", ans: "anni", km: "km", kmEstime: "km (stimati)" },
 
   pays: { NO: "Norvegia", SE: "Svezia", FR: "Francia", ES: "Spagna", BE: "Belgio", UK: "Regno Unito", EU: "Media UE", IT: "Italia", DE: "Germania", US: "Stati Uniti", AU: "Australia", CN: "Cina", PL: "Polonia", IN: "India" },
   paysOption: (nom, g) => `${nom} · rete a ${g}${N}gCO₂e/kWh`,

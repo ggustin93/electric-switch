@@ -143,4 +143,6 @@ test("decider : l'occasion suit la fenêtre de « Comparer » (compteur, borne 2
   assert.equal(decider({ ...base, etatVE: "occasion", ageVE: 4 }).partVE, occ(4, 4 * KM_AN_PARC).partVE);
   // neuf : inchangé
   assert.equal(decider({ ...base, etatVE: "neuf", ageVE: 0 }).partVE, 1);
+  // compteur borné à 30 000 km par année d'âge (1 an, 160 000 km saisis → 30 000 km retenus)
+  assert.equal(fenetre({ occasion: true, odo: 160000, age: 1, kmAn: 12000, revente: true, detention: 8 }).odoEff, 30000);
 });
