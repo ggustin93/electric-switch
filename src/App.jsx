@@ -3,7 +3,7 @@ import { useContext, useEffect, useId, useLayoutEffect, useMemo, useRef, useStat
 import {
   PAYS, SEGMENTS, BATTERIES, MOTORS, MODES, AGE_SUGGESTION, SEUIL_SERRE, KM_AN_MAX_COMPTEUR, byId,
   mixMoyen, calc, fenetre, decider, calcConfig, departager, kmPivot, kmBascule,
-  budget, PRIX_ENERGIE, ENTRETIEN,
+  budget, PRIX_ENERGIE, ENTRETIEN, paysProbable,
 } from "./model.js";
 // Une page par langue (ADR 0006) : « @langue » pointe vers le dictionnaire de la page construite
 import STR_PAGE from "@langue";
@@ -193,7 +193,9 @@ export default function App() {
   const [detention, setDetention] = useState(8);
   const [phevShare, setPhevShare] = useState(0.5);
   // Profil partagé par tous les onglets : jamais demandé deux fois
-  const [paysId, setPaysId] = useState("BE");
+  const [paysId, setPaysId] = useState(() => paysProbable({
+    fuseau: Intl.DateTimeFormat().resolvedOptions().timeZone, langues: navigator.languages ?? [navigator.language],
+  }));
   const [kmAn, setKmAn] = useState(12000);
   const [segId, setSegId] = useState("compacte");
   const [etatVE, setEtatVE] = useState("neuf");

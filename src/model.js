@@ -201,6 +201,25 @@ export function kmBascule(params) {
   return null;
 }
 
+// --- Pays de recharge probable, deviné localement (rien n'est envoyé) : fuseau horaire d'abord
+// (il dit où l'on vit), puis la région des langues du navigateur (« nl-BE », « en-GB »), sinon la moyenne UE.
+const FUSEAUX = {
+  "Europe/Oslo": "NO", "Europe/Stockholm": "SE", "Europe/Paris": "FR", "Europe/Madrid": "ES", "Atlantic/Canary": "ES",
+  "Europe/Brussels": "BE", "Europe/London": "UK", "Europe/Rome": "IT", "Europe/Berlin": "DE", "Europe/Warsaw": "PL",
+  "Asia/Kolkata": "IN", "Asia/Calcutta": "IN", "Asia/Shanghai": "CN",
+};
+export function paysProbable({ fuseau = "", langues = [] } = {}) {
+  if (FUSEAUX[fuseau]) return FUSEAUX[fuseau];
+  if (fuseau.startsWith("Australia/")) return "AU";
+  if (/^America\/(New_York|Chicago|Denver|Phoenix|Los_Angeles|Anchorage|Detroit)$|^Pacific\/Honolulu$/.test(fuseau)) return "US";
+  for (const l of langues) {
+    const region = l.split("-")[1]?.toUpperCase();
+    const id = region === "GB" ? "UK" : region;
+    if (id && PAYS.some((p) => p.id === id)) return id;
+  }
+  return "EU";
+}
+
 // --- Autres modes de transport : gCO2e par personne et par km, fabrication comprise.
 // ADEME Impact CO₂, API v1, consultée le 07/10/2026 (réseau français ; voir docs/research).
 export const MODES = [

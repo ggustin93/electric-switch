@@ -24,5 +24,6 @@ Domain terms used in code (French identifiers) and UI. Use these words; avoid th
 | **Part électrique PHEV** (`phevShare`) | Share of a plug-in hybrid's km driven on electricity (0–100 %, default 50 %). Set in « Toutes les motorisations » (outside the folds). In the duel each plug-in hybrid has its own value, in its column, starting from that one (`cfg.phevShare`). | "utility factor" (ok in method prose) |
 | **Modes** (`MODES`) | Other transport modes, gCO₂e per passenger-km with construction, from ADEME Impact CO₂. Shown as one log-scale chart against the reference « voiture thermique seul·e ». | |
 | **Hypothèse Hn / Assumption An** | Numbered assumption (H1–H14). Same index in both languages, prefix differs. | |
+| **Pays probable** (`paysProbable`) | Default charging country guessed in the browser: time zone first, then the region of the browser languages, else `EU`. Never sent. | "geolocation" (there is none) |
 | **Langue de page** (`@langue`, `LANGUES`) | Each language is its own built page (`/fr/`…), with only its dictionary inside. Switching language means navigating, keeping the hash (ADR 0006). | "locale switch" |
 | **Page de lecture** (`route.page`) | Hash route inside the single file: `#methode`, `#ecoconception`, `#mentions`. The tool stays mounted but hidden. | "subpage" |

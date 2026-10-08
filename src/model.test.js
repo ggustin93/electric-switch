@@ -2,7 +2,7 @@ import { test } from "node:test";
 import assert from "node:assert/strict";
 import {
   PAYS, SEGMENTS, BATTERIES, MOTORS, VIE_ANS, VIE_KM, byId,
-  partFab, mixMoyen, calc, fenetre, decider, kmPivot, kmBascule, budget, departager, calcConfig,
+  partFab, mixMoyen, calc, fenetre, decider, kmPivot, kmBascule, budget, departager, calcConfig, paysProbable,
 } from "./model.js";
 
 test("grille : empreintes finies et positives, part de fabrication dans [0,1]", () => {
@@ -112,4 +112,13 @@ test("calcConfig : âge, compteur, détention et part PHEV sont pris en compte",
   // dans le duel, chaque voiture peut porter sa propre part
   const propre = calcConfig({ segId: "compacte", motorId: "phev", etat: "neuf", phevShare: 0.9 }, { ...ctx, phevShare: 0.1 }).perKm;
   assert.equal(propre, phev(0.9));
+});
+
+test("paysProbable : fuseau d'abord, puis région de la langue, sinon moyenne UE", () => {
+  assert.equal(paysProbable({ fuseau: "Europe/Brussels", langues: ["fr-FR"] }), "BE");
+  assert.equal(paysProbable({ fuseau: "Australia/Sydney" }), "AU");
+  assert.equal(paysProbable({ fuseau: "Europe/Vienna", langues: ["nl-BE", "en"] }), "BE");
+  assert.equal(paysProbable({ fuseau: "Europe/Vienna", langues: ["en-GB"] }), "UK");
+  assert.equal(paysProbable({ fuseau: "Europe/Vienna", langues: ["de-AT", "de"] }), "EU");
+  assert.equal(paysProbable(), "EU");
 });
