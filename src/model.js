@@ -188,7 +188,7 @@ export function calcConfig(cfg, { pays, kmAn, decarb, efBatt, marginal, detentio
     kmAn, revente: true, detention, marginal,
   });
   const gridEff = mixMoyen(pays.g, f.kmVous / kmAn, decarb, pays.declin);
-  return { ...calc(cfg.motorId, seg, gridEff, f.kmVous, f.ratioFab, phevShare, efBatt), f };
+  return { ...calc(cfg.motorId, seg, gridEff, f.kmVous, f.ratioFab, cfg.phevShare ?? phevShare, efBatt), f };
 }
 
 // --- Kilométrage annuel à partir duquel remplacer devient préférable (curseur 3 000 à 40 000 km/an).

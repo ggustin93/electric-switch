@@ -21,7 +21,7 @@ Domain terms used in code (French identifiers) and UI. Use these words; avoid th
 | **Profil** | Shared answers (country, km/yr, category, new/used, age, odometer) lifted into `App`. | |
 | **Duel** (UI « Deux voitures au choix ») | The second view of « Comparer les voitures »: two cars A and B, each with its own category, powertrain, new/used and, when used, its own age and odometer (`calcConfig`). Each is sold on at the end of the ownership period. | "head-to-head" (ok in EN prose) |
 | **Durée de détention** (`detention`) | Years the user keeps the car before resale. Lifted into `App` and shared by both views of « Comparer les voitures ». | |
-| **Part électrique PHEV** (`phevShare`) | Share of a plug-in hybrid's km driven on electricity (0–100 %, default 50 %). Shared by both views and shown outside the folds. | "utility factor" (ok in method prose) |
+| **Part électrique PHEV** (`phevShare`) | Share of a plug-in hybrid's km driven on electricity (0–100 %, default 50 %). Set in « Toutes les motorisations » (outside the folds). In the duel each plug-in hybrid has its own value, in its column, starting from that one (`cfg.phevShare`). | "utility factor" (ok in method prose) |
 | **Modes** (`MODES`) | Other transport modes, gCO₂e per passenger-km with construction, from ADEME Impact CO₂. Shown as one log-scale chart against the reference « voiture thermique seul·e ». | |
 | **Hypothèse Hn / Assumption An** | Numbered assumption (H1–H14). Same index in both languages, prefix differs. | |
 | **Page de lecture** (`route.page`) | Hash route inside the single file: `#methode`, `#ecoconception`, `#mentions`. The tool stays mounted but hidden. | "subpage" |

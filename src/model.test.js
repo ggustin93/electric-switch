@@ -109,4 +109,7 @@ test("calcConfig : âge, compteur, détention et part PHEV sont pris en compte",
   assert.notEqual(occ(2, 20000), occ(10, 150000));
   const phev = (phevShare) => calcConfig({ segId: "compacte", motorId: "phev", etat: "neuf" }, { ...ctx, phevShare }).perKm;
   assert.ok(phev(0.9) < phev(0.1));
+  // dans le duel, chaque voiture peut porter sa propre part
+  const propre = calcConfig({ segId: "compacte", motorId: "phev", etat: "neuf", phevShare: 0.9 }, { ...ctx, phevShare: 0.1 }).perKm;
+  assert.equal(propre, phev(0.9));
 });

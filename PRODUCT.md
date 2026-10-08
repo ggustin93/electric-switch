@@ -22,7 +22,7 @@ A personal decision rather than a generic "EV vs petrol" average. The car you al
 
 Single page, three tabs (v7):
 1. **My decision**: a 4-step wizard, then the verdict, the decisive mileage threshold and a live "what if" slider.
-2. **Compare cars** (« Comparer les voitures », code: `Explorer`): a « Comparer » switch at the top picks « Toutes les motorisations » or « Deux voitures au choix » (Duel). Pre-filled from a shared profile (country, km/yr, category, new/used) that is never asked twice. In the duel, each used car has its own age and odometer. The ownership period and the plug-in hybrid electric share are shared by both views, and the PHEV slider sits outside the folds.
+2. **Compare cars** (« Comparer les voitures », code: `Explorer`): a « Comparer » switch at the top picks « Toutes les motorisations » or « Deux voitures au choix » (Duel). Pre-filled from a shared profile (country, km/yr, category, new/used) that is never asked twice. In the duel, each used car has its own age and odometer. The ownership period is shared by both views. The plug-in hybrid electric share sits outside the folds; in the duel it sits in the column of each plug-in hybrid, with its own value.
 3. **Other ways to get around**: an informational page with footprints per passenger-km for walking through to the plane (ADEME Impact CO₂, construction included).
 
 ## Capabilities and Constraints

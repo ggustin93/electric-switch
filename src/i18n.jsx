@@ -59,6 +59,7 @@ const fr = {
     decarb: "Tenir compte de la décarbonation du réseau",
     hybrides: "Afficher les hybrides",
     phev: "Part de roulage électrique de l'hybride rechargeable",
+    phevCourt: "Part de roulage électrique",
     motorisation: "Motorisation",
   },
   aide: {
@@ -326,6 +327,7 @@ const en = {
     decarb: "Account for grid decarbonisation",
     hybrides: "Show hybrids",
     phev: "Share of electric driving for the plug-in hybrid",
+    phevCourt: "Share of electric driving",
     motorisation: "Powertrain",
   },
   aide: {

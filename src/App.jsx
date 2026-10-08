@@ -836,6 +836,11 @@ function ConfigVehicule({ lettre, cfg, setCfg }) {
         options={SEGMENTS.map((x) => ({ v: x.id, label: s.seg[x.id].nom }))} />
       <Liste id={`${id}-mot`} label={s.champ.motorisation} value={cfg.motorId} onChange={(v) => setCfg({ ...cfg, motorId: v })}
         options={MOTORS.map((m) => ({ v: m.id, label: s.motor[m.id].nom }))} />
+      {cfg.motorId === "phev" && (
+        <Curseur id={`${id}-phev`} label={s.champ.phevCourt} aide={s.aide.phev} value={Math.round(cfg.phevShare * 100)}
+          min={0} max={100} step={5} pas={1} unite="%" onChange={(x) => setCfg({ ...cfg, phevShare: x / 100 })}
+          format={(x) => f.pc(x / 100)} />
+      )}
       <Choix label={s.champ.etat} value={cfg.etat} onChange={(v) => setCfg({ ...cfg, etat: v })}
         options={[{ v: "neuf", label: s.neuve }, { v: "occasion", label: s.occasion }]} />
       {cfg.etat === "occasion" && (
@@ -853,9 +858,10 @@ function ConfigVehicule({ lettre, cfg, setCfg }) {
 function Duel({ shared }) {
   const f = useT();
   const { s } = f;
-  const { pays, kmAn, decarb, batt, conv, detention, setDetention, phevShare, setPhevShare } = shared;
-  const [A, setA] = useState({ segId: "compacte", motorId: "essence", etat: "occasion", age: 6, odo: 80000 });
-  const [B, setB] = useState({ segId: "compacte", motorId: "ev", etat: "neuf", age: 6, odo: 80000 });
+  const { pays, kmAn, decarb, batt, conv, detention, setDetention, phevShare } = shared;
+  // Part électrique propre à chaque voiture (deux hybrides peuvent être rechargés différemment), partant de celle de « Toutes les motorisations »
+  const [A, setA] = useState({ segId: "compacte", motorId: "essence", etat: "occasion", age: 6, odo: 80000, phevShare });
+  const [B, setB] = useState({ segId: "compacte", motorId: "ev", etat: "neuf", age: 6, odo: 80000, phevShare });
 
   const ctx = { pays, kmAn, decarb, efBatt: batt.ef, marginal: conv === "marginale", detention, phevShare };
   const rA = calcConfig(A, ctx);
@@ -874,11 +880,6 @@ function Duel({ shared }) {
           <ConfigVehicule lettre="A" cfg={A} setCfg={setA} />
           <ConfigVehicule lettre="B" cfg={B} setCfg={setB} />
         </div>
-        {[A, B].some((c) => c.motorId === "phev") && (
-          <Curseur id="phevD" label={s.champ.phev} aide={s.aide.phev} value={Math.round(phevShare * 100)}
-            min={0} max={100} step={5} pas={1} unite="%" onChange={(x) => setPhevShare(x / 100)}
-            format={(x) => f.pc(x / 100)} />
-        )}
         {(A.etat === "neuf" || B.etat === "neuf") && <p className="aide-ligne">{s.noteConvention[conv]}</p>}
         <details className="replie reglages">
           <summary>{s.communs}</summary>
