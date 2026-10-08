@@ -1,15 +1,22 @@
-// Construit une page autonome par langue (dist/fr/, dist/en/…) puis la page racine qui redirige (ADR 0006).
-import { execFileSync } from "node:child_process";
+// Construit une page autonome par langue (dist/fr/, dist/en/…, ADR 0006) et par page de lecture
+// (dist/fr/methode/…, ADR 0009), puis la page racine qui redirige.
+import { execFile } from "node:child_process";
+import { promisify } from "node:util";
 import { cpSync, readdirSync, readFileSync, rmSync, writeFileSync } from "node:fs";
-import { siteUrl, alternates, enTeteLink, balisesApercu, lireDico } from "./src/seo.js";
+import { siteUrl, alternates, fichierHeaders, balisesApercu, lireDico } from "./src/seo.js";
 import { entetesSecurite } from "./src/entetes.js";
+import { PAGES } from "./src/routes.js";
 
 const LANGUES = ["fr", "en", "nl", "it", "es"];
 const SITE = siteUrl(process.env); // SITE_URL=https://electricornot.eu npm run build
 rmSync("dist", { recursive: true, force: true });
-for (const l of LANGUES) {
-  execFileSync("npx", ["vite", "build", "--logLevel", "warn"], { stdio: "inherit", env: { ...process.env, LANGUE: l } });
-}
+// Langues en parallèle ; dans une langue, l'outil d'abord : son build vide dist/{langue}/
+await Promise.all(LANGUES.map(async (l) => {
+  for (const page of ["outil", ...PAGES]) {
+    const { stderr } = await promisify(execFile)("npx", ["vite", "build", "--logLevel", "warn"], { env: { ...process.env, LANGUE: l, PAGE: page } });
+    process.stderr.write(stderr);
+  }
+}));
 // Images d'aperçu au partage (générées par scripts/apercus.mjs), jamais chargées par les pages
 cpSync("og", "dist/og", { recursive: true });
 
@@ -68,9 +75,9 @@ ${Object.entries(INTROUVABLE).map(([l, [texte, retour]]) => `<p lang="${l}">${te
 
 // hreflang en en-tête HTTP (Cloudflare _headers) plutôt qu'en <link> : n'alourdit pas le DOM des pages.
 // URL absolues, les mêmes que la balise canonique de chaque page (src/seo.js)
-const link = enTeteLink(SITE, LANGUES);
-// + en-têtes de sécurité, CSP calculée sur toutes les pages finales : à garder en dernier, après toute écriture de HTML
+// En-têtes de sécurité (CSP calculée sur toutes les pages finales : à garder en dernier, après toute écriture de HTML),
+// puis une règle hreflang par chemin exact : chaque page annonce ses propres versions linguistiques.
 const pages = readdirSync("dist", { recursive: true }).filter((f) => f.endsWith(".html")).map((f) => readFileSync(`dist/${f}`, "utf8"));
-writeFileSync("dist/_headers", `/*\n  Link: ${link}\n${entetesSecurite(pages)}`);
+writeFileSync("dist/_headers", `/*\n${entetesSecurite(pages)}${fichierHeaders(SITE, LANGUES)}`);
 
-console.log("dist/ :", LANGUES.map((l) => `${l}/index.html`).join(", "), "+ index.html, 404.html, _headers");
+console.log(`dist/ : ${LANGUES.length} langues × ${1 + PAGES.length} pages (${["", ...PAGES].map((p) => `${p}${p && "/"}index.html`).join(", ")}) + index.html, 404.html, og/, _headers`);
