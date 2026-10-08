@@ -18,6 +18,7 @@
   --surface-2: #e9ede8;
   --ink: #1b231f;
   --ink-2: #4f5b55;
+  --chevron: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%234f5b55' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M6 9l6 6l6 -6'/%3E%3C/svg%3E");
   --line: #dde3de;
   --line-control: #7f8c85;
   --accent: #0b7a5e;
@@ -91,6 +92,7 @@
     --surface-2: #1e2923;
     --ink: #e8eeea;
     --ink-2: #a3b0a8;
+    --chevron: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%23a3b0a8' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M6 9l6 6l6 -6'/%3E%3C/svg%3E");
     --line: #2a352f;
     --line-control: #6f7d75;
     --accent: #34be96;
@@ -456,13 +458,15 @@ h3 {
   max-width: 62ch;
 }
 
+/* Chevron dessiné (Tabler) : même marge à droite qu'à gauche, au lieu de la flèche native collée au bord */
 select {
+  appearance: none;
   width: 100%;
   min-height: 44px;
-  padding: 0 var(--s3);
+  padding: 0 calc(var(--s3) * 2 + 16px) 0 var(--s3);
   font-size: var(--fs);
   color: var(--ink);
-  background: var(--surface);
+  background: var(--surface) var(--chevron) no-repeat right var(--s3) center / 16px;
   border: 1px solid var(--line-control);
   border-radius: var(--r-sm);
 }
@@ -1574,7 +1578,7 @@ input[type="number"] {
 
 /* Motifs de mobilité très discrets, uniquement dans les marges vides des grands écrans.
    Masque CSS (0 nœud DOM, couleur du thème) ; la colonne centrale reste vierge. */
-@media (min-width: 72rem) {
+@media (min-width: 64rem) {
   body::before {
     content: "";
     position: fixed;
@@ -1582,9 +1586,9 @@ input[type="number"] {
     z-index: -1;
     pointer-events: none;
     background: var(--ink);
-    opacity: 0.035;
+    opacity: 0.055;
     mask-image: url("data:image/svg+xml,%3Csvg xmlns=%27http://www.w3.org/2000/svg%27 width=%27280%27 height=%27280%27 viewBox=%270 0 280 280%27 fill=%27none%27 stroke=%27black%27 stroke-width=%271.25%27 stroke-linecap=%27round%27 stroke-linejoin=%27round%27%3E%3Cpath transform=%27translate(20 24) scale(1.6)%27 d=%27M12 4a1 1 0 1 0 2 0a1 1 0 1 0 -2 0M7 21l3 -4M16 21l-2 -4l-3 -3l1 -6M6 12l2 -3l4 -1l3 3l3 1%27/%3E%3Cpath transform=%27translate(150 16) scale(1.6)%27 d=%27M21 13c0 -3.87 -3.37 -7 -10 -7h-8M3 15h16a2 2 0 0 0 2 -2M3 6v5h17.5M3 11v4M8 11v-5M13 11v-4.5M3 19h18%27/%3E%3Cpath transform=%27translate(86 104) scale(1.6)%27 d=%27M2 18a3 3 0 1 0 6 0a3 3 0 0 0 -6 0M16 18a3 3 0 1 0 6 0a3 3 0 0 0 -6 0M12 19v-4l-3 -3l5 -4l2 3h3M13.007 5a2 2 0 1 0 4 0a2 2 0 1 0 -4 0%27/%3E%3Cpath transform=%27translate(214 112) scale(1.6)%27 d=%27M4 17a2 2 0 1 0 4 0a2 2 0 1 0 -4 0M16 17a2 2 0 1 0 4 0a2 2 0 1 0 -4 0M4 17h-2v-11a1 1 0 0 1 1 -1h14a5 7 0 0 1 5 7v5h-2m-4 0h-8M16 5l1.5 7l4.5 0M2 10l15 0M7 5l0 5M12 5l0 5%27/%3E%3Cpath transform=%27translate(34 196) scale(1.6)%27 d=%27M5 17a2 2 0 1 0 4 0a2 2 0 1 0 -4 0M15 17a2 2 0 1 0 4 0a2 2 0 1 0 -4 0M5 17h-2v-6l2 -5h9l4 5h1a2 2 0 0 1 2 2v4h-2m-4 0h-6m-6 -6h15m-6 0v-5%27/%3E%3Cpath transform=%27translate(170 214) scale(1.6)%27 d=%27M16 17a2 2 0 1 0 4 0a2 2 0 1 0 -4 0M4 17a2 2 0 1 0 4 0a2 2 0 1 0 -4 0M8 17h5a6 6 0 0 1 5 -5v-5a2 2 0 0 0 -2 -2h-1%27/%3E%3C/svg%3E"),
-      linear-gradient(to right, #000 calc(50% - 30rem), transparent calc(50% - 26rem), transparent calc(50% + 26rem), #000 calc(50% + 30rem));
+      linear-gradient(to right, #000 calc(50% - 30rem), transparent calc(50% - 24rem), transparent calc(50% + 24rem), #000 calc(50% + 30rem));
     mask-size: 280px 280px, 100% 100%;
     mask-repeat: repeat, no-repeat;
     mask-composite: intersect;
