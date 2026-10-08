@@ -7,7 +7,7 @@ npm install
 npm run dev     # http://localhost:5173
 npm test        # model invariants (node:test)
 npm run build
-npm run deploy  # Cloudflare Workers (static assets), see wrangler.jsonc
+npm run deploy  # manual deploy to Cloudflare Workers (static assets), see wrangler.jsonc
 ```
 
 Production: https://electric-switch.guillaume-gustin-9.workers.dev
@@ -17,3 +17,5 @@ Production: https://electric-switch.guillaume-gustin-9.workers.dev
 - `src/App.jsx` is the UI (Preact through `preact/compat`, see ADR 0003). `src/styles.css` holds the design tokens (light and dark).
 - Production build = **one self-contained `dist/index.html`** (CSS, JS and font inlined, EcoIndex A, see ADR 0004).
 - Docs: `PRODUCT.md`, `DESIGN.md` (Impeccable), `CONTEXT.md` (glossary), `docs/adr/`.
+
+**Continuous deployment:** every push to `main` runs the tests, then deploys (`.github/workflows/deploy.yml`). One-time setup: GitHub secret `CLOUDFLARE_API_TOKEN` (Cloudflare template « Edit Cloudflare Workers ») and variable `CLOUDFLARE_ACCOUNT_ID`.

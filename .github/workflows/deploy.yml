@@ -1,0 +1,36 @@
+# Déploiement automatique sur Cloudflare Workers à chaque push sur main.
+# Les tests du modèle doivent passer avant toute mise en ligne.
+# Prérequis (une fois) : secret CLOUDFLARE_API_TOKEN (modèle « Edit Cloudflare Workers »)
+# et variable CLOUDFLARE_ACCOUNT_ID dans les réglages du dépôt.
+name: Deploy
+
+on:
+  push:
+    branches: [main]
+  workflow_dispatch: # relance manuelle depuis l'onglet Actions
+
+permissions:
+  contents: read
+
+concurrency: # un seul déploiement à la fois ; le plus récent l'emporte
+  group: deploy-production
+  cancel-in-progress: true
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v6
+      - uses: actions/setup-node@v5
+        with:
+          node-version: 22
+          cache: npm
+      - run: npm ci
+      - run: npm test
+      - run: npm run build
+      - name: Deploy to Cloudflare Workers
+        uses: cloudflare/wrangler-action@v4
+        with:
+          apiToken: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+          accountId: ${{ vars.CLOUDFLARE_ACCOUNT_ID }}
+          command: deploy

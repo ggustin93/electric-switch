@@ -2,6 +2,11 @@
 
 Notable changes to « Dois-je passer à l'électrique ? ». Format inspired by [Keep a Changelog](https://keepachangelog.com/fr/1.1.0/); versions follow the in-app number.
 
+## [Unreleased]
+
+### Added
+- **Automatic deployment:** each push to `main` installs, runs the tests, builds and deploys to Cloudflare Workers (GitHub Actions, `cloudflare/wrangler-action@v4`). Nothing goes live if a test fails.
+
 ## [7.3.0] — 2026-10-07
 
 ### Added
