@@ -4,7 +4,9 @@ Notable changes to « Dois-je passer à l'électrique ? ». Format inspired by [
 
 ## [Unreleased]
 
-Nothing yet.
+### Fixed
+- **Background motifs barely visible:** now shown from 1024 px wide (was 1150), at 5.5 % opacity (was 3.5 %), closer to the column. Icons fade out gradually at the column's edge instead of leaving cut-off fragments.
+- **Dropdowns:** a drawn chevron with the same inner margin on the right as on the left, in both themes. The native arrow sat against the border.
 
 ## [7.4.0] — 2026-10-08
 
