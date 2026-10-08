@@ -247,7 +247,7 @@ export default function App({ page = "outil" }) {
 
   return (
     <Ctx.Provider value={f}>
-      <div className="page">
+        {/* Pas d'enveloppe .page : c'est #root (index.html), un élément de moins pour l'EcoIndex */}
         <header className="entete">
           <div className="entete-haut">
             <h1>{s.h1}</h1>
@@ -301,7 +301,6 @@ export default function App({ page = "outil" }) {
           </nav>
           <p>{s.footer(lienCarbone4)} {s.credit(<a href="https://pwablo.be" rel="author">Pwablo</a>)}</p>
         </footer>
-      </div>
     </Ctx.Provider>
   );
 }

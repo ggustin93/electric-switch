@@ -5,9 +5,9 @@ import { promisify } from "node:util";
 import { cpSync, readdirSync, readFileSync, rmSync, writeFileSync } from "node:fs";
 import { siteUrl, alternates, fichierHeaders, balisesApercu, lireDico } from "./src/seo.js";
 import { entetesSecurite } from "./src/entetes.js";
-import { PAGES } from "./src/routes.js";
+import { PAGES, LANGUES } from "./src/routes.js";
+import { sitemap, robots, llmsTxt, dateGit, sourcesPage } from "./src/donnees.js";
 
-const LANGUES = ["fr", "en", "nl", "it", "es"];
 const SITE = siteUrl(process.env); // SITE_URL=https://electricornot.eu npm run build
 rmSync("dist", { recursive: true, force: true });
 // Langues en parallèle ; dans une langue, l'outil d'abord : son build vide dist/{langue}/
@@ -73,6 +73,13 @@ ${Object.entries(INTROUVABLE).map(([l, [texte, retour]]) => `<p lang="${l}">${te
 </html>
 `);
 
+// Pour les moteurs et les IA (src/donnees.js) : lastmod = dernier commit touchant les sources de la page
+writeFileSync("dist/sitemap.xml", sitemap(SITE, LANGUES, (l) => dateGit(l ? sourcesPage(l) : ["build.mjs"])));
+writeFileSync("dist/robots.txt", robots(SITE));
+writeFileSync("dist/llms.txt", llmsTxt(SITE, LANGUES.map((l) => ({
+  lang: l, titre: lireDico(l, "titre"), lede: lireDico(l, "lede"), intro: lireDico(l, "methodeIntro"),
+}))));
+
 // hreflang en en-tête HTTP (Cloudflare _headers) plutôt qu'en <link> : n'alourdit pas le DOM des pages.
 // URL absolues, les mêmes que la balise canonique de chaque page (src/seo.js)
 // En-têtes de sécurité (CSP calculée sur toutes les pages finales : à garder en dernier, après toute écriture de HTML),
@@ -80,4 +87,4 @@ ${Object.entries(INTROUVABLE).map(([l, [texte, retour]]) => `<p lang="${l}">${te
 const pages = readdirSync("dist", { recursive: true }).filter((f) => f.endsWith(".html")).map((f) => readFileSync(`dist/${f}`, "utf8"));
 writeFileSync("dist/_headers", `/*\n${entetesSecurite(pages)}${fichierHeaders(SITE, LANGUES)}`);
 
-console.log(`dist/ : ${LANGUES.length} langues × ${1 + PAGES.length} pages (${["", ...PAGES].map((p) => `${p}${p && "/"}index.html`).join(", ")}) + index.html, 404.html, og/, _headers`);
+console.log(`dist/ : ${LANGUES.length} langues × ${1 + PAGES.length} pages (${["", ...PAGES].map((p) => `${p}${p && "/"}index.html`).join(", ")}) + index.html, 404.html, og/, sitemap.xml, robots.txt, llms.txt, _headers`);
