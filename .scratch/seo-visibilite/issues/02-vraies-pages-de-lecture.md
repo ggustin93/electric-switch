@@ -10,7 +10,7 @@
 - [x] Own title, description and canonical on each page; hreflang between the language versions
 - [x] `/fr/#methode` (old link) leads to `/fr/methode/`; `/fr/methode/#h5` scrolls to H5
 - [x] The verdict, the help bubbles and « Retour au simulateur » keep working
-- [ ] EcoIndex A on each page (measured); tests pass; CONTEXT.md and ADR (routes) updated — **all except Méthode (B)**, see Comments
+- [x] EcoIndex A on each page (measured); tests pass; CONTEXT.md and ADR (routes) updated
 
 ## Comments
 
@@ -29,3 +29,5 @@ Measured (vite preview, agent-browser, 1 request each, fr and nl identical):
 1. Source refs as plain text « [3, 7] » instead of 29 links, and sources without `<em>` (titles in quotes): DOM ≈ 90 → ≈ 80.3 (A). Loses click-to-source and italics.
 2. Split Méthode into « Hypothèses » (`/methode/`) and « Sources » (`/sources/`), refs linking across: both pages ≈ 85–95 DOM → A. One more page per language.
 3. Accept B for Méthode (it used to load on top of the whole tool, ≈ 200 elements) and state it on the Écoconception page.
+
+- 2026-10-08 (owner decision): Méthode option 1 applied — references as plain text, no italics in sources: 92 elements, 57 kB → 80.12 (A).

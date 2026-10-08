@@ -1041,7 +1041,8 @@ function PageMethode() {
         {s.hyp.map((h, i) => (
           <li key={i} id={`h${i + 1}`}>
             <strong>{s.prefixeHyp}{i + 1}. {h.t}.</strong> {lierHyp(h.d, s.prefixeHyp, lang)}{" "}
-            {HYP_REFS[i].map((r) => <a key={r} className="ref" href={`#src-${r}`}>[{r}]</a>)}
+            {/* Renvois en texte, pas en liens : la page Méthode tient ainsi en EcoIndex A (sources listées juste en dessous) */}
+            {`[${HYP_REFS[i].join(", ")}]`}
           </li>
         ))}
       </ol>

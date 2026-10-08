@@ -17,4 +17,4 @@ Status: accepted (2026-10-08). Extends ADR 0004, 0006 and 0008. Ticket `.scratch
 ## Trade-offs
 - Going to a reading page and back reloads the tool: answers already given are lost (accepted in the ticket).
 - Each reading page carries the whole app bundle (≈ 31 kB gzip of JS it barely needs): one bundle, one build path, hydration for the language-switch anchor and the measurement.
-- **EcoIndex of Méthode is B** (DOM 140, 58 kB, 1 request → 75.5). 14 hypotheses with 29 source links, 20 sources with 21 `<em>`. Écoconception (DOM 78 → 81.5) and Mentions (DOM 56 → 87.2) are A; the tool page is unchanged (DOM 93, 54.5 kB → 80.1). Options to reach A on Méthode are listed in the ticket, decision pending.
+- **EcoIndex of Méthode is B** (DOM 140, 58 kB, 1 request → 75.5). 14 hypotheses with 29 source links, 20 sources with 21 `<em>`. Écoconception (DOM 78 → 81.5) and Mentions (DOM 56 → 87.2) are A; the tool page is unchanged (DOM 93, 54.5 kB → 80.1). **Decision (owner, 2026-10-08):** references become plain text « [1, 8, 14] » and source titles lose their italics → Méthode DOM 92, 57 kB → **80.1 (A)**. Sources stay listed right below the hypotheses.
