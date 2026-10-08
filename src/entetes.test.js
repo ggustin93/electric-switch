@@ -42,7 +42,8 @@ test(".htaccess : en-têtes globaux, Link par chemin (index.html compris), guill
   const h = versHtaccess(`/*\n  X-Content-Type-Options: nosniff\n/fr/\n  Link: <https://e.eu/fr/>; rel="alternate"; hreflang="fr"\n`, "https://e.eu");
   assert.match(h, /^Header always set X-Content-Type-Options "nosniff"$/m);
   assert.ok(h.includes(`<If "%{REQUEST_URI} =~ m#^/fr/(index\\.html)?$#">\n  Header always set Link "<https://e.eu/fr/>; rel=\\"alternate\\"; hreflang=\\"fr\\""\n</If>`));
-  assert.ok(h.includes("RewriteCond %{HTTP_HOST} !=e.eu\nRewriteRule ^ https://e.eu%{REQUEST_URI} [R=301,L]"));
+  assert.ok(h.includes("RewriteCond %{HTTP:X-Forwarded-Proto} !https [OR]\nRewriteCond %{HTTP_HOST} !=e.eu\nRewriteRule ^ https://e.eu%{REQUEST_URI} [R=301,L]"));
+  assert.ok(!h.includes("%{HTTPS}"), "%{HTTPS} vaut off derrière le proxy Infomaniak : boucle de redirection");
   assert.match(h, /^ErrorDocument 404 \/404\.html$/m);
   assert.equal(h.split("<IfModule mod_headers.c>").length, 2);
 });

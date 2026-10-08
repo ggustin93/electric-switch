@@ -51,9 +51,10 @@ export function versHtaccess(texte, site) {
     : [`<If "%{REQUEST_URI} =~ m#^${chemin}(index\\.html)?$#">`, ...entetes.map((e) => `  ${e}`), "</If>"]);
   return [
     "ErrorDocument 404 /404.html",
-    // http:// et tout autre nom d'hôte (www., IP) → https://domaine canonique, en 301
+    // http:// et tout autre nom d'hôte (www., IP) → https://domaine canonique, en 301. Derrière le proxy Infomaniak,
+    // %{HTTPS} vaut toujours off (boucle de redirection) : le protocole d'origine est dans X-Forwarded-Proto.
     "RewriteEngine On",
-    "RewriteCond %{HTTPS} off [OR]",
+    "RewriteCond %{HTTP:X-Forwarded-Proto} !https [OR]",
     `RewriteCond %{HTTP_HOST} !=${new URL(site).host}`,
     `RewriteRule ^ ${site}%{REQUEST_URI} [R=301,L]`,
     "<IfModule mod_headers.c>",
