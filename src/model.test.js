@@ -2,7 +2,7 @@ import { test } from "node:test";
 import assert from "node:assert/strict";
 import {
   PAYS, SEGMENTS, BATTERIES, MOTORS, VIE_ANS, VIE_KM, byId,
-  partFab, mixMoyen, calc, fenetre, decider, kmPivot, kmBascule, budget, departager, calcConfig, paysProbable,
+  partFab, mixMoyen, calc, fenetre, decider, kmPivot, kmBascule, budget, departager, calcConfig, paysProbable, KM_AN_PARC,
 } from "./model.js";
 
 test("grille : empreintes finies et positives, part de fabrication dans [0,1]", () => {
@@ -51,9 +51,12 @@ test("décision : horizon borné, verdict cohérent avec l'amortissement", () =>
     carb: "essence", conso: 6.5, seg: byId(SEGMENTS, "compacte"), pays: byId(PAYS, "BE"),
     decarb: true, efBatt: 60,
   };
-  const occ = decider({ ...base, annees: 12, etatVE: "occasion", ageVE: 12, kmAn: 12000 });
+  // borne d'âge (compteur bas : 18 − 12 = 6 ans) puis borne kilométrique (compteur estimé 144 000 km : 56 000 km restants)
+  const occ = decider({ ...base, annees: 12, etatVE: "occasion", ageVE: 12, odoVE: 60000, kmAn: 12000 });
   assert.equal(occ.horizon, 6);
   assert.ok(occ.tronque);
+  const usee = decider({ ...base, annees: 12, etatVE: "occasion", ageVE: 12, kmAn: 12000 });
+  assert.ok(Math.abs(usee.horizon - 56000 / 12000) < 1e-9);
   const neuf = decider({ ...base, annees: 12, etatVE: "neuf", ageVE: 0, kmAn: 40000 });
   assert.equal(neuf.km, VIE_KM);
   for (const kmAn of [3000, 8000, 15000, 30000]) for (const annees of [1, 3, 6, 10]) {
@@ -121,4 +124,23 @@ test("paysProbable : fuseau d'abord, puis région de la langue, sinon moyenne UE
   assert.equal(paysProbable({ fuseau: "Europe/Vienna", langues: ["en-GB"] }), "UK");
   assert.equal(paysProbable({ fuseau: "Europe/Vienna", langues: ["de-AT", "de"] }), "EU");
   assert.equal(paysProbable(), "EU");
+});
+
+test("decider : l'occasion suit la fenêtre de « Comparer » (compteur, borne 200 000 km)", () => {
+  const base = { carb: "essence", conso: 7, annees: 8, seg: byId(SEGMENTS, "compacte"), pays: byId(PAYS, "FR"), decarb: true, efBatt: 73, kmAn: 12000 };
+  const occ = (ageVE, odoVE) => decider({ ...base, etatVE: "occasion", ageVE, odoVE });
+  // même part que la fenêtre de Comparer pour les mêmes entrées
+  const v = occ(3, 90000);
+  const f = fenetre({ occasion: true, odo: 90000, age: 3, kmAn: 12000, revente: true, detention: v.horizon });
+  assert.ok(Math.abs(v.partVE - f.ratioFab) < 1e-9);
+  // 6 ans et 150 000 km : il ne reste que 50 000 km, soit ≈ 4,2 ans
+  const vieille = occ(6, 150000);
+  assert.ok(Math.abs(vieille.horizon - 50000 / 12000) < 1e-9);
+  assert.ok(vieille.km <= 200000 - 150000 + 1e-6);
+  // un compteur plus élevé ne rallonge jamais l'horizon
+  assert.ok(occ(6, 150000).horizon <= occ(6, 60000).horizon);
+  // compteur par défaut = âge × 12 000 km
+  assert.equal(decider({ ...base, etatVE: "occasion", ageVE: 4 }).partVE, occ(4, 4 * KM_AN_PARC).partVE);
+  // neuf : inchangé
+  assert.equal(decider({ ...base, etatVE: "neuf", ageVE: 0 }).partVE, 1);
 });

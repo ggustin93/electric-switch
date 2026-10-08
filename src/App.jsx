@@ -3,7 +3,7 @@ import { useContext, useEffect, useId, useLayoutEffect, useMemo, useRef, useStat
 import {
   PAYS, SEGMENTS, BATTERIES, MOTORS, MODES, AGE_SUGGESTION, SEUIL_SERRE, KM_AN_MAX_COMPTEUR, byId,
   mixMoyen, calc, fenetre, decider, calcConfig, departager, kmPivot, kmBascule,
-  budget, PRIX_ENERGIE, ENTRETIEN, paysProbable,
+  budget, PRIX_ENERGIE, ENTRETIEN, paysProbable, KM_AN_PARC,
 } from "./model.js";
 // Une page par langue (ADR 0006) : « @langue » pointe vers le dictionnaire de la page construite
 import STR_PAGE from "@langue";
@@ -200,7 +200,8 @@ export default function App() {
   const [segId, setSegId] = useState("compacte");
   const [etatVE, setEtatVE] = useState("neuf");
   const [ageVE, setAgeVE] = useState(3);
-  const [odo, setOdo] = useState(50000);
+  // null = estimé (âge × 12 000 km) : suit l'âge tant que la personne n'a pas saisi le compteur de l'annonce
+  const [odoSaisi, setOdo] = useState(null);
   const [decarb, setDecarb] = useState(true);
   const [battId, setBattId] = useState("ue");
   const [conv, setConv] = useState("marginale");
@@ -232,7 +233,7 @@ export default function App() {
   const shared = {
     pays: byId(PAYS, paysId), paysId, setPaysId, kmAn, setKmAn, decarb, setDecarb,
     batt: byId(BATTERIES, battId), battId, setBattId,
-    segId, setSegId, etatVE, setEtatVE, ageVE, setAgeVE, odo, setOdo, conv, setConv,
+    segId, setSegId, etatVE, setEtatVE, ageVE, setAgeVE, odo: odoSaisi ?? ageVE * KM_AN_PARC, setOdo, conv, setConv,
     detention, setDetention, phevShare, setPhevShare,
   };
 
@@ -331,7 +332,7 @@ const optionsCategorie = (s, sous) => SEGMENTS.map((x) => ({ v: x.id, label: s.s
 function Decision({ shared, allerExplorer }) {
   const f = useT();
   const { s } = f;
-  const { pays, paysId, setPaysId, kmAn, setKmAn, decarb, batt, segId, setSegId, etatVE, setEtatVE, ageVE, setAgeVE } = shared;
+  const { pays, paysId, setPaysId, kmAn, setKmAn, decarb, batt, segId, setSegId, etatVE, setEtatVE, ageVE, setAgeVE, odo, setOdo } = shared;
   const [etape, setEtape] = useState(0);
   const [maxEtape, setMaxEtape] = useState(0);
   const [carb, setCarb] = useState("essence");
@@ -341,12 +342,12 @@ function Decision({ shared, allerExplorer }) {
   const etapePrec = useRef(etape);
 
   const seg = byId(SEGMENTS, segId);
-  const params = { carb, conso, annees, seg, etatVE, ageVE, pays, decarb, efBatt: batt.ef };
+  const params = { carb, conso, annees, seg, etatVE, ageVE, odoVE: odo, pays, decarb, efBatt: batt.ef };
   const v = decider({ ...params, kmAn });
   // Le seuil ne dépend pas du kilométrage : recalculé seulement si une autre réponse change
   const seuil = useMemo(
     () => (etape === 3 ? kmBascule(params) : null),
-    [etape, carb, conso, annees, segId, etatVE, ageVE, pays, decarb, batt], // eslint-disable-line react-hooks/exhaustive-deps
+    [etape, carb, conso, annees, segId, etatVE, ageVE, odo, pays, decarb, batt], // eslint-disable-line react-hooks/exhaustive-deps
   );
   const etat = etatVE === "neuf" ? s.etatNeuve : s.etatOcc(f.n0(ageVE), ageVE);
 
@@ -411,6 +412,9 @@ function Decision({ shared, allerExplorer }) {
                 <>
                   <Curseur id="ageve" label={s.champ.ageAchat} value={ageVE} min={1} max={12} step={1} unite={s.unites.ans}
                     onChange={setAgeVE} format={f.ans} />
+                  <Curseur id="odove" label={s.champ.odo} aide={s.aide.odo} value={odo} min={0} max={160000} step={1000} pas={500} unite={s.unites.km}
+                    onChange={setOdo} format={f.km} />
+                  {odo > ageVE * KM_AN_MAX_COMPTEUR && <p className="note">{s.odoBorne(f.km(ageVE * KM_AN_MAX_COMPTEUR))}</p>}
                   <p className="note">{s.partOcc(f.pc(v.partVE), f.age(ageVE), f.age(ageVE + v.horizon))}</p>
                 </>
               )}

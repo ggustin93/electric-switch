@@ -9,7 +9,8 @@ Domain terms used in code (French identifiers) and UI. Use these words; avoid th
 | **Usage** (`usage`, g/km) | Well-to-wheel fuel, or grid electricity × consumption × 1.1 charging losses. | |
 | **Allocation économique** (`partFab`) | Manufacturing shared between successive owners by the value each consumes, with 15 %/yr depreciation (H2). | "km pro-rata" (retired in v5) |
 | **Convention marginale** | A new purchase carries 100 % of manufacturing (H3). The default everywhere since v7. | |
-| **Fenêtre de détention** (`fenetre`) | The user's ownership window: km driven, age at start and end, and the next owner's km. | |
+| **Fenêtre de détention** (`fenetre`) | The user's ownership window: km driven, age at start and end, and the next owner's km. Used by every tab, « Ma décision » included (ADR 0007). | |
+| **Compteur estimé** (`odo`, `null` = estimated) | Used car's odometer; estimated at age × 12 000 km until the person types the listing's value. Shared by « Ma décision » and « Comparer ». | |
 | **Repreneur** | The next owner after resale, assumed to drive 12 000 km/yr (H4). | "buyer" |
 | **Horizon** (`decider().horizon`) | Years compared in the Decision tab: the user's estimate, capped by the EV's remaining life (200 000 km / 18 yrs). | |
 | **Mix moyen** (`mixMoyen`) | Mean grid intensity over the period under a country-specific geometric decline (H6). | "geometric mean" |

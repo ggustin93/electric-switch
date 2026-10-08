@@ -69,7 +69,7 @@ export default {
     annees: "Tot een zware panne of de sloop. Een Europese auto gaat ongeveer 18 jaar mee (A1). Zijn productie is al uitgestoten: alleen het gebruik telt in de vergelijking.",
     categorie: "Bepaalt het gewicht, het werkelijke verbruik en de grootte van de batterij. Het extra gewicht van de elektrische auto telt drie keer mee: de batterij apart, het chassis +5% en het werkelijke verbruik, met 10% laadverlies erbovenop (A8 tot A10).",
     etat: "Nieuw: uw aankoop veroorzaakt de volledige productie (marginale conventie, A3). Tweedehands: de productie wordt over de eigenaars verdeeld volgens de verbruikte waarde, met een waardeverlies van 15% per jaar (ISO 14044, A2). Uw aandeel daalt dus geleidelijk met de leeftijd bij aankoop, zonder drempeleffect.",
-    odo: "Begrensd op 30.000 km per levensjaar. De productie wordt over de eigenaars verdeeld volgens de verbruikte waarde (waardeverlies van 15% per jaar, A2): een bijna nieuwe tweedehandse auto draagt er het grootste deel van, een oude tweedehandse een klein deel.",
+    odo: "Die uit de advertentie. Standaard geschat op 12.000 km per levensjaar. Begrensd op 30.000 km per levensjaar. De productie wordt over de eigenaars verdeeld volgens de verbruikte waarde (waardeverlies van 15% per jaar, A2): een bijna nieuwe tweedehandse auto draagt er het grootste deel van, een oude tweedehandse een klein deel.",
     age: "Een auto sterft ook van ouderdom (ongeveer 18 jaar in Europa, A1). De leeftijd begrenst de resterende kilometers en bepaalt welk deel van de productie u toekomt.",
     batterie: "Van 60 tot 80 kgCO₂e per kWh batterij, afhankelijk van de chemie (LFP of NMC), de herkomst van de materialen en het productieland. Standaard: het gemiddelde van de Europese verkoop (A8).",
     destin: "Doorverkocht: u draagt de productie naar verhouding van de waarde die tijdens uw eigendomsperiode verbruikt is (A2); de volgende eigenaar, die verondersteld wordt 12.000 km per jaar te rijden (A4), draagt de rest. Gehouden tot de sloop: u verbruikt de volledige resterende waarde.",
@@ -82,7 +82,7 @@ export default {
   continuer: "Verder",
   retour: "Terug",
   voirVerdict: "Bekijk het oordeel",
-  partOcc: (pc, a, b) => <>Ongeveer <strong>{pc}</strong> van de productie komt u toe (verbruikte waarde tussen {a} en {b}). De rest komt de andere eigenaars toe.</>,
+  partOcc: (pc, a, b) => <>Als u hem tweedehands koopt, draagt u ongeveer <strong>{pc}</strong> van de productie-uitstoot: het deel van zijn waarde dat u verbruikt tussen {a} en {b}, op basis van leeftijd en kilometerstand. De rest komt zijn andere eigenaars toe.</>,
   verdictTitre: { remplacer: "Ja, stap over op elektrisch", garder: "Houd uw auto", serre: "Te nipt om te beslissen" },
   verdictRemplacer: ({ duree, km, t, amorti, etat }) => <>Over uw komende {duree} ({km}) zou een {etat} elektrische auto <strong>{t} minder</strong> uitstoten dan uw auto. Zijn productie is gecompenseerd na <strong>{amorti}</strong>.</>,
   verdictGarder: ({ km, etat, amorti, duree, t }) => amorti

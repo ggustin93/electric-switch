@@ -73,7 +73,7 @@ export default {
     annees: "Fino al guasto grave o alla rottamazione. Un'auto europea vive circa 18 anni (I1). Le emissioni della sua produzione sono già avvenute: nel confronto conta solo il suo utilizzo.",
     categorie: "Determina massa, consumo reale e dimensione della batteria. Il peso in più dell'auto elettrica è contato tre volte: batteria a parte, telaio +5% e consumo reale, con l'aggiunta del 10% di perdite di ricarica (da I8 a I10).",
     etat: "Nuova: il tuo acquisto fa scattare tutta la produzione (convenzione marginale, I3). Usata: la produzione è ripartita tra i proprietari in base al valore consumato, con un deprezzamento del 15%/anno (ISO 14044, I2). La tua quota quindi scende con l'età all'acquisto, senza effetto soglia.",
-    odo: "Limitato a 30.000 km per anno di età. La produzione è ripartita tra i proprietari in base al valore consumato (deprezzamento del 15%/anno, I2): un'usata quasi nuova ne porta la maggior parte, un'usata vecchia una quota piccola.",
+    odo: "Quello dell'annuncio. Di default è stimato a 12.000 km per anno di età. Limitato a 30.000 km per anno di età. La produzione è ripartita tra i proprietari in base al valore consumato (deprezzamento del 15%/anno, I2): un'usata quasi nuova ne porta la maggior parte, un'usata vecchia una quota piccola.",
     age: "Anche un'auto muore di vecchiaia (circa 18 anni in Europa, I1). L'età limita i chilometri rimanenti e fissa la quota di produzione che ti spetta.",
     batterie: "Da 60 a 80 kgCO₂e per kWh di batteria a seconda della chimica (LFP o NMC), dell'origine dei materiali e del paese di produzione. Di default: la media delle vendite europee (I8).",
     destin: "Rivenduta: porti la produzione in proporzione al valore consumato durante il tuo possesso (I2); il nuovo proprietario, che si suppone percorra 12.000 km/anno (I4), porta il resto. Tenuta fino alla rottamazione: consumi tutto il valore rimanente.",
@@ -86,7 +86,7 @@ export default {
   continuer: "Continua",
   retour: "Indietro",
   voirVerdict: "Vedi il verdetto",
-  partOcc: (pc, a, b) => <>Circa il <strong>{pc}</strong> della sua produzione spetta a te (valore consumato tra {a} e {b}). Il resto spetta agli altri proprietari.</>,
+  partOcc: (pc, a, b) => <>Comprandola usata, ti fai carico di circa il <strong>{pc}</strong> dell'impatto della sua produzione: la parte del suo valore che consumerai tra {a} e {b}, in base a età e chilometraggio. Il resto spetta agli altri proprietari.</>,
   verdictTitre: { remplacer: "Sì, passa all'elettrico", garder: "Tieni la tua auto", serre: "Troppo vicini per decidere" },
   verdictRemplacer: ({ duree, km, t, amorti, etat }) => <>Nei tuoi prossimi {duree} ({km}), un'auto elettrica {etat} emetterebbe <strong>{t} in meno</strong> della tua auto. La sua produzione è compensata dopo <strong>{amorti}</strong>.</>,
   verdictGarder: ({ km, etat, amorti, duree, t }) => amorti
