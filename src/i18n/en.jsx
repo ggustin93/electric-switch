@@ -111,7 +111,7 @@ export default {
   borneAge: (km) => <>Age limit (18 years) reached before 200,000 km: manufacturing is spread over just <strong>{km}</strong>.</>,
   partRevente: ({ pc, a, b, km }) => <>You carry <strong>{pc}</strong> of manufacturing (value consumed between {a} and {b}); the next owner covers the rest over {km}.</>,
   decarbDetail: ({ pays, taux, g, duree }) => `${pays}: −${taux} a year, i.e. ${g} on average over ${duree}.`,
-  heroComp: ({ best, perKm, x, worst }) => <><strong>{best}</strong> emits the least: {perKm}, <strong>{x} times less</strong> than {worst}.</>,
+  heroComp: ({ best, perKm, x, worst }) => <><strong>{best}</strong> emits the least: {perKm}, <strong>{x} times less</strong> than {worst}, for the same category and age.</>,
   barsTitre: "Total footprint by powertrain",
   barsSous: (km, voiture) => `Every powertrain in the same category: ${voiture}. Tonnes of CO₂e over your ${km}, manufacturing (hatched) then use.`,
   barDetail: (fab, use) => `manufacturing ${fab} + use ${use}`,

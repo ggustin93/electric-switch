@@ -111,7 +111,7 @@ export default {
   borneAge: (km) => <>Leeftijdsgrens (18 jaar) bereikt vóór 200.000 km: de productie wordt over slechts <strong>{km}</strong> terugverdiend.</>,
   partRevente: ({ pc, a, b, km }) => <>U draagt <strong>{pc}</strong> van de productie (verbruikte waarde tussen {a} en {b}); de volgende eigenaar verdient de rest terug over {km}.</>,
   decarbDetail: ({ pays, taux, g, duree }) => `${pays}: −${taux} per jaar, dus gemiddeld ${g} over ${duree}.`,
-  heroComp: ({ best, perKm, x, worst }) => <><strong>{best}</strong> stoot het minst uit: {perKm}, dus <strong>{x} keer minder</strong> dan {worst}.</>,
+  heroComp: ({ best, perKm, x, worst }) => <><strong>{best}</strong> stoot het minst uit: {perKm}, dus <strong>{x} keer minder</strong> dan {worst}, bij gelijke categorie en leeftijd.</>,
   barsTitre: "Totale voetafdruk per aandrijving",
   barsSous: (km, voiture) => `Elke aandrijving in dezelfde categorie: ${voiture}. Ton CO₂e over uw ${km}, productie (gearceerd) en daarna gebruik.`,
   barDetail: (fab, use) => `productie ${fab} + gebruik ${use}`,
