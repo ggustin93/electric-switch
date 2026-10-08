@@ -9,9 +9,10 @@ export default {
   locale: "es-ES",
   prefixeHyp: "H",
   age: (s, n) => `${s}${N}${n === 1 ? "año" : "años"}`,
-  titre: "¿Debo pasarme al eléctrico?",
+  titre: "Coche eléctrico o de gasolina: ¿debo pasarme al eléctrico?",
+  nomSite: "¿Debo pasarme al eléctrico?",
   h1: <>¿Debo pasarme al <em>eléctrico</em>?</>,
-  lede: "En cuatro preguntas, descubre si un coche eléctrico reduciría de verdad tu huella de carbono y qué cambiaría en tu presupuesto del día a día. Fabricación de la batería incluida.",
+  lede: "En Bélgica, a lo largo de su vida (200.000 km), un coche eléctrico compacto emite más de un 60 % menos de gases de efecto invernadero que uno de gasolina, fabricación de la batería incluida. Pero sustituir un coche que aún funciona no siempre compensa: compruébalo para tu caso en cuatro preguntas, presupuesto diario incluido.",
   langue: "Idioma",
   onglets: { decision: "Mi decisión", explorer: "Comparar coches", modes: "Moverse de otra forma" },
   ans: (s, n) => `${s}${N}${n === 1 ? "año" : "años"}`,
@@ -209,7 +210,7 @@ export default {
 
   // Ecodiseño (minipágina desplegable + mención en el pie de página)
   navSite: "Páginas del sitio",
-  pages: { methode: "Método", ecoconception: "Ecodiseño", mentions: "Aviso legal" },
+  pages: { methode: "Método", ecoconception: "Ecodiseño", mentions: "Aviso legal", questions: "Preguntas frecuentes" },
   credit: (lien) => <>Diseñado y desarrollado por {lien}.</>,
   mentions: [
     ["Editor", [
@@ -231,12 +232,22 @@ export default {
   retourOutil: "Volver al simulador",
   methodeIntro: "Cómo calcula el simulador. Cada hipótesis está numerada y documentada con su fuente; las menciones H1, H2… de las burbujas de ayuda remiten aquí.",
   mentionsIntro: "Editor, alojamiento, datos personales (no se recoge ninguno), responsabilidad y licencias del simulador «¿Debo pasarme al eléctrico?».",
+  // Questions-réponses (ticket 05) : chiffres du modèle, vérifiés par src/reponses.test.js
+  questionsIntro: "Seis preguntas frecuentes sobre el coche eléctrico, con las respuestas en cifras del simulador para Bélgica. Cada cifra procede del modelo; las referencias H1, H2… y [1], [2]… remiten a las hipótesis y fuentes de la página Método.",
+  questions: [
+    ["¿El eléctrico emite de verdad menos?", "Sí, a lo largo de toda su vida. En Bélgica, en 200.000 km, un coche eléctrico compacto nuevo emite unas 16 tCO₂e, fabricación de la batería incluida, frente a 44 t de un compacto de gasolina: más de un 60 % menos. El ICCT llega incluso a −73 % en la media europea, con hipótesis más favorables; el simulador es prudente a propósito (H13) [8, 14]."],
+    ["¿A partir de cuántos km al año?", "Depende de lo que sustituyas. Entre dos coches nuevos, el eléctrico adelanta al de gasolina tras unos 27.000 km en Bélgica. Pero para sustituir un coche de gasolina (6,5 L/100 km) que aún circularía 5 años, un eléctrico nuevo solo compensa por encima de unos 15.500 km al año, y desde 10.000 km al año si tu coche pudiera durar aún 8 años (H1, H3) [1, 8, 11]."],
+    ["¿Y la fabricación de la batería?", "Pesa mucho, y se cuenta. La batería de 55 kWh de un compacto emite unas 4 tCO₂e al fabricarse (73 kgCO₂e por kWh, media de las ventas europeas). En total, fabricar el eléctrico emite 11,4 t, frente a 7 t para uno de gasolina. Ese exceso se recupera con el uso, tras unos 27.000 km en Bélgica. No se descuenta ningún crédito por reciclaje (H8, H9) [7, 8, 12]."],
+    ["¿Es mejor un eléctrico de segunda mano?", "A menudo, sí. De segunda mano, solo carga con una parte de su fabricación, según el valor que consumes (depreciación del 15 % al año). Para sustituir un coche de gasolina que aún circularía 5 años, a 12.000 km al año en Bélgica, con un eléctrico de 6 años asumes un 22 % de su fabricación: 4,2 t en total, frente a 10,5 t si conservas tu coche y 13 t con un eléctrico nuevo (H2, H3) [10, 11]."],
+    ["¿Y el híbrido enchufable?", "Solo es sobrio si se enchufa. En 200.000 km en Bélgica, con un 50 % de km en modo eléctrico (los particulares hacen del 45 al 50 %), emite un 30 % menos que uno de gasolina, frente a más de un 60 % del eléctrico. Con un 15 %, el máximo observado en flotas de empresa (del 11 al 15 %), la diferencia baja a un 3 % (H11) [15, 16]."],
+    ["¿Cambia la respuesta según mi país?", "Sí, por la electricidad que carga la batería. En 200.000 km, un coche eléctrico compacto emite alrededor de un 70 % menos que uno de gasolina en Francia o Noruega, un 65 % en Bélgica, un 50 % en Alemania y un 35 % en Polonia, donde la red sigue siendo muy intensiva en carbono. La descarbonización prevista de cada red está incluida; elige tu país en la primera pregunta (H5, H6) [4, 5, 13]."],
+  ],
   ecoLien: "EcoIndex A",
   ecoLienLong: "Ecodiseño, EcoIndex A",
   ecoTitre: "Ecodiseño de este sitio",
   ecoIntro: "Hemos intentado limitar los recursos que consume este simulador, tanto en tu dispositivo como en la red. Esto es lo que se ha medido, lo que se ha hecho y lo que estas cifras no dicen.",
   ecoMesureTitre: "Medición en la primera carga, en producción (08/10/2026)",
-  ecoMesures: [["Puntuación EcoIndex", "80/100 (A)"], ["Peso transferido", "55 kB"], ["Peticiones", "1"], ["Elementos de la página", "93"], ["Emisiones estimadas por visita", "≈ 0,26 gCO₂e"], ["Agua estimada por visita", "≈ 0,04 cl"]],
+  ecoMesures: [["Puntuación EcoIndex", "80/100 (A)"], ["Peso transferido", "55 kB"], ["Peticiones", "1"], ["Elementos de la página", "92"], ["Emisiones estimadas por visita", "≈ 0,26 gCO₂e"], ["Agua estimada por visita", "≈ 0,04 cl"]],
   ecoChoixTitre: "Lo que se ha hecho",
   ecoChoix: [
     "Una única página autónoma: estilos, código y tipografía caben en un solo archivo.",

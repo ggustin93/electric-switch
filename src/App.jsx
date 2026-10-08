@@ -252,9 +252,9 @@ export default function App({ page = "outil" }) {
           <div className="entete-haut">
             <h1>{s.h1}</h1>
             <div className="entete-actions">
-              <nav aria-label={s.navSite}>
-                <a className="nav-site" href={chemin(lang, "methode")} aria-current={page === "methode" ? "page" : undefined}>{s.pages.methode}</a>
-              </nav>
+              {/* Sans <nav> autour (déjà dans l'en-tête, et « Pages du site » est la navigation du pied) :
+                  l'élément économisé paie le lien « Questions » du pied sur les pages de lecture (EcoIndex A, ticket 05) */}
+              <a className="nav-site" href={chemin(lang, "methode")} aria-current={page === "methode" ? "page" : undefined}>{s.pages.methode}</a>
             <nav className="langue" aria-label={s.langue}>
               {/* Même page dans chaque langue ; l'ancre (#h5…) suit au clic */}
               {LANGUES.map(([l, nom]) => (
@@ -266,7 +266,8 @@ export default function App({ page = "outil" }) {
           </div>
         </header>
 
-        {page === "outil" && <div>
+        {/* Fragment, pas de <div> : l'élément économisé paie le lien « Questions » du pied (EcoIndex A, ticket 05) */}
+        {page === "outil" && <>
         <div className="onglets" role="tablist" aria-label="Sections" onKeyDown={clavierOnglets}>
           {ONGLETS.map((o, i) => (
             <button key={o} ref={(el) => (tabsRef.current[i] = el)} role="tab" id={`tab-${o}`}
@@ -287,15 +288,17 @@ export default function App({ page = "outil" }) {
         <div role="tabpanel" id="panel-modes" aria-labelledby="tab-modes" hidden={onglet !== "modes"}>
           {visites.modes && <Modes />}
         </div>
-        </div>}
+        </>}
 
         {page === "methode" && <PageMethode />}
         {page === "ecoconception" && <PageEco />}
         {page === "mentions" && <PageMentions />}
+        {page === "questions" && <PageQuestions />}
 
         <footer className="pied">
           <nav className="liens-pied" aria-label={s.navSite}>
             <a href={chemin(lang, "methode")}>{s.pages.methode}</a>
+            <a href={chemin(lang, "questions")}>{s.pages.questions}</a>
             <a href={chemin(lang, "ecoconception")} aria-label={s.ecoLienLong}>{s.ecoLien}</a>
             <a href={chemin(lang, "mentions")}>{s.pages.mentions}</a>
           </nav>
@@ -1075,6 +1078,20 @@ function PageMentions() {
           {lignes.map((l, i) => <p key={i}>{l}</p>)}
         </section>
       ))}
+    </article>
+  );
+}
+
+// Questions-réponses (ticket 05) : chiffres recalculés par le modèle dans src/reponses.test.js ;
+// renvois Hn [n] en texte, comme la page Méthode (pas de liens : DOM minimal)
+function PageQuestions() {
+  const { s } = useT();
+  return (
+    <article className="carte lecture">
+      <RetourOutil />
+      <h2>{s.pages.questions}</h2>
+      <p className="lede-carte">{s.questionsIntro}</p>
+      {s.questions.flatMap(([q, r]) => [<h3 key={q}>{q}</h3>, <p key={r}>{r}</p>])}
     </article>
   );
 }

@@ -18,3 +18,8 @@ Status: accepted (2026-10-08). Extends ADR 0004, 0006 and 0008. Ticket `.scratch
 - Going to a reading page and back reloads the tool: answers already given are lost (accepted in the ticket).
 - Each reading page carries the whole app bundle (≈ 31 kB gzip of JS it barely needs): one bundle, one build path, hydration for the language-switch anchor and the measurement.
 - **EcoIndex of Méthode is B** (DOM 140, 58 kB, 1 request → 75.5). 14 hypotheses with 29 source links, 20 sources with 21 `<em>`. Écoconception (DOM 78 → 81.5) and Mentions (DOM 56 → 87.2) are A; the tool page is unchanged (DOM 93, 54.5 kB → 80.1). **Decision (owner, 2026-10-08):** references become plain text « [1, 8, 14] » and source titles lose their italics → Méthode DOM 92, 57 kB → **80.1 (A)**. Sources stay listed right below the hypotheses.
+
+## Note (ticket 05, 2026-10-08)
+- Fourth reading page **`/{lang}/questions/`** (« Questions fréquentes »), same pattern: added to `PAGES`, built per language by `build.mjs`, own title, description (`questionsIntro`), canonical and hreflang rule (`fichierHeaders`).
+- Reading-page titles now compose with the short name `nomSite` (« Questions fréquentes · Dois-je passer à l'électrique ? »), because the tool's `titre` became longer (« Voiture électrique ou thermique : dois-je passer à l'électrique ? »).
+- The footer link to it is paid for without visual change: the tool content is a fragment (no wrapper `<div>`) and the header « Méthode » link has no `<nav>` of its own (the footer « Pages du site » remains the site navigation). Measured: tool DOM 92 → 80.2 (A); Questions DOM 51 → 88.5 (A); Méthode DOM 92, 57.5–58.9 kB → 80.1 (A), still at the ceiling.

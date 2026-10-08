@@ -45,7 +45,7 @@ test("balisesApercu : jeu complet pour la page racine, locale et alternatives, t
 });
 
 test("lireDico : chaîne simple d'un dictionnaire", () => {
-  assert.equal(lireDico("en", "titre"), "Should I switch to electric?");
+  assert.equal(lireDico("en", "nomSite"), "Should I switch to electric?");
 });
 
 test("fichierHeaders : chaque chemin porte les hreflang de sa propre page, jamais ceux d'une autre", () => {
@@ -56,7 +56,7 @@ test("fichierHeaders : chaque chemin porte les hreflang de sa propre page, jamai
       return acc;
     }, []));
   assert.deepEqual(Object.keys(regles), [
-    "/", "/fr/", "/nl/", "/fr/methode/", "/nl/methode/", "/fr/ecoconception/", "/nl/ecoconception/", "/fr/mentions/", "/nl/mentions/",
+    "/", "/fr/", "/nl/", "/fr/methode/", "/nl/methode/", "/fr/ecoconception/", "/nl/ecoconception/", "/fr/mentions/", "/nl/mentions/", "/fr/questions/", "/nl/questions/",
   ]);
   assert.equal(regles["/nl/"], `Link: ${enTeteLink("https://x.eu", ["fr", "nl"])}`);
   assert.equal(regles["/fr/methode/"], regles["/nl/methode/"]);
