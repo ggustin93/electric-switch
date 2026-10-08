@@ -7,7 +7,7 @@ import {
 } from "./model.js";
 // Une page par langue (ADR 0006) : « @langue » pointe vers le dictionnaire de la page construite
 import STR_PAGE from "@langue";
-import { HYP_REFS, SOURCES, LANGUES } from "./i18n/commun.jsx";
+import { HYP_REFS, SOURCES, SOURCES_URL, METHODE_MAJ, LANGUES } from "./i18n/commun.jsx";
 import { Icone } from "./icones.jsx";
 import { mesurer } from "./mesure.js";
 import { chemin, ancienneAncre } from "./routes.js";
@@ -1035,7 +1035,8 @@ function PageMethode() {
     <article className="carte lecture">
       <RetourOutil />
       <h2>{s.pages.methode}</h2>
-      <p className="lede-carte">{s.methodeIntro}</p>
+      {/* Date de mise à jour dans le chapeau, pas dans un paragraphe à part : la page reste en EcoIndex A */}
+      <p className="lede-carte">{s.methodeIntro} {s.methodeMaj(new Intl.DateTimeFormat(s.locale, { dateStyle: "long", timeZone: "UTC" }).format(new Date(METHODE_MAJ)))}</p>
       <h3>{s.hypTitre(s.hyp.length)}</h3>
       <ol className="hyp">
         {s.hyp.map((h, i) => (
@@ -1049,7 +1050,7 @@ function PageMethode() {
       <h3>{s.sourcesTitre}</h3>
       <ol className="sources">
         {SOURCES.map((src, i) => (
-          <li key={i} id={`src-${i + 1}`}>{src}{s.sourcesNotes[i + 1] && <> {s.sourcesNotes[i + 1]}</>}</li>
+          <li key={i} id={`src-${i + 1}`}>{src} {SOURCES_URL[i]}{s.sourcesNotes[i + 1] && <> {s.sourcesNotes[i + 1]}</>}</li>
         ))}
       </ol>
     </article>

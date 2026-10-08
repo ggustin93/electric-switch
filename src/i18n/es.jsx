@@ -212,6 +212,8 @@ export default {
   pages: { methode: "Método", ecoconception: "Ecodiseño", mentions: "Aviso legal" },
   credit: (lien) => <>Diseñado y desarrollado por {lien}.</>,
   mentions: [
+    // Qui a fait ce simulateur : formulation à valider par le propriétaire (ticket 06)
+    ["Quién ha hecho este simulador", ["Guillaume Gustin (Pwablo, pwablo.be), diseñador y desarrollador independiente en Bruselas, ha diseñado y desarrollado este simulador. Su objetivo es pedagógico: dar una respuesta honesta a tu situación, incluso cuando la mejor opción es quedarte con tu coche. El simulador no recibe financiación de fabricantes de automóviles ni de proveedores de energía, no muestra publicidad y no recoge datos personales."]],
     ["Editor", [
       "Productions Associées ASBL — Guillaume Gustin (Pwablo), actividad ejercida con el número Smart 30546.",
       "Número de empresa (BCE) e IVA: BE 0896.755.397. Rue Coenraets 72, 1060 Bruselas, Bélgica.",
@@ -270,6 +272,7 @@ export default {
     { t: "Presupuesto de uso", d: "Coste anual de energía (precios domésticos por país, carga en casa) y de mantenimiento (0,07 €/km para un coche de combustión antiguo, reparaciones incluidas; 0,04 €/km para un eléctrico). No se cuentan el precio de compra del vehículo, el seguro, los impuestos ni la financiación: dependen del mercado de cada país y de cada compra. Precios por defecto fechados y modificables." },
   ],
   sourcesTitre: "Fuentes y referencias",
+  methodeMaj: (date) => `Método actualizado el ${date}.`,
   sourcesNotes: {
     2: "19,6 gCO₂e/kWh en emisiones directas de producción (2025).",
     6: "Combustibles de carretera (E10 2,69; B7 3,10 kgCO₂e/L); electricidad francesa, mix medio de consumo (51,9 g en 2024).",

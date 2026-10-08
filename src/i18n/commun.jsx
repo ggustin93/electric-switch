@@ -29,3 +29,31 @@ export const SOURCES = [
   <>Eurostat (2026). Electricity prices for household consumers (nrg_pc_204), 2025-S2, band DC.</>,
   <>ICCT (2023). Total cost of ownership of passenger cars in Germany (maintenance and tyres per km).</>,
 ];
+
+// Adresse de chaque source (même ordre que SOURCES), vérifiée joignable le 08/10/2026.
+// Affichée en texte, pas en lien : 20 <a> feraient sortir la page Méthode de l'EcoIndex A.
+export const SOURCES_URL = [
+  "https://www.carbone4.com/files/359_publication_faq_vehicule_electrique.pdf",
+  "https://analysesetdonnees.rte-france.com/bilan-electrique-2025/emissions",
+  "https://www.statistiques.developpement-durable.gouv.fr/chiffres-cles-du-climat-france-europe-et-monde-edition-2025",
+  "https://ember-energy.org/data/yearly-electricity-data/",
+  "https://www.electricitymaps.com/data/methodology",
+  "https://base-empreinte.ademe.fr/",
+  "doi:10.1038/s41467-024-54634-y",
+  "https://theicct.org/publication/electric-cars-life-cycle-analysis-emissions-europe-jul25/",
+  "https://www.ipcc.ch/site/assets/uploads/2018/02/ipcc_wg3_ar5_annex-iii.pdf",
+  "https://www.iso.org/standard/38498.html",
+  "doi:10.1111/jiec.12074",
+  "doi:10.2834/91418",
+  "https://www.iea.org/reports/world-energy-outlook-2025",
+  "https://theicct.org/wp-content/uploads/2021/07/Global-Vehicle-LCA-White-Paper-A4-revised-v2.pdf",
+  "https://theicct.org/wp-content/uploads/2022/06/real-world-phev-use-jun22-1.pdf",
+  "https://eur-lex.europa.eu/legal-content/EN/TXT/?uri=CELEX:52024DC0122",
+  "https://impactco2.fr/",
+  "https://energy.ec.europa.eu/data-and-analysis/weekly-oil-bulletin_en",
+  "https://ec.europa.eu/eurostat/databrowser/view/nrg_pc_204/default/table",
+  "https://theicct.org/wp-content/uploads/2023/10/ICCT-Study-Cost-Ownership-BEV-Germany.pdf",
+];
+
+// Dernière mise à jour de la méthode (ISO 8601) : affichée sur la page Méthode, reprise dans les données structurées.
+export const METHODE_MAJ = "2026-10-08";
