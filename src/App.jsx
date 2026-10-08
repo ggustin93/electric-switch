@@ -5,7 +5,9 @@ import {
   mixMoyen, calc, fenetre, decider, calcConfig, departager, kmPivot, kmBascule,
   budget, PRIX_ENERGIE, ENTRETIEN,
 } from "./model.js";
-import { STR, HYP_REFS, SOURCES } from "./i18n.jsx";
+// Une page par langue (ADR 0006) : « @langue » pointe vers le dictionnaire de la page construite
+import STR_PAGE from "@langue";
+import { HYP_REFS, SOURCES, LANGUES } from "./i18n/commun.jsx";
 import { Icone } from "./icones.jsx";
 import { mesurer } from "./mesure.js";
 
@@ -17,16 +19,8 @@ const NB = " ";
 const Ctx = createContext(null);
 const useT = () => useContext(Ctx);
 
-function langueInitiale() {
-  try {
-    const l = localStorage.getItem("lang");
-    if (l === "fr" || l === "en") return l;
-  } catch { /* stockage indisponible */ }
-  return (navigator.language || "fr").startsWith("fr") ? "fr" : "en";
-}
-
-function formats(lang) {
-  const s = STR[lang];
+function formats(s) {
+  const lang = s.code;
   const nf = (o) => new Intl.NumberFormat(s.locale, o).format;
   const n0 = nf({ maximumFractionDigits: 0 });
   const n1 = nf({ maximumFractionDigits: 1 });
@@ -191,7 +185,6 @@ function lireRoute() {
 }
 
 export default function App() {
-  const [lang, setLang] = useState(langueInitiale);
   const [route, setRoute] = useState(lireRoute);
   const [onglet, setOnglet] = useState("decision");
   // Un onglet n'est monté qu'à sa première visite (DOM initial minimal), puis reste monté
@@ -209,12 +202,12 @@ export default function App() {
   const [decarb, setDecarb] = useState(true);
   const [battId, setBattId] = useState("ue");
   const [conv, setConv] = useState("marginale");
-  const f = useMemo(() => formats(lang), [lang]);
-  const { s } = f;
+  const f = useMemo(() => formats(STR_PAGE), []);
+  const { s, lang } = f;
   const tabsRef = useRef([]);
 
+  // Mémorise la langue de la page : la racine « / » y renverra lors de la prochaine visite
   useEffect(() => {
-    document.documentElement.lang = lang;
     try { localStorage.setItem("lang", lang); } catch { /* stockage indisponible */ }
   }, [lang]);
 
@@ -271,14 +264,13 @@ export default function App() {
               <nav aria-label={s.navSite}>
                 <a className="nav-site" href="#methode" aria-current={route.page === "methode" ? "page" : undefined}>{s.pages.methode}</a>
               </nav>
-            <fieldset className="langue" aria-label={s.langue}>
-              {["fr", "en"].map((l) => (
-                <label key={l} className="option">
-                  <input type="radio" name="langue" value={l} checked={lang === l} onChange={() => setLang(l)} />
-                  <span className="option-corps" lang={l} aria-label={l === "fr" ? "Français" : "English"}>{l.toUpperCase()}</span>
-                </label>
+            <nav className="langue" aria-label={s.langue}>
+              {/* Liens vers la page de chaque langue ; l'ancre (#methode…) suit au clic */}
+              {LANGUES.map(([l, nom]) => (
+                <a key={l} href={`/${l}/`} hreflang={l} lang={l} aria-label={nom} aria-current={l === lang ? "true" : undefined}
+                  onClick={(e) => { e.currentTarget.href = `/${l}/${location.hash}`; }}>{l.toUpperCase()}</a>
               ))}
-            </fieldset>
+            </nav>
             </div>
           </div>
           {route.page === "outil" && <p className="lede">{s.lede}</p>}

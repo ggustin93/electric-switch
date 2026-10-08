@@ -4,7 +4,18 @@ Notable changes to « Dois-je passer à l'électrique ? ». Format inspired by [
 
 ## [Unreleased]
 
+### Added
+- **Dutch, Italian and Spanish**, alongside French and English (ADR 0006):
+  - one self-contained page per language: `/fr/`, `/en/`, `/nl/`, `/it/`, `/es/`;
+  - the root `/` redirects to the remembered language, else the browser's, else English;
+  - the language switch is 5 links and keeps the current reading page (`#methode`…);
+  - `hreflang` sent as an HTTP `Link` header, not as tags in the page.
+- **Translation check:** a `src/i18n.test.js` test ensures every language has exactly the French keys and types.
+
 ### Changed
+- **Lighter pages:** each page holds only its own language, so 51–52 kB instead of 58 kB, 92 elements, EcoIndex A (80.3). Five languages in one page would have given B (≈ 78).
+- **Display font** rebuilt from the original (same SemiBold) to cover ñ, ¿, à, ë…: 12.4 → 13.7 kB.
+- **Translations:** NL, IT and ES are machine-drafted, checked for structure and rendering. A native review is still to be done.
 - **Duel:** the plug-in hybrid electric share moves into the column of the car concerned, with its own value per car (two plug-in hybrids can be charged differently). It starts from the value set in « Toutes les motorisations ».
 
 ### Fixed
