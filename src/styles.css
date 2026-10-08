@@ -769,6 +769,18 @@ input[type="range"] {
   stroke-linejoin: round;
 }
 
+/* Synthèses de « Comparer » : panneau clair et neutre. Le bloc sombre reste réservé au verdict de « Ma décision »,
+   le seul moment fort du parcours ; ici le grand chiffre coloré suffit. */
+.verdict.clair {
+  background: var(--surface-2);
+  border-color: transparent;
+}
+.clair .verdict-texte strong {
+  color: var(--ink);
+}
+.clair .resume-chiffre span {
+  color: var(--ink-2);
+}
 .resume {
   display: flex;
   flex-wrap: wrap;
