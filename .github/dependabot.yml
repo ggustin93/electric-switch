@@ -1,0 +1,7 @@
+# Met à jour les actions GitHub épinglées (SHA) chaque mois, via une pull request à relire
+version: 2
+updates:
+  - package-ecosystem: github-actions
+    directory: /
+    schedule:
+      interval: monthly
