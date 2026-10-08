@@ -200,7 +200,7 @@ h1 em {
 .lede {
   color: var(--ink-2);
   max-width: 62ch;
-  margin: var(--s3) 0 0;
+  margin: 0 0 var(--s4);
 }
 @media (max-width: 560px) {
   h1 {

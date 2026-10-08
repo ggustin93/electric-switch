@@ -187,7 +187,6 @@ function lireRoute() {
 export default function App() {
   const [route, setRoute] = useState(lireRoute);
   const [onglet, setOnglet] = useState("decision");
-  const [etapeDecision, setEtapeDecision] = useState(0);
   // Un onglet n'est monté qu'à sa première visite (DOM initial minimal), puis reste monté
   const [visites, setVisites] = useState({ decision: true });
   const [vue, setVue] = useState("tout");
@@ -276,8 +275,6 @@ export default function App() {
             </nav>
             </div>
           </div>
-          {/* La promesse ne sert qu'avant de commencer : ensuite elle repousserait les réponses */}
-          {route.page === "outil" && onglet === "decision" && etapeDecision === 0 && <p className="lede">{s.lede}</p>}
         </header>
 
         {/* L'outil reste monté (réponses conservées) mais masqué sur les pages de lecture */}
@@ -294,7 +291,7 @@ export default function App() {
 
         {/* Les onglets restent montés : leurs réponses survivent à la navigation */}
         <div role="tabpanel" id="panel-decision" aria-labelledby="tab-decision" hidden={onglet !== "decision"}>
-          <Decision shared={shared} allerExplorer={allerExplorer} onEtape={setEtapeDecision} />
+          <Decision shared={shared} allerExplorer={allerExplorer} />
         </div>
         <div role="tabpanel" id="panel-explorer" aria-labelledby="tab-explorer" hidden={onglet !== "explorer"}>
           {visites.explorer && <Explorer shared={shared} vue={vue} setVue={setVue} />}
@@ -331,7 +328,7 @@ const optionsCategorie = (s, sous) => SEGMENTS.map((x) => ({ v: x.id, label: s.s
    ONGLET 1 — MA DÉCISION
    ============================================================ */
 
-function Decision({ shared, allerExplorer, onEtape }) {
+function Decision({ shared, allerExplorer }) {
   const f = useT();
   const { s } = f;
   const { pays, paysId, setPaysId, kmAn, setKmAn, decarb, batt, segId, setSegId, etatVE, setEtatVE, ageVE, setAgeVE } = shared;
@@ -361,13 +358,14 @@ function Decision({ shared, allerExplorer, onEtape }) {
       mesurer("verdict", { verdict: v.verdict, pays: pays.id, segment: segId, etat: etatVE, km: Math.round(kmAn / 5000) * 5000, lang: f.lang });
     }
     etapePrec.current = etape;
-    onEtape(etape);
   }, [etape]);
 
   const aller = (i) => { setEtape(i); setMaxEtape((m) => Math.max(m, i)); };
 
   return (
     <div>
+      {/* Intro du parcours « Ma décision » : seulement avant de commencer, ensuite elle repousserait les réponses */}
+      {etape === 0 && <p className="lede">{s.lede}</p>}
       <ol className="etapes" aria-label={s.etapeSur(etape + 1, 4)}>
         {s.etapes.map((e, i) => (
           <li key={i} aria-current={i === etape ? "step" : undefined}>
