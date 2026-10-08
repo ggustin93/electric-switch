@@ -290,5 +290,5 @@ export default {
     13: "Trajecten van de koolstofintensiteit van de netten per land.",
     17: "Gegevens van het tabblad ‘Anders verplaatsen’, inclusief de productie van de voertuigen.",
   },
-  footer: (lien) => <>Educatieve simulator: grootteordes, onzekerheid van ongeveer ±20%. Methode geïnspireerd door {lien("Carbone 4")}; gegevens van ADEME, ICCT, Ember, Electricity Maps. Versie 7.4, oktober 2026.</>,
+  footer: (lien) => <>Educatieve simulator: grootteordes, onzekerheid van ongeveer ±20%. Methode geïnspireerd door {lien("Carbone 4")}; gegevens van ADEME, ICCT, Ember, Electricity Maps. Versie 7.5, oktober 2026.</>,
 };
