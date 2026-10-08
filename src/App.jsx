@@ -651,8 +651,9 @@ function Comparateur({ shared, profil }) {
         </p>
       </section>
 
-      {/* Une seule carte : profil, barres, courbe cumulée, puis les réglages avancés qui agissent sur les deux */}
-      <section className="carte">
+      {/* Une seule carte : profil, barres, courbe cumulée, puis les réglages avancés qui agissent sur les deux.
+          Elle déborde de la colonne sur grand écran : les données prennent la place, le texte garde sa mesure. */}
+      <section className="carte large">
         {profil}
         {/* Les deux graphiques côte à côte sur grand écran : la réponse d'un coup d'œil */}
         <div className="resultats-grille">
@@ -681,15 +682,15 @@ function Comparateur({ shared, profil }) {
           </p>
         </div>
         </div>
-        {/* Hors du repli : agit sur les deux graphiques, donc sous la grille, en pleine largeur */}
-        {hybrides && (
-          <Curseur id="phev" label={s.champ.phev} aide={s.aide.phev} value={Math.round(phevShare * 100)}
-            min={0} max={100} step={5} pas={1} unite="%" onChange={(x) => setPhevShare(x / 100)}
-            format={(x) => f.pc(x / 100)} />
-        )}
 
         <details className="replie reglages">
           <summary>{s.avance}</summary>
+          {/* En premier : le réglage le plus souvent cherché */}
+          {hybrides && (
+            <Curseur id="phev" label={s.champ.phev} aide={s.aide.phev} value={Math.round(phevShare * 100)}
+              min={0} max={100} step={5} pas={1} unite="%" onChange={(x) => setPhevShare(x / 100)}
+              format={(x) => f.pc(x / 100)} />
+          )}
           <Choix label={s.champ.batterie} aide={s.aide.batterie} value={battId} onChange={setBattId}
             options={BATTERIES.map((b) => ({ v: b.id, label: s.batt[b.id], sub: `${b.ef}${NB}kgCO₂e/kWh` }))} />
           <Choix label={s.champConvention} aide={s.aideConvention} value={conv} onChange={setConv}

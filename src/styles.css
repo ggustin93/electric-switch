@@ -1613,6 +1613,11 @@ input[type="number"] {
   body::after {
     right: 0;
   }
+  /* Carte élargie (Comparer) : les motifs s'écartent pour ne pas passer dessous */
+  body:has(.carte.large)::before,
+  body:has(.carte.large)::after {
+    width: calc(50% - 37rem);
+  }
 }
 
 /* Choix de vue en tête de « Comparer les voitures » : pas de marge au-dessus, de l'air avant le profil */
@@ -1696,6 +1701,9 @@ input[type="number"] {
 
 /* Comparer : barres et courbe cumulée côte à côte quand la place le permet */
 @media (min-width: 64rem) {
+  .carte.large {
+    margin-inline: calc((100% - min(72rem, 100vw - 4rem)) / 2);
+  }
   .resultats-grille {
     display: grid;
     grid-template-columns: 1fr 1fr;
