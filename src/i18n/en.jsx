@@ -247,7 +247,7 @@ export default {
   ecoTitre: "How this site is ecodesigned",
   ecoIntro: "We tried to limit the resources this simulator uses, on your device and on the network. Here is what was measured, what was done, and what these figures don't tell you.",
   ecoMesureTitre: "Measured at first load, in production (8 October 2026)",
-  ecoMesures: [["EcoIndex score", "80/100 (A)"], ["Transferred weight", "55 kB"], ["Requests", "1"], ["Page elements", "90"], ["Estimated emissions per visit", "≈ 0.26 gCO₂e"], ["Estimated water per visit", "≈ 0.04 cl"]],
+  ecoMesures: [["EcoIndex score", "80/100 (A)"], ["Transferred weight", "57 kB"], ["Requests", "1"], ["Page elements", "90"], ["Estimated emissions per visit", "≈ 0.26 gCO₂e"], ["Estimated water per visit", "≈ 0.04 cl"]],
   ecoChoixTitre: "What was done",
   ecoChoix: [
     "A single self-contained page: styles, code and font fit in one file.",
