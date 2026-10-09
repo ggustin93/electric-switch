@@ -1758,8 +1758,8 @@ input[type="number"] {
   white-space: nowrap;
 }
 
-/* Intro de « Ma décision » : la réponse courte du site, posée dans un cadre discret (accent léger) avant le parcours */
-.lede-cle {
+/* Intro de chaque onglet : posée dans un cadre discret (filet accent léger), même gabarit partout */
+.lede {
   color: var(--ink);
   font-size: var(--fs);
   max-width: none;

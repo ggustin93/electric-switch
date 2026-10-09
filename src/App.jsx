@@ -371,7 +371,7 @@ function Decision({ shared, allerExplorer }) {
   return (
     <>
       {/* Intro du parcours « Ma décision » : seulement avant de commencer, ensuite elle repousserait les réponses */}
-      {etape === 0 && <p className="lede lede-cle">{s.lede}</p>}
+      {etape === 0 && <p className="lede">{s.lede}</p>}
       <ol className="etapes" aria-label={s.etapeSur(etape + 1, 4)}>
         {s.etapes.map((e, i) => (
           <li key={i} aria-current={i === etape ? "step" : undefined}>
