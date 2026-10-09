@@ -1,6 +1,6 @@
 /* Modèle ACV « Dois-je passer à l'électrique ? » — v6
    Données et fonctions pures, sans texte affiché (les libellés vivent dans i18n.jsx).
-   Hypothèses H1–H13 : voir i18n.jsx (STR.*.hyp) et CONTEXT.md. */
+   Hypothèses H1–H13 : voir i18n.jsx (STR.*.hyp) et GLOSSARY.md. */
 
 // Mix électriques : intensité ACV (gCO2e/kWh, consommation 2024-25) et
 // taux annuel de décarbonation projeté (PNIEC / AIE STEPS) — H5, H6
