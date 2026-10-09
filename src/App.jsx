@@ -2,7 +2,7 @@ import { createContext } from "preact";
 import { useContext, useEffect, useId, useLayoutEffect, useMemo, useRef, useState } from "preact/hooks";
 import {
   PAYS, SEGMENTS, BATTERIES, MOTORS, MODES, AGE_SUGGESTION, SEUIL_SERRE, byId,
-  mixMoyen, calc, fenetre, decider, calcConfig, departager, kmPivot, kmBascule,
+  mixMoyen, calc, fenetre, decider, calcConfig, departager, kmPivot, kmBascule, voitureActuelle,
   budget, PRIX_ENERGIE, ENTRETIEN, paysProbable, KM_AN_PARC, anneesRestantes,
 } from "./model.js";
 // Une page par langue (ADR 0006) : « @langue » pointe vers le dictionnaire de la page construite
@@ -199,6 +199,11 @@ export default function App({ page = "outil" }) {
   const [decarb, setDecarb] = useState(true);
   const [battId, setBattId] = useState("ue");
   const [conv, setConv] = useState("marginale");
+  // Voiture actuelle (étape 2 de « Ma décision ») : tracée dans « Comparer » une fois l'étape franchie, jamais ses valeurs par défaut
+  const [carb, setCarb] = useState("essence");
+  const [conso, setConso] = useState(6.5);
+  const [annees, setAnnees] = useState(5);
+  const [voitureSaisie, setVoitureSaisie] = useState(false);
   const f = useMemo(() => formats(STR_PAGE), []);
   const { s, lang } = f;
   const tabsRef = useRef([]);
@@ -234,6 +239,7 @@ export default function App({ page = "outil" }) {
     batt: byId(BATTERIES, battId), battId, setBattId,
     segId, setSegId, etatVE, setEtatVE, ageVE, setAgeVE, odo: odoSaisi ?? ageVE * KM_AN_PARC, odoEstime: odoSaisi === null, setOdo, conv, setConv,
     detention, setDetention, phevShare, setPhevShare,
+    carb, setCarb, conso, setConso, annees, setAnnees, voitureSaisie, setVoitureSaisie,
   };
 
   const ouvrir = (o) => {
@@ -334,12 +340,10 @@ const optionsCategorie = (s, sous) => SEGMENTS.map((x) => ({ v: x.id, label: s.s
 function Decision({ shared, allerExplorer }) {
   const f = useT();
   const { s } = f;
-  const { pays, paysId, setPaysId, kmAn, setKmAn, decarb, batt, segId, setSegId, etatVE, setEtatVE, ageVE, setAgeVE, odo, odoEstime, setOdo } = shared;
+  const { pays, paysId, setPaysId, kmAn, setKmAn, decarb, batt, segId, setSegId, etatVE, setEtatVE, ageVE, setAgeVE, odo, odoEstime, setOdo,
+    carb, setCarb, conso, setConso, annees, setAnnees, setVoitureSaisie } = shared;
   const [etape, setEtape] = useState(0);
   const [maxEtape, setMaxEtape] = useState(0);
-  const [carb, setCarb] = useState("essence");
-  const [conso, setConso] = useState(6.5);
-  const [annees, setAnnees] = useState(5);
   // Aide facultative pour estimer les années restantes de la voiture actuelle (compteur estimé tant qu'il n'est pas saisi)
   const [ageAct, setAgeAct] = useState(10);
   const [kmActSaisi, setKmAct] = useState(null);
@@ -368,7 +372,7 @@ function Decision({ shared, allerExplorer }) {
     etapePrec.current = etape;
   }, [etape]);
 
-  const aller = (i) => { setEtape(i); setMaxEtape((m) => Math.max(m, i)); };
+  const aller = (i) => { setEtape(i); setMaxEtape((m) => Math.max(m, i)); if (i >= 2) setVoitureSaisie(true); };
 
   return (
     <>
@@ -640,7 +644,7 @@ function Comparateur({ shared, profil }) {
   const f = useT();
   const { s } = f;
   const { pays, kmAn, decarb, setDecarb, batt, battId, setBattId, segId, etatVE, ageVE, odo, conv, setConv,
-    detention, setDetention, phevShare, setPhevShare } = shared;
+    detention, setDetention, phevShare, setPhevShare, carb, conso, annees, voitureSaisie } = shared;
   const [revente, setRevente] = useState(true);
   const [hybrides, setHybrides] = useState(true); // affichés par défaut : la comparaison est plus complète
 
@@ -655,6 +659,7 @@ function Comparateur({ shared, profil }) {
   const ev = resultats.find((r) => r.motorId === "ev");
   const essence = resultats.find((r) => r.motorId === "essence");
   const pivot = kmPivot(ev, essence, fen.kmVous);
+  const actuelle = voitureSaisie ? voitureActuelle({ carb, conso, annees, kmAn, kmMax: fen.kmVous }) : null;
   const best = resultats[0];
   const worst = resultats[resultats.length - 1];
 
@@ -693,7 +698,7 @@ function Comparateur({ shared, profil }) {
         <div className="section-filet">
           <h2>{s.pivotTitre}</h2>
           <p className="sous-titre">{s.pivotSous}</p>
-          <CourbeCumulee resultats={resultats} kmMax={fen.kmVous} pivot={pivot} ev={ev} />
+          <CourbeCumulee resultats={resultats} kmMax={fen.kmVous} pivot={pivot} ev={ev} actuelle={actuelle} />
           <p className="pivot" id="pivot-texte">
             {pivot > 0 && s.pivotKm(f.km(pivot), f.ans(pivot / kmAn), f.kmAn(kmAn))}
             {pivot === 0 && s.pivotZero}
@@ -767,7 +772,7 @@ function pasGraduation(maxY) {
 }
 
 /* ---------- Courbe cumulée, dessinée à la largeur réelle ---------- */
-function CourbeCumulee({ resultats, kmMax, pivot, ev }) {
+function CourbeCumulee({ resultats, kmMax, pivot, ev, actuelle }) {
   const f = useT();
   const { s } = f;
   const boite = useRef(null);
@@ -783,7 +788,9 @@ function CourbeCumulee({ resultats, kmMax, pivot, ev }) {
   const H = Math.round(Math.min(360, Math.max(240, W * 0.6)));
   const PAD = { t: 22, r: 76, b: 34, l: 40 };
   const fin = (r) => r.fabAttr + (r.usage * kmMax) / 1e6;
-  const maxY = Math.max(...resultats.map(fin)) * 1.05;
+  // Voiture actuelle gardée : part de 0 (fabrication déjà payée), s'arrête à sa fin de vie
+  const finAct = actuelle && (actuelle.usage * actuelle.kmFin) / 1e6;
+  const maxY = Math.max(...resultats.map(fin), finAct || 0) * 1.05;
   const x = (km) => PAD.l + (km / kmMax) * (W - PAD.l - PAD.r);
   const y = (t) => H - PAD.b - (t / maxY) * (H - PAD.t - PAD.b);
   const pasY = pasGraduation(maxY);
@@ -796,12 +803,16 @@ function CourbeCumulee({ resultats, kmMax, pivot, ev }) {
   };
 
   // Étiquettes en bout de courbe, écartées d'au moins 15 px
-  const etiquettes = resultats.map((r) => ({ id: r.motorId, y: y(fin(r)) })).sort((a, b) => a.y - b.y);
+  const etiquettes = resultats.map((r) => ({ id: r.motorId, nom: s.motor[r.motorId].court, y: y(fin(r)) }));
+  if (actuelle?.kmFin === kmMax) etiquettes.push({ id: "actuelle", nom: s.garderCourbe.court, y: y(finAct) });
+  etiquettes.sort((a, b) => a.y - b.y);
   for (let i = 1; i < etiquettes.length; i++)
     etiquettes[i].y = Math.max(etiquettes[i].y, etiquettes[i - 1].y + 15);
 
   const pivotY = pivot > 0 ? ev.fabAttr + (ev.usage * pivot) / 1e6 : 0;
-  const resume = s.courbeResume(resultats.map((r) => s.courbeLigne(s.motor[r.motorId].nom, f.t(r.fabAttr), f.t(fin(r)))).join(" "));
+  const lignes = resultats.map((r) => s.courbeLigne(s.motor[r.motorId].nom, f.t(r.fabAttr), f.t(fin(r))));
+  if (actuelle) lignes.push(s.courbeLigne(s.garderCourbe.nom, f.t(0), f.t(finAct)));
+  const resume = s.courbeResume(lignes.join(" "));
   const tirets = (id) => (id === "hev" || id === "phev" || id === "diesel" ? "6 5" : undefined);
 
   return (
@@ -825,10 +836,18 @@ function CourbeCumulee({ resultats, kmMax, pivot, ev }) {
             <circle cx={x(0)} cy={y(r.fabAttr)} r="4" />
           </g>
         ))}
+        {actuelle && (
+          <g className="ligne" style={{ "--c": "var(--m-actuelle)" }}>
+            <line x1={x(0)} y1={y(0)} x2={x(actuelle.kmFin)} y2={y(finAct)} stroke-width="2" stroke-dasharray="2 4" />
+            <circle cx={x(actuelle.kmFin)} cy={y(finAct)} r="4" />
+            {/* Fin de vie avant le bout de la fenêtre : étiquette au point d'arrêt (sinon avec les autres, à droite) */}
+            {actuelle.kmFin < kmMax && <text className="fin-ligne halo" x={x(actuelle.kmFin) + 8} y={y(finAct) + 4}>{s.garderCourbe.court}</text>}
+          </g>
+        )}
         {etiquettes.map((e) => (
           <text key={e.id} className="fin-ligne" x={W - PAD.r + 8} y={e.y + 4}
             style={{ "--c": `var(--m-${e.id})` }}>
-            {s.motor[e.id].court}
+            {e.nom}
           </text>
         ))}
         {pivot > 0 && (
@@ -848,6 +867,12 @@ function CourbeCumulee({ resultats, kmMax, pivot, ev }) {
             {s.motor[r.motorId].nom}
           </li>
         ))}
+        {actuelle && (
+          <li style={{ "--c": "var(--m-actuelle)" }}>
+            <svg width="18" height="4" aria-hidden="true"><line x1="0" y1="2" x2="18" y2="2" stroke-dasharray="2 3" /></svg>
+            {s.garderCourbe.nom}
+          </li>
+        )}
       </ul>
     </div>
   );

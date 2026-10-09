@@ -81,6 +81,7 @@ export function mixMoyen(g0, annees, actif, r) {
 
 export const usageEssence = (L100) => (L100 / 100) * EF_ESSENCE * 1000; // g/km
 export const usageDiesel = (L100) => (L100 / 100) * EF_DIESEL * 1000;
+export const usageThermique = (carb, L100) => (carb === "diesel" ? usageDiesel(L100) : usageEssence(L100));
 export const usageElec = (kWh100, gridG) => (kWh100 / 100) * PERTES_CHARGE * gridG;
 export const fabEV = (seg, efBatt) => seg.fabBase * GLIDER_EV + (seg.battKwh * efBatt) / 1000;
 
@@ -167,7 +168,7 @@ export function decider({ carb, conso, annees, seg, etatVE, ageVE, odoVE = ageVE
   const odoEff = occasion ? fen(annees).odoEff : 0;
   const horizon = Math.min(annees, (VIE_KM - odoEff) / kmAn, VIE_ANS - ageDebut);
   const km = horizon * kmAn;
-  const usageVieille = carb === "diesel" ? usageDiesel(conso) : usageEssence(conso);
+  const usageVieille = usageThermique(carb, conso);
   const gridG = mixMoyen(pays.g, horizon, decarb, pays.declin);
   const usageVE = usageElec(seg.ev, gridG);
   const fabTot = fabEV(seg, efBatt);
@@ -191,6 +192,11 @@ export function decider({ carb, conso, annees, seg, etatVE, ageVE, odoVE = ageVE
       (etatVE === "neuf" || ageVE < AGE_SUGGESTION - 1) && departager(tOccasion, tGarderOcc) === "a",
     tOccasion, tGarderOcc,
   };
+}
+
+// Voiture actuelle gardée (courbe cumulée de « Comparer ») : fabrication déjà payée, usage seul, jusqu'à sa fin de vie
+export function voitureActuelle({ carb, conso, annees, kmAn, kmMax }) {
+  return { usage: usageThermique(carb, conso), kmFin: Math.min(kmMax, annees * kmAn) };
 }
 
 // --- Onglet Duel : une configuration { segId, motorId, etat } ---

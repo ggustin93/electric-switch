@@ -131,6 +131,7 @@ export default {
   courbeResume: (lignes) => `Cumulative emissions by powertrain. ${lignes}`,
   courbeLigne: (nom, a, b) => `${nom}: from ${a} to ${b}.`,
   legendeCourbe: "Chart legend",
+  garderCourbe: { nom: "Keep your car", court: "Keep" },
 
   duelTitre: "Head-to-head: two specific cars",
   communs: "Settings shared by both cars",

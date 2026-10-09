@@ -39,6 +39,8 @@
   --m-phev: #3d6fb4;
   --m-essence: #b5441a;
   --m-diesel: #6e6259;
+  /* Garder votre voiture (courbe cumulée) : encre, en pointillés ; suit le thème */
+  --m-actuelle: var(--ink);
   /* … et sur fond sombre */
   --m-ev-d: #4ecba5;
   --m-hev-d: #a3c75b;
@@ -930,6 +932,12 @@ input[type="range"] {
   font-weight: 600;
   fill: var(--c);
   transition: opacity var(--dur-2);
+}
+.courbe .halo {
+  paint-order: stroke;
+  stroke: var(--surface);
+  stroke-width: 4px;
+  stroke-linejoin: round;
 }
 .pivot-marque line {
   stroke: var(--ink);

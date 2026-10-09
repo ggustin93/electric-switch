@@ -2,7 +2,7 @@ import { test } from "node:test";
 import assert from "node:assert/strict";
 import {
   PAYS, SEGMENTS, BATTERIES, MOTORS, VIE_ANS, VIE_KM, byId,
-  partFab, mixMoyen, calc, fenetre, decider, kmPivot, kmBascule, budget, departager, calcConfig, paysProbable, KM_AN_PARC, anneesRestantes,
+  partFab, mixMoyen, calc, fenetre, decider, kmPivot, kmBascule, budget, departager, calcConfig, paysProbable, KM_AN_PARC, anneesRestantes, voitureActuelle,
 } from "./model.js";
 
 test("grille : empreintes finies et positives, part de fabrication dans [0,1]", () => {
@@ -154,4 +154,19 @@ test("anneesRestantes : 18 ans ou 200 000 km, la première borne, entre 1 et 12 
   assert.equal(anneesRestantes({ age: 15, km: 90000, kmAn: 12000 }), 3); // borne d'âge
   assert.equal(anneesRestantes({ age: 2, km: 20000, kmAn: 10000 }), 12); // plafonné à l'échelle du curseur
   assert.equal(anneesRestantes({ age: 20, km: 250000, kmAn: 12000 }), 1); // déjà en fin de vie
+});
+
+test("voiture actuelle : usage seul (fabrication déjà payée), ligne arrêtée à sa fin de vie", () => {
+  // 6,5 L/100 km d'essence × 2,69 kgCO2e/L = 174,85 g/km (H7) ; 5 ans × 12 000 km = 60 000 km
+  const v = voitureActuelle({ carb: "essence", conso: 6.5, annees: 5, kmAn: 12000, kmMax: 96000 });
+  assert.ok(Math.abs(v.usage - 174.85) < 1e-9);
+  assert.equal(v.kmFin, 60000);
+  // 5 L/100 km de gazole × 3,1 = 155 g/km ; fenêtre plus courte que la vie restante : bornée à la fenêtre
+  const d = voitureActuelle({ carb: "diesel", conso: 5, annees: 5, kmAn: 12000, kmMax: 40000 });
+  assert.ok(Math.abs(d.usage - 155) < 1e-9);
+  assert.equal(d.kmFin, 40000);
+  // Même chiffre que le verdict « garder » de « Ma décision » quand la fenêtre couvre la vie restante
+  const pays = byId(PAYS, "BE"), seg = byId(SEGMENTS, "compacte");
+  const dec = decider({ carb: "essence", conso: 6.5, annees: 5, seg, etatVE: "neuf", ageVE: 3, pays, kmAn: 12000, decarb: true, efBatt: 73 });
+  assert.ok(Math.abs((v.usage * v.kmFin) / 1e6 - dec.tGarder) < 1e-9);
 });

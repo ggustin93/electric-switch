@@ -135,6 +135,7 @@ export default {
   courbeResume: (lignes) => `Emissioni cumulate per motorizzazione. ${lignes}`,
   courbeLigne: (nom, a, b) => `${nom}: da ${a} a ${b}.`,
   legendeCourbe: "Legenda delle curve",
+  garderCourbe: { nom: "Tenere la tua auto", court: "Tenere" },
 
   duelTitre: "Testa a testa: due auto precise",
   communs: "Impostazioni comuni alle due auto",

@@ -131,6 +131,8 @@ export default {
   courbeResume: (lignes) => `Émissions cumulées par motorisation. ${lignes}`,
   courbeLigne: (nom, a, b) => `${nom} : de ${a} à ${b}.`,
   legendeCourbe: "Légende des courbes",
+  // Courbe cumulée : votre voiture actuelle gardée (réponses de « Ma décision »)
+  garderCourbe: { nom: "Garder votre voiture", court: "Garder" },
 
   duelTitre: `Face-à-face${N}: deux voitures précises`,
   communs: "Réglages communs aux deux voitures",

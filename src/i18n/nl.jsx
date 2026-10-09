@@ -131,6 +131,7 @@ export default {
   courbeResume: (lignes) => `Opgetelde uitstoot per aandrijving. ${lignes}`,
   courbeLigne: (nom, a, b) => `${nom}: van ${a} tot ${b}.`,
   legendeCourbe: "Legende van de curves",
+  garderCourbe: { nom: "Uw auto houden", court: "Houden" },
 
   duelTitre: "Duel: twee specifieke auto's",
   communs: "Gemeenschappelijke instellingen voor beide auto's",
