@@ -201,7 +201,7 @@ export default {
   budgetLigne: (an, cent) => `${an} all'anno (energia: ${cent}${N}€ ogni 100${N}km)`,
   budgetPerimetre: "All'anno: energia e manutenzione, ricarica a casa; con la ricarica pubblica il risparmio si riduce nettamente. Esclusi acquisto, assicurazione e tasse.",
   budgetAjuster: "Dettagli e i tuoi prezzi dell'energia",
-  budgetSources: "Prezzi di default: carburante al 05/10/2026 (Bollettino petrolifero dell'UE), elettricità domestica Eurostat (Belgio 2026-S1, altri paesi 2025-S2). Manutenzione: 0,07 €/km per un'auto termica datata, riparazioni comprese, 0,04 €/km per un'elettrica. Con la ricarica pubblica, conta da 1,5 a 2 volte il prezzo domestico (circa 0,50 €/kWh).",
+  budgetSources: ({ carb, elec }) => `Prezzi di default: ${carb ? `carburante al ${carb} (Bollettino petrolifero dell'UE)` : "carburante: fonte nazionale"}, ${elec ? `elettricità domestica Eurostat ${elec}` : "elettricità: regolatore o statistica nazionale"}. Manutenzione: 0,07 €/km per un'auto termica datata, riparazioni comprese, 0,04 €/km per un'elettrica. Con la ricarica pubblica, conta da 1,5 a 2 volte il prezzo domestico (circa 0,50 €/kWh).`,
   budgetUsageMoins: (x) => `circa ${x} in meno all'anno`,
   budgetUsagePlus: (x) => `circa ${x} in più all'anno`,
   budgetUsagePareil: "più o meno lo stesso ogni anno",

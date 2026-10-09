@@ -198,7 +198,7 @@ export default {
   budgetLigne: (an, cent) => `${an} al año (energía: ${cent}${N}€ cada 100${N}km)`,
   budgetPerimetre: "Por año: energía y mantenimiento, carga en casa; con carga pública, el ahorro baja claramente. Sin incluir compra, seguro ni impuestos.",
   budgetAjuster: "Detalle y tus precios de la energía",
-  budgetSources: "Precios por defecto: combustible a 05/10/2026 (Boletín Petrolero de la UE), electricidad doméstica de Eurostat (Bélgica 2026-S1, otros países 2025-S2). Mantenimiento: 0,07 €/km para un coche de combustión antiguo, reparaciones incluidas, y 0,04 €/km para un eléctrico. En carga pública, cuenta con 1,5 a 2 veces el precio doméstico (unos 0,50 €/kWh).",
+  budgetSources: ({ carb, elec }) => `Precios por defecto: ${carb ? `combustible a ${carb} (Boletín Petrolero de la UE)` : "combustible: fuente nacional"}, ${elec ? `electricidad doméstica de Eurostat ${elec}` : "electricidad: regulador o estadística nacional"}. Mantenimiento: 0,07 €/km para un coche de combustión antiguo, reparaciones incluidas, y 0,04 €/km para un eléctrico. En carga pública, cuenta con 1,5 a 2 veces el precio doméstico (unos 0,50 €/kWh).`,
   budgetUsageMoins: (x) => `unos ${x} menos al año`,
   budgetUsagePlus: (x) => `unos ${x} más al año`,
   budgetUsagePareil: "más o menos lo mismo al año",

@@ -197,7 +197,7 @@ export default {
   budgetLigne: (an, cent) => `${an} per jaar (energie: €${N}${cent} per 100${N}km)`,
   budgetPerimetre: "Per jaar: energie en onderhoud, thuis opladen; met openbare laadpalen daalt de besparing duidelijk. Zonder aankoop, verzekering en belastingen.",
   budgetAjuster: "Details en uw energieprijzen",
-  budgetSources: "Standaardprijzen: brandstof op 05/10/2026 (Weekly Oil Bulletin van de EU), elektriciteit voor huishoudens Eurostat (België 2026-S1, andere landen 2025-S2). Onderhoud: € 0,07/km voor een oudere benzine- of dieselauto, herstellingen inbegrepen, € 0,04/km voor een elektrische auto. Bij openbaar opladen rekent u best op 1,5 tot 2 keer de thuisprijs (ongeveer € 0,50/kWh).",
+  budgetSources: ({ carb, elec }) => `Standaardprijzen: ${carb ? `brandstof op ${carb} (Weekly Oil Bulletin van de EU)` : "brandstof: nationale bron"}, ${elec ? `elektriciteit voor huishoudens Eurostat ${elec}` : "elektriciteit: nationale regulator of statistiek"}. Onderhoud: € 0,07/km voor een oudere benzine- of dieselauto, herstellingen inbegrepen, € 0,04/km voor een elektrische auto. Bij openbaar opladen rekent u best op 1,5 tot 2 keer de thuisprijs (ongeveer € 0,50/kWh).`,
   budgetUsageMoins: (x) => `ongeveer ${x} minder per jaar`,
   budgetUsagePlus: (x) => `ongeveer ${x} meer per jaar`,
   budgetUsagePareil: "ongeveer evenveel per jaar",

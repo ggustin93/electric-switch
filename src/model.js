@@ -253,25 +253,10 @@ export function kmPivot(ev, essence, kmMax) {
 }
 
 // --- Prix par défaut du budget (€, modifiables dans l'appli ; sources : docs/research/2026-10-budget.md) ---
-// Carburant €/L : Bulletin pétrolier UE 05/10/2026 ; GOV.UK ; EIA ; NO/CN/IN globalpetrolprices (à défaut).
-// Électricité €/kWh domestique TTC : Eurostat nrg_pc_204 2025-S2 ; UK plafond Ofgem T4 2026 ; US EIA.
-// Conversions BCE du 07/10/2026.
-export const PRIX_ENERGIE = {
-  NO: { essence: 2.78, diesel: 2.63, elec: 0.192 },
-  SE: { essence: 1.59, diesel: 2.12, elec: 0.271 },
-  FR: { essence: 2.21, diesel: 2.36, elec: 0.256 },
-  ES: { essence: 1.85, diesel: 1.92, elec: 0.267 },
-  BE: { essence: 1.96, diesel: 2.35, elec: 0.36 }, // électricité : Eurostat 2026-S1 (CREG T4 2026 : 32 à 38 c)
-  UK: { essence: 2.07, diesel: 2.36, elec: 0.311 },
-  EU: { essence: 2.0, diesel: 2.15, elec: 0.29 },
-  IT: { essence: 2.07, diesel: 2.27, elec: 0.297 },
-  DE: { essence: 2.14, diesel: 2.24, elec: 0.387 },
-  US: { essence: 1.03, diesel: 1.47, elec: 0.164 },
-  AU: { essence: 1.28, diesel: 1.53, elec: 0.243 },
-  CN: { essence: 1.23, diesel: 1.11, elec: 0.071 },
-  PL: { essence: 1.52, diesel: 1.76, elec: 0.271 },
-  IN: { essence: 1.0, diesel: 0.91, elec: 0.063 },
-};
+// src/prix.json, mis à jour chaque semaine par scripts/prix.mjs : carburant €/L TTC du Bulletin pétrolier UE
+// (carbDate, lundi des prix) et électricité domestique €/kWh TTC Eurostat nrg_pc_204 (elecPeriode, semestre).
+// Hors UE (carbDate/elecPeriode null), saisis à la main : GOV.UK et Ofgem T4 2026, EIA, NO/CN/IN globalpetrolprices.
+export { default as PRIX_ENERGIE } from "./prix.json" with { type: "json" };
 // Entretien + pneus €/km : électrique 0,04 (ICCT 2023 : ID.3 0,046 ; ADAC 2026 : ≥ 1/3 moins cher que le
 // thermique) ; voiture thermique ancienne déjà payée 0,07 (réparations et pièces d'usure en plus).
 export const ENTRETIEN = { thermique: 0.07, electrique: 0.04 };

@@ -197,7 +197,7 @@ export default {
   budgetLigne: (an, cent) => `${an} par an (énergie : ${cent}${N}€ aux 100${N}km)`,
   budgetPerimetre: "Par an : énergie et entretien, recharge à domicile ; en borne publique, l'économie baisse nettement. Hors achat, assurance et taxes.",
   budgetAjuster: "Détail et vos prix de l'énergie",
-  budgetSources: "Prix par défaut : carburant au 05/10/2026 (Bulletin pétrolier de l'UE), électricité domestique Eurostat (Belgique 2026-S1, autres pays 2025-S2). Entretien : 0,07 €/km pour une thermique ancienne, réparations comprises, 0,04 €/km pour une électrique. En recharge publique, comptez 1,5 à 2 fois le prix domestique (environ 0,50 €/kWh).",
+  budgetSources: ({ carb, elec }) => `Prix par défaut : ${carb ? `carburant au ${carb} (Bulletin pétrolier de l'UE)` : "carburant : source nationale"}, ${elec ? `électricité domestique Eurostat ${elec}` : "électricité : régulateur ou statistique nationale"}. Entretien : 0,07 €/km pour une thermique ancienne, réparations comprises, 0,04 €/km pour une électrique. En recharge publique, comptez 1,5 à 2 fois le prix domestique (environ 0,50 €/kWh).`,
   budgetUsageMoins: (x) => `environ ${x} de moins par an`,
   budgetUsagePlus: (x) => `environ ${x} de plus par an`,
   budgetUsagePareil: "à peu près autant par an",

@@ -542,7 +542,9 @@ function Budget({ carb, conso, kmAn, seg, paysId }) {
           <ChampPrix id="p-carb" label={s.budgetPrixCarb(s.motor[carb].nom)} value={p.carb} step="0.01" onChange={maj("carb")} />
           <ChampPrix id="p-elec" label={s.budgetPrixElec} value={p.elec} step="0.01" onChange={maj("elec")} />
         </div>
-        <p className="note-petite">{s.budgetSources}</p>
+        <p className="note-petite">{s.budgetSources({
+          carb: prixPays.carbDate && new Intl.DateTimeFormat(s.locale, { dateStyle: "long", timeZone: "UTC" }).format(new Date(prixPays.carbDate)),
+          elec: prixPays.elecPeriode })}</p>
       </Repli>
     </section>
   );
