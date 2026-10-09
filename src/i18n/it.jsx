@@ -16,7 +16,7 @@ export default {
   titre: "Auto elettrica o a benzina: devo passare all'elettrico?",
   nomSite: "Devo passare all'elettrico?",
   h1: <>Devo passare <em>all'elettrico</em>?</>,
-  lede: "In Belgio, su 200.000 km, un'auto elettrica compatta nuova emette circa il 60% di gas serra in meno di una a benzina, batteria compresa, se la rete continua a decarbonizzarsi. Ma sostituire un'auto che funziona ancora conviene solo oltre un certo chilometraggio: verifica il tuo caso in quattro domande.",
+  lede: "In Belgio, un'auto elettrica compatta nuova emette circa il 60% di gas serra in meno di una a benzina nell'arco della sua vita, batteria compresa. Ma sostituire un'auto che funziona ancora non sempre conviene: verifica il tuo caso in quattro domande.",
   langue: "Lingua",
   onglets: { decision: "La mia decisione", explorer: "Confronta le auto", modes: "Spostarsi in altro modo" },
   ans: (s) => `${s}${N}${s === "1" ? "anno" : "anni"}`,
@@ -212,11 +212,9 @@ export default {
 
   // Ecoprogettazione (mini pagina richiudibile + menzione a piè di pagina)
   navSite: "Pagine del sito",
-  pages: { methode: "Metodo", ecoconception: "Ecoprogettazione", mentions: "Note legali", questions: "Domande comuni" },
+  pages: { methode: "Metodo", ecoconception: "Ecoprogettazione", mentions: "Note legali", questions: "Domande comuni", apropos: "Chi siamo" },
   credit: (lien) => <>Ideato e sviluppato da {lien}.</>,
   mentions: [
-    // Qui a fait ce simulateur : formulation à valider par le propriétaire (ticket 06)
-    ["Chi ha realizzato questo simulatore", ["Guillaume Gustin (Pwablo, pwablo.be), ingegnere del software indipendente a Bruxelles, ha progettato e sviluppato questo simulatore. Lo scopo è didattico: dare una risposta onesta alla tua situazione, anche quando l'opzione migliore è tenere la tua auto. Il simulatore non riceve finanziamenti da case automobilistiche né da fornitori di energia, non mostra pubblicità e non raccoglie dati personali."]],
     ["Editore", [
       "Productions Associées ASBL — Guillaume Gustin (Pwablo), attività esercitata con il numero Smart 30546.",
       "Numero d'impresa (BCE) e partita IVA: BE 0896.755.397. Rue Coenraets 72, 1060 Bruxelles, Belgio.",
@@ -234,6 +232,15 @@ export default {
     ]],
   ],
   retourOutil: "Torna al simulatore",
+  aproposIntro: "Perché esiste questo simulatore, chi l'ha realizzato, da dove vengono i suoi numeri e come segnalare un errore.",
+  // Qui a fait ce simulateur : formulation validée par le propriétaire (ticket 06)
+  apropos: ({ lien, carbone4 }) => [
+    ["A cosa serve", "Il simulatore aiuta a decidere se conviene tenere la tua auto o passare all'elettrico, contando la produzione (batteria compresa) e l'uso, per il tuo paese e il tuo chilometraggio. È uno strumento educativo: fornisce ordini di grandezza, con un'incertezza di circa ±20%, e può concludere che è meglio tenere la tua auto."],
+    ["Chi l'ha realizzato", "Guillaume Gustin (Pwablo, pwablo.be), ingegnere del software indipendente a Bruxelles, ha progettato e sviluppato questo simulatore. Lo scopo è didattico: dare una risposta onesta alla tua situazione, anche quando l'opzione migliore è tenere la tua auto. Il simulatore non riceve finanziamenti da case automobilistiche né da fornitori di energia, non mostra pubblicità e non raccoglie dati personali."],
+    ["Da dove vengono i numeri", <>Metodo ispirato a {carbone4("Carbone 4")}; dati ADEME, ICCT, Ember, Electricity Maps. Ogni ipotesi è numerata e documentata nel {lien("methode", "Metodo")}; le {lien("questions", "Domande comuni")} danno risposte in cifre per il Belgio. Versione 7.5, ottobre 2026.</>],
+    ["Sobrietà", <>Il simulatore è ecoprogettato per pesare il meno possibile sul tuo dispositivo e sulla rete: ogni pagina si carica con una sola richiesta e ottiene EcoIndex A. Misure e limiti nella pagina {lien("ecoconception", "Ecoprogettazione")}.</>],
+    ["Segnalare un errore", <>Un errore, una fonte più recente, un suggerimento? Scrivi a <a href="mailto:guillaume@pwablo.be">guillaume@pwablo.be</a>.</>],
+  ],
   methodeIntro: "Per ogni auto, il simulatore somma la quota della sua produzione che ti spetta (batteria compresa) e il suo uso (carburante o elettricità) sui chilometri che percorrerai, poi confronta le opzioni. Ogni cifra si basa su un'ipotesi numerata e documentata qui sotto; i riferimenti I1, I2… nei fumetti di aiuto rimandano qui.",
   mentionsIntro: "Editore, hosting, dati personali (nessuno viene raccolto), responsabilità e licenze del simulatore «Devo passare all'elettrico?».",
   // Questions-réponses (ticket 05) : chiffres du modèle, vérifiés par src/reponses.test.js
@@ -293,5 +300,4 @@ export default {
     13: "Traiettorie di intensità di carbonio delle reti per paese.",
     17: "Dati della scheda “Spostarsi in altro modo”, produzione dei veicoli compresa.",
   },
-  footer: (lien) => <>Simulatore educativo: ordini di grandezza, incertezza di circa ±20%. Metodo ispirato a {lien("Carbone 4")}; dati ADEME, ICCT, Ember, Electricity Maps. Versione 7.5, ottobre 2026.</>,
 };

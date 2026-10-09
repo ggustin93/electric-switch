@@ -5,7 +5,7 @@ import { PAGES, chemin, pageDuChemin, ancienneAncre } from "./routes.js";
 test("chemin : /{langue}/ pour l'outil, /{langue}/{page}/ pour une page de lecture", () => {
   assert.equal(chemin("fr"), "/fr/");
   assert.equal(chemin("nl", "outil"), "/nl/");
-  assert.deepEqual(PAGES.map((p) => chemin("fr", p)), ["/fr/methode/", "/fr/ecoconception/", "/fr/mentions/", "/fr/questions/"]);
+  assert.deepEqual(PAGES.map((p) => chemin("fr", p)), ["/fr/methode/", "/fr/ecoconception/", "/fr/mentions/", "/fr/questions/", "/fr/apropos/"]);
 });
 
 test("pageDuChemin : la page servie se lit dans l'adresse, avec ou sans barre finale", () => {

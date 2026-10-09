@@ -12,7 +12,7 @@ export default {
   titre: "Elektrische of benzinewagen: moet ik overstappen op elektrisch?",
   nomSite: "Moet ik overstappen op elektrisch?",
   h1: <>Moet ik overstappen op <em>elektrisch</em>?</>,
-  lede: "In België stoot een nieuwe elektrische compacte auto over 200.000 km ongeveer 60% minder broeikasgassen uit dan een benzinewagen, batterij inbegrepen, als het net verder koolstofarm wordt. Maar een auto vervangen die nog rijdt, loont pas boven een bepaald aantal kilometers: controleer uw situatie in vier vragen.",
+  lede: "In België stoot een nieuwe elektrische compacte auto over zijn hele levensduur ongeveer 60% minder broeikasgassen uit dan een benzinewagen, batterij inbegrepen. Maar een auto vervangen die nog goed rijdt, loont niet altijd: controleer uw eigen situatie in vier vragen.",
   langue: "Taal",
   onglets: { decision: "Mijn beslissing", explorer: "Auto's vergelijken", modes: "Anders verplaatsen" },
   ans: (s, n) => `${s}${N}jaar`,
@@ -208,11 +208,9 @@ export default {
 
   // Écoconception (mini page repliable + mention de pied de page)
   navSite: "Pagina's van de site",
-  pages: { methode: "Methode", ecoconception: "Ecodesign", mentions: "Juridische informatie", questions: "Veelvoorkomende vragen" },
+  pages: { methode: "Methode", ecoconception: "Ecodesign", mentions: "Juridische informatie", questions: "Veelvoorkomende vragen", apropos: "Over" },
   credit: (lien) => <>Ontworpen en ontwikkeld door {lien}.</>,
   mentions: [
-    // Qui a fait ce simulateur : formulation à valider par le propriétaire (ticket 06)
-    ["Wie maakte deze simulator", ["Guillaume Gustin (Pwablo, pwablo.be), zelfstandig software-ingenieur in Brussel, heeft deze simulator ontworpen en gebouwd. Het doel is educatief: een eerlijk antwoord geven op uw situatie, ook wanneer uw huidige auto houden de beste keuze is. De simulator krijgt geen financiering van autofabrikanten of energieleveranciers, toont geen advertenties en verzamelt geen persoonsgegevens."]],
     ["Uitgever", [
       "Productions Associées ASBL — Guillaume Gustin (Pwablo), activiteit uitgeoefend onder Smart-nummer 30546.",
       "KBO- en btw-nummer: BE 0896.755.397. Rue Coenraets 72, 1060 Brussel, België.",
@@ -230,6 +228,15 @@ export default {
     ]],
   ],
   retourOutil: "Terug naar de simulator",
+  aproposIntro: "Waarom deze simulator bestaat, wie hem maakte, waar de cijfers vandaan komen en hoe u een fout meldt.",
+  // Qui a fait ce simulateur : formulation validée par le propriétaire (ticket 06)
+  apropos: ({ lien, carbone4 }) => [
+    ["Waarvoor hij dient", "De simulator helpt beslissen of u uw auto beter houdt of overstapt op elektrisch, met productie (batterij inbegrepen) en gebruik meegerekend, voor uw land en uw kilometerstand. Het is een educatief hulpmiddel: hij geeft grootteordes, met een onzekerheid van ongeveer ±20%, en kan concluderen dat u uw auto beter houdt."],
+    ["Wie hem maakte", "Guillaume Gustin (Pwablo, pwablo.be), zelfstandig software-ingenieur in Brussel, heeft deze simulator ontworpen en gebouwd. Het doel is educatief: een eerlijk antwoord geven op uw situatie, ook wanneer uw huidige auto houden de beste keuze is. De simulator krijgt geen financiering van autofabrikanten of energieleveranciers, toont geen advertenties en verzamelt geen persoonsgegevens."],
+    ["Waar de cijfers vandaan komen", <>Methode geïnspireerd door {carbone4("Carbone 4")}; gegevens van ADEME, ICCT, Ember, Electricity Maps. Elke aanname is genummerd en heeft een bron in de {lien("methode", "Methode")}; de {lien("questions", "Veelvoorkomende vragen")} geven cijfermatige antwoorden voor België. Versie 7.5, oktober 2026.</>],
+    ["Soberheid", <>De simulator is ecologisch ontworpen om zo weinig mogelijk te wegen op uw toestel en op het netwerk: elke pagina laadt in één enkele aanvraag en haalt EcoIndex A. Metingen en beperkingen op de pagina {lien("ecoconception", "Ecodesign")}.</>],
+    ["Een fout melden", <>Een fout, een recentere bron, een suggestie? Schrijf naar <a href="mailto:guillaume@pwablo.be">guillaume@pwablo.be</a>.</>],
+  ],
   methodeIntro: "Per auto telt de simulator uw aandeel in de productie (batterij inbegrepen) op bij het gebruik (brandstof of elektriciteit) over de kilometers die u ermee rijdt, en vergelijkt dan de opties. Elk cijfer steunt op een genummerde aanname met bron hieronder; de vermeldingen A1, A2… in de hulpballonnen verwijzen hiernaar.",
   mentionsIntro: "Uitgever, hosting, persoonsgegevens (er worden er geen verzameld), aansprakelijkheid en licenties van de simulator ‘Moet ik overstappen op elektrisch?’.",
   // Questions-réponses (ticket 05) : chiffres du modèle, vérifiés par src/reponses.test.js
@@ -289,5 +296,4 @@ export default {
     13: "Trajecten van de koolstofintensiteit van de netten per land.",
     17: "Gegevens van het tabblad ‘Anders verplaatsen’, inclusief de productie van de voertuigen.",
   },
-  footer: (lien) => <>Educatieve simulator: grootteordes, onzekerheid van ongeveer ±20%. Methode geïnspireerd door {lien("Carbone 4")}; gegevens van ADEME, ICCT, Ember, Electricity Maps. Versie 7.5, oktober 2026.</>,
 };

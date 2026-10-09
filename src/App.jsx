@@ -304,16 +304,18 @@ export default function App({ page = "outil" }) {
         {page === "methode" && <PageMethode />}
         {page === "ecoconception" && <PageEco />}
         {page === "mentions" && <PageMentions />}
+        {page === "apropos" && <PageApropos />}
         {page === "questions" && <PageQuestions />}
 
         <footer className="pied">
           <nav className="liens-pied" aria-label={s.navSite}>
+            <a href={chemin(lang, "apropos")}>{s.pages.apropos}</a>
             <a href={chemin(lang, "methode")}>{s.pages.methode}</a>
             <a href={chemin(lang, "questions")}>{s.pages.questions}</a>
             <a href={chemin(lang, "ecoconception")} aria-label={s.ecoLienLong}>{s.ecoLien}</a>
             <a href={chemin(lang, "mentions")}>{s.pages.mentions}</a>
           </nav>
-          <p>{s.footer(lienCarbone4)} {s.credit(<a href="https://pwablo.be" rel="author">Pwablo</a>)}</p>
+          <p>{s.credit(<a href="https://pwablo.be" rel="author">Pwablo</a>)}</p>
         </footer>
     </Ctx.Provider>
   );
@@ -1083,6 +1085,21 @@ function PageMentions() {
           {lignes.map((l, i) => <p key={i}>{l}</p>)}
         </section>
       ))}
+    </article>
+  );
+}
+
+// À propos : à quoi sert l'outil, qui l'a fait, d'où viennent les chiffres, comment signaler une erreur.
+// Un paragraphe par section, sans <section> autour (DOM minimal) ; liens vers les autres pages du site.
+function PageApropos() {
+  const { s, lang } = useT();
+  const lien = (page, t) => <a href={chemin(lang, page)}>{t}</a>;
+  return (
+    <article className="carte lecture">
+      <RetourOutil />
+      <h2>{s.pages.apropos}</h2>
+      <p className="lede-carte">{s.aproposIntro}</p>
+      {s.apropos({ lien, carbone4: lienCarbone4 }).flatMap(([titre, texte]) => [<h3 key={titre}>{titre}</h3>, <p key={`${titre}-p`}>{texte}</p>])}
     </article>
   );
 }

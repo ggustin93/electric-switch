@@ -1635,14 +1635,10 @@ input[type="number"] {
   }
 }
 
-/* Pied de page mobile : 4 liens en grille 2 × 2 équilibrée plutôt qu'un lien orphelin sur une seconde ligne */
+/* Pied de page mobile : 5 liens centrés sur trois lignes, rangées serrées */
 @media (max-width: 560px) {
   .liens-pied {
-    display: grid;
-    grid-template-columns: repeat(2, auto);
-    justify-content: center;
-    justify-items: center;
-    column-gap: var(--s5);
+    column-gap: var(--s4);
     row-gap: 0;
   }
 }

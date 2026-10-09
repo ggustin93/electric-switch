@@ -86,7 +86,7 @@ export function jsonLd(site, lang, page, p) {
       publisher: editeur,
     },
   ] : [{
-    "@type": page === "methode" ? "TechArticle" : "WebPage",
+    "@type": { methode: "TechArticle", apropos: "AboutPage" }[page] ?? "WebPage",
     [page === "methode" ? "headline" : "name"]: p.titre, description: p.description, inLanguage: lang,
     url: site + chemin(lang, page), ...(p.date && { dateModified: p.date }),
     ...(page === "methode" ? { author: ORGANISATION, publisher: editeur, about: appli } : { publisher: ORGANISATION, isPartOf: appli }),

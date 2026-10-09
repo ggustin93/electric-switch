@@ -4,8 +4,13 @@ Notable changes to « Dois-je passer à l'électrique ? ». Format inspired by [
 
 ## [Unreleased]
 
+### Added
+- **« À propos » page** (`/{lang}/apropos/`, 5 languages, JSON-LD `AboutPage`): what the simulator is for, who made it (the « Qui a fait ce simulateur » paragraph, moved from the legal notice), where the figures come from (Carbone 4, ADEME, ICCT, Ember, Electricity Maps, version), ecodesign, and a contact to report errors (guillaume@pwablo.be). Linked first in the footer.
+
 ### Changed
 - **Hosting moved to Infomaniak** (ADR 0010, replaces 0005): `electricornot.eu` on the free Starter web hosting that comes with the domain (Switzerland, Infomaniak Network SA). `build.mjs` writes `dist/.htaccess` instead of Cloudflare's `_headers` (same security headers, CSP hashes and per-page hreflang `Link`, plus 404 page, 301 to `https://electricornot.eu`, gzip, revalidation with 304; `versHtaccess`, `src/entetes.js`, tested). Deploy mirrors `dist/` over FTP with `lftp` (Starter offers no TLS), then checks over HTTPS that every file and the CSP match the build (`scripts/verifier-en-ligne.mjs`); wrangler removed. « Mentions légales » host block and the hosting sentence of « Écoconception » updated in the 5 languages.
+- **Footer:** links + credit only; the disclaimer (±20 %, sources, version) moved to « À propos ». Same element count on the tool page (90).
+- **« Ma décision » intro lighter** (≈ 52 → 43 words, still the short answer and meta description): « sur sa vie », « pas toujours gagnant ». 5 languages.
 - **Header:** the 5 language links become a « FR ▾ » menu to the right of the title; « Méthode » leaves the header (it stays in the footer). On mobile the bar above the title disappears. Same element count (EcoIndex A unchanged).
 - **Intros:** « Ma décision » intro (the short answer) shortened; « Se déplacer autrement » intro shortened to one sentence; every tab intro now sits in a light accent frame; the Méthode page now opens by explaining how the calculation works. 5 languages.
 - **« Comparer les voitures »:** the « Empreinte totale par motorisation » title opens the card, with « Votre profil » under its subtitle (same in face-à-face).

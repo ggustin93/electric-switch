@@ -56,7 +56,7 @@ test("fichierHeaders : chaque chemin porte les hreflang de sa propre page, jamai
       return acc;
     }, []));
   assert.deepEqual(Object.keys(regles), [
-    "/", "/fr/", "/nl/", "/fr/methode/", "/nl/methode/", "/fr/ecoconception/", "/nl/ecoconception/", "/fr/mentions/", "/nl/mentions/", "/fr/questions/", "/nl/questions/",
+    "/", "/fr/", "/nl/", "/fr/methode/", "/nl/methode/", "/fr/ecoconception/", "/nl/ecoconception/", "/fr/mentions/", "/nl/mentions/", "/fr/questions/", "/nl/questions/", "/fr/apropos/", "/nl/apropos/",
   ]);
   assert.equal(regles["/nl/"], `Link: ${enTeteLink("https://x.eu", ["fr", "nl"])}`);
   assert.equal(regles["/fr/methode/"], regles["/nl/methode/"]);

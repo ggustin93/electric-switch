@@ -12,7 +12,7 @@ export default {
   titre: "Electric or petrol car: should I switch to electric?",
   nomSite: "Should I switch to electric?",
   h1: <>Should I switch to <em>electric</em>?</>,
-  lede: "In Belgium, over 200,000 km, a new electric compact car emits about 60% less greenhouse gas than a petrol one, battery included, if the grid keeps decarbonising. But replacing a car that still runs only pays off above a certain mileage: check your own case in four questions.",
+  lede: "In Belgium, a new electric compact car emits about 60% less greenhouse gas than a petrol one over its lifetime, battery included. But replacing a car that still runs does not always pay off: check your own case in four questions.",
   langue: "Language",
   onglets: { decision: "My decision", explorer: "Compare cars", modes: "Other ways to get around" },
   ans: (s, n) => `${s}${N}${n === 1 ? "year" : "years"}`,
@@ -208,11 +208,9 @@ export default {
 
   // Ecodesign (collapsible mini page + footer mention)
   navSite: "Site pages",
-  pages: { methode: "Method", ecoconception: "Ecodesign", mentions: "Legal notice", questions: "Common questions" },
+  pages: { methode: "Method", ecoconception: "Ecodesign", mentions: "Legal notice", questions: "Common questions", apropos: "About" },
   credit: (lien) => <>Designed and built by {lien}.</>,
   mentions: [
-    // Qui a fait ce simulateur : formulation à valider par le propriétaire (ticket 06)
-    ["Who made this simulator", ["Guillaume Gustin (Pwablo, pwablo.be), an independent software engineer based in Brussels, designed and built this simulator. Its purpose is educational: to give an honest answer for your situation, including when the best option is to keep your car. The simulator receives no funding from carmakers or energy suppliers, shows no ads and collects no personal data."]],
     ["Publisher", [
       "Productions Associées ASBL — Guillaume Gustin (Pwablo), working under Smart number 30546.",
       "Enterprise and VAT number: BE 0896.755.397. Rue Coenraets 72, 1060 Brussels, Belgium.",
@@ -230,6 +228,15 @@ export default {
     ]],
   ],
   retourOutil: "Back to the simulator",
+  aproposIntro: "Why this simulator exists, who made it, where its figures come from and how to report an error.",
+  // Qui a fait ce simulateur : formulation validée par le propriétaire (ticket 06)
+  apropos: ({ lien, carbone4 }) => [
+    ["What it is for", "The simulator helps you decide whether to keep your car or switch to electric, counting manufacturing (battery included) and use, for your country and your mileage. It is an educational tool: it gives orders of magnitude, with an uncertainty of about ±20%, and it may conclude that keeping your car is better."],
+    ["Who made it", "Guillaume Gustin (Pwablo, pwablo.be), an independent software engineer based in Brussels, designed and built this simulator. Its purpose is educational: to give an honest answer for your situation, including when the best option is to keep your car. The simulator receives no funding from carmakers or energy suppliers, shows no ads and collects no personal data."],
+    ["Where the figures come from", <>Method inspired by {carbone4("Carbone 4")}; data from ADEME, ICCT, Ember, Electricity Maps. Every assumption is numbered and sourced in the {lien("methode", "Method")}; the {lien("questions", "Common questions")} give figured answers for Belgium. Version 7.5, October 2026.</>],
+    ["Sobriety", <>The simulator is ecodesigned to weigh as little as possible on your device and on the network: each page loads in a single request and scores EcoIndex A. Measurements and limits on the {lien("ecoconception", "Ecodesign")} page.</>],
+    ["Report an error", <>An error, a more recent source, a suggestion? Write to <a href="mailto:guillaume@pwablo.be">guillaume@pwablo.be</a>.</>],
+  ],
   methodeIntro: "For each car, the simulator adds up your share of its manufacturing (battery included) and its use (fuel or electricity) over the kilometres you will drive it, then compares the options. Every figure rests on a numbered, sourced assumption below; the A1, A2… mentions in the help bubbles link here.",
   mentionsIntro: "Publisher, hosting, personal data (none is collected), liability and licences of the “Should I switch to electric?” simulator.",
   // Questions-réponses (ticket 05) : chiffres du modèle, vérifiés par src/reponses.test.js
@@ -289,5 +296,4 @@ export default {
     13: "Country grid carbon-intensity trajectories.",
     17: "Data for the “Other ways to get around” tab, vehicle manufacturing included.",
   },
-  footer: (lien) => <>Educational simulator: orders of magnitude, uncertainty of about ±20%. Method inspired by {lien("Carbone 4")}; data from ADEME, ICCT, Ember, Electricity Maps. Version 7.5, October 2026.</>,
 };
