@@ -12,7 +12,7 @@ export default {
   titre: "Elektrische of benzinewagen: moet ik overstappen op elektrisch?",
   nomSite: "Moet ik overstappen op elektrisch?",
   h1: <>Moet ik overstappen op <em>elektrisch</em>?</>,
-  lede: "In België stoot een nieuwe elektrische compacte auto over zijn hele levensduur ongeveer 60% minder broeikasgassen uit dan een benzinewagen, batterij inbegrepen. Maar een auto vervangen die nog goed rijdt, loont niet altijd: controleer uw eigen situatie in vier vragen.",
+  lede: "In België stoot een nieuwe elektrische compacte auto over zijn hele levensduur ongeveer 60% minder broeikasgassen uit dan een benzinewagen, batterij inbegrepen, als het stroomnet verder koolstofarm wordt. Maar een auto vervangen die nog goed rijdt, loont niet altijd: controleer uw eigen situatie in vier vragen.",
   langue: "Taal",
   onglets: { decision: "Mijn beslissing", explorer: "Auto's vergelijken", modes: "Anders verplaatsen" },
   ans: (s, n) => `${s}${N}jaar`,

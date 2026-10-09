@@ -16,7 +16,7 @@ export default {
   titre: "Auto elettrica o a benzina: devo passare all'elettrico?",
   nomSite: "Devo passare all'elettrico?",
   h1: <>Devo passare <em>all'elettrico</em>?</>,
-  lede: "In Belgio, un'auto elettrica compatta nuova emette circa il 60% di gas serra in meno di una a benzina nell'arco della sua vita, batteria compresa. Ma sostituire un'auto che funziona ancora non sempre conviene: verifica il tuo caso in quattro domande.",
+  lede: "In Belgio, un'auto elettrica compatta nuova emette circa il 60% di gas serra in meno di una a benzina nell'arco della sua vita, batteria compresa, se la rete elettrica continua a decarbonizzarsi. Ma sostituire un'auto che funziona ancora non sempre conviene: verifica il tuo caso in quattro domande.",
   langue: "Lingua",
   onglets: { decision: "La mia decisione", explorer: "Confronta le auto", modes: "Spostarsi in altro modo" },
   ans: (s) => `${s}${N}${s === "1" ? "anno" : "anni"}`,

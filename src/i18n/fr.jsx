@@ -12,7 +12,7 @@ export default {
   titre: "Voiture électrique ou thermique : dois-je passer à l'électrique ?",
   nomSite: "Dois-je passer à l'électrique ?",
   h1: <>Dois-je passer à <em>l'électrique</em>&nbsp;?</>,
-  lede: "En Belgique, une compacte électrique neuve émet environ 60 % de gaz à effet de serre en moins qu'une essence sur sa vie, batterie comprise. Mais remplacer une voiture qui roule encore n'est pas toujours gagnant : vérifiez votre cas en quatre questions.",
+  lede: "En Belgique, une compacte électrique neuve émet environ 60 % de gaz à effet de serre en moins qu'une essence sur sa vie, batterie comprise, si le réseau continue de se décarboner. Mais remplacer une voiture qui roule encore n'est pas toujours gagnant : vérifiez votre cas en quatre questions.",
   langue: "Langue",
   onglets: { decision: "Ma décision", explorer: "Comparer les voitures", modes: "Se déplacer autrement" },
   ans: (s, n) => `${s}${N}${n < 2 ? "an" : "ans"}`,

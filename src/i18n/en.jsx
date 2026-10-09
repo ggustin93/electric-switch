@@ -12,7 +12,7 @@ export default {
   titre: "Electric or petrol car: should I switch to electric?",
   nomSite: "Should I switch to electric?",
   h1: <>Should I switch to <em>electric</em>?</>,
-  lede: "In Belgium, a new electric compact car emits about 60% less greenhouse gas than a petrol one over its lifetime, battery included. But replacing a car that still runs does not always pay off: check your own case in four questions.",
+  lede: "In Belgium, a new electric compact car emits about 60% less greenhouse gas than a petrol one over its lifetime, battery included, if the grid keeps decarbonising. But replacing a car that still runs does not always pay off: check your own case in four questions.",
   langue: "Language",
   onglets: { decision: "My decision", explorer: "Compare cars", modes: "Other ways to get around" },
   ans: (s, n) => `${s}${N}${n === 1 ? "year" : "years"}`,

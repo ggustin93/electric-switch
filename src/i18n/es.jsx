@@ -12,7 +12,7 @@ export default {
   titre: "Coche eléctrico o de gasolina: ¿debo pasarme al eléctrico?",
   nomSite: "¿Debo pasarme al eléctrico?",
   h1: <>¿Debo pasarme al <em>eléctrico</em>?</>,
-  lede: "En Bélgica, un coche eléctrico compacto nuevo emite alrededor de un 60 % menos de gases de efecto invernadero que uno de gasolina a lo largo de su vida, batería incluida. Pero sustituir un coche que aún funciona no siempre compensa: compruébalo para tu caso en cuatro preguntas.",
+  lede: "En Bélgica, un coche eléctrico compacto nuevo emite alrededor de un 60 % menos de gases de efecto invernadero que uno de gasolina a lo largo de su vida, batería incluida, si la red eléctrica sigue descarbonizándose. Pero sustituir un coche que aún funciona no siempre compensa: compruébalo para tu caso en cuatro preguntas.",
   langue: "Idioma",
   onglets: { decision: "Mi decisión", explorer: "Comparar coches", modes: "Moverse de otra forma" },
   ans: (s, n) => `${s}${N}${n === 1 ? "año" : "años"}`,
