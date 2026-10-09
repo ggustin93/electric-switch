@@ -12,7 +12,7 @@ export default {
   titre: "Voiture électrique ou thermique : dois-je passer à l'électrique ?",
   nomSite: "Dois-je passer à l'électrique ?",
   h1: <>Dois-je passer à <em>l'électrique</em>&nbsp;?</>,
-  lede: "En Belgique, une compacte électrique neuve émet sur 200 000 km environ 60 % de gaz à effet de serre en moins qu'une essence, batterie comprise, si le réseau continue de se décarboner. Mais remplacer une voiture qui roule encore n'est gagnant qu'au-delà d'un certain kilométrage : vérifiez votre cas en quatre questions, budget au quotidien compris.",
+  lede: "En Belgique, une compacte électrique neuve émet sur 200 000 km environ 60 % de gaz à effet de serre en moins qu'une essence, batterie comprise, si le réseau continue de se décarboner. Mais remplacer une voiture qui roule encore n'est gagnant qu'au-delà d'un certain kilométrage : vérifiez votre cas en quatre questions.",
   langue: "Langue",
   onglets: { decision: "Ma décision", explorer: "Comparer les voitures", modes: "Se déplacer autrement" },
   ans: (s, n) => `${s}${N}${n < 2 ? "an" : "ans"}`,
@@ -165,7 +165,7 @@ export default {
   // v7 — se déplacer autrement (ADEME Impact CO₂)
   modesTitre: "Empreinte par personne et par kilomètre",
   comparerIntro: "Comparez l'empreinte de chaque motorisation pour votre profil, fabrication comprise, ou mettez deux voitures précises en face-à-face.",
-  modesIntro: "La voiture n'est pas la seule option. Voici l'empreinte carbone par personne et par kilomètre des principaux modes de transport, fabrication des véhicules comprise.",
+  modesIntro: "La voiture n'est pas la seule option : voici ce qu'émet chaque mode de transport, par personne, fabrication des véhicules comprise.",
   modes: {
     marche: "Marche", velo: "Vélo", vae: "Vélo électrique", trottinette: "Trottinette électrique",
     tgv: "TGV", tram: "Tram", metro: "Métro", intercites: "Train Intercités", rer: "RER / train de banlieue", busElec: "Bus électrique", ter: "Train régional (TER)", autocar: "Autocar", busThermique: "Bus thermique",
@@ -176,7 +176,7 @@ export default {
   ordresSous: "En gCO₂e, sur une échelle logarithmique : chaque graduation vaut 10 fois la précédente.",
   ordresRef: (nom) => `Référence : ${nom}`,
   ordresRefLegende: (nom, g) => `Ligne pointillée : la référence, ${nom} (${g}). À sa gauche, ce qui émet moins ; à sa droite, ce qui émet plus.`,
-  rapport: { moins: (x) => `${x} fois moins`, plus: (x) => `${x} fois plus`, autant: "autant", ref: "référence", zero: "aucune émission" },
+  rapport: { moins: (x) => `${x} fois moins`, plus: (x) => `${x} fois plus`, autant: "autant", ref: "référence", zero: "aucune émission" },
   ordresLegende: "La couleur suit l'échelle de l'axe : chaque mode prend la teinte de sa position, de la bande dégradée sous les graduations.",
   ordresResume: (ref) => `Par rapport à « ${ref} » :`,
   modesLire: "À lire avant de comparer",
@@ -230,7 +230,7 @@ export default {
     ]],
   ],
   retourOutil: "Retour au simulateur",
-  methodeIntro: "Comment le simulateur calcule. Chaque hypothèse est numérotée et sourcée ; les mentions H1, H2… des bulles d'aide renvoient ici.",
+  methodeIntro: "Pour chaque voiture, le simulateur additionne la part de sa fabrication qui vous revient (batterie comprise) et son usage (carburant ou électricité) sur les kilomètres que vous ferez avec elle, puis compare les options. Chaque chiffre repose sur une hypothèse numérotée et sourcée ci-dessous ; les mentions H1, H2… des bulles d'aide renvoient ici.",
   mentionsIntro: "Éditeur, hébergement, données personnelles (aucune n'est collectée), responsabilité et licences du simulateur « Dois-je passer à l'électrique ? ».",
   // Questions-réponses (ticket 05) : chiffres du modèle, vérifiés par src/reponses.test.js
   questionsIntro: "Six questions courantes sur la voiture électrique, avec les réponses chiffrées du simulateur pour la Belgique. Chaque résultat chiffré est calculé par le modèle ; les autres chiffres viennent des sources. Les renvois H1, H2… et [1], [2]… désignent les hypothèses et les sources de la page Méthode.",

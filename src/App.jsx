@@ -202,6 +202,17 @@ export default function App({ page = "outil" }) {
   const f = useMemo(() => formats(STR_PAGE), []);
   const { s, lang } = f;
   const tabsRef = useRef([]);
+  // Menu des langues : se referme au clic ailleurs ou avec Échap
+  const langueRef = useRef(null);
+  useEffect(() => {
+    const fermer = (e) => {
+      const d = langueRef.current;
+      if (d?.open && (e.key === "Escape" || (e.type === "click" && !d.contains(e.target)))) d.open = false;
+    };
+    document.addEventListener("click", fermer);
+    document.addEventListener("keydown", fermer);
+    return () => { document.removeEventListener("click", fermer); document.removeEventListener("keydown", fermer); };
+  }, []);
 
   // Après hydratation, avant l'affichage : ancien lien (#methode/h5) vers sa vraie page, pays probable du navigateur
   useLayoutEffect(() => {
@@ -251,18 +262,18 @@ export default function App({ page = "outil" }) {
         <header className="entete">
           <div className="entete-haut">
             <h1>{s.h1}</h1>
-            <div className="entete-actions">
-              {/* Sans <nav> autour (déjà dans l'en-tête, et « Pages du site » est la navigation du pied) :
-                  l'élément économisé paie le lien « Questions » du pied sur les pages de lecture (EcoIndex A, ticket 05) */}
-              <a className="nav-site" href={chemin(lang, "methode")} aria-current={page === "methode" ? "page" : undefined}>{s.pages.methode}</a>
-            <nav className="langue" aria-label={s.langue}>
-              {/* Même page dans chaque langue ; l'ancre (#h5…) suit au clic */}
-              {LANGUES.map(([l, nom]) => (
-                <a key={l} href={chemin(l, page)} hreflang={l} lang={l} aria-label={nom} aria-current={l === lang ? "true" : undefined}
-                  onClick={(e) => { e.currentTarget.href = chemin(l, page) + location.hash; }}>{l.toUpperCase()}</a>
-              ))}
-            </nav>
-            </div>
+            {/* Langue repliée en menu (réglage qu'on touche une fois) ; Méthode est dans le pied, avec les autres pages.
+                Liens réels, lisibles sans JavaScript et par les moteurs. */}
+            <details className="langue" ref={langueRef}>
+              <summary aria-label={`${s.langue} (${lang.toUpperCase()})`}>{lang.toUpperCase()}</summary>
+              <nav aria-label={s.langue}>
+                {/* Même page dans chaque langue ; l'ancre (#h5…) suit au clic */}
+                {LANGUES.map(([l, nom]) => (
+                  <a key={l} href={chemin(l, page)} hreflang={l} lang={l} aria-current={l === lang ? "true" : undefined}
+                    onClick={(e) => { e.currentTarget.href = chemin(l, page) + location.hash; }}>{nom}</a>
+                ))}
+              </nav>
+            </details>
           </div>
         </header>
 
@@ -360,7 +371,7 @@ function Decision({ shared, allerExplorer }) {
   return (
     <>
       {/* Intro du parcours « Ma décision » : seulement avant de commencer, ensuite elle repousserait les réponses */}
-      {etape === 0 && <p className="lede">{s.lede}</p>}
+      {etape === 0 && <p className="lede lede-cle">{s.lede}</p>}
       <ol className="etapes" aria-label={s.etapeSur(etape + 1, 4)}>
         {s.etapes.map((e, i) => (
           <li key={i} aria-current={i === etape ? "step" : undefined}>
@@ -576,7 +587,7 @@ function Explorer({ shared, vue, setVue }) {
   const etat = etatVE === "neuf" ? s.etatNeuve : s.etatOcc(f.n0(ageVE), ageVE);
 
   const duel = vue === "duel";
-  // Profil en tête de la carte principale. En face-à-face, chaque voiture a sa catégorie : il se réduit au pays et au kilométrage.
+  // Profil sous le titre de la carte principale. En face-à-face, chaque voiture a sa catégorie : il se réduit au pays et au kilométrage.
   const profil = (
       <details className="replie profil">
         <summary>
@@ -657,12 +668,13 @@ function Comparateur({ shared, profil }) {
 
       {/* Une seule carte : profil, barres, courbe cumulée, puis les réglages avancés qui agissent sur les deux */}
       <section className="carte">
-        {profil}
-        {/* Les deux graphiques côte à côte sur grand écran : la réponse d'un coup d'œil */}
+        {/* Les deux graphiques côte à côte sur grand écran : la réponse d'un coup d'œil.
+            Le titre ouvre le bloc, le profil (qui règle les deux graphiques) vient juste dessous. */}
         <div className="resultats-grille">
         <div className="section-filet">
           <h2>{s.barsTitre}</h2>
           <p className="sous-titre">{s.barsSous(f.km(fen.kmVous), s.voitureProfil(s.seg[segId].nom, occasion ? s.etatOcc(f.n0(ageVE), ageVE) : s.etatNeuve))}</p>
+          {profil}
           <Barres lignes={resultats.map((r) => ({
             key: r.motorId, r, echelle: 100 / worst.totalT,
             nom: <><span className="pastille" />{s.motor[r.motorId].nom}</>,
@@ -890,10 +902,10 @@ function Duel({ shared, profil }) {
   return (
     <div>
       <section className="carte">
-        {profil}
         <div className="section-filet">
           <h2>{s.duelTitre}</h2>
           <p className="sous-titre">{s.duelCommun}</p>
+          {profil}
         </div>
         <div className="duel-grille">
           <ConfigVehicule lettre="A" cfg={A} setCfg={setA} />
@@ -976,7 +988,7 @@ function Modes() {
         <p className="sous-titre">{s.ordresSous}</p>
         <p className="bascule resume-ref">
           {s.ordresResume(s.modes[REF_ID])}{" "}
-          {EXEMPLES.map((id, i) => <span key={id}>{i > 0 && " · "}{s.modes[id]} : <strong>{rapport(s, f, VALEUR_MODE[id], REF)}</strong></span>)}
+          {EXEMPLES.map((id, i) => <span key={id}>{i > 0 && " · "}{s.modes[id]}{NB}: <strong>{rapport(s, f, VALEUR_MODE[id], REF)}</strong></span>)}
         </p>
         <div className="log" style={{ "--ref": `${posLog(REF)}%` }}>
           <div className="log-ligne log-entete" aria-hidden="true">

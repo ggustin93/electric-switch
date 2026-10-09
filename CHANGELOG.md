@@ -6,10 +6,14 @@ Notable changes to « Dois-je passer à l'électrique ? ». Format inspired by [
 
 ### Changed
 - **Hosting moved to Infomaniak** (ADR 0010, replaces 0005): `electricornot.eu` on the free Starter web hosting that comes with the domain (Switzerland, Infomaniak Network SA). `build.mjs` writes `dist/.htaccess` instead of Cloudflare's `_headers` (same security headers, CSP hashes and per-page hreflang `Link`, plus 404 page, 301 to `https://electricornot.eu`, gzip, revalidation with 304; `versHtaccess`, `src/entetes.js`, tested). Deploy mirrors `dist/` over FTP with `lftp` (Starter offers no TLS), then checks over HTTPS that every file and the CSP match the build (`scripts/verifier-en-ligne.mjs`); wrangler removed. « Mentions légales » host block and the hosting sentence of « Écoconception » updated in the 5 languages.
+- **Header:** the 5 language links become a « FR ▾ » menu to the right of the title; « Méthode » leaves the header (it stays in the footer). On mobile the bar above the title disappears. Same element count (EcoIndex A unchanged).
+- **Intros:** « Ma décision » intro (the short answer) shortened and set in a light accent frame; « Se déplacer autrement » intro shortened to one sentence; the Méthode page now opens by explaining how the calculation works. 5 languages.
+- **« Comparer les voitures »:** the « Empreinte totale par motorisation » title opens the card, with « Votre profil » under its subtitle (same in face-à-face).
 - **Budget block simplified:** the answer names the country whose energy prices are used (« À l'usage (prix : Belgique), … »); the payback paragraph becomes one sentence (no more « 9 ans pour 10 000 € » example); the fold is called « Vos prix de l'énergie ». 5 languages.
 
 ### Fixed
 - **Mobile view (Impeccable adapt):** the language links no longer touch the screen edge; cards and verdict use 16 px padding, so content gains 16 px of width; the verdict sentence drops to body size (9 → 6 lines, figures in the first screen).
+- **« 6,6 fois moins »** (Se déplacer autrement) no longer breaks across two lines.
 - **« Modifier mes réponses »** (Aller plus loin): no horizontal padding, so its text lines up with the buttons' edge instead of sitting ~24 px to the right; on desktop it now fits on the same row.
 
 ### Removed

@@ -12,7 +12,7 @@ export default {
   titre: "Coche eléctrico o de gasolina: ¿debo pasarme al eléctrico?",
   nomSite: "¿Debo pasarme al eléctrico?",
   h1: <>¿Debo pasarme al <em>eléctrico</em>?</>,
-  lede: "En Bélgica, en 200.000 km, un coche eléctrico compacto nuevo emite alrededor de un 60 % menos de gases de efecto invernadero que uno de gasolina, batería incluida, si la red sigue descarbonizándose. Pero sustituir un coche que aún funciona solo compensa a partir de cierto kilometraje: compruébalo para tu caso en cuatro preguntas, presupuesto diario incluido.",
+  lede: "En Bélgica, en 200.000 km, un coche eléctrico compacto nuevo emite alrededor de un 60 % menos de gases de efecto invernadero que uno de gasolina, batería incluida, si la red sigue descarbonizándose. Pero sustituir un coche que aún funciona solo compensa a partir de cierto kilometraje: compruébalo para tu caso en cuatro preguntas.",
   langue: "Idioma",
   onglets: { decision: "Mi decisión", explorer: "Comparar coches", modes: "Moverse de otra forma" },
   ans: (s, n) => `${s}${N}${n === 1 ? "año" : "años"}`,
@@ -166,7 +166,7 @@ export default {
   // v7 — moverse de otra forma (ADEME Impact CO₂)
   modesTitre: "Huella por persona y por kilómetro",
   comparerIntro: "Compara la huella de cada motorización para tu perfil, fabricación incluida, o enfrenta dos coches concretos cara a cara.",
-  modesIntro: "El coche no es la única opción. Esta es la huella de carbono por persona y por kilómetro de los principales medios de transporte, fabricación de los vehículos incluida.",
+  modesIntro: "El coche no es la única opción: esto es lo que emite cada medio de transporte, por persona, fabricación de los vehículos incluida.",
   modes: {
     marche: "A pie", velo: "Bicicleta", vae: "Bicicleta eléctrica", trottinette: "Patinete eléctrico",
     tgv: "Tren de alta velocidad (TGV)", tram: "Tranvía", metro: "Metro", intercites: "Tren de larga distancia (Intercités)", rer: "Tren de cercanías (RER)", busElec: "Autobús eléctrico", ter: "Tren regional (TER)", autocar: "Autocar", busThermique: "Autobús de combustión",
@@ -177,7 +177,7 @@ export default {
   ordresSous: "En gCO₂e, en escala logarítmica: cada marca vale 10 veces la anterior.",
   ordresRef: (nom) => `Referencia: ${nom}`,
   ordresRefLegende: (nom, g) => `Línea de puntos: la referencia, ${nom} (${g}). A su izquierda, lo que emite menos; a su derecha, lo que emite más.`,
-  rapport: { moins: (x) => `${x} veces menos`, plus: (x) => `${x} veces más`, autant: "lo mismo", ref: "referencia", zero: "ninguna emisión" },
+  rapport: { moins: (x) => `${x} veces menos`, plus: (x) => `${x} veces más`, autant: "lo mismo", ref: "referencia", zero: "ninguna emisión" },
   ordresLegende: "El color sigue la escala del eje: cada medio toma el tono de su posición en la banda degradada bajo las marcas.",
   ordresResume: (ref) => `Respecto a «${ref}»:`,
   modesLire: "Antes de comparar",
@@ -231,7 +231,7 @@ export default {
     ]],
   ],
   retourOutil: "Volver al simulador",
-  methodeIntro: "Cómo calcula el simulador. Cada hipótesis está numerada y documentada con su fuente; las menciones H1, H2… de las burbujas de ayuda remiten aquí.",
+  methodeIntro: "Para cada coche, el simulador suma la parte de su fabricación que te corresponde (batería incluida) y su uso (combustible o electricidad) en los kilómetros que harás con él, y luego compara las opciones. Cada cifra se apoya en una hipótesis numerada y con fuente, más abajo; las menciones H1, H2… de las burbujas de ayuda remiten aquí.",
   mentionsIntro: "Editor, alojamiento, datos personales (no se recoge ninguno), responsabilidad y licencias del simulador «¿Debo pasarme al eléctrico?».",
   // Questions-réponses (ticket 05) : chiffres du modèle, vérifiés par src/reponses.test.js
   questionsIntro: "Seis preguntas habituales sobre el coche eléctrico, con las respuestas en cifras del simulador para Bélgica. Cada resultado en cifras lo calcula el modelo; las demás cifras proceden de las fuentes. Las referencias H1, H2… y [1], [2]… remiten a las hipótesis y fuentes de la página Método.",

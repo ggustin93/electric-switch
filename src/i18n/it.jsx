@@ -16,7 +16,7 @@ export default {
   titre: "Auto elettrica o a benzina: devo passare all'elettrico?",
   nomSite: "Devo passare all'elettrico?",
   h1: <>Devo passare <em>all'elettrico</em>?</>,
-  lede: "In Belgio, su 200.000 km, un'auto elettrica compatta nuova emette circa il 60% di gas serra in meno di una a benzina, batteria compresa, se la rete continua a decarbonizzarsi. Ma sostituire un'auto che funziona ancora conviene solo oltre un certo chilometraggio: verifica il tuo caso in quattro domande, budget quotidiano compreso.",
+  lede: "In Belgio, su 200.000 km, un'auto elettrica compatta nuova emette circa il 60% di gas serra in meno di una a benzina, batteria compresa, se la rete continua a decarbonizzarsi. Ma sostituire un'auto che funziona ancora conviene solo oltre un certo chilometraggio: verifica il tuo caso in quattro domande.",
   langue: "Lingua",
   onglets: { decision: "La mia decisione", explorer: "Confronta le auto", modes: "Spostarsi in altro modo" },
   ans: (s) => `${s}${N}${s === "1" ? "anno" : "anni"}`,
@@ -169,7 +169,7 @@ export default {
   // v7 — spostarsi in altro modo (ADEME Impact CO₂)
   modesTitre: "Impronta per persona e per chilometro",
   comparerIntro: "Confronta l'impronta di ogni motorizzazione per il tuo profilo, produzione compresa, oppure metti due auto precise testa a testa.",
-  modesIntro: "L'auto non è l'unica opzione. Ecco l'impronta di carbonio per persona e per chilometro dei principali mezzi di trasporto, produzione dei veicoli compresa.",
+  modesIntro: "L'auto non è l'unica opzione: ecco quanto emette ogni mezzo di trasporto, per persona, produzione dei veicoli compresa.",
   modes: {
     marche: "A piedi", velo: "Bicicletta", vae: "Bici elettrica", trottinette: "Monopattino elettrico",
     tgv: "Treno ad alta velocità (TGV)", tram: "Tram", metro: "Metropolitana", intercites: "Treno Intercity", rer: "Treno suburbano (RER)", busElec: "Autobus elettrico", ter: "Treno regionale (TER)", autocar: "Pullman", busThermique: "Autobus termico",
@@ -180,7 +180,7 @@ export default {
   ordresSous: "In gCO₂e, su scala logaritmica: ogni tacca vale 10 volte la precedente.",
   ordresRef: (nom) => `Riferimento: ${nom}`,
   ordresRefLegende: (nom, g) => `Linea tratteggiata: il riferimento, ${nom} (${g}). A sinistra, ciò che emette meno; a destra, ciò che emette di più.`,
-  rapport: { moins: (x) => `${x} volte meno`, plus: (x) => `${x} volte di più`, autant: "più o meno uguale", ref: "riferimento", zero: "nessuna emissione" },
+  rapport: { moins: (x) => `${x} volte meno`, plus: (x) => `${x} volte di più`, autant: "più o meno uguale", ref: "riferimento", zero: "nessuna emissione" },
   ordresLegende: "Il colore segue la scala dell'asse: ogni mezzo prende la tinta della sua posizione sulla banda sfumata sotto le tacche.",
   ordresResume: (ref) => `Rispetto a “${ref}”:`,
   modesLire: "Da leggere prima di confrontare",
@@ -234,7 +234,7 @@ export default {
     ]],
   ],
   retourOutil: "Torna al simulatore",
-  methodeIntro: "Come calcola il simulatore. Ogni ipotesi è numerata e documentata con le fonti; i riferimenti I1, I2… nei fumetti di aiuto rimandano qui.",
+  methodeIntro: "Per ogni auto, il simulatore somma la quota della sua produzione che ti spetta (batteria compresa) e il suo uso (carburante o elettricità) sui chilometri che percorrerai, poi confronta le opzioni. Ogni cifra si basa su un'ipotesi numerata e documentata qui sotto; i riferimenti I1, I2… nei fumetti di aiuto rimandano qui.",
   mentionsIntro: "Editore, hosting, dati personali (nessuno viene raccolto), responsabilità e licenze del simulatore «Devo passare all'elettrico?».",
   // Questions-réponses (ticket 05) : chiffres du modèle, vérifiés par src/reponses.test.js
   questionsIntro: "Sei domande comuni sull'auto elettrica, con le risposte in cifre del simulatore per il Belgio. Ogni risultato in cifre è calcolato dal modello; le altre cifre vengono dalle fonti. I riferimenti I1, I2… e [1], [2]… indicano le ipotesi e le fonti della pagina Metodo.",

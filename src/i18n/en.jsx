@@ -12,7 +12,7 @@ export default {
   titre: "Electric or petrol car: should I switch to electric?",
   nomSite: "Should I switch to electric?",
   h1: <>Should I switch to <em>electric</em>?</>,
-  lede: "In Belgium, over 200,000 km, a new electric compact car emits about 60% less greenhouse gas than a petrol one, battery included, if the grid keeps decarbonising. But replacing a car that still runs only pays off above a certain mileage: check your own case in four questions, everyday budget included.",
+  lede: "In Belgium, over 200,000 km, a new electric compact car emits about 60% less greenhouse gas than a petrol one, battery included, if the grid keeps decarbonising. But replacing a car that still runs only pays off above a certain mileage: check your own case in four questions.",
   langue: "Language",
   onglets: { decision: "My decision", explorer: "Compare cars", modes: "Other ways to get around" },
   ans: (s, n) => `${s}${N}${n === 1 ? "year" : "years"}`,
@@ -165,7 +165,7 @@ export default {
   // v7 — other ways to get around (ADEME Impact CO₂)
   modesTitre: "Footprint per person per kilometre",
   comparerIntro: "Compare the footprint of every powertrain for your profile, manufacturing included, or put two specific cars head-to-head.",
-  modesIntro: "The car is not the only option. Here is the carbon footprint per person and per kilometre of the main modes of transport, vehicle manufacturing included.",
+  modesIntro: "The car is not the only option: here is what each mode of transport emits, per person, vehicle manufacturing included.",
   modes: {
     marche: "Walking", velo: "Bike", vae: "E-bike", trottinette: "E-scooter (stand-up)",
     tgv: "High-speed train (TGV)", tram: "Tram", metro: "Metro", intercites: "Intercity train", rer: "Suburban train (RER)", busElec: "Electric bus", ter: "Regional train (TER)", autocar: "Coach", busThermique: "Diesel bus",
@@ -176,7 +176,7 @@ export default {
   ordresSous: "In gCO₂e, on a logarithmic scale: each gridline is 10 times the previous one.",
   ordresRef: (nom) => `Reference: ${nom}`,
   ordresRefLegende: (nom, g) => `Dashed line: the reference, ${nom} (${g}). To its left, what emits less; to its right, what emits more.`,
-  rapport: { moins: (x) => `${x} times less`, plus: (x) => `${x} times more`, autant: "about the same", ref: "reference", zero: "no emissions" },
+  rapport: { moins: (x) => `${x} times less`, plus: (x) => `${x} times more`, autant: "about the same", ref: "reference", zero: "no emissions" },
   ordresLegende: "Colour follows the axis scale: each mode takes the shade of its position on the gradient strip under the gridline labels.",
   ordresResume: (ref) => `Compared with “${ref}”:`,
   modesLire: "Read before comparing",
@@ -230,7 +230,7 @@ export default {
     ]],
   ],
   retourOutil: "Back to the simulator",
-  methodeIntro: "How the simulator calculates. Every assumption is numbered and sourced; the A1, A2… mentions in the help bubbles link here.",
+  methodeIntro: "For each car, the simulator adds up your share of its manufacturing (battery included) and its use (fuel or electricity) over the kilometres you will drive it, then compares the options. Every figure rests on a numbered, sourced assumption below; the A1, A2… mentions in the help bubbles link here.",
   mentionsIntro: "Publisher, hosting, personal data (none is collected), liability and licences of the “Should I switch to electric?” simulator.",
   // Questions-réponses (ticket 05) : chiffres du modèle, vérifiés par src/reponses.test.js
   questionsIntro: "Six common questions about electric cars, answered with the simulator's figures for Belgium. Every computed result comes from the model; the other figures come from the sources. The references A1, A2… and [1], [2]… point to the assumptions and sources on the Method page.",

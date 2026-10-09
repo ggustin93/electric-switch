@@ -209,37 +209,6 @@ h1 em {
   }
 }
 
-/* Sélecteur de langue : liens texte discrets (réglage qu'on touche une fois), séparés de « Méthode » par un filet.
-   Langue active : même marque que la page courante (encre + soulignement accent), pas de remplissage. */
-.langue {
-  display: inline-flex;
-  flex-shrink: 0;
-  /* cibles de 44 px centrées : le dernier libellé déborde dans la marge pour rester aligné sur la colonne */
-  margin-right: -12px;
-  border-left: 1px solid var(--line);
-}
-.langue a {
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  min-height: 44px;
-  min-width: 44px; /* cible tactile 44 × 44, le texte garde sa taille */
-  font-size: var(--fs-sm);
-  font-weight: 500;
-  color: var(--ink-2);
-  text-decoration: none;
-  transition: color var(--dur-1);
-}
-.langue a:hover {
-  color: var(--ink);
-}
-.langue a[aria-current="true"] {
-  color: var(--ink);
-  font-weight: 600;
-  /* soulignement à la largeur du libellé (≈ 30 px), pas de la cible */
-  background: linear-gradient(var(--accent) 0 0) 50% 100% / calc(100% - 14px) 2px no-repeat;
-}
-
 /* ============================================================
    Onglets : barre soulignée
    ============================================================ */
@@ -1474,29 +1443,7 @@ input[type="number"] {
   color: var(--ink-2);
 }
 
-/* Navigation du site : lien Méthode dans l'en-tête, liens de pied de page, pages de lecture */
-.entete-actions {
-  display: flex;
-  align-items: center;
-  gap: var(--s3);
-  flex-shrink: 0;
-}
-.nav-site {
-  display: inline-flex;
-  align-items: center;
-  min-height: 44px;
-  padding: 0 var(--s1);
-  font-size: var(--fs-sm);
-  font-weight: 500;
-  color: var(--ink-2);
-  text-decoration: none;
-  box-shadow: inset 0 -2px 0 transparent;
-}
-.nav-site:hover,
-.nav-site[aria-current="page"] {
-  color: var(--ink);
-  box-shadow: inset 0 -2px 0 var(--accent);
-}
+/* Navigation du site : liens de pied de page, pages de lecture */
 .liens-pied {
   display: flex;
   flex-wrap: wrap;
@@ -1553,11 +1500,6 @@ input[type="number"] {
 .eco.lecture {
   font-size: var(--fs);
 }
-@media (max-width: 560px) {
-  .entete-haut {
-    flex-wrap: wrap;
-  }
-}
 
 /* Page Écoconception : mesures sur 2 lignes de 3 (3 lignes de 2 sur mobile), sans case orpheline */
 .lecture .eco-mesures {
@@ -1572,15 +1514,6 @@ input[type="number"] {
   color: var(--ink);
 }
 
-/* En-tête : Méthode et FR/EN dans une barre fine au-dessus, le titre garde toute la largeur */
-.entete-haut {
-  flex-direction: column-reverse;
-  align-items: stretch;
-  gap: var(--s1);
-}
-.entete-actions {
-  justify-content: flex-end;
-}
 
 /* Motifs de mobilité très discrets, uniquement dans les marges vides des grands écrans.
    Deux pseudo-éléments (0 nœud DOM), un par marge ; `space` ne pose que des tuiles entières,
@@ -1715,16 +1648,9 @@ input[type="number"] {
 }
 
 /* Mobile (Impeccable adapt) : chaque pixel de largeur compte.
-   - langues : pas de débordement dans la marge (ES ne colle plus au bord), cibles 36 × 44 px (≥ 24 px, WCAG 2.2) ;
    - cartes et verdict : 16 px de remplissage au lieu de 24, le contenu gagne 16 px de large ;
    - phrases-réponses au corps du texte : le verdict tient en moins de lignes, les chiffres arrivent plus tôt. */
 @media (max-width: 560px) {
-  .langue {
-    margin-right: 0;
-  }
-  .langue a {
-    min-width: 36px;
-  }
   .carte,
   .verdict {
     padding: var(--s4);
@@ -1734,4 +1660,111 @@ input[type="number"] {
     font-size: var(--fs);
     line-height: 1.55;
   }
+}
+
+/* Langue : menu replié à droite du titre (FR ▾), liste des 5 langues en surimpression */
+.langue {
+  position: relative;
+  flex-shrink: 0;
+}
+.langue > summary {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--s1);
+  min-height: 44px;
+  padding: 0 var(--s2) 0 var(--s3);
+  border: 1px solid var(--line);
+  border-radius: var(--r-pill);
+  font-size: var(--fs-sm);
+  font-weight: 600;
+  color: var(--ink-2);
+  cursor: pointer;
+  list-style: none;
+  transition: color var(--dur-1), border-color var(--dur-1);
+}
+.langue > summary::-webkit-details-marker {
+  display: none;
+}
+.langue > summary::after {
+  content: "";
+  width: 16px;
+  height: 16px;
+  background: var(--chevron) center / 16px no-repeat;
+  transition: transform var(--dur-2) var(--ease);
+}
+.langue > summary:hover,
+.langue[open] > summary {
+  color: var(--ink);
+  border-color: var(--line-control);
+}
+.langue[open] > summary::after {
+  transform: rotate(180deg);
+}
+.langue nav {
+  position: absolute;
+  right: 0;
+  top: calc(100% + var(--s1));
+  z-index: 10;
+  display: flex;
+  flex-direction: column;
+  min-width: 11rem;
+  padding: var(--s1);
+  background: var(--surface);
+  border: 1px solid var(--line);
+  border-radius: var(--r);
+  box-shadow: var(--shadow-pop);
+}
+.langue nav a {
+  display: flex;
+  align-items: center;
+  min-height: 44px;
+  padding: 0 var(--s3);
+  border-radius: var(--r-sm);
+  color: var(--ink-2);
+  text-decoration: none;
+}
+.langue nav a:hover {
+  background: var(--surface-2);
+  color: var(--ink);
+}
+.langue nav a[aria-current="true"] {
+  color: var(--accent);
+  font-weight: 600;
+}
+
+/* Le titre ouvre la carte : pas de filet au-dessus du premier bloc (les deux colonnes sur grand écran) */
+.carte > .section-filet:first-child,
+.carte > .resultats-grille:first-child > .section-filet:first-child {
+  margin-top: 0;
+  padding-top: 0;
+  border-top: 0;
+}
+@media (min-width: 64rem) {
+  .carte > .resultats-grille:first-child > .section-filet {
+    margin-top: 0;
+    padding-top: 0;
+    border-top: 0;
+  }
+}
+.sous-titre + .profil {
+  margin-top: var(--s2);
+}
+.profil + * {
+  margin-top: var(--s4);
+}
+
+/* « 6,6 fois moins » reste d'un bloc */
+.resume-ref strong {
+  white-space: nowrap;
+}
+
+/* Intro de « Ma décision » : la réponse courte du site, posée dans un cadre discret (accent léger) avant le parcours */
+.lede-cle {
+  color: var(--ink);
+  font-size: var(--fs);
+  max-width: none;
+  margin: 0 0 var(--s5);
+  padding: var(--s4);
+  border: 1px solid color-mix(in srgb, var(--accent) 55%, transparent);
+  border-radius: var(--r);
 }

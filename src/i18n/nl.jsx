@@ -12,7 +12,7 @@ export default {
   titre: "Elektrische of benzinewagen: moet ik overstappen op elektrisch?",
   nomSite: "Moet ik overstappen op elektrisch?",
   h1: <>Moet ik overstappen op <em>elektrisch</em>?</>,
-  lede: "In België stoot een nieuwe elektrische compacte auto over 200.000 km ongeveer 60% minder broeikasgassen uit dan een benzinewagen, batterij inbegrepen, als het net verder koolstofarm wordt. Maar een auto vervangen die nog rijdt, loont pas boven een bepaald aantal kilometers: controleer uw situatie in vier vragen, dagelijks budget inbegrepen.",
+  lede: "In België stoot een nieuwe elektrische compacte auto over 200.000 km ongeveer 60% minder broeikasgassen uit dan een benzinewagen, batterij inbegrepen, als het net verder koolstofarm wordt. Maar een auto vervangen die nog rijdt, loont pas boven een bepaald aantal kilometers: controleer uw situatie in vier vragen.",
   langue: "Taal",
   onglets: { decision: "Mijn beslissing", explorer: "Auto's vergelijken", modes: "Anders verplaatsen" },
   ans: (s, n) => `${s}${N}jaar`,
@@ -165,7 +165,7 @@ export default {
   // v7 — se déplacer autrement (ADEME Impact CO₂)
   modesTitre: "Voetafdruk per persoon per kilometer",
   comparerIntro: "Vergelijk de voetafdruk van elke aandrijving voor uw profiel, productie inbegrepen, of laat twee specifieke auto's het tegen elkaar opnemen in een duel.",
-  modesIntro: "De auto is niet de enige optie. Hier ziet u de CO₂-voetafdruk per persoon en per kilometer van de belangrijkste vervoerswijzen, inclusief de productie van de voertuigen.",
+  modesIntro: "De auto is niet de enige optie: zoveel stoot elke vervoerswijze uit, per persoon, inclusief de productie van de voertuigen.",
   modes: {
     marche: "Te voet", velo: "Fiets", vae: "Elektrische fiets", trottinette: "Elektrische step",
     tgv: "Hogesnelheidstrein (TGV)", tram: "Tram", metro: "Metro", intercites: "Intercitytrein", rer: "Voorstadstrein (RER)", busElec: "Elektrische bus", ter: "Regionale trein (TER)", autocar: "Touringcar", busThermique: "Dieselbus",
@@ -176,7 +176,7 @@ export default {
   ordresSous: "In gCO₂e, op een logaritmische schaal: elke streep is 10 keer zoveel waard als de vorige.",
   ordresRef: (nom) => `Referentie: ${nom}`,
   ordresRefLegende: (nom, g) => `Stippellijn: de referentie, ${nom} (${g}). Links ervan wat minder uitstoot, rechts ervan wat meer uitstoot.`,
-  rapport: { moins: (x) => `${x} keer minder`, plus: (x) => `${x} keer meer`, autant: "evenveel", ref: "referentie", zero: "geen uitstoot" },
+  rapport: { moins: (x) => `${x} keer minder`, plus: (x) => `${x} keer meer`, autant: "evenveel", ref: "referentie", zero: "geen uitstoot" },
   ordresLegende: "De kleur volgt de schaal van de as: elke vervoerswijze krijgt de tint van zijn positie op de kleurenstrook onder de strepen.",
   ordresResume: (ref) => `Ten opzichte van ‘${ref}’:`,
   modesLire: "Lees dit voor u vergelijkt",
@@ -230,7 +230,7 @@ export default {
     ]],
   ],
   retourOutil: "Terug naar de simulator",
-  methodeIntro: "Hoe de simulator rekent. Elke aanname is genummerd en heeft een bron; de vermeldingen A1, A2… in de hulpballonnen verwijzen hiernaar.",
+  methodeIntro: "Per auto telt de simulator uw aandeel in de productie (batterij inbegrepen) op bij het gebruik (brandstof of elektriciteit) over de kilometers die u ermee rijdt, en vergelijkt dan de opties. Elk cijfer steunt op een genummerde aanname met bron hieronder; de vermeldingen A1, A2… in de hulpballonnen verwijzen hiernaar.",
   mentionsIntro: "Uitgever, hosting, persoonsgegevens (er worden er geen verzameld), aansprakelijkheid en licenties van de simulator ‘Moet ik overstappen op elektrisch?’.",
   // Questions-réponses (ticket 05) : chiffres du modèle, vérifiés par src/reponses.test.js
   questionsIntro: "Zes veelvoorkomende vragen over de elektrische auto, beantwoord met de cijfers van de simulator voor België. Elk berekend resultaat komt uit het model; de andere cijfers komen uit de bronnen. De verwijzingen A1, A2… en [1], [2]… duiden de aannames en bronnen op de pagina Methode aan.",
