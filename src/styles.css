@@ -1406,10 +1406,6 @@ input[type="number"] {
   white-space: nowrap;
   font-variant-numeric: tabular-nums;
 }
-.budget-amortir {
-  margin: var(--s3) 0 0;
-  max-width: 62ch;
-}
 
 /* Valeur saisissable à côté du libellé d'un curseur */
 .saisie {

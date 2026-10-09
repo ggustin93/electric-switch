@@ -530,14 +530,14 @@ function Budget({ carb, conso, kmAn, seg, paysId }) {
       <h2>{s.budgetTitre}</h2>
       {/* Le pays est nommé : les montants viennent de ses prix de l'énergie (choisis à l'étape 1) */}
       <p className="bascule">{s.budgetUsageTitre(usage(s, f, th - ve), s.pays[paysId])}</p>
-      <dl className="budget-postes">
-        <div><dt>{s.budgetVotreVoiture}</dt><dd>{s.budgetLigne(f.eur(th), f.n1f(b.energie100Garder))}</dd></div>
-        <div><dt>{s.budgetElectrique}</dt><dd>{s.budgetLigne(f.eur(ve), f.n1f(b.energie100VE))}</dd></div>
-      </dl>
-      <p className="aide-ligne">{s.budgetPerimetre}</p>
-      {/* L'achat, sans prix propre à un pays : un écart de prix égal aux économies annuelles s'amortit en un an */}
-      <p className="budget-amortir">{th - ve >= 50 ? s.budgetAmortir(f.eur(th - ve)) : s.budgetAmortirNon}</p>
+      {/* Une phrase visible ; le détail (même périmètre par an, énergie seule aux 100 km) et les prix sont repliés.
+          Pas d'amortissement : sans prix d'achat ni revente, il ne serait qu'une redite trompeuse de l'écart annuel. */}
       <Repli className="replie" titre={s.budgetAjuster}>
+        <dl className="budget-postes">
+          <div><dt>{s.budgetVotreVoiture}</dt><dd>{s.budgetLigne(f.eur(th), f.n1f(b.energie100Garder))}</dd></div>
+          <div><dt>{s.budgetElectrique}</dt><dd>{s.budgetLigne(f.eur(ve), f.n1f(b.energie100VE))}</dd></div>
+        </dl>
+        <p className="aide-ligne">{s.budgetPerimetre}</p>
         <div className="budget-champs">
           <ChampPrix id="p-carb" label={s.budgetPrixCarb(s.motor[carb].nom)} value={p.carb} step="0.01" onChange={maj("carb")} />
           <ChampPrix id="p-elec" label={s.budgetPrixElec} value={p.elec} step="0.01" onChange={maj("elec")} />
