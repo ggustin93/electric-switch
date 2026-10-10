@@ -237,7 +237,7 @@ export default {
     ["Use of artificial intelligence", "Generative AI tools were used to write part of the code and texts, and to search the literature. The values used were checked, as far as possible, against the primary sources cited in the Method, cross-checking several sources. Errors nevertheless remain possible: any report is welcome. The simulator itself uses no AI: its results come from a deterministic model, computed in your browser."],
     ["Sources and method", <>The approach draws on {carbone4("Carbone 4")}; data come mainly from ADEME, the ICCT, Ember and Electricity Maps. Each assumption is numbered and sourced in the {lien("methode", "Method")}; the answers in {lien("questions", "Common questions")} are recomputed by the model and checked by automated tests. The source code will be released as open source, so that anyone can check and refine the model; until then, every parameter is listed in the Method. Version 7.5, October 2026. To cite: Gustin, G. (2026). “Should I switch to electric?”, version 7.5, electricornot.eu.</>],
     ["Digital sobriety", <>The simulator is eco-designed to limit its load on your device and on the network: each page fits in a single request and scores EcoIndex A. The choices made are detailed on the {lien("ecoconception", "Ecodesign")} page.</>],
-    ["Report an error", <>Errors, more recent sources and suggestions can be sent to <a href="mailto:contact@electricornot.eu">contact@electricornot.eu</a>.</>],
+    ["Report an error", <>Errors, more recent sources and suggestions can be sent to <a href="mailto:contact@electricornot.eu">contact@electricornot.eu</a>.</>, "contact"],
   ],
   // titre de la page et <title> ; le lien court reste pages.methode
   methodeTitre: "Method and assumptions",

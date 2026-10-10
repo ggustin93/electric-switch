@@ -1137,7 +1137,7 @@ function PageApropos() {
       <RetourOutil />
       <h2>{s.pages.apropos}</h2>
       <p className="lede-carte">{s.aproposIntro}</p>
-      {s.apropos({ lien, carbone4: lienCarbone4 }).flatMap(([titre, texte]) => [<h3 key={titre}>{titre}</h3>, <p key={`${titre}-p`}>{texte}</p>])}
+      {s.apropos({ lien, carbone4: lienCarbone4 }).flatMap(([titre, texte, id]) => [<h3 key={titre} id={id}>{titre}</h3>, <p key={`${titre}-p`}>{texte}</p>])}
     </article>
   );
 }
