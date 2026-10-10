@@ -1,6 +1,7 @@
 import { test } from "node:test";
 import assert from "node:assert/strict";
 import {
+  gainAccroche,
   PAYS, SEGMENTS, BATTERIES, MOTORS, VIE_ANS, VIE_KM, byId,
   partFab, mixMoyen, calc, fenetre, decider, kmPivot, kmBascule, budget, departager, calcConfig, paysProbable, KM_AN_PARC, anneesRestantes, voitureActuelle,
 } from "./model.js";
@@ -44,6 +45,15 @@ test("H13 : VE vs essence sur 200 000 km — France −65 à −75 %, UE −55 �
   };
   assert.ok(ecart("FR") > 0.65 && ecart("FR") < 0.75, `FR ${ecart("FR")}`);
   assert.ok(ecart("EU") > 0.55 && ecart("EU") < 0.65, `EU ${ecart("EU")}`);
+});
+
+test("accroche : gain du VE neuf par pays, arrondi à 10, fourchette si la décarbonation change l'arrondi", () => {
+  // Valeurs de la Méthode (UE −60 %, France −70 %) ; Pologne : 38 % si le réseau se décarbone, 20 % sinon (revue data, 10/2026)
+  assert.deepEqual(gainAccroche(byId(PAYS, "EU")), { paysId: "EU", min: 60, max: 60 });
+  assert.deepEqual(gainAccroche(byId(PAYS, "FR")), { paysId: "FR", min: 70, max: 70 });
+  assert.deepEqual(gainAccroche(byId(PAYS, "PL")), { paysId: "PL", min: 20, max: 40 });
+  // Consommation d'essence européenne : sous-estime le gain aux États-Unis et en Australie, on montre la moyenne UE
+  assert.deepEqual(gainAccroche(byId(PAYS, "US")), { paysId: "EU", min: 60, max: 60 });
 });
 
 test("décision : horizon borné, verdict cohérent avec l'amortissement", () => {

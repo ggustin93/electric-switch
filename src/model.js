@@ -116,6 +116,23 @@ export function calc(motorId, seg, gridG, kmVous, ratioFab, phevShare, efBatt) {
   return { motorId, fabTotale, fabAttr, usage, usageT, totalT, perKm: (totalT * 1e6) / kmVous };
 }
 
+// --- Accroche (phrase d'accueil) : compacte électrique neuve vs essence neuve sur VIE_KM, batterie UE, 12 000 km/an.
+// Arrondi à 10 (le modèle n'est pas plus précis) ; min = réseau figé, max = réseau qui se décarbone.
+// États-Unis et Australie : la consommation d'essence est européenne, le gain y serait sous-estimé → moyenne UE.
+const ACCROCHE_HORS = ["US", "AU"];
+export function gainAccroche(pays) {
+  if (ACCROCHE_HORS.includes(pays.id)) pays = byId(PAYS, "EU");
+  const seg = byId(SEGMENTS, "compacte");
+  const efBatt = byId(BATTERIES, "ue").ef;
+  const gain = (decarb) => {
+    const g = mixMoyen(pays.g, VIE_KM / KM_AN_PARC, decarb, pays.declin);
+    const ev = calc("ev", seg, g, VIE_KM, 1, 0, efBatt).totalT;
+    const ess = calc("essence", seg, g, VIE_KM, 1, 0, efBatt).totalT;
+    return Math.round((1 - ev / ess) * 10) * 10;
+  };
+  return { paysId: pays.id, min: gain(false), max: gain(true) };
+}
+
 // --- Fenêtre de détention : km parcourus et part de fabrication ---
 // marginal : un achat neuf porte 100 % de sa fabrication (H3), même revendu ensuite
 export function fenetre({ occasion, odo, age, kmAn, revente, detention, marginal = false }) {

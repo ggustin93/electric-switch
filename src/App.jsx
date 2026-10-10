@@ -3,7 +3,7 @@ import { useContext, useEffect, useId, useLayoutEffect, useMemo, useRef, useStat
 import {
   PAYS, SEGMENTS, BATTERIES, MOTORS, MODES, AGE_SUGGESTION, SEUIL_SERRE, byId,
   mixMoyen, calc, fenetre, decider, calcConfig, departager, kmPivot, kmBascule, voitureActuelle,
-  budget, PRIX_ENERGIE, ENTRETIEN, paysProbable, KM_AN_PARC, anneesRestantes,
+  budget, gainAccroche, PRIX_ENERGIE, ENTRETIEN, paysProbable, KM_AN_PARC, anneesRestantes,
 } from "./model.js";
 // Une page par langue (ADR 0006) : « @langue » pointe vers le dictionnaire de la page construite
 import STR_PAGE from "@langue";
@@ -380,7 +380,7 @@ function Decision({ shared, allerExplorer }) {
   return (
     <>
       {/* Intro du parcours « Ma décision » : seulement avant de commencer, ensuite elle repousserait les réponses */}
-      {etape === 0 && <p className="lede">{s.lede}</p>}
+      {etape === 0 && <p className="lede">{accroche(s, pays)}</p>}
       <ol className="etapes" aria-label={s.etapeSur(etape + 1, 4)}>
         {s.etapes.map((e, i) => (
           <li key={i} aria-current={i === etape ? "step" : undefined}>
@@ -569,6 +569,12 @@ function texteBascule(s, f, seuil) {
   if (seuil === null) return s.basculeJamais;
   if (seuil <= 3000) return s.basculeToujours;
   return s.bascule(f.kmAn(seuil));
+}
+
+// Accroche au pays deviné ou choisi ; `s.lede` (moyenne UE, fixe) reste la description des moteurs de recherche
+function accroche(s, pays) {
+  const { paysId, min, max } = gainAccroche(pays);
+  return s.accroche(s.pays[paysId], min, max);
 }
 
 function classeEtape(i, etape) {
