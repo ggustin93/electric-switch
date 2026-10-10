@@ -70,8 +70,8 @@ export default {
     kmComp: "At low mileage the car reaches its age limit (18 years) before its 200,000 km limit, so manufacturing is spread over fewer kilometres (A1).",
     conso: "What you actually use day to day, not the manufacturer figure (about 20% optimistic). Well-to-wheel factors: E10 petrol 2.69 and B7 diesel 3.10 kgCO₂e/L, ADEME (A7).",
     annees: "Until a major breakdown or scrapping. A European car lasts about 18 years (A1). Its manufacturing emissions are already spent, so only its use counts in the comparison.",
-    categorie: "Sets the weight, real-world consumption and battery size. The electric car's extra weight is counted three times: separate battery, +5% chassis and real consumption, with 10% charging losses added (A8 to A10).",
-    etat: "New: your purchase triggers the whole manufacturing footprint (marginal convention, A3). Used: manufacturing is shared between owners according to the value each one consumes, with 15%/yr depreciation (ISO 14044, A2). Your share falls smoothly with the car's age at purchase.",
+    categorie: "Sets the weight, real-world consumption and battery size. The electric car's weight is accounted for in its manufacturing (battery, chassis +5%) and in its consumption, including 10% charging losses (A8 to A10).",
+    etat: "New: its whole manufacturing footprint counts for you (A3). Used: only the share of its value you consume, which falls with its age (A2).",
     odo: "The one in the listing. By default it is estimated at 12,000 km per year of age. Manufacturing is shared between owners by consumed value (15%/yr depreciation, A2): a nearly new used car carries most of it, an old one a small share.",
     age: "Cars also die of old age (about 18 years in Europe, A1). Age caps the remaining kilometres and sets your share of the manufacturing footprint.",
     batterie: "Medians of 62 (LFP) to 74 (NMC) kgCO₂e per kWh of battery, over 100 depending on material origin and producing country. Default: the European sales average (A8).",
@@ -107,7 +107,7 @@ export default {
   moinsEmissions: "Lower emissions",
   surPeriode: "tonnes of CO₂e over the period",
   commentLire: "How to read this result",
-  conventions: "Your current car is already built, so only its use counts. A new electric car carries its whole manufacturing footprint (marginal convention, A3); a used one carries the share of value you consume (A2). If sold rather than scrapped, your current car would keep emitting with its next owner, but would most likely replace another vehicle: a near-neutral effect across the fleet.",
+  conventions: "Your current car is already built, so only its use counts. A new electric car carries its whole manufacturing footprint (marginal convention, A3); a used one carries the share of value you consume (A2). If sold, your current car will be driven by someone else, in place of another car: the overall effect is roughly zero.",
   modifier: "Change my answers",
 
   parametres: "Settings",
@@ -179,7 +179,6 @@ export default {
   ordresRef: (nom) => `Reference: ${nom}`,
   ordresRefLegende: (nom, g) => `Dashed line: the reference, ${nom} (${g}). To its left, what emits less; to its right, what emits more.`,
   rapport: { moins: (x) => `${x} times less`, plus: (x) => `${x} times more`, autant: "about the same", ref: "reference", zero: "no emissions" },
-  ordresLegende: "Colour follows the axis scale: each mode takes the shade of its position on the gradient strip under the gridline labels.",
   ordresResume: (ref) => `Compared with “${ref}”:`,
   modesLire: "Assumptions and limits",
   modesNotes: [
@@ -197,7 +196,7 @@ export default {
   budgetVotreVoiture: "Your car",
   budgetElectrique: "Electric",
   budgetLigne: (an, cent) => `${an} a year (energy: €${cent} per 100${N}km)`,
-  budgetPerimetre: "Per year: energy and maintenance, home charging; with public charging, the saving drops markedly. Excluding purchase, depreciation, insurance, taxes and subsidies.",
+  budgetPerimetre: "Energy and maintenance per year, home charging. Excluding purchase, depreciation, insurance, taxes and subsidies. With public charging, the saving is much smaller.",
   budgetAjuster: "Details and your energy prices",
   budgetSources: ({ carb, elec }) => `Default prices: ${carb ? `fuel as of ${carb} (EU Weekly Oil Bulletin)` : "fuel: national source"}, ${elec ? `household electricity Eurostat ${elec}` : "electricity: national regulator or statistics"}. Maintenance: €0.07/km for an older combustion car, repairs included, €0.04/km for an electric car. With public charging, expect 1.5 to 2 times the home price (about €0.50/kWh).`,
   budgetUsageMoins: (x) => `about ${x} less a year`,
@@ -232,7 +231,7 @@ export default {
   // Relu par des experts UX, SEO et académique (10/10/2026) ; recours à l'IA déclaré (transparence, esprit de l'AI Act)
   apropos: ({ lien, carbone4 }) => [
     ["Origin and purpose", "The project grew out of a question that kept coming up among the author's friends: is it better to switch to electric, and under what conditions? The author had not found a simple tool that answered an individual situation. The simulator therefore compares two options, keeping your car or switching to electric, counting manufacturing (battery included) and use, by country and mileage. Its aim is educational: it gives orders of magnitude and may conclude that keeping your car is better."],
-    ["Scope and methodological choices", "The simulator assesses one main indicator: greenhouse gas emissions (in CO₂e) from manufacturing and use. Its assumptions are deliberately cautious: a new purchase carries all of its manufacturing, no recycling credit is counted and the lifetime used is shorter than the ICCT's. When electric still comes out ahead, its advantage is therefore more likely understated than overstated. Results are orders of magnitude, with an uncertainty of about ±20%. This is neither a life-cycle assessment compliant with ISO 14040 and 14044 nor a peer-reviewed study: the assumptions are public and sourced, the calculations are tested, and reasoned comments are welcome."],
+    ["Scope and methodological choices", "The simulator assesses one main indicator: greenhouse gas emissions (in CO₂e) from manufacturing and use. Its assumptions are deliberately cautious: a new purchase carries all of its manufacturing, no recycling credit is counted and the lifetime used is shorter than the ICCT's. When electric comes out ahead, its advantage is therefore, if anything, understated. Results are orders of magnitude, with an uncertainty of about ±20%. This is neither a life-cycle assessment compliant with ISO 14040 and 14044 nor a peer-reviewed study: the assumptions are public and sourced, the calculations are tested, and reasoned comments are welcome."],
     ["What the simulator does not assess", "The budget covers only energy and maintenance. It leaves out depreciation, financing, insurance, installing a charging point, registration and road taxes, and subsidies and tax benefits (grants, deductibility, company-car rules). These vary by country, region and personal situation, change often, and can on their own reverse the cost difference estimated here. Other environmental impacts (mineral resources, water), end of life and infrastructure are not modelled. Nor are health effects in cities: an electric car has no exhaust emissions and is quieter at low speed, but still produces tyre and brake wear particles (H12). Finally, walking, cycling, public transport and car-sharing generally emit less per person and per kilometre than a car driven alone; the “Other ways to get around” tab compares them."],
     ["Author and independence", "The simulator was designed and developed by Guillaume Gustin (Pwablo, pwablo.be), an independent software engineer based in Brussels. It receives no funding from carmakers or energy suppliers, shows no advertising and collects no personal data. The author has no ties with Carbone 4, ADEME, the ICCT or the other organisations cited."],
     ["Use of artificial intelligence", "Generative AI tools were used to write part of the code and texts, and to search the literature. The values used were checked, as far as possible, against the primary sources cited in the Method, cross-checking several sources. Errors nevertheless remain possible: any report is welcome. The simulator itself uses no AI: its results come from a deterministic model, computed in your browser."],
@@ -242,10 +241,10 @@ export default {
   ],
   // titre de la page et <title> ; le lien court reste pages.methode
   methodeTitre: "Method and assumptions",
-  methodeIntro: "The simulator compares cars over their whole life, in CO₂e (all greenhouse gases, expressed as CO₂). It adds up manufacturing, battery included, and use (fuel or electricity) over the kilometres you will drive the car. Bought new, all of its manufacturing counts for you; second-hand, a share based on its value; kept, none, because it is already built. Electricity is your country's average grid mix, which is gradually decarbonising. Several choices deliberately work against electric cars (a shorter lifetime than the ICCT's, no recycling credit): when electric still comes out ahead, its advantage is more likely understated than overstated. Results are orders of magnitude, within about ±20%; each assumption is numbered and sourced below, and the H1, H2… marks in the help bubbles point here.",
+  methodeIntro: "The simulator compares cars over their whole life, in CO₂e (all greenhouse gases, expressed as CO₂). It adds up manufacturing, battery included, and use (fuel or electricity) over the kilometres you will drive the car. Bought new, all of its manufacturing counts for you; second-hand, a share based on its value; kept, none, because it is already built. Electricity is your country's average grid mix, which is gradually decarbonising. Several choices deliberately work against electric cars (a shorter lifetime than the ICCT's, no recycling credit): when electric comes out ahead, its advantage is therefore, if anything, understated. Results are orders of magnitude, within about ±20%; each assumption is numbered and sourced below, and the H1, H2… marks in the help bubbles point here.",
   mentionsIntro: "Publisher, hosting, personal data (none is collected), liability and licences of the “Should I switch to electric?” simulator.",
   // Questions-réponses (ticket 05) : chiffres du modèle, vérifiés par src/reponses.test.js
-  questionsIntro: "Six common questions about electric cars, answered with the simulator's figures for Belgium. Every computed result comes from the model; the other figures come from the sources. The references A1, A2… and [1], [2]… point to the assumptions and sources on the Method page.",
+  questionsIntro: "Six common questions about electric cars, answered with the simulator's figures for Belgium. Figures are computed by the model or taken from the sources; A1, A2… and [1], [2]… refer to the Method page.",
   questions: [
     ["Does an electric car really emit less?", "Yes, over its whole life, in Belgium as in most European countries. Here, a new electric compact emits 16 t against 44 t for a petrol one over 200,000 km, battery included: 63% less, depending on grid decarbonisation (A6) and battery origin (A8). The ICCT finds −73% on the EU average, with a more decarbonised grid (78 g/kWh on average over the car's life) and 240,000 km (A13) [8, 14]."],
     ["From how many km a year?", "In Belgium, a new electric car overtakes a new petrol one after about 27,000 km driven in total (under two years at 15,000 km/year). Replacing a petrol car that could still run for 5 years with a new electric one, bearing all its manufacturing (A3), only pays off above about 15,500 km/year; from about 10,000 km/year if it could still run for 8 years (the electric car's manufacturing is then spread over more years) [1, 8, 11]."],
@@ -262,7 +261,7 @@ export default {
   ecoMesures: [["EcoIndex score", "80/100 (A)"], ["Transferred weight", "57 kB"], ["Requests", "1"], ["Page elements", "90"], ["Estimated emissions per visit", "≈ 0.26 gCO₂e"], ["Estimated water per visit", "≈ 0.04 cl"]],
   ecoChoixTitre: "What was done",
   ecoChoix: [
-    "Hosted by Infomaniak, in Switzerland, chosen for its environmental commitments. According to its impact report: 100% renewable electricity, efficient data centres (average PUE of 1.085 in 2024, against about 1.56 worldwide, cooled with outside air), servers kept for up to 15 years, ISO 14001, ISO 50001 and B Corp certifications. The heat from one of its Geneva data centres feeds the canton's district heating network.",
+    "Hosted by Infomaniak, in Switzerland: renewable electricity, data centres cooled with outside air, and the heat of one of them fed into Geneva's district heating (according to its impact report).",
     "A single self-contained page: styles, code and font fit in one file.",
     "A minimal UI library (Preact, about 4 kB) instead of React.",
     "A single font, cut down to the characters used (14 kB); the rest of the text uses your device's font.",

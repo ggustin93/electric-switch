@@ -1053,7 +1053,6 @@ function Modes() {
             ))}
           </ol>
           <p className="log-legende"><span className="trait-ref" aria-hidden="true" />{s.ordresRefLegende(s.modes[REF_ID], `${f.n1(REF)}${NB}g/km`)}</p>
-          <p className="log-legende">{s.ordresLegende}</p>
         </div>
         {/* Source toujours visible (Licence Ouverte : citer la source) ; précautions repliées */}
         <p className="aide-ligne">
