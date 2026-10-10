@@ -70,6 +70,18 @@ export const ORGANISATION = {
   sameAs: ["https://pwablo.be"],
 };
 
+// Auteur (signal E-E-A-T de la Méthode et d'À propos) ; aucun sameAs tant qu'aucun profil réel n'est fourni
+export const AUTEUR = {
+  "@type": "Person",
+  "@id": "https://pwablo.be/#guillaume-gustin",
+  name: "Guillaume Gustin",
+  alternateName: "Pwablo",
+  jobTitle: "Ingénieur logiciel indépendant",
+  url: "https://pwablo.be",
+  address: { "@type": "PostalAddress", addressLocality: "Bruxelles", addressCountry: "BE" },
+  affiliation: { "@id": ORGANISATION["@id"] },
+};
+
 // Un bloc JSON-LD (@graph) par page. Un <script> compte dans le DOM (EcoIndex) : un seul, compact.
 // p : { titre (titre de la page), description, nomSite (titre de l'outil), date, langues }
 // Ni FAQPage ni HowTo (spec). JSON-LD = données, jamais exécutées : hors CSP script-src (src/entetes.js).
@@ -89,7 +101,9 @@ export function jsonLd(site, lang, page, p) {
     "@type": { methode: "TechArticle", apropos: "AboutPage" }[page] ?? "WebPage",
     [page === "methode" ? "headline" : "name"]: p.titre, description: p.description, inLanguage: lang,
     url: site + chemin(lang, page), ...(p.date && { dateModified: p.date }),
-    ...(page === "methode" ? { author: ORGANISATION, publisher: editeur, about: appli } : { publisher: ORGANISATION, isPartOf: appli }),
+    ...(page === "methode" && { author: AUTEUR, publisher: ORGANISATION, about: appli }),
+    ...(page === "apropos" && { mainEntity: AUTEUR, author: { "@id": AUTEUR["@id"] } }),
+    ...(page !== "methode" && { publisher: ORGANISATION, isPartOf: appli }),
   }];
   // « < » échappé : le contenu ne peut pas fermer la balise
   return `<script type="application/ld+json">${JSON.stringify({ "@context": "https://schema.org", "@graph": graphe }).replaceAll("<", "\\u003c")}</script>`;

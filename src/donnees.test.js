@@ -75,16 +75,26 @@ test("JSON-LD outil : éditeur, site et application gratuite, un seul bloc compa
   assert.doesNotMatch(balise, /FAQPage|HowTo/);
 });
 
-test("JSON-LD Méthode : article technique de l'éditeur, sur l'application, daté", () => {
+test("JSON-LD Méthode : article technique de l'auteur (personne), publié par l'éditeur, sur l'application, daté", () => {
   const [art] = lireJsonLd(jsonLd("https://x.eu", "nl", "methode", P))["@graph"];
   assert.equal(art["@type"], "TechArticle");
   assert.equal(art.headline, "T");
   assert.equal(art.inLanguage, "nl");
   assert.equal(art.url, "https://x.eu/nl/methode/");
   assert.equal(art.dateModified, "2026-10-01");
-  assert.equal(art.author.name, "Productions Associées ASBL");
-  assert.deepEqual(art.publisher, { "@id": art.author["@id"] });
+  assert.equal(art.author["@type"], "Person");
+  assert.equal(art.author.name, "Guillaume Gustin");
+  assert.deepEqual(art.author.affiliation, { "@id": art.publisher["@id"] });
+  assert.equal(art.publisher.name, "Productions Associées ASBL");
   assert.deepEqual(art.about, { "@type": "WebApplication", name: "Électrique ?", url: "https://x.eu/nl/" });
+});
+
+test("JSON-LD À propos : AboutPage dont l'entité principale est l'auteur", () => {
+  const [page] = lireJsonLd(jsonLd("https://x.eu", "fr", "apropos", P))["@graph"];
+  assert.equal(page["@type"], "AboutPage");
+  assert.equal(page.mainEntity.name, "Guillaume Gustin");
+  assert.deepEqual(page.author, { "@id": page.mainEntity["@id"] });
+  assert.equal(page.mainEntity.sameAs, undefined); // seulement des profils réels
 });
 
 test("JSON-LD autres pages : simple WebPage ; sans date, pas de dateModified ; « < » échappé", () => {

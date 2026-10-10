@@ -1102,6 +1102,7 @@ const REFS_ECO = [
   ["EcoIndex (CNUMR / GreenIT.fr)", "https://www.ecoindex.fr/"],
   ["RGESN 2024 (Arcep, Arcom, DINUM, ADEME)", "https://www.arcep.fr/la-regulation/grands-dossiers-thematiques-transverses/lempreinte-environnementale-du-numerique/referentiel-general-ecoconception-services-numeriques.html"],
   ["Green Claude (Institut du Numérique Responsable)", "https://github.com/Institut-du-Numerique-Responsable/green-claude"],
+  ["Infomaniak, rapport d'impact", "https://www.infomaniak.com/fr/rapport-impact"],
 ];
 
 // Éditeur repris des mentions légales de pwablo.be (pwablo.be/terms) ; rien d'inventé
