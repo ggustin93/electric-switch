@@ -3,7 +3,8 @@
    (verdict obtenu, onglet ou page ouverts). « Do Not Track » et GPC respectés. */
 
 // website : identifiant public du site dans Umami Cloud (pas un secret). Vide = mesure désactivée.
-export const UMAMI = { endpoint: "https://cloud.umami.is/api/send", website: "e6b2057a-5cf7-4a69-acdf-93b04381c4e9" };
+// hote : seul domaine mesuré ; localhost, preview et toute copie du site n'envoient rien.
+export const UMAMI = { endpoint: "https://cloud.umami.is/api/send", website: "e6b2057a-5cf7-4a69-acdf-93b04381c4e9", hote: "electricornot.eu" };
 
 // Charge utile documentée de POST /api/send. url = page de l'appli sans la langue (/, /methode…), jamais une saisie ni une ancre.
 export function evenement(nom, data, env = globalThis) {
@@ -21,7 +22,7 @@ export function evenement(nom, data, env = globalThis) {
 // Envoie un événement si la mesure est configurée et autorisée ; n'interrompt jamais l'interface.
 export function mesurer(nom, data, env = globalThis) {
   const nav = env.navigator ?? {};
-  if (!UMAMI.website || nav.doNotTrack === "1" || nav.globalPrivacyControl) return false;
+  if (!UMAMI.website || env.location?.hostname !== UMAMI.hote || nav.doNotTrack === "1" || nav.globalPrivacyControl) return false;
   try {
     env.fetch(UMAMI.endpoint, {
       method: "POST", keepalive: true, headers: { "Content-Type": "application/json" },

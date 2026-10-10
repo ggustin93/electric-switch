@@ -3,11 +3,11 @@ import assert from "node:assert/strict";
 import { UMAMI, evenement, mesurer } from "./mesure.js";
 
 // Environnement de navigateur simulé : fetch espionné, aucune requête réelle
-function env({ dnt = null, gpc = false, pathname = "/fr/" } = {}) {
+function env({ dnt = null, gpc = false, pathname = "/fr/", hostname = "electricornot.eu" } = {}) {
   const appels = [];
   return {
     appels,
-    location: { hostname: "exemple.test", pathname, hash: "#h5" },
+    location: { hostname, pathname, hash: "#h5" },
     navigator: { language: "fr-BE", doNotTrack: dnt, globalPrivacyControl: gpc },
     fetch: (url, opts) => { appels.push({ url, opts }); return Promise.resolve(); },
   };
@@ -22,14 +22,14 @@ test("evenement : charge utile Umami documentée, page sans ancre ni saisie", ()
   assert.equal(evenement("verdict", {}, env()).payload.url, "/");
 });
 
-test("mesurer : désactivée sans identifiant, respecte Do Not Track et GPC", () => {
+test("mesurer : désactivée sans identifiant, hors production (localhost, preview), respecte Do Not Track et GPC", () => {
   const sans = env();
   UMAMI.website = "";
   assert.equal(mesurer("verdict", {}, sans), false);
   assert.equal(sans.appels.length, 0);
 
   UMAMI.website = "id-test";
-  for (const e of [env({ dnt: "1" }), env({ gpc: true })]) {
+  for (const e of [env({ dnt: "1" }), env({ gpc: true }), env({ hostname: "localhost" }), env({ hostname: "www.electricornot.eu" })]) {
     assert.equal(mesurer("verdict", {}, e), false);
     assert.equal(e.appels.length, 0);
   }
