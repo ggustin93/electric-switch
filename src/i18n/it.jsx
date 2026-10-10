@@ -263,7 +263,7 @@ export default {
     "Una sola pagina autonoma: stili, codice e font stanno in un unico file.",
     "Libreria di interfaccia minima (Preact, circa 4 kB) invece di React.",
     "Un solo font, ridotto ai caratteri usati (14 kB); il resto del testo usa il font del tuo dispositivo.",
-    "Misurazione del pubblico sobria: Umami Cloud (ospitato nell'UE), senza cookie né dati personali; nessuna richiesta al caricamento, solo alcuni eventi anonimi (verdetto ottenuto, pagine aperte); “Do Not Track” rispettato. Nessun altro servizio di terze parti, nessun font esterno.",
+    "Misurazione del pubblico sobria: Umami Cloud (ospitato nell'UE), senza cookie né dati personali; nessuna richiesta al caricamento del simulatore, solo alcuni eventi anonimi (verdetto ottenuto, scheda o pagina di lettura aperta; una pagina di lettura ne invia uno all'apertura); “Do Not Track” rispettato. Nessun altro servizio di terze parti, nessun font esterno.",
     "I calcoli avvengono nel tuo browser: nessun dato viene inviato.",
     "Contenuto costruito su richiesta: le schede vengono mostrate solo quando le apri; Metodo, Ecoprogettazione e Note legali sono pagine separate, caricate solo se le apri.",
     "Grafici in HTML e CSS, senza librerie di grafici.",

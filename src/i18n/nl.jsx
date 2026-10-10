@@ -259,7 +259,7 @@ export default {
     "Eén zelfstandige pagina: stijlen, code en lettertype passen in één bestand.",
     "Een minimale interfacebibliotheek (Preact, ongeveer 4 kB) in plaats van React.",
     "Eén lettertype, beperkt tot de gebruikte tekens (14 kB); de rest van de tekst gebruikt het lettertype van uw toestel.",
-    "Zuinige bezoekersmeting: Umami Cloud (gehost in de EU), zonder cookies of persoonsgegevens; geen verzoek bij het laden, alleen enkele anonieme gebeurtenissen (oordeel verkregen, pagina's geopend); ‘Do Not Track’ wordt gerespecteerd. Geen andere externe diensten, geen externe lettertypes.",
+    "Zuinige bezoekersmeting: Umami Cloud (gehost in de EU), zonder cookies of persoonsgegevens; geen verzoek bij het laden van de simulator, alleen enkele anonieme gebeurtenissen (oordeel verkregen, tabblad of leespagina geopend; een leespagina stuurt er één bij het openen); ‘Do Not Track’ wordt gerespecteerd. Geen andere externe diensten, geen externe lettertypes.",
     "De berekeningen gebeuren in uw browser: er worden geen gegevens verstuurd.",
     "Inhoud op aanvraag opgebouwd: de tabbladen worden pas getoond als u ze opent; Methode, Ecodesign en Juridische informatie zijn aparte pagina's, alleen geladen als u ze opent.",
     "Grafieken in HTML en CSS, zonder grafiekbibliotheek.",

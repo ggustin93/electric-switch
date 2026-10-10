@@ -259,7 +259,7 @@ export default {
     "A single self-contained page: styles, code and font fit in one file.",
     "A minimal UI library (Preact, about 4 kB) instead of React.",
     "A single font, cut down to the characters used (14 kB); the rest of the text uses your device's font.",
-    "Lightweight audience measurement: Umami Cloud (EU-hosted), no cookies or personal data; no request at load, only a few anonymous events (verdict reached, pages opened); “Do Not Track” respected. No other third-party service, no external fonts.",
+    "Lightweight audience measurement: Umami Cloud (EU-hosted), no cookies or personal data; no request when the simulator loads, only a few anonymous events (verdict reached, tab or reading page opened; a reading page sends one when it opens); “Do Not Track” respected. No other third-party service, no external fonts.",
     "Calculations run in your browser: no data is sent anywhere.",
     "Content built on demand: the tabs are only rendered when opened; Method, Ecodesign and Legal notice are separate pages, loaded only if you open them.",
     "Charts in HTML and CSS, without a charting library.",

@@ -12,6 +12,7 @@ Notable changes to « Dois-je passer à l'électrique ? ». Format inspired by [
 - **Search engines:** Google Search Console verified for `electricornot.eu` (DNS TXT, sitemap submitted); IndexNow active (`INDEXNOW_KEY` set, sitemap URLs sent after each deploy).
 
 ### Changed
+- **Écoconception page, audience line:** « aucune requête au chargement » now says « du simulateur » and that a reading page sends one event when it opens (it was true of the simulator only). 5 languages.
 - **Hosting moved to Infomaniak** (ADR 0010, replaces 0005): `electricornot.eu` on the free Starter web hosting that comes with the domain (Switzerland, Infomaniak Network SA). `build.mjs` writes `dist/.htaccess` instead of Cloudflare's `_headers` (same security headers, CSP hashes and per-page hreflang `Link`, plus 404 page, 301 to `https://electricornot.eu`, gzip, revalidation with 304; `versHtaccess`, `src/entetes.js`, tested). Deploy mirrors `dist/` over FTP with `lftp` (Starter offers no TLS), then checks over HTTPS that every file and the CSP match the build (`scripts/verifier-en-ligne.mjs`); wrangler removed. « Mentions légales » host block and the hosting sentence of « Écoconception » updated in the 5 languages.
 - **Footer:** links + credit only; the disclaimer (±20 %, sources, version) moved to « À propos ». Same element count on the tool page (90).
 - **« Ma décision » intro lighter** (≈ 52 → 48 words, still the short answer and meta description): « sur sa vie », « pas toujours gagnant »; the grid-decarbonisation condition is kept. 5 languages.

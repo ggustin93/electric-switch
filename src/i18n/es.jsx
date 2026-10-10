@@ -260,7 +260,7 @@ export default {
     "Una única página autónoma: estilos, código y tipografía caben en un solo archivo.",
     "Biblioteca de interfaz mínima (Preact, unos 4 kB) en lugar de React.",
     "Una sola tipografía, reducida a los caracteres utilizados (14 kB); el resto del texto usa la tipografía de tu dispositivo.",
-    "Medición de audiencia ligera: Umami Cloud (alojado en la UE), sin cookies ni datos personales; ninguna petición al cargar, solo algunos eventos anónimos (veredicto obtenido, páginas abiertas); se respeta «Do Not Track». Ningún otro servicio de terceros, ninguna tipografía externa.",
+    "Medición de audiencia ligera: Umami Cloud (alojado en la UE), sin cookies ni datos personales; ninguna petición al cargar el simulador, solo algunos eventos anónimos (veredicto obtenido, pestaña o página de lectura abierta; una página de lectura envía uno al abrirse); se respeta «Do Not Track». Ningún otro servicio de terceros, ninguna tipografía externa.",
     "Los cálculos se hacen en tu navegador: no se envía ningún dato.",
     "Contenido generado bajo demanda: las pestañas solo se muestran al abrirlas; Método, Ecodiseño y Aviso legal son páginas separadas, que solo se cargan si las abres.",
     "Gráficos en HTML y CSS, sin biblioteca de gráficos.",

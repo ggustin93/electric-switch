@@ -260,7 +260,7 @@ export default {
     "Une seule page autonome : styles, code et police tiennent dans un fichier.",
     "Bibliothèque d'interface minimale (Preact, environ 4 Ko) plutôt que React.",
     "Une seule police, réduite aux caractères utilisés (14 Ko) ; le reste du texte utilise la police de votre appareil.",
-    "Mesure d'audience sobre : Umami Cloud (hébergé dans l'UE), sans cookie ni donnée personnelle ; aucune requête au chargement, seulement quelques événements anonymes (verdict obtenu, pages ouvertes) ; « Do Not Track » respecté. Aucun autre service tiers, aucune police externe.",
+    "Mesure d'audience sobre : Umami Cloud (hébergé dans l'UE), sans cookie ni donnée personnelle ; aucune requête au chargement du simulateur, seulement quelques événements anonymes (verdict obtenu, onglet ou page de lecture ouverts ; une page de lecture en envoie un à son ouverture) ; « Do Not Track » respecté. Aucun autre service tiers, aucune police externe.",
     "Les calculs se font dans votre navigateur : aucune donnée n'est envoyée.",
     "Contenu construit à la demande : les onglets ne sont affichés qu'à l'ouverture ; Méthode, Écoconception et Mentions légales sont des pages séparées, chargées seulement si vous les ouvrez.",
     "Graphiques en HTML et CSS, sans bibliothèque de graphiques.",
