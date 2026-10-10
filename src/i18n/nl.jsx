@@ -239,6 +239,8 @@ export default {
     ["Digitale soberheid", <>De simulator is ecologisch ontworpen om uw toestel en het netwerk zo weinig mogelijk te belasten: elke pagina past in één enkel verzoek en haalt EcoIndex A. De gemaakte keuzes staan op de pagina {lien("ecoconception", "Ecodesign")}.</>],
     ["Een fout melden", <>Fouten, recentere bronnen en suggesties kunnen worden gestuurd naar <a href="mailto:contact@electricornot.eu">contact@electricornot.eu</a>.</>],
   ],
+  // titre de la page et <title> ; le lien court reste pages.methode
+  methodeTitre: "Methode en aannames",
   methodeIntro: "De simulator vergelijkt auto's over hun hele levensduur, in CO₂e (alle broeikasgassen, omgerekend naar CO₂). Hij telt de productie, batterij inbegrepen, en het gebruik (brandstof of elektriciteit) op over de kilometers die u met de auto zult rijden. Nieuw gekocht telt de volledige productie voor u; tweedehands een deel volgens de waarde; behouden niets, want die is al gebouwd. De elektriciteit is de gemiddelde stroommix van uw land, die geleidelijk koolstofarmer wordt. Verschillende keuzes zijn bewust ongunstig voor elektrisch (kortere levensduur dan bij de ICCT, geen recyclagekrediet): als elektrisch toch wint, is het voordeel eerder onderschat dan overschat. De resultaten zijn ordegroottes, op ongeveer ±20% nauwkeurig; elke aanname is genummerd en met bron vermeld hieronder, en de vermeldingen H1, H2… in de hulpballonnen verwijzen hiernaar.",
   mentionsIntro: "Uitgever, hosting, persoonsgegevens (er worden er geen verzameld), aansprakelijkheid en licenties van de simulator ‘Moet ik overstappen op elektrisch?’.",
   // Questions-réponses (ticket 05) : chiffres du modèle, vérifiés par src/reponses.test.js

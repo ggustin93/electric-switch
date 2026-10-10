@@ -243,6 +243,8 @@ export default {
     ["Sobrietà digitale", <>Il simulatore è ecoprogettato per pesare il meno possibile sul tuo dispositivo e sulla rete: ogni pagina sta in una sola richiesta e ottiene EcoIndex A. Le scelte fatte sono descritte nella pagina {lien("ecoconception", "Ecoprogettazione")}.</>],
     ["Segnalare un errore", <>Errori, fonti più recenti e suggerimenti possono essere inviati a <a href="mailto:contact@electricornot.eu">contact@electricornot.eu</a>.</>],
   ],
+  // titre de la page et <title> ; le lien court reste pages.methode
+  methodeTitre: "Metodo e ipotesi",
   methodeIntro: "Il simulatore confronta le auto sull'intera vita, in CO₂e (tutti i gas serra, espressi in CO₂). Somma la produzione, batteria compresa, e l'uso (carburante o elettricità) sui chilometri che farai con l'auto. Se è nuova, ti viene attribuita tutta la produzione; se è usata, una quota in base al suo valore; se la tieni, nessuna, perché è già stata prodotta. L'elettricità è quella della rete media del tuo paese, che si decarbonizza a poco a poco. Diverse scelte sono volutamente sfavorevoli all'elettrico (durata di vita più breve di quella dell'ICCT, nessun credito di riciclo): quando l'elettrico vince comunque, il suo vantaggio è più probabilmente sottostimato che sovrastimato. I risultati sono ordini di grandezza, con un margine di circa ±20%; ogni ipotesi è numerata e documentata qui sotto, e le indicazioni H1, H2… nei fumetti di aiuto rimandano qui.",
   mentionsIntro: "Editore, hosting, dati personali (nessuno viene raccolto), responsabilità e licenze del simulatore «Devo passare all'elettrico?».",
   // Questions-réponses (ticket 05) : chiffres du modèle, vérifiés par src/reponses.test.js

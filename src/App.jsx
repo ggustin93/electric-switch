@@ -1081,7 +1081,7 @@ function PageMethode() {
   return (
     <article className="carte lecture">
       <RetourOutil />
-      <h2>{s.pages.methode}</h2>
+      <h2>{s.methodeTitre}</h2>
       {/* Date de mise à jour dans le chapeau, pas dans un paragraphe à part : la page reste en EcoIndex A */}
       <p className="lede-carte">{s.methodeIntro} {s.methodeMaj(new Intl.DateTimeFormat(s.locale, { dateStyle: "long", timeZone: "UTC" }).format(new Date(METHODE_MAJ)))}</p>
       <h3>{s.hypTitre(s.hyp.length)}</h3>

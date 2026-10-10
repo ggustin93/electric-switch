@@ -72,7 +72,8 @@ function enteteLangue() {
       // nom court du site (« Méthode · Dois-je passer à l'électrique ? »), description = son introduction
       const intro = { outil: "lede", methode: "methodeIntro", ecoconception: "ecoIntro", mentions: "mentionsIntro", questions: "questionsIntro", apropos: "aproposIntro" }[PAGE];
       const s = {
-        titre: PAGE === "outil" ? cle("titre") : `${lire(`^  pages: \\{.*\\b${PAGE}: ("[^"]*")`)} · ${cle("nomSite")}`,
+        titre: PAGE === "outil" ? cle("titre")
+          : `${PAGE === "methode" ? cle("methodeTitre") : lire(`^  pages: \\{.*\\b${PAGE}: ("[^"]*")`)} · ${cle("nomSite")}`,
         lede: cle(intro),
       };
       return html

@@ -239,6 +239,8 @@ export default {
     ["Digital sobriety", <>The simulator is eco-designed to limit its load on your device and on the network: each page fits in a single request and scores EcoIndex A. The choices made are detailed on the {lien("ecoconception", "Ecodesign")} page.</>],
     ["Report an error", <>Errors, more recent sources and suggestions can be sent to <a href="mailto:contact@electricornot.eu">contact@electricornot.eu</a>.</>],
   ],
+  // titre de la page et <title> ; le lien court reste pages.methode
+  methodeTitre: "Method and assumptions",
   methodeIntro: "The simulator compares cars over their whole life, in CO₂e (all greenhouse gases, expressed as CO₂). It adds up manufacturing, battery included, and use (fuel or electricity) over the kilometres you will drive the car. Bought new, all of its manufacturing counts for you; second-hand, a share based on its value; kept, none, because it is already built. Electricity is your country's average grid mix, which is gradually decarbonising. Several choices deliberately work against electric cars (a shorter lifetime than the ICCT's, no recycling credit): when electric still comes out ahead, its advantage is more likely understated than overstated. Results are orders of magnitude, within about ±20%; each assumption is numbered and sourced below, and the H1, H2… marks in the help bubbles point here.",
   mentionsIntro: "Publisher, hosting, personal data (none is collected), liability and licences of the “Should I switch to electric?” simulator.",
   // Questions-réponses (ticket 05) : chiffres du modèle, vérifiés par src/reponses.test.js
