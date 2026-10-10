@@ -351,6 +351,7 @@ function Decision({ shared, allerExplorer }) {
   const estAnnees = anneesRestantes({ age: ageAct, km: kmAct, kmAn });
   const titreRef = useRef(null);
   const etapePrec = useRef(etape);
+  const focusPays = useRef(false); // retour à l'étape 1 depuis le budget : le focus va au champ pays, pas au titre
 
   const seg = byId(SEGMENTS, segId);
   const params = { carb, conso, annees, seg, etatVE, ageVE, odoVE: odo, pays, decarb, efBatt: batt.ef };
@@ -364,7 +365,8 @@ function Decision({ shared, allerExplorer }) {
 
   // Au changement d'étape, le focus va au titre de la nouvelle étape
   useEffect(() => {
-    if (etapePrec.current !== etape) titreRef.current?.focus();
+    if (focusPays.current) { focusPays.current = false; document.getElementById("pays")?.focus(); }
+    else if (etapePrec.current !== etape) titreRef.current?.focus();
     if (etape === 3 && etapePrec.current !== 3) {
       // Valeurs grossières uniquement (kilométrage arrondi à 5 000 km) : rien d'identifiant
       mesurer("verdict", { verdict: v.verdict, pays: pays.id, segment: segId, etat: etatVE, km: Math.round(kmAn / 5000) * 5000, lang: f.lang });
@@ -491,7 +493,8 @@ function Decision({ shared, allerExplorer }) {
             </Repli>
           </section>
 
-          <Budget carb={carb} conso={conso} kmAn={kmAn} seg={seg} paysId={pays.id} />
+          <Budget carb={carb} conso={conso} kmAn={kmAn} seg={seg} paysId={pays.id}
+            changerPays={() => { focusPays.current = true; aller(0); }} />
 
           <section className="carte">
             <h2>{s.allerPlusLoin}</h2>
@@ -517,7 +520,7 @@ function ChampPrix({ id, label, value, step, onChange }) {
   );
 }
 
-function Budget({ carb, conso, kmAn, seg, paysId }) {
+function Budget({ carb, conso, kmAn, seg, paysId, changerPays }) {
   const f = useT();
   const { s } = f;
   const [sur, setSur] = useState({}); // prix saisis ; sinon prix par défaut du pays
@@ -532,8 +535,9 @@ function Budget({ carb, conso, kmAn, seg, paysId }) {
   return (
     <section className="carte">
       <h2>{s.budgetTitre}</h2>
-      {/* Le pays est nommé : les montants viennent de ses prix de l'énergie (choisis à l'étape 1) */}
-      <p className="bascule">{s.budgetUsageTitre(usage(s, f, th - ve), s.pays[paysId])}</p>
+      {/* Le pays est nommé : les montants viennent de ses prix de l'énergie. Il est deviné, donc cliquable : retour à l'étape 1, sur le champ pays */}
+      <p className="bascule">{s.budgetUsageTitre(usage(s, f, th - ve),
+        <button type="button" className="lien-inline" onClick={changerPays}>{s.pays[paysId]}</button>)}</p>
       {/* Une phrase visible ; le détail (même périmètre par an, énergie seule aux 100 km) et les prix sont repliés.
           Pas d'amortissement : sans prix d'achat ni revente, il ne serait qu'une redite trompeuse de l'écart annuel. */}
       <Repli className="replie" titre={s.budgetAjuster}>

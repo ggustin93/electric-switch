@@ -617,6 +617,19 @@ input[type="range"] {
 .btn-texte:hover {
   text-decoration-thickness: 2px;
 }
+/* Bouton dans une phrase (pays du budget) : se lit comme un lien */
+.lien-inline {
+  border: 0;
+  padding: 0;
+  background: none;
+  color: var(--accent);
+  text-decoration: underline;
+  text-decoration-thickness: 1px;
+  text-underline-offset: 3px;
+}
+.lien-inline:hover {
+  text-decoration-thickness: 2px;
+}
 /* Lien texte aligné à gauche (« Aller plus loin ») : pas de remplissage horizontal, son texte s'aligne sur le bord des boutons */
 .actions-debut .btn-texte {
   padding-inline: 0;
