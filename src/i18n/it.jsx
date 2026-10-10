@@ -184,7 +184,7 @@ export default {
   rapport: { moins: (x) => `${x} volte meno`, plus: (x) => `${x} volte di più`, autant: "più o meno uguale", ref: "riferimento", zero: "nessuna emissione" },
   ordresLegende: "Il colore segue la scala dell'asse: ogni mezzo prende la tinta della sua posizione sulla banda sfumata sotto le tacche.",
   ordresResume: (ref) => `Rispetto a “${ref}”:`,
-  modesLire: "Da leggere prima di confrontare",
+  modesLire: "Ipotesi e limiti",
   modesNotes: [
     "Produzione compresa: per l'auto elettrica, la bici elettrica o il monopattino rappresenta dal 50 al 90% del totale.",
     "Tassi di riempimento medi (autobus: 10 persone, pullman: 30, tram e metropolitana: circa il 77% dei posti). Un autobus quasi vuoto può fare peggio di un'auto piena.",
@@ -255,8 +255,8 @@ export default {
   ecoLien: "EcoIndex A",
   ecoLienLong: "Ecoprogettazione, EcoIndex A",
   ecoTitre: "Ecoprogettazione di questo sito",
-  ecoIntro: "Abbiamo cercato di limitare le risorse che questo simulatore consuma, sul tuo dispositivo come sulla rete. Ecco cosa è stato misurato, cosa è stato fatto e cosa questi numeri non dicono.",
-  ecoMesureTitre: "Misura al primo caricamento, in produzione (08/10/2026)",
+  ecoIntro: "Questo simulatore è pensato per consumare poco, sul tuo dispositivo come sulla rete. Ecco le misure, le scelte fatte e i loro limiti.",
+  ecoMesureTitre: "Misura online del 08/10/2026",
   ecoMesures: [["Punteggio EcoIndex", "80/100 (A)"], ["Peso trasferito", "57 kB"], ["Richieste", "1"], ["Elementi della pagina", "90"], ["Emissioni stimate per visita", "≈ 0,26 gCO₂e"], ["Acqua stimata per visita", "≈ 0,04 cl"]],
   ecoChoixTitre: "Cosa è stato fatto",
   ecoChoix: [

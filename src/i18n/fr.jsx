@@ -181,7 +181,7 @@ export default {
   rapport: { moins: (x) => `${x} fois moins`, plus: (x) => `${x} fois plus`, autant: "autant", ref: "référence", zero: "aucune émission" },
   ordresLegende: "La couleur suit l'échelle de l'axe : chaque mode prend la teinte de sa position, de la bande dégradée sous les graduations.",
   ordresResume: (ref) => `Par rapport à « ${ref} » :`,
-  modesLire: "À lire avant de comparer",
+  modesLire: "Hypothèses et limites",
   modesNotes: [
     "Fabrication comprise : pour la voiture électrique, le vélo électrique ou la trottinette, elle représente 50 à 90 % du total.",
     "Taux de remplissage moyens (bus : 10 personnes, autocar : 30, tram et métro : environ 77 % des places). Un bus presque vide peut faire moins bien qu'une voiture pleine.",
@@ -252,8 +252,8 @@ export default {
   ecoLien: "EcoIndex A",
   ecoLienLong: "Écoconception, EcoIndex A",
   ecoTitre: "Écoconception de ce site",
-  ecoIntro: "Nous avons cherché à limiter les ressources que consomme ce simulateur, sur votre appareil comme sur le réseau. Voici ce qui a été mesuré, ce qui a été fait, et ce que ces chiffres ne disent pas.",
-  ecoMesureTitre: "Mesure au premier chargement, en production (08/10/2026)",
+  ecoIntro: "Ce simulateur est conçu pour consommer peu, sur votre appareil comme sur le réseau. Voici les mesures, les choix faits et leurs limites.",
+  ecoMesureTitre: "Mesure en ligne du 08/10/2026",
   ecoMesures: [["Score EcoIndex", "80/100 (A)"], ["Poids transféré", "57 Ko"], ["Requêtes", "1"], ["Éléments de page", "90"], ["Émissions estimées par visite", "≈ 0,26 gCO₂e"], ["Eau estimée par visite", "≈ 0,04 cl"]],
   ecoChoixTitre: "Ce qui a été fait",
   ecoChoix: [

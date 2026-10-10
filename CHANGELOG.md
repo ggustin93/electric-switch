@@ -12,6 +12,7 @@ Notable changes to « Dois-je passer à l'électrique ? ». Format inspired by [
 - **Search engines:** Google Search Console verified for `electricornot.eu` (DNS TXT, sitemap submitted); IndexNow active (`INDEXNOW_KEY` set, sitemap URLs sent after each deploy).
 
 ### Changed
+- **Header title links home** on reading pages (not on the simulator, where a reload would erase the answers). **Copy:** Écoconception intro shortened, measure heading « Mesure en ligne du 08/10/2026 »; the modes comparison fold « À lire avant de comparer », which sits after the chart, is now « Hypothèses et limites ». 5 languages.
 - **Méthode intro rewritten** (data-scientist + UX review): states the unit (CO₂e over the whole life), the two items added, how manufacturing is counted (new: all; second-hand: a share by value; kept: none), the average grid that decarbonises, what is not counted (end of life, maintenance, infrastructure) and the ±20 % order of magnitude. The old wording « la part de sa fabrication qui vous revient » was only true for second-hand cars. 5 languages; also feeds the page description and llms.txt.
 - **Footer credit** in the display font with a decorative « ✦ » (CSS, hidden from screen readers, 0 DOM element).
 - **« À propos » contact** is now contact@electricornot.eu (redirects to the owner).

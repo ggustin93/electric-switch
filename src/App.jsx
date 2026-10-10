@@ -267,7 +267,8 @@ export default function App({ page = "outil" }) {
         {/* Pas d'enveloppe .page : c'est #root (index.html), un élément de moins pour l'EcoIndex */}
         <header className="entete">
           <div className="entete-haut">
-            <h1>{s.h1}</h1>
+            {/* Sur une page de lecture, le titre ramène au simulateur (sur l'outil, un lien rechargerait et effacerait les réponses) */}
+            <h1>{page === "outil" ? s.h1 : <a className="titre-lien" href={chemin(lang)}>{s.h1}</a>}</h1>
             {/* Langue repliée en menu (réglage qu'on touche une fois) ; Méthode est dans le pied, avec les autres pages.
                 Liens réels, lisibles sans JavaScript et par les moteurs. */}
             <details className="langue" ref={langueRef}>

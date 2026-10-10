@@ -199,6 +199,14 @@ h1 em {
   font-style: italic;
   color: var(--accent);
 }
+.titre-lien {
+  color: inherit;
+  text-decoration: none;
+}
+.titre-lien:hover {
+  text-decoration: underline;
+  text-decoration-thickness: 2px;
+}
 .lede {
   /* Intro de l'onglet actif : rattachée aux onglets (espace réduit au-dessus), puis le contenu */
   color: var(--ink-2);

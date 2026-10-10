@@ -180,7 +180,7 @@ export default {
   rapport: { moins: (x) => `${x} keer minder`, plus: (x) => `${x} keer meer`, autant: "evenveel", ref: "referentie", zero: "geen uitstoot" },
   ordresLegende: "De kleur volgt de schaal van de as: elke vervoerswijze krijgt de tint van zijn positie op de kleurenstrook onder de strepen.",
   ordresResume: (ref) => `Ten opzichte van ‘${ref}’:`,
-  modesLire: "Lees dit voor u vergelijkt",
+  modesLire: "Aannames en grenzen",
   modesNotes: [
     "Productie inbegrepen: voor de elektrische auto, de elektrische fiets of de step is dat 50 tot 90% van het totaal.",
     "Gemiddelde bezetting (bus: 10 personen, touringcar: 30, tram en metro: ongeveer 77% van de plaatsen). Een bijna lege bus kan slechter scoren dan een volle auto.",
@@ -251,8 +251,8 @@ export default {
   ecoLien: "EcoIndex A",
   ecoLienLong: "Ecodesign, EcoIndex A",
   ecoTitre: "Ecodesign van deze site",
-  ecoIntro: "We hebben geprobeerd de middelen te beperken die deze simulator verbruikt, op uw toestel en op het netwerk. Hier leest u wat gemeten is, wat gedaan is, en wat deze cijfers niet zeggen.",
-  ecoMesureTitre: "Meting bij de eerste keer laden, in productie (08/10/2026)",
+  ecoIntro: "Deze simulator is ontworpen om weinig te verbruiken, op uw toestel en op het netwerk. Hier vindt u de metingen, de gemaakte keuzes en hun grenzen.",
+  ecoMesureTitre: "Online gemeten op 08/10/2026",
   ecoMesures: [["EcoIndex-score", "80/100 (A)"], ["Overgedragen gewicht", "57 kB"], ["Verzoeken", "1"], ["Pagina-elementen", "90"], ["Geschatte uitstoot per bezoek", "≈ 0,26 gCO₂e"], ["Geschat water per bezoek", "≈ 0,04 cl"]],
   ecoChoixTitre: "Wat er gedaan is",
   ecoChoix: [

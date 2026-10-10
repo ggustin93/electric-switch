@@ -180,7 +180,7 @@ export default {
   rapport: { moins: (x) => `${x} times less`, plus: (x) => `${x} times more`, autant: "about the same", ref: "reference", zero: "no emissions" },
   ordresLegende: "Colour follows the axis scale: each mode takes the shade of its position on the gradient strip under the gridline labels.",
   ordresResume: (ref) => `Compared with “${ref}”:`,
-  modesLire: "Read before comparing",
+  modesLire: "Assumptions and limits",
   modesNotes: [
     "Manufacturing included: for electric cars, e-bikes and e-scooters it makes up 50 to 90% of the total.",
     "Average occupancy (bus: 10 people, coach: 30, tram and metro: about 77% of seats). A near-empty bus can do worse than a full car.",
@@ -251,8 +251,8 @@ export default {
   ecoLien: "EcoIndex A",
   ecoLienLong: "Ecodesign, EcoIndex A",
   ecoTitre: "How this site is ecodesigned",
-  ecoIntro: "We tried to limit the resources this simulator uses, on your device and on the network. Here is what was measured, what was done, and what these figures don't tell you.",
-  ecoMesureTitre: "Measured at first load, in production (8 October 2026)",
+  ecoIntro: "This simulator is built to use little, on your device and on the network. Here are the measurements, the choices made and their limits.",
+  ecoMesureTitre: "Measured online, 8 October 2026",
   ecoMesures: [["EcoIndex score", "80/100 (A)"], ["Transferred weight", "57 kB"], ["Requests", "1"], ["Page elements", "90"], ["Estimated emissions per visit", "≈ 0.26 gCO₂e"], ["Estimated water per visit", "≈ 0.04 cl"]],
   ecoChoixTitre: "What was done",
   ecoChoix: [
