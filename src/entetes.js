@@ -58,8 +58,9 @@ export function versHtaccess(texte, site) {
     `RewriteCond %{HTTP_HOST} !=${new URL(site).host}`,
     `RewriteRule ^ ${site}%{REQUEST_URI} [R=301,L]`,
     // Pas de page contact : /contact mène à « Signaler une erreur » d'À propos (NE : garder le # tel quel)
-    "RewriteRule ^([a-z]{2})/contact/?$ /$1/apropos/#contact [R=301,NE,L]",
-    "RewriteRule ^contact/?$ /fr/apropos/#contact [R=301,NE,L]",
+    // Cible absolue : derrière le proxy, une cible relative deviendrait http:// (une redirection de plus)
+    `RewriteRule ^([a-z]{2})/contact/?$ ${site}/$1/apropos/#contact [R=301,NE,L]`,
+    `RewriteRule ^contact/?$ ${site}/fr/apropos/#contact [R=301,NE,L]`,
     "<IfModule mod_headers.c>",
     // Revalidation à chaque visite, 304 si l'ETag n'a pas changé (ADR 0004) ; gzip est actif par défaut chez Infomaniak
     'Header always set Cache-Control "public, max-age=0, must-revalidate"',

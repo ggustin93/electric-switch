@@ -43,7 +43,7 @@ test(".htaccess : en-têtes globaux, Link par chemin (index.html compris), guill
   assert.match(h, /^Header always set X-Content-Type-Options "nosniff"$/m);
   assert.ok(h.includes(`<If "%{REQUEST_URI} =~ m#^/fr/(index\\.html)?$#">\n  Header always set Link "<https://e.eu/fr/>; rel=\\"alternate\\"; hreflang=\\"fr\\""\n</If>`));
   // /contact (adresse qu'on tape au hasard) → section « Signaler une erreur » d'À propos, sans page de plus
-  assert.ok(h.includes("RewriteRule ^([a-z]{2})/contact/?$ /$1/apropos/#contact [R=301,NE,L]\nRewriteRule ^contact/?$ /fr/apropos/#contact [R=301,NE,L]"));
+  assert.ok(h.includes("RewriteRule ^([a-z]{2})/contact/?$ https://e.eu/$1/apropos/#contact [R=301,NE,L]\nRewriteRule ^contact/?$ https://e.eu/fr/apropos/#contact [R=301,NE,L]"));
   assert.ok(h.includes("RewriteCond %{HTTP:X-Forwarded-Proto} !https [OR]\nRewriteCond %{HTTP_HOST} !=e.eu\nRewriteRule ^ https://e.eu%{REQUEST_URI} [R=301,L]"));
   assert.ok(!h.includes("%{HTTPS}"), "%{HTTPS} vaut off derrière le proxy Infomaniak : boucle de redirection");
   assert.match(h, /^ErrorDocument 404 \/404\.html$/m);
