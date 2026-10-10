@@ -1359,6 +1359,22 @@ h2 + .bascule {
 .pied p {
   margin: 0 0 var(--s1);
 }
+/* Signature : police d'affichage et fleuron décoratif (0 nœud DOM, masqué aux lecteurs d'écran) */
+.pied .credit {
+  font-family: var(--f-display);
+  font-size: var(--fs-sm);
+  font-weight: 600;
+  color: var(--ink);
+}
+.pied .credit::before {
+  content: "✦";
+  content: "✦" / "";
+  color: var(--accent);
+  margin-inline-end: var(--s2);
+}
+.pied .credit a {
+  font-weight: 800;
+}
 
 /* Icônes d'onglets (Tabler Icons, MIT) dessinées en masque CSS : aucun nœud DOM ajouté */
 .onglets [role="tab"] {

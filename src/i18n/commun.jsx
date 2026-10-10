@@ -25,8 +25,8 @@ export const SOURCES = [
   <>Plötz, P. et al. (2022). Real-world usage of plug-in hybrid vehicles in Europe. ICCT / Fraunhofer ISI.</>,
   <>European Commission (2024). Report on real-world CO₂ emissions of cars and vans based on on-board fuel consumption monitoring data, COM(2024) 122.</>,
   <>ADEME (2026). Impact CO₂ — comparateur des modes de transport. impactco2.fr, API v1, consulté le 07/10/2026. Licence Ouverte Etalab.</>,
-  <>European Commission (2026). Weekly Oil Bulletin, prices of 5 October 2026.</>,
-  <>Eurostat (2026). Electricity prices for household consumers (nrg_pc_204), 2025-S2, band DC.</>,
+  <>European Commission (2026). Weekly Oil Bulletin, prices with taxes, updated weekly (date shown in the budget).</>,
+  <>Eurostat (2026). Electricity prices for household consumers (nrg_pc_204), band DC, latest semester per country, updated weekly (period shown in the budget).</>,
   <>Morrison, K. &amp; Wappelhorst, S. (2023). Are battery electric vehicles cost competitive? An income-based analysis for the German market. ICCT.</>,
 ];
 

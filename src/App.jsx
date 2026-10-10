@@ -321,7 +321,7 @@ export default function App({ page = "outil" }) {
             <a href={chemin(lang, "ecoconception")} aria-label={s.ecoLienLong}>{s.ecoLien}</a>
             <a href={chemin(lang, "mentions")}>{s.pages.mentions}</a>
           </nav>
-          <p>{s.credit(<a href="https://pwablo.be" rel="author">Pwablo</a>)}</p>
+          <p className="credit">{s.credit(<a href="https://pwablo.be" rel="author">Pwablo</a>)}</p>
         </footer>
     </Ctx.Provider>
   );
