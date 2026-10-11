@@ -12,7 +12,7 @@ LANGUE=nl npm run dev   # develop another language
 
 Production: https://electricornot.eu (Infomaniak, ADR 0010)
 
-- `src/model.js` holds the pure LCA model with no UI text. `src/model.test.js` covers it.
+- `src/model.js` holds the pure LCA model with no UI text. `src/model.test.js` covers it; `src/scenarios.test.js` adds properties, literature orders of magnitude and user profiles.
 - `src/i18n/<lang>.jsx` holds every visible string of one language (French is the source), assumptions H1–H14 and the « Mentions légales ». `src/i18n/commun.jsx` holds the sources and the language list. `src/i18n.test.js` checks that every language has the French keys.
 - `src/mesure.js` sends cookieless Umami Cloud events (verdict, tab, reading page), only when the host is exactly `electricornot.eu`: local dev and previews send nothing. `src/mesure.test.js` covers it.
 - `src/App.jsx` is the UI (plain Preact without `preact/compat`, so SVG attributes are kebab-case; see ADR 0003). Reading pages are hash routes: `#methode`, `#ecoconception`, `#mentions`. `src/styles.css` holds the design tokens (light and dark).
