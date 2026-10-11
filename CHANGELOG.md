@@ -5,6 +5,7 @@ Notable changes to « Dois-je passer à l'électrique ? ». Format inspired by [
 ## [Unreleased]
 
 ### Added
+- **Scenario test battery** (`src/scenarios.test.js`, 15 tests): grid without NaN or negative values, monotonicities, manufacturing allocation summing to 100 %, consistency of switch point, payback and verdict, literature orders of magnitude (EV manufacturing +40–80 %, break-even per country, lifetime gain, ICCT gap explained by H1/H6/H9, hybrids), user profiles and ADEME benchmarks. Built from simulations by three expert reviews (data science, LCA, carbon accounting) and a QA pass, checked by mutation.
 - **`/contact` redirects to « À propos › Signaler une erreur »** (301, `/{lang}/contact` → `/{lang}/apropos/#contact`, `/contact` → French; `versHtaccess`, tested). No contact page or form: the address is already in « Mentions légales » and « À propos ».
 - **Audience measurement live:** Umami Cloud website ID set in `src/mesure.js` (events only: verdict, tab, reading page; nothing when the simulator loads, one event when a reading page opens; no cookie, Do Not Track and GPC respected; only on `electricornot.eu`, never on localhost or a preview). Contact address for the account: `contact@electricornot.eu`, an Infomaniak redirect to the owner.
 - **« À propos » page** (`/{lang}/apropos/`, 5 languages, JSON-LD `AboutPage`): what the simulator is for, who made it (the « Qui a fait ce simulateur » paragraph, moved from the legal notice), where the figures come from (Carbone 4, ADEME, ICCT, Ember, Electricity Maps, version), ecodesign, and a contact to report errors (contact@electricornot.eu, redirected to the owner). Linked first in the footer.
@@ -41,6 +42,9 @@ Notable changes to « Dois-je passer à l'électrique ? ». Format inspired by [
 - **Docs:** `CONTEXT.md` renamed `GLOSSARY.md` (current mattpocock/skills convention); references updated.
 
 ### Fixed
+- **`kmPivot`**: an EV better on both use and manufacturing now returns 0 (ahead from the start) instead of `null` (never); seen in cross-segment duels.
+- **`decider`**: the horizon never goes below 0 (EV already past 200 000 km or 18 years; not reachable from the UI).
+- **Docs**: H11 now lists the hybrid parameters, stated as model estimates without a dedicated source (5 languages); `model.js` header says H1–H14; ADR 0002 EU range matches its test (−55 to −65 %); `kmBascule` documented as the first crossing only.
 - **Mobile view (Impeccable adapt):** the language links no longer touch the screen edge; cards and verdict use 16 px padding, so content gains 16 px of width; the verdict sentence drops to body size (9 → 6 lines, figures in the first screen).
 - **« 6,6 fois moins »** (Se déplacer autrement) no longer breaks across two lines.
 - **« Modifier mes réponses »** (Aller plus loin): no horizontal padding, so its text lines up with the buttons' edge instead of sitting ~24 px to the right; on desktop it now fits on the same row.

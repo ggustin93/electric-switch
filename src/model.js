@@ -1,6 +1,6 @@
 /* Modèle ACV « Dois-je passer à l'électrique ? » — v6
    Données et fonctions pures, sans texte affiché (les libellés vivent dans i18n.jsx).
-   Hypothèses H1–H13 : voir i18n.jsx (STR.*.hyp) et GLOSSARY.md. */
+   Hypothèses H1–H14 : voir i18n.jsx (STR.*.hyp) et GLOSSARY.md. */
 
 // Mix électriques : intensité ACV (gCO2e/kWh, consommation 2024-25) et
 // taux annuel de décarbonation projeté (PNIEC / AIE STEPS) — H5, H6
@@ -98,6 +98,8 @@ export function calc(motorId, seg, gridG, kmVous, ratioFab, phevShare, efBatt) {
       fabTotale = seg.fabBase;
       usage = usageDiesel(seg.diesel);
       break;
+    // Hybrides (H11) : estimations du modèle, sans source dédiée à ce jour. HEV : +0,6 t de fabrication, −22 % d'essence.
+    // PHEV : +0,7 t et une batterie de 14 kWh ; +12 % de kWh (masse) en électrique, +6 % d'essence en thermique.
     case "hev":
       fabTotale = seg.fabBase + 0.6;
       usage = usageEss * 0.78;
@@ -183,7 +185,8 @@ export function decider({ carb, conso, annees, seg, etatVE, ageVE, odoVE = ageVE
   // Même fenêtre que « Comparer » : le compteur réduit la vie restante (borne 200 000 km), une même règle partout
   const fen = (detention) => fenetre({ occasion: true, odo: odoVE, age: ageVE, kmAn, revente: true, detention });
   const odoEff = occasion ? fen(annees).odoEff : 0;
-  const horizon = Math.min(annees, (VIE_KM - odoEff) / kmAn, VIE_ANS - ageDebut);
+  // ≥ 0 : un VE déjà en fin de vie (compteur ou âge au-delà des bornes H1) n'a plus d'horizon
+  const horizon = Math.max(0, Math.min(annees, (VIE_KM - odoEff) / kmAn, VIE_ANS - ageDebut));
   const km = horizon * kmAn;
   const usageVieille = usageThermique(carb, conso);
   const gridG = mixMoyen(pays.g, horizon, decarb, pays.declin);
@@ -228,7 +231,8 @@ export function calcConfig(cfg, { pays, kmAn, decarb, efBatt, marginal, detentio
 }
 
 // --- Kilométrage annuel à partir duquel remplacer devient préférable (curseur 3 000 à 40 000 km/an).
-// 3000 si l'électrique gagne déjà au minimum, null s'il ne gagne jamais.
+// 3000 si l'électrique gagne déjà au minimum, null s'il ne gagne jamais. Premier franchissement seulement :
+// d'occasion, quand la borne de 200 000 km tronque l'horizon, le verdict peut ensuite repasser à « garder » (ADR 0002).
 export function kmBascule(params) {
   for (let kmAn = 3000; kmAn <= 40000; kmAn += 500) {
     const v = decider({ ...params, kmAn });
@@ -269,7 +273,8 @@ export const MODES = [
 // --- Km à partir duquel le VE passe devant l'essence : null si jamais, 0 si d'emblée ---
 export function kmPivot(ev, essence, kmMax) {
   const dUsage = essence.usage - ev.usage;
-  if (dUsage <= 0) return null;
+  // VE jamais rattrapé à l'usage : devant d'emblée si sa fabrication attribuée est aussi plus faible
+  if (dUsage <= 0) return ev.fabAttr <= essence.fabAttr ? 0 : null;
   const km = ((ev.fabAttr - essence.fabAttr) * 1e6) / dUsage;
   if (km <= 0) return 0;
   return km < kmMax ? km : null;
