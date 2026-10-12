@@ -4,6 +4,11 @@ Notable changes to « Dois-je passer à l'électrique ? ». Format inspired by [
 
 ## [Unreleased]
 
+## [7.6.0] — 2026-10-12
+
+### Changed (À propos)
+- **À propos reviewed** (data-scientist and UX agents, 5 languages): sections reordered so a sceptical reader sees author and sources first (Origine, Auteur, Sources, Portée, Ce que le simulateur n'évalue pas, IA, Sobriété, Signaler une erreur); « avantage plutôt sous-estimé » replaced by « elles tendent à ne pas surestimer son avantage » (also in the Méthode intro); ±20 % stated as an estimate, not formally calculated; ISO and peer review said in plain words; cited organisations « n'ont ni relu ni validé ce simulateur »; AI section dates the 12/10 source check and says NL/IT/ES were reviewed with AI only; tests described as checking published figures, not the assumptions; H12 linked. Version 7.6 (citation, `package.json`).
+
 ### Added
 - **EcoIndex guardrail in the build** (`src/ecoindex.js`, official CNUMR formula, checked against api.ecoindex.fr): `npm run build`, and so every deploy, fails if a published page scores 80 or less.
 - **Test: one assumption prefix per language** (`src/i18n.test.js`); it found and fixed EN/NL « H1, H2… » in the Méthode intro and « H12 » in À propos (EN, NL, IT).
