@@ -297,6 +297,7 @@ export default {
     { t: "Budget d'uso", d: "Costo annuo dell'energia (prezzi domestici per paese, ricarica a casa) e della manutenzione (0,04 €/km per un'elettrica nuova, forfait ADAC ripresi dall'ICCT nel 2023; 0,07 €/km per un'auto termica datata, riparazioni comprese). Il prezzo d'acquisto del veicolo, l'assicurazione, le tasse e il finanziamento non sono contati: dipendono dal mercato di ogni paese e da ogni acquisto. Prezzi di default datati e modificabili. Manutenzione: 0,07 €/km è una scelta prudente, sotto la media francese di circa 0,09-0,11 €/km (spesa delle famiglie per manutenzione, riparazioni e ricambi, 41,4 miliardi di euro nel 2024, divisa per i 440 miliardi di km percorsi). A parità di età, un'elettrica costa circa il 15% in meno di manutenzione (ICCT 2023: 0,046 contro 0,054 €/km): il divario mostrato dipende soprattutto dall'età, e un'elettrica più vecchia costa di più (pneumatici, freni, batteria a 12 V)." },
   ],
   sourcesTitre: "Fonti e riferimenti",
+  source: "Fonte", // libellé accessible d'un renvoi [n] (page Questions)
   methodeMaj: (date) => `Metodo aggiornato il ${date}.`,
   sourcesNotes: {
     2: "19,6 gCO₂e/kWh di emissioni dirette di produzione (2025).",

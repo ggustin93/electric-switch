@@ -294,6 +294,7 @@ export default {
     { t: "Presupuesto de uso", d: "Coste anual de energía (precios domésticos por país, carga en casa) y de mantenimiento (0,04 €/km para un eléctrico nuevo, tarifas del ADAC recogidas por el ICCT en 2023; 0,07 €/km para un coche de combustión antiguo, reparaciones incluidas). No se cuentan el precio de compra del vehículo, el seguro, los impuestos ni la financiación: dependen del mercado de cada país y de cada compra. Precios por defecto fechados y modificables. Mantenimiento: 0,07 €/km es una elección prudente, por debajo de la media francesa de unos 0,09 a 0,11 €/km (gasto de los hogares en mantenimiento, reparaciones y piezas, 41.400 millones de euros en 2024, dividido entre los 440.000 millones de km recorridos). A igual edad, un eléctrico cuesta alrededor de un 15 % menos de mantener (ICCT 2023: 0,046 frente a 0,054 €/km): la diferencia mostrada se debe sobre todo a la edad, y un eléctrico más antiguo cuesta más (neumáticos, frenos, batería de 12 V)." },
   ],
   sourcesTitre: "Fuentes y referencias",
+  source: "Fuente", // libellé accessible d'un renvoi [n] (page Questions)
   methodeMaj: (date) => `Método actualizado el ${date}.`,
   sourcesNotes: {
     2: "19,6 gCO₂e/kWh en emisiones directas de producción (2025).",

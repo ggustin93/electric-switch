@@ -1142,16 +1142,23 @@ function PageApropos() {
   );
 }
 
+// « [8, 14] » → « [8, 14] » dont chaque numéro mène à sa source sur la page Méthode (/fr/methode/#src-8)
+function lierSources(texte, nomSource, lang) {
+  return texte.split(/\[([\d, ]+)\]/).map((morceau, i) => i % 2 === 0 ? morceau : ["[", ...morceau.split(", ").flatMap((n, j) => [
+    j > 0 && ", ", <a key={n} href={`${chemin(lang, "methode")}#src-${n}`} aria-label={`${nomSource} ${n}`}>{n}</a>]), "]"]);
+}
+
 // Questions-réponses (ticket 05) : chiffres recalculés par le modèle dans src/reponses.test.js ;
-// renvois Hn [n] en texte, comme la page Méthode (pas de liens : DOM minimal)
+// renvois Hn et [n] en liens vers la page Méthode (≈ 30 liens : la page reste en EcoIndex A)
 function PageQuestions() {
-  const { s } = useT();
+  const { s, lang } = useT();
+  const lier = (r) => lierSources(r, s.source, lang).flatMap((m) => typeof m === "string" ? lierHyp(m, s.prefixeHyp, lang) : [m]);
   return (
     <article className="carte lecture">
       <RetourOutil />
       <h2>{s.pages.questions}</h2>
       <p className="lede-carte">{s.questionsIntro}</p>
-      {s.questions.flatMap(([q, r]) => [<h3 key={q}>{q}</h3>, <p key={r}>{r}</p>])}
+      {s.questions.flatMap(([q, r]) => [<h3 key={q}>{q}</h3>, <p key={r}>{lier(r)}</p>])}
     </article>
   );
 }

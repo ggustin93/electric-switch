@@ -295,6 +295,7 @@ export default {
     { t: "Budget à l'usage", d: "Coût annuel d'énergie (prix domestiques par pays, recharge à domicile) et d'entretien (0,04 €/km pour une électrique neuve, forfaits ADAC repris par l'ICCT en 2023 ; 0,07 €/km pour une thermique ancienne, réparations comprises). Le prix d'achat du véhicule, l'assurance, les taxes et le financement ne sont pas comptés : ils dépendent du marché de chaque pays et de chaque achat. Prix par défaut datés et modifiables. Entretien : 0,07 €/km est un choix prudent, sous la moyenne française d'environ 0,09 à 0,11 €/km (dépenses des ménages en entretien, réparation et pièces, 41,4 milliards d'euros en 2024, rapportées aux 440 milliards de km parcourus). À âge égal, une électrique coûte environ 15 % de moins à entretenir (ICCT 2023 : 0,046 contre 0,054 €/km) : l'écart affiché vient surtout de l'âge, et une électrique plus âgée coûte davantage (pneus, freins, batterie 12 V)." },
   ],
   sourcesTitre: "Sources et références",
+  source: "Source", // libellé accessible d'un renvoi [n] (page Questions)
   methodeMaj: (date) => `Méthode mise à jour le ${date}.`,
   sourcesNotes: {
     2: "19,6 gCO₂e/kWh en émissions directes de production (2025).",

@@ -293,6 +293,7 @@ export default {
     { t: "Running-cost budget", d: "Yearly cost of energy (household prices per country, home charging) and maintenance (€0.04/km for a new electric car, ADAC flat rates used by the ICCT in 2023; €0.07/km for an older combustion car, repairs included). The vehicle's purchase price, insurance, taxes and financing are not counted: they depend on each country's market and each purchase. Default prices dated and editable. Maintenance: €0.07/km is a cautious choice, below the French average of about €0.09 to €0.11/km (household spending on maintenance, repairs and parts, €41.4 billion in 2024, divided by the 440 billion km driven). At equal age, an electric car costs about 15% less to maintain (ICCT 2023: €0.046 against €0.054/km): the gap shown comes mostly from age, and an older electric car costs more (tyres, brakes, 12 V battery)." },
   ],
   sourcesTitre: "Sources and references",
+  source: "Source", // libellé accessible d'un renvoi [n] (page Questions)
   methodeMaj: (date) => `Method updated on ${date}.`,
   sourcesNotes: {
     2: "19.6 gCO₂e/kWh direct generation emissions (2025).",

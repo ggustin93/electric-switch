@@ -293,6 +293,7 @@ export default {
     { t: "Budget in gebruik", d: "Jaarlijkse kosten voor energie (huishoudprijzen per land, thuis opladen) en onderhoud (€ 0,04/km voor een nieuwe elektrische auto, ADAC-forfaits die de ICCT in 2023 overnam; € 0,07/km voor een oudere benzine- of dieselauto, herstellingen inbegrepen). De aankoopprijs van het voertuig, verzekering, belastingen en financiering worden niet meegeteld: die hangen af van de markt in elk land en van elke aankoop. De standaardprijzen vermelden hun datum en zijn aanpasbaar. Onderhoud: € 0,07/km is een voorzichtige keuze, onder het Franse gemiddelde van ongeveer € 0,09 tot € 0,11/km (uitgaven van huishoudens aan onderhoud, herstellingen en onderdelen, 41,4 miljard euro in 2024, gedeeld door de 440 miljard gereden km). Bij gelijke leeftijd kost een elektrische auto ongeveer 15% minder onderhoud (ICCT 2023: € 0,046 tegenover € 0,054/km): het getoonde verschil komt vooral van de leeftijd, en een oudere elektrische auto kost meer (banden, remmen, 12V-batterij)." },
   ],
   sourcesTitre: "Bronnen en referenties",
+  source: "Bron", // libellé accessible d'un renvoi [n] (page Questions)
   methodeMaj: (date) => `Methode bijgewerkt op ${date}.`,
   sourcesNotes: {
     2: "19,6 gCO₂e/kWh aan directe uitstoot van de productie (2025).",
