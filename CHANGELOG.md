@@ -5,6 +5,8 @@ Notable changes to « Dois-je passer à l'électrique ? ». Format inspired by [
 ## [Unreleased]
 
 ### Added
+- **EcoIndex guardrail in the build** (`src/ecoindex.js`, official CNUMR formula, checked against api.ecoindex.fr): `npm run build`, and so every deploy, fails if a published page scores 80 or less.
+- **Test: one assumption prefix per language** (`src/i18n.test.js`); it found and fixed EN/NL « H1, H2… » in the Méthode intro and « H12 » in À propos (EN, NL, IT).
 - **Scenario test battery** (`src/scenarios.test.js`, 16 tests, including a Belgian break-even anchored on an external top-5 study): grid without NaN or negative values, monotonicities, manufacturing allocation summing to 100 %, consistency of switch point, payback and verdict, literature orders of magnitude (EV manufacturing +40–80 %, break-even per country, lifetime gain, ICCT gap explained by H1/H6/H9, hybrids), user profiles and ADEME benchmarks. Built from simulations by three expert reviews (data science, LCA, carbon accounting) and a QA pass, checked by mutation.
 - **`/contact` redirects to « À propos › Signaler une erreur »** (301, `/{lang}/contact` → `/{lang}/apropos/#contact`, `/contact` → French; `versHtaccess`, tested). No contact page or form: the address is already in « Mentions légales » and « À propos ».
 - **Audience measurement live:** Umami Cloud website ID set in `src/mesure.js` (events only: verdict, tab, reading page; nothing when the simulator loads, one event when a reading page opens; no cookie, Do Not Track and GPC respected; only on `electricornot.eu`, never on localhost or a preview). Contact address for the account: `contact@electricornot.eu`, an Infomaniak redirect to the owner.
@@ -48,6 +50,7 @@ Notable changes to « Dois-je passer à l'électrique ? ». Format inspired by [
 - **Docs:** `CONTEXT.md` renamed `GLOSSARY.md` (current mattpocock/skills convention); references updated.
 
 ### Fixed
+- `reponses.test.js` lists every length or figure error of a language at once.
 - **NL / IT / ES texts of 2026-10-12** (native-style review): NL Q4 had lost « que garder » (a new EV « does worse » than nothing); ES Q6 « red carbonizada » (charred) → « muy contaminante »; IT Méthode intro referred to « H1, H2… » instead of « I1, I2… »; calques and inconsistent terms (allocation, depreciation, recycling credit, on-board meters) aligned with each dictionary.
 - **`kmPivot`**: an EV better on both use and manufacturing now returns 0 (ahead from the start) instead of `null` (never); seen in cross-segment duels.
 - **`decider`**: the horizon never goes below 0 (EV already past 200 000 km or 18 years; not reachable from the UI).

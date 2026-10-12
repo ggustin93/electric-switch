@@ -41,3 +41,12 @@ test("sources : une URL ou un DOI pour chacune, date de mise à jour de la méth
   for (const u of SOURCES_URL) assert.match(u, /^(https:\/\/\S+|doi:10\.\d{4,}\/\S+)$/);
   assert.match(METHODE_MAJ, /^\d{4}-\d{2}-\d{2}$/);
 });
+
+test("renvois d'hypothèse : chaque langue n'utilise que son préfixe (fr/es H1, en/nl A1, it I1)", () => {
+  for (const l of LANGUES) {
+    const source = readFileSync(new URL(`./i18n/${l}.jsx`, import.meta.url), "utf8");
+    const prefixe = source.match(/^  prefixeHyp: "([A-Z])"/m)[1];
+    const etrangers = [...source.matchAll(/\b([HAI])\d{1,2}\b/g)].filter((m) => m[1] !== prefixe).map((m) => m[0]);
+    assert.deepEqual(etrangers, [], `${l} : renvois avec un autre préfixe que ${prefixe}`);
+  }
+});

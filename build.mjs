@@ -8,6 +8,8 @@ import { entetesSecurite, versHtaccess } from "./src/entetes.js";
 import { PAGES, LANGUES } from "./src/routes.js";
 import { sitemap, robots, llmsTxt, dateGit, sourcesPage } from "./src/donnees.js";
 import { cleValide } from "./src/indexnow.js";
+import { ecoindex, noeuds } from "./src/ecoindex.js";
+import { gzipSync } from "node:zlib";
 
 const SITE = siteUrl(process.env); // SITE_URL=https://electricornot.eu npm run build
 rmSync("dist", { recursive: true, force: true });
@@ -89,5 +91,13 @@ writeFileSync("dist/llms.txt", llmsTxt(SITE, LANGUES.map((l) => ({
 // puis une règle hreflang par chemin exact : chaque page annonce ses propres versions linguistiques.
 const pages = readdirSync("dist", { recursive: true }).filter((f) => f.endsWith(".html")).map((f) => readFileSync(`dist/${f}`, "utf8"));
 writeFileSync("dist/.htaccess", versHtaccess(`/*\n${entetesSecurite(pages)}${fichierHeaders(SITE, LANGUES)}`, SITE));
+
+// Garde-fou écoconception : chaque page publiée reste en EcoIndex A (score > 80, 1 requête), sinon le build échoue
+const horsA = readdirSync("dist", { recursive: true }).filter((f) => f.endsWith("index.html")).flatMap((f) => {
+  const html = readFileSync(`dist/${f}`);
+  const score = ecoindex(noeuds(html.toString()), 1, gzipSync(html).length / 1024);
+  return score > 80 ? [] : [`${f} : ${score} (${noeuds(html.toString())} nœuds)`];
+});
+if (horsA.length) throw new Error(`EcoIndex sous A (> 80) :\n${horsA.join("\n")}`);
 
 console.log(`dist/ : ${LANGUES.length} langues × ${1 + PAGES.length} pages (${["", ...PAGES].map((p) => `${p}${p && "/"}index.html`).join(", ")}) + index.html, 404.html, og/, sitemap.xml, robots.txt, llms.txt, .htaccess`);

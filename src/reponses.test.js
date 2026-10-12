@@ -73,16 +73,19 @@ test("les chiffres du modèle restent ceux qu'annoncent les textes (Belgique, pr
 
 for (const lang of LANGUES) {
   test(`${lang} : intro de 40 à 60 mots et 6 questions-réponses de 40 à 80 mots, chiffres du modèle compris`, () => {
+    // Toutes les erreurs d'une langue d'un coup (longueur et chiffres), pour corriger en un seul passage
     const locale = lireDico(lang, "locale");
     const lede = lireDico(lang, "lede");
-    assert.ok(mots(lede) >= 40 && mots(lede) <= 60, `intro : ${mots(lede)} mots`);
-    for (const n of CHIFFRES.lede) assert.ok(contient(lede, n, locale), `intro sans ${n}`);
+    const erreurs = [];
+    if (mots(lede) < 40 || mots(lede) > 60) erreurs.push(`intro : ${mots(lede)} mots (40 à 60)`);
+    for (const n of CHIFFRES.lede) if (!contient(lede, n, locale)) erreurs.push(`intro : ${n} absent`);
     const qr = questions(lang);
     assert.equal(qr.length, CHIFFRES.questions.length);
     qr.forEach(([q, r], i) => {
-      assert.ok(q.endsWith("?"), q);
-      assert.ok(mots(r) >= 40 && mots(r) <= 80, `${q} : ${mots(r)} mots`);
-      for (const n of CHIFFRES.questions[i]) assert.ok(contient(r, n, locale), `${q} : ${n} absent`);
+      if (!q.endsWith("?")) erreurs.push(`${q} : pas de « ? »`);
+      if (mots(r) < 40 || mots(r) > 80) erreurs.push(`${q} : ${mots(r)} mots (40 à 80)`);
+      for (const n of CHIFFRES.questions[i]) if (!contient(r, n, locale)) erreurs.push(`${q} : ${n} absent`);
     });
+    assert.deepEqual(erreurs, []);
   });
 }
