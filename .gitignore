@@ -7,3 +7,6 @@ dist
 .env
 .env.*
 .Env
+
+# outils locaux (Serena MCP)
+.serena/
