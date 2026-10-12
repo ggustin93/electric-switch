@@ -45,6 +45,7 @@ Notable changes to « Dois-je passer à l'électrique ? ». Format inspired by [
 - **Docs:** `CONTEXT.md` renamed `GLOSSARY.md` (current mattpocock/skills convention); references updated.
 
 ### Fixed
+- **NL / IT / ES texts of 2026-10-12** (native-style review): NL Q4 had lost « que garder » (a new EV « does worse » than nothing); ES Q6 « red carbonizada » (charred) → « muy contaminante »; IT Méthode intro referred to « H1, H2… » instead of « I1, I2… »; calques and inconsistent terms (allocation, depreciation, recycling credit, on-board meters) aligned with each dictionary.
 - **`kmPivot`**: an EV better on both use and manufacturing now returns 0 (ahead from the start) instead of `null` (never); seen in cross-segment duels.
 - **`decider`**: the horizon never goes below 0 (EV already past 200 000 km or 18 years; not reachable from the UI).
 - **Docs**: H11 now lists the hybrid parameters, stated as model estimates without a dedicated source (5 languages); `model.js` header says H1–H14; ADR 0002 EU range matches its test (−55 to −65 %); `kmBascule` documented as the first crossing only.
