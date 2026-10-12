@@ -4,6 +4,9 @@ Notable changes to « Dois-je passer à l'électrique ? ». Format inspired by [
 
 ## [Unreleased]
 
+### Fixed
+- **Plug-in hybrid wording** (5 languages, H11 and Questions Q5): on-board meters show emissions *equivalent* to 17–26 % electric driving, not 17–26 % of km actually driven on electricity (about 42–46 % of km are in charge-depleting mode, but the engine often runs). The 30 % default is unchanged. Found while checking the ICCT's reliability (`docs/research/2026-10-verification-hypotheses.md`).
+
 ## [7.6.0] — 2026-10-12
 
 ### Changed (À propos)
