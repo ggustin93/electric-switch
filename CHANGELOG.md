@@ -4,6 +4,14 @@ Notable changes to « Dois-je passer à l'électrique ? ». Format inspired by [
 
 ## [Unreleased]
 
+## [7.7.0] — 2026-10-13
+
+### Changed
+- **Used cars: low and high estimate** (ADR 0012, `docs/research/2026-10-allocation-occasion.md`, six agent reviews including three primary-source checks). « Ma décision » keeps H2 (economic allocation) for a used EV; the note under the odometer now also shows the **remaining share**, `partRestante` = min(1 − odometer / 200 000 km, 1 − age / 18 yrs), and says the real effect lies in between. Verdicts and Questions answers are unchanged.
+- **« Comparer les voitures »:** the marginal convention is renamed « Comptée à l'achat » and applies the remaining share to used cars (100 % for a new car, as before); « Partagée entre propriétaires » stays H2. The resale note shows only with the shared convention; the convention note always shows. Help texts (odometer, after ownership, convention) rewritten in 5 languages.
+- **Méthode:** H2 states the range as its limitation (replacing the 12/10 « ≈ 20 % instead of 14 % » wording); H3 describes the remaining share and says it exceeds 100 % over successive owners.
+- **À propos:** shorter intro, also the meta description (« Un simulateur pédagogique pour comparer voiture électrique et thermique… »). Version 7.7.
+
 ### Fixed
 - **Plug-in hybrid wording** (5 languages, H11 and Questions Q5): on-board meters show emissions *equivalent* to 17–26 % electric driving, not 17–26 % of km actually driven on electricity (about 42–46 % of km are in charge-depleting mode, but the engine often runs). The 30 % default is unchanged. Found while checking the ICCT's reliability (`docs/research/2026-10-verification-hypotheses.md`).
 

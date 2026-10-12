@@ -72,6 +72,11 @@ export function partFab(ageDebut, ageFin, ageMort) {
   return Math.min(1, Math.max(0, (valeur(ageDebut) - valeur(fin)) / Math.max(denom, 1e-6)));
 }
 
+// --- Part restante (H3, borne haute) : fabrication que la voiture n'a pas encore « consommée » à l'achat,
+// au plus petit des deux ratios (km sur VIE_KM, âge sur VIE_ANS), sans crédit à la revente. Neuve : 1.
+// Additionnée sur les propriétaires successifs, elle dépasse 100 % : estimation haute, pas une allocation.
+export const partRestante = (odo, age) => Math.max(0, Math.min(1 - odo / VIE_KM, 1 - age / VIE_ANS));
+
 // --- Intensité moyenne du mix sur n années : moyenne d'une décroissance géométrique (H6) ---
 export function mixMoyen(g0, annees, actif, r) {
   if (!actif || annees <= 0 || r <= 0) return g0;
@@ -137,7 +142,7 @@ export function gainAccroche(pays) {
 }
 
 // --- Fenêtre de détention : km parcourus et part de fabrication ---
-// marginal : un achat neuf porte 100 % de sa fabrication (H3), même revendu ensuite
+// marginal : l'achat porte toute la fabrication qui reste (H3) : 100 % pour un neuf, même revendu ensuite
 export function fenetre({ occasion, odo, age, kmAn, revente, detention, marginal = false }) {
   const ageEff = occasion ? age : 0;
   // Le compteur saisi (celui de l'annonce) est respecté : la vraie borne est la fin de vie à 200 000 km
@@ -152,7 +157,7 @@ export function fenetre({ occasion, odo, age, kmAn, revente, detention, marginal
   const ageMort = revente ? ageFinVous + kmRepreneur / KM_AN_PARC : ageFinVous;
   return {
     kmVous, kmRepreneur, odoEff, ageEff, ageFinVous, ageMort,
-    ratioFab: marginal && !occasion ? 1 : partFab(ageEff, ageFinVous, ageMort),
+    ratioFab: marginal ? partRestante(odoEff, ageEff) : partFab(ageEff, ageFinVous, ageMort),
     // Vous gardez le véhicule jusqu'à sa limite d'âge, avant sa borne kilométrique
     borneParAge: anneesVous === anneesRest && anneesRest * kmAn < VIE_KM - odoEff,
   };
@@ -179,7 +184,7 @@ export function departager(a, b) {
 
 // --- Onglet Décision : garder sa thermique ou passer à un VE ---
 // Neuf : convention marginale, 100 % de la fabrication (H3).
-// Occasion : allocation économique (H2). Horizon borné par la vie restante du VE (H1).
+// Occasion : allocation économique (H2), avec la part restante comme borne haute (partHaute). Horizon borné par la vie restante du VE (H1).
 export function decider({ carb, conso, annees, seg, etatVE, ageVE, odoVE = ageVE * KM_AN_PARC, pays, kmAn, decarb, efBatt }) {
   const occasion = etatVE !== "neuf";
   const ageDebut = occasion ? ageVE : 0;
@@ -206,7 +211,7 @@ export function decider({ carb, conso, annees, seg, etatVE, ageVE, odoVE = ageVE
   const tGarderOcc = (usageVieille * hzOcc * kmAn) / 1e6;
   const VERDICTS = { a: "remplacer", b: "garder", serre: "serre" };
   return {
-    horizon, km, usageVieille, usageVE, fabVE, partVE, tGarder, tRemplacer, amortiAns,
+    horizon, km, usageVieille, usageVE, fabVE, partVE, partHaute: occasion ? partRestante(odoEff, ageDebut) : 1, tGarder, tRemplacer, amortiAns,
     tronque: horizon < annees,
     verdict: VERDICTS[departager(tRemplacer, tGarder)],
     suggererOccasion:

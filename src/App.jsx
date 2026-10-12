@@ -443,7 +443,7 @@ function Decision({ shared, allerExplorer }) {
                   <Curseur id="odove" label={s.champ.odo} aide={s.aide.odo} value={odo} min={0} max={190000} step={1000} pas={500}
                     unite={odoEstime ? s.unites.kmEstime : s.unites.km}
                     onChange={setOdo} format={f.km} />
-                  <p className="note">{s.partOcc(f.pc(Math.round(v.partVE * 100) / 100), f.age(ageVE), f.age(ageVE + v.horizon))}</p>
+                  <p className="note">{s.partOcc({ pc: f.pc(Math.round(v.partVE * 100) / 100), haut: f.pc(Math.round(v.partHaute * 100) / 100), a: f.age(ageVE), b: f.age(ageVE + v.horizon) })}</p>
                 </>
               )}
             </>
@@ -703,7 +703,7 @@ function Comparateur({ shared, profil }) {
             <span><span className="pastille pastille-fab" />{s.legFab}</span>
             <span><span className="pastille" />{s.legUse(f.gkwh(gridEff), decarb)}</span>
           </div>
-          {!occasion && <p className="aide-ligne">{s.noteConvention[conv]}</p>}
+          <p className="aide-ligne">{s.noteConvention[conv]}</p>
         </div>
 
         <div className="section-filet">
@@ -736,7 +736,7 @@ function Comparateur({ shared, profil }) {
             <>
               <Curseur id="det" label={s.champ.detention} value={detention} min={2} max={15} step={1} unite={s.unites.ans}
                 onChange={setDetention} format={f.ans} />
-              <p className="note">{s.partRevente({ pc: f.pc(fen.ratioFab), a: f.age(fen.ageEff), b: f.age(fen.ageFinVous), km: f.km(fen.kmRepreneur) })}</p>
+              {conv === "partagee" && <p className="note">{s.partRevente({ pc: f.pc(fen.ratioFab), a: f.age(fen.ageEff), b: f.age(fen.ageFinVous), km: f.km(fen.kmRepreneur) })}</p>}
             </>
           )}
           {fen.borneParAge && <p className="note">{s.borneAge(f.km(fen.kmVous))}</p>}
@@ -951,7 +951,7 @@ function Duel({ shared, profil }) {
           <ConfigVehicule lettre="A" cfg={A} setCfg={setA} />
           <ConfigVehicule lettre="B" cfg={B} setCfg={setB} />
         </div>
-        {(A.etat === "neuf" || B.etat === "neuf") && <p className="aide-ligne">{s.noteConvention[conv]}</p>}
+        <p className="aide-ligne">{s.noteConvention[conv]}</p>
         <details className="replie reglages">
           <summary>{s.communs}</summary>
           <Curseur id="detD" label={s.champ.detention} value={detention} min={2} max={15} step={1} unite={s.unites.ans}

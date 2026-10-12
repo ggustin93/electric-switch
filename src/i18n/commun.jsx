@@ -66,4 +66,4 @@ export const SOURCES_URL = [
 ];
 
 // Dernière mise à jour de la méthode (ISO 8601) : affichée sur la page Méthode, reprise dans les données structurées.
-export const METHODE_MAJ = "2026-10-12";
+export const METHODE_MAJ = "2026-10-13";

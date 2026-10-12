@@ -3,7 +3,7 @@ import assert from "node:assert/strict";
 import {
   gainAccroche,
   PAYS, SEGMENTS, BATTERIES, MOTORS, VIE_ANS, VIE_KM, byId,
-  partFab, mixMoyen, calc, fenetre, decider, kmPivot, kmBascule, budget, departager, calcConfig, paysProbable, KM_AN_PARC, anneesRestantes, voitureActuelle,
+  partFab, partRestante, mixMoyen, calc, fenetre, decider, kmPivot, kmBascule, budget, departager, calcConfig, paysProbable, KM_AN_PARC, anneesRestantes, voitureActuelle,
 } from "./model.js";
 
 test("grille : empreintes finies et positives, part de fabrication dans [0,1]", () => {
@@ -90,6 +90,18 @@ test("convention marginale : un neuf revendu porte 100 % de sa fabrication", () 
   const f = fenetre({ occasion: false, kmAn: 12000, revente: true, detention: 8, marginal: true });
   assert.equal(f.ratioFab, 1);
   assert.ok(fenetre({ occasion: false, kmAn: 12000, revente: true, detention: 8 }).ratioFab < 1);
+});
+
+test("part restante (borne haute) : 100 % neuve, plus petit des ratios km et âge, jamais négative", () => {
+  assert.equal(partRestante(0, 0), 1);
+  assert.ok(Math.abs(partRestante(27000, 1) - 0.865) < 1e-9);
+  assert.ok(Math.abs(partRestante(50000, 10) - (1 - 10 / VIE_ANS)) < 1e-9); // l'âge borne avant le compteur
+  assert.equal(partRestante(VIE_KM + 1000, 5), 0);
+  const f = fenetre({ occasion: true, odo: 27000, age: 1, kmAn: 12000, revente: true, detention: 1, marginal: true });
+  assert.equal(f.ratioFab, partRestante(27000, 1));
+  // Décision : la part comptée reste H2 (basse), la part restante n'est qu'affichée
+  const v = decider({ carb: "essence", conso: 6.9, annees: 1, seg: byId(SEGMENTS, "compacte"), etatVE: "occasion", ageVE: 1, odoVE: 27000, pays: PAYS[0], kmAn: 12000, decarb: true, efBatt: 73 });
+  assert.ok(v.partVE < 0.2 && v.partHaute === partRestante(27000, 1));
 });
 
 test("pivot : null si jamais rattrapé, 0 si d'emblée devant", () => {
