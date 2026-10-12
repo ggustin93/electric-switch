@@ -22,21 +22,21 @@ export const PAYS = [
 ];
 
 // Consommations réelles (ICCT 2025 / OBFCM) : L/100 km ; VE en kWh/100 km côté batterie
-// (pertes de recharge ajoutées à part, H10). Fabrication du thermique (hors batterie) :
+// (pertes de recharge ajoutées à part, H10 : compacte 18,4 × 1,1 = 20,2 kWh à la prise, ICCT 2025 tab. 4). Fabrication du thermique (hors batterie) :
 // 5,2 tCO2e par tonne de véhicule (Ricardo 2020, repris par l'ICCT), H9.
 const FAB_PAR_TONNE = 5.2;
 export const SEGMENTS = [
-  { id: "citadine", masse: 1150, essence: 6.0, diesel: 5.0, ev: 16.5, battKwh: 42 },
-  { id: "compacte", masse: 1350, essence: 6.9, diesel: 5.8, ev: 17.5, battKwh: 55 },
-  { id: "berline", masse: 1550, essence: 7.6, diesel: 6.5, ev: 19.0, battKwh: 75 },
-  { id: "suv", masse: 1650, essence: 8.4, diesel: 7.1, ev: 20.5, battKwh: 75 },
-  { id: "grandsuv", masse: 2200, essence: 10.1, diesel: 8.7, ev: 24.0, battKwh: 100 },
+  { id: "citadine", masse: 1150, essence: 6.0, diesel: 5.0, ev: 17.3, battKwh: 42 },
+  { id: "compacte", masse: 1350, essence: 6.9, diesel: 5.8, ev: 18.4, battKwh: 55 },
+  { id: "berline", masse: 1550, essence: 7.6, diesel: 6.5, ev: 20.0, battKwh: 75 },
+  { id: "suv", masse: 1650, essence: 8.4, diesel: 7.1, ev: 21.5, battKwh: 75 },
+  { id: "grandsuv", masse: 2200, essence: 10.1, diesel: 8.7, ev: 25.2, battKwh: 100 },
 ].map((s) => ({ ...s, fabBase: (FAB_PAR_TONNE * s.masse) / 1000 }));
 
-// kgCO2e/kWh — Argonne GREET 2024 via ICCT 2025 ; « ue » = moyenne pondérée des ventes UE (H8)
+// kgCO2e/kWh — Argonne GREET 2024 via ICCT 2025 tab. 2 (NMC622 Europe 60, LFP Chine 69, NMC Chine 80) ; « ue » = moyenne pondérée des ventes UE (H8)
 export const BATTERIES = [
   { id: "nmcEU", ef: 60 },
-  { id: "lfp", ef: 65 },
+  { id: "lfp", ef: 69 },
   { id: "ue", ef: 73 },
   { id: "nmcCN", ef: 80 },
 ];
@@ -98,8 +98,9 @@ export function calc(motorId, seg, gridG, kmVous, ratioFab, phevShare, efBatt) {
       fabTotale = seg.fabBase;
       usage = usageDiesel(seg.diesel);
       break;
-    // Hybrides (H11) : estimations du modèle, sans source dédiée à ce jour. HEV : +0,6 t de fabrication, −22 % d'essence.
-    // PHEV : +0,7 t et une batterie de 14 kWh ; +12 % de kWh (masse) en électrique, +6 % d'essence en thermique.
+    // Hybrides (H11, ICCT 2025 tab. 1 et 4) : HEV −22 % d'essence (ICCT −23 %), +0,6 t de fabrication (prudent : ICCT 0).
+    // PHEV : +0,7 t et 14 kWh (ICCT +0,7 t, 13,3 kWh) ; +12 % de kWh en électrique, +6 % d'essence en thermique
+    // (ICCT ≈ +18 % et +10 % : légèrement favorable au PHEV).
     case "hev":
       fabTotale = seg.fabBase + 0.6;
       usage = usageEss * 0.78;

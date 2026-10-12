@@ -59,3 +59,23 @@ EEA intensity dataset and the IEA WEO 2025 STEPS tables (rates); 15 %/yr depreci
 - Peiseler 2024: https://doi.org/10.1038/s41467-024-54634-y
 - Plötz 2022: https://theicct.org/wp-content/uploads/2022/06/real-world-phev-use-jun22-1.pdf
 - EC OBFCM 2024: https://climate.ec.europa.eu/document/download/b644dafe-1385-4b56-98d9-21e7e9f3601b_en
+
+## Second check, 12/10/2026
+
+Prompted by an external study of Belgium's five best-selling cars (BE grid 180 g/kWh, break-even 26,000–36,000 km against petrol, 43,000 km against a Yaris hybrid). Three reviews: Questions page (data scientist), sources for A1/A5–A7, sources for A8–A14. **Read** = seen in the source; *deduced* = our calculation.
+
+| A | Finding | Decision |
+|---|---|---|
+| A1 | **Read** Febelauto 2025: scrappage age 18.7 years (BE); SDES 2026: 20.0 years (FR, 2025) | Figures updated, sources [22], [23] added |
+| A5 | **Read** BE: Ember 149.8 g (2025); Electricity Maps 153.2 g (2024), 181.7 g (2025); ULiège (Attia 2026, not peer-reviewed) 131.4 g. RTE: 19.6 g direct, 29 g life cycle (2025) | BE kept at 150 g; range and RTE life-cycle value stated in A5 |
+| A6 | *Deduced*: BE intensity rose ~19 % in 2025 (reactor closures) | A6 states −3 %/yr is a long-term average |
+| A7 | **Read** Base Carbone: E10 2.69 (id 13988), B7 3.10 (id 25775); 2.79 / 3.16 are archived lines (2016). DESNZ 2025 petrol average blend ≈ 2.65 WtW | Unchanged; archived values named |
+| A8 | **Read** ICCT 2025 tab. 2 (GREET): NMC622 EU 60, China 80; LFP China 69, EU 52; EU average 72.8 | LFP 65 → **69**; « NMC · Asie » → « NMC · Chine » |
+| A9 | **Read** ICCT 2021 tab. A.1: 5.2 t/t, includes a partial recycling credit | Ref [14] added; « no recycling credit » now reads « for the battery » |
+| A10 | **Read** ICCT 2025 tab. 4: compact BEV 20.2 kWh/100 km at the plug, losses included; model gave 19.25 | EV consumption **+5 %** (compact 18.4 × 1.1 = 20.2) |
+| A11 | **Read** Dornoff (ICCT 2026, ~920,000 PHEVs, OBFCM): real electric share 26 % → 17 % (2021–2023), emissions 3.5–4.6 × type approval. ICCT 2025: PHEV +0.7 t, 13.3 kWh; HEV −23 % petrol, no manufacturing surplus | Default share 50 % → **30 %**; hybrid parameters now sourced [8], source [21] added |
+| A14 | **Read** ICCT 2023 tab. A2: ID.3 €0.046/km, Golf €0.054/km | 0.04 sourced via [20]; 0.07 presented as an estimate |
+
+Effects on published figures: Belgian break-even now stated as a range, about 25,000 to 30,000 km (city car to SUV, grid 131–182 g); switch point 16,000 km/yr (was 15,500); EU intro 50 to 60 % (frozen grid / decarbonising). Questions page: ranges instead of single figures where the sensitivity is large (A1 grid, Germany and Poland frozen vs decarbonising, PHEV 0 to 2 % in fleets). The external study's 2.85 kg/L petrol factor could not be traced in DESNZ 2025.
+
+Still open: Nowtricity (134 g), IEA STEPS tables, the 10–15 % charging-loss range, TNO's real-world EV gap series.

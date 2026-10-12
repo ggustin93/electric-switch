@@ -187,7 +187,7 @@ export default function App({ page = "outil" }) {
   const [visites, setVisites] = useState({ decision: true });
   const [vue, setVue] = useState("tout");
   const [detention, setDetention] = useState(8);
-  const [phevShare, setPhevShare] = useState(0.5);
+  const [phevShare, setPhevShare] = useState(0.3); // part électrique réelle mesurée (OBFCM 17 à 26 %, H11)
   // Profil partagé par tous les onglets : jamais demandé deux fois
   const [paysId, setPaysId] = useState(() => paysProbable());
   const [kmAn, setKmAn] = useState(12000);

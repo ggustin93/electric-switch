@@ -202,3 +202,23 @@ test("décision : VE d'occasion déjà en fin de vie, horizon nul et pas de tota
   assert.equal(v.horizon, 0);
   assert.ok(v.tRemplacer >= 0 && v.tGarder >= 0);
 });
+
+test("point mort belge cohérent avec l'étude des 5 voitures les plus vendues en Belgique (26 000 à 36 000 km contre une essence)", () => {
+  // Réseau belge selon les sources 2025 (H5) : Ember 150 g, Electricity Maps 182 g ; batterie UE, 200 000 km
+  const be = P("BE");
+  const pivot = (segId, g, vs = "essence") => {
+    const s = S(segId);
+    return kmPivot(calc("ev", s, g, VIE_KM, 1, 0, UE), calc(vs, s, g, VIE_KM, 1, 0, UE), VIE_KM);
+  };
+  for (const segId of ["citadine", "compacte", "suv"])
+    for (const g of [mixMoyen(be.g, VIE_KM / KM_AN_PARC, true, be.declin), 182]) {
+      const km = pivot(segId, g);
+      assert.ok(km > 20000 && km < 45000, `${segId} ${g} ${km}`);
+    }
+  assert.ok(pivot("compacte", 182) < 35000);
+  // chiffre publié (« environ 25 000 à 30 000 km », page Questions) : la compacte au réseau belge qui se décarbone
+  const publie = pivot("compacte", mixMoyen(be.g, VIE_KM / KM_AN_PARC, true, be.declin));
+  assert.ok(publie > 25000 && publie < 30000, `${publie}`);
+  // face à un hybride, il faut rouler davantage (l'étude : 43 000 km contre une Yaris hybride)
+  assert.ok(pivot("compacte", 182, "hev") > pivot("compacte", 182));
+});

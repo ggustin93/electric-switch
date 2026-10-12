@@ -48,12 +48,12 @@ test("H13 : VE vs essence sur 200 000 km — France −65 à −75 %, UE −55 �
 });
 
 test("accroche : gain du VE neuf par pays, arrondi à 10, fourchette si la décarbonation change l'arrondi", () => {
-  // Valeurs de la Méthode (UE −60 %, France −70 %) ; Pologne : 38 % si le réseau se décarbone, 20 % sinon (revue data, 10/2026)
-  assert.deepEqual(gainAccroche(byId(PAYS, "EU")), { paysId: "EU", min: 60, max: 60 });
+  // UE 50 à 60 % depuis la conso VE alignée sur l'ICCT (+5 %, 10/2026), France −70 % ; Pologne : 38 % si le réseau se décarbone, 20 % sinon (revue data, 10/2026)
+  assert.deepEqual(gainAccroche(byId(PAYS, "EU")), { paysId: "EU", min: 50, max: 60 });
   assert.deepEqual(gainAccroche(byId(PAYS, "FR")), { paysId: "FR", min: 70, max: 70 });
   assert.deepEqual(gainAccroche(byId(PAYS, "PL")), { paysId: "PL", min: 20, max: 40 });
   // Consommation d'essence européenne : sous-estime le gain aux États-Unis et en Australie, on montre la moyenne UE
-  assert.deepEqual(gainAccroche(byId(PAYS, "US")), { paysId: "EU", min: 60, max: 60 });
+  assert.deepEqual(gainAccroche(byId(PAYS, "US")), { paysId: "EU", min: 50, max: 60 });
 });
 
 test("décision : horizon borné, verdict cohérent avec l'amortissement", () => {

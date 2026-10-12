@@ -1,7 +1,7 @@
 /* Données communes à toutes les langues : références des hypothèses, sources, langues disponibles. */
 
 // Références [n] de chaque hypothèse H1–H14 (communes à toutes les langues)
-export const HYP_REFS = [[1, 8, 14], [10], [11], [3, 8], [2, 4, 5, 6, 9], [4, 13], [6], [7, 8], [8, 12], [8, 16], [15, 16], [8], [8, 14], [18, 19, 20]];
+export const HYP_REFS = [[1, 8, 14, 22, 23], [10], [11], [3, 8], [2, 4, 5, 6, 9], [4, 13], [6], [7, 8], [8, 12, 14], [8, 16], [8, 15, 16, 21], [8], [8, 14], [18, 19, 20]];
 
 // Langues publiées : une page par langue (/fr/, /en/…), nom affiché dans sa propre langue
 export const LANGUES = [["fr", "Français"], ["en", "English"], ["nl", "Nederlands"], ["it", "Italiano"], ["es", "Español"]];
@@ -28,9 +28,12 @@ export const SOURCES = [
   <>European Commission (2026). Weekly Oil Bulletin, prices with taxes, updated weekly (date shown in the budget).</>,
   <>Eurostat (2026). Electricity prices for household consumers (nrg_pc_204), band DC, latest semester per country, updated weekly (period shown in the budget).</>,
   <>Morrison, K. &amp; Wappelhorst, S. (2023). Are battery electric vehicles cost competitive? An income-based analysis for the German market. ICCT.</>,
+  <>Dornoff, J. (2026). Fair game: Restoring technology neutrality through plug-in hybrid utility factor adjustment. ICCT working paper (OBFCM data, about 920,000 PHEVs).</>,
+  <>Febelauto (2025). Rapport annuel 2025 — Chiffres clés des véhicules hors d'usage.</>,
+  <>SDES / CGDD (2026). 40 millions de voitures en circulation en France au 1er janvier 2026.</>,
 ];
 
-// Adresse de chaque source (même ordre que SOURCES), vérifiée joignable le 08/10/2026.
+// Adresse de chaque source (même ordre que SOURCES), vérifiée joignable le 08/10/2026 (21 à 23 : le 12/10/2026).
 // Affichée en texte, pas en lien : 20 <a> feraient sortir la page Méthode de l'EcoIndex A.
 export const SOURCES_URL = [
   "https://www.carbone4.com/files/359_publication_faq_vehicule_electrique.pdf",
@@ -53,7 +56,10 @@ export const SOURCES_URL = [
   "https://energy.ec.europa.eu/data-and-analysis/weekly-oil-bulletin_en",
   "https://ec.europa.eu/eurostat/databrowser/view/nrg_pc_204/default/table",
   "https://theicct.org/wp-content/uploads/2023/10/ICCT-Study-Cost-Ownership-BEV-Germany.pdf",
+  "https://theicct.org/wp-content/uploads/2026/09/Report-PHEV-Sep-26.pdf",
+  "https://www.febelauto.be/rapportannuel2025/chiffres-cles-vehicules-hors-d-usage.html",
+  "https://www.statistiques.developpement-durable.gouv.fr/40-millions-de-voitures-en-circulation-en-france-au-1er-janvier-2026",
 ];
 
 // Dernière mise à jour de la méthode (ISO 8601) : affichée sur la page Méthode, reprise dans les données structurées.
-export const METHODE_MAJ = "2026-10-08";
+export const METHODE_MAJ = "2026-10-12";
