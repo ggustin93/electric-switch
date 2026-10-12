@@ -287,7 +287,8 @@ export function kmPivot(ev, essence, kmMax) {
 // Hors UE (carbDate/elecPeriode null), saisis à la main : GOV.UK et Ofgem T4 2026, EIA, NO/CN/IN globalpetrolprices.
 export { default as PRIX_ENERGIE } from "./prix.json" with { type: "json" };
 // Entretien + pneus €/km : électrique 0,04 (ICCT 2023 : ID.3 0,046 ; ADAC 2026 : ≥ 1/3 moins cher que le
-// thermique) ; voiture thermique ancienne déjà payée 0,07 (réparations et pièces d'usure en plus).
+// thermique) ; voiture thermique ancienne déjà payée 0,07 (réparations et pièces d'usure en plus), prudent : moyenne
+// française ≈ 0,09 à 0,11 €/km (ménages 41,4 Md€ en 2024, CCFA d'après l'INSEE, pour 440 Md de km, SDES).
 export const ENTRETIEN = { thermique: 0.07, electrique: 0.04 };
 
 // --- Budget à l'usage (€/an) : énergie + entretien, recharge à domicile ---

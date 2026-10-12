@@ -79,3 +79,9 @@ Prompted by an external study of Belgium's five best-selling cars (BE grid 180 g
 Effects on published figures: Belgian break-even now stated as a range, about 25,000 to 30,000 km (city car to SUV, grid 131–182 g); switch point 16,000 km/yr (was 15,500); EU intro 50 to 60 % (frozen grid / decarbonising). Questions page: ranges instead of single figures where the sensitivity is large (A1 grid, Germany and Poland frozen vs decarbonising, PHEV 0 to 2 % in fleets). The external study's 2.85 kg/L petrol factor could not be traced in DESNZ 2025.
 
 Still open: Nowtricity (134 g), IEA STEPS tables, the 10–15 % charging-loss range, TNO's real-world EV gap series.
+
+## Maintenance cost of an older combustion car (A14), 12/10/2026
+
+No study publishes a €/km maintenance cost by vehicle age; ADAC itself says its new-car flat rates are only a rough approximation for a 10-year-old car. **Read**: CCFA 2025 (from INSEE national accounts), household spending on « entretien, réparation, pièces détachées et accessoires » €41.4 bn in 2024; SDES Bilan annuel des transports 2024, French-registered cars drove 440 bn km in mainland France. *Deduced*: ≈ €0.094/km for the average car (fleet age 11.8 years), about €0.09–0.11/km once company cars (maintenance not paid by households) are set aside, accessories and two-wheelers being in the other direction. DAT-Report 2025 (GfK, 2,062 owners): 1.03 services per car a year at €389, i.e. ≈ €0.03/km for servicing alone (repairs by age only in the paid full report). ICCT 2023: new ID.3 €0.046/km, new Golf €0.054/km (≈ 15 % less for the EV at equal age).
+
+Decision: keep 0.07 (older combustion car) and 0.04 (new EV); A14 now says 0.07 is below the French average and that the gap shown mostly reflects age. Sources [24] CCFA, [25] SDES added.
