@@ -231,7 +231,7 @@ export default {
     ]],
   ],
   retourOutil: "Torna al simulatore",
-  aproposIntro: "Chi ha creato questo simulatore auto elettrica o termica, perché, i suoi limiti, l'uso dell'IA e le fonti (Carbone 4, ADEME). Di Guillaume Gustin, Bruxelles.",
+  aproposIntro: "Un simulatore didattico per confrontare auto elettrica e termica, di Guillaume Gustin, senza legami con le case automobilistiche. Metodo ispirato a Carbone 4, dati dell'ICCT e dell'ADEME.",
   // Relu par des agents IA (UX, SEO, académique, 10/10 ; data et UX, 12/10/2026) ; recours à l'IA déclaré (transparence, esprit de l'AI Act)
   apropos: ({ lien, carbone4 }) => [
     ["Origine e scopo", "Il progetto nasce da una domanda ricorrente tra gli amici dell'autore: conviene passare all'elettrico, e a quali condizioni? L'autore non aveva trovato uno strumento semplice che rispondesse a una situazione individuale. Il simulatore confronta quindi due opzioni, tenere la propria auto o passare all'elettrico, contando la produzione (batteria compresa) e l'uso, secondo il paese e il chilometraggio. Ha uno scopo didattico: fornisce ordini di grandezza e può concludere che conviene tenere la propria auto."],

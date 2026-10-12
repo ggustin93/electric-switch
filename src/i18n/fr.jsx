@@ -229,7 +229,7 @@ export default {
     ]],
   ],
   retourOutil: "Retour au simulateur",
-  aproposIntro: "Qui a créé ce simulateur voiture électrique ou thermique, pourquoi, ses limites, son usage de l'IA et ses sources (Carbone 4, ADEME). Par Guillaume Gustin, Bruxelles.",
+  aproposIntro: "Un simulateur pédagogique pour comparer voiture électrique et thermique, par Guillaume Gustin, sans lien avec les constructeurs. Méthode inspirée de Carbone 4, données de l'ICCT et de l'ADEME.",
   // Relu par des agents IA (UX, SEO, académique, 10/10 ; data et UX, 12/10/2026) ; recours à l'IA déclaré (transparence, esprit de l'AI Act)
   apropos: ({ lien, carbone4 }) => [
     ["Origine et objet", "Le projet est né d'une question récurrente dans l'entourage de l'auteur : vaut-il mieux passer à l'électrique, et à quelles conditions ? L'auteur n'avait pas trouvé d'outil simple qui réponde à une situation individuelle. Le simulateur compare donc deux options, garder sa voiture ou passer à l'électrique, en comptant la fabrication (batterie comprise) et l'usage, selon le pays et le kilométrage. Sa visée est pédagogique : il fournit des ordres de grandeur et peut conclure qu'il vaut mieux garder sa voiture."],

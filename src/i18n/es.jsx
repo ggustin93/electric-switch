@@ -228,7 +228,7 @@ export default {
     ]],
   ],
   retourOutil: "Volver al simulador",
-  aproposIntro: "Quién creó este simulador de coche eléctrico o de gasolina, por qué, sus límites, su uso de la IA y sus fuentes (Carbone 4, ADEME). Por Guillaume Gustin, Bruselas.",
+  aproposIntro: "Un simulador pedagógico para comparar coche eléctrico y de gasolina, de Guillaume Gustin, sin vínculos con los fabricantes. Método inspirado en Carbone 4, datos del ICCT y de la ADEME.",
   // Relu par des agents IA (UX, SEO, académique, 10/10 ; data et UX, 12/10/2026) ; recours à l'IA déclaré (transparence, esprit de l'AI Act)
   apropos: ({ lien, carbone4 }) => [
     ["Origen y objetivo", "El proyecto nació de una pregunta recurrente entre los amigos del autor: ¿conviene pasarse al eléctrico, y en qué condiciones? El autor no había encontrado una herramienta sencilla que respondiera a una situación individual. Por eso el simulador compara dos opciones, conservar el coche o pasarse al eléctrico, contando la fabricación (batería incluida) y el uso, según el país y el kilometraje. Su finalidad es pedagógica: ofrece órdenes de magnitud y puede concluir que conviene conservar el coche."],

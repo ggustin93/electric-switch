@@ -227,7 +227,7 @@ export default {
     ]],
   ],
   retourOutil: "Terug naar de simulator",
-  aproposIntro: "Wie deze simulator elektrisch of benzine bouwde, waarom, de grenzen ervan, het gebruik van AI en de bronnen (Carbone 4, ADEME). Door Guillaume Gustin, Brussel.",
+  aproposIntro: "Een educatieve simulator om elektrische en benzineauto's te vergelijken, door Guillaume Gustin, zonder banden met autofabrikanten. Methode geïnspireerd door Carbone 4, gegevens van de ICCT en ADEME.",
   // Relu par des agents IA (UX, SEO, académique, 10/10 ; data et UX, 12/10/2026) ; recours à l'IA déclaré (transparence, esprit de l'AI Act)
   apropos: ({ lien, carbone4 }) => [
     ["Ontstaan en doel", "Het project kwam voort uit een vraag die in de omgeving van de maker steeds terugkwam: is het beter om over te stappen op elektrisch, en onder welke voorwaarden? De maker had geen eenvoudig hulpmiddel gevonden dat op een individuele situatie inging. De simulator vergelijkt daarom twee opties, uw auto houden of overstappen op elektrisch, met productie (batterij inbegrepen) en gebruik, volgens land en kilometerstand. Het doel is educatief: hij geeft ordegroottes en kan concluderen dat u uw auto beter houdt."],

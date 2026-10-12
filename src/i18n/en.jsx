@@ -227,7 +227,7 @@ export default {
     ]],
   ],
   retourOutil: "Back to the simulator",
-  aproposIntro: "Who built this electric-or-petrol car simulator, why, its limits, its use of AI and its sources (Carbone 4, ADEME). By Guillaume Gustin, Brussels.",
+  aproposIntro: "An educational simulator to compare electric and petrol cars, by Guillaume Gustin, with no ties to carmakers. Method inspired by Carbone 4, data from the ICCT and ADEME.",
   // Relu par des agents IA (UX, SEO, académique, 10/10 ; data et UX, 12/10/2026) ; recours à l'IA déclaré (transparence, esprit de l'AI Act)
   apropos: ({ lien, carbone4 }) => [
     ["Origin and purpose", "The project grew out of a question that kept coming up among the author's friends: is it better to switch to electric, and under what conditions? The author had not found a simple tool that answered an individual situation. The simulator therefore compares two options, keeping your car or switching to electric, counting manufacturing (battery included) and use, by country and mileage. Its aim is educational: it gives orders of magnitude and may conclude that keeping your car is better."],
