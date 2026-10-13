@@ -97,6 +97,7 @@ export default {
   verdictSerre: ({ a, b, duree }) => <>Verschil kleiner dan 10%: {a} tegenover {b} over {duree}. Budget, lokale luchtvervuiling of lage-emissiezones kunnen de doorslag geven.</>,
   voirHypo: "Aannames van de berekening: A3",
   suggestionOcc: ({ age, t, tg }) => <>Een <strong>tweedehandse elektrische auto van {age}&nbsp;jaar oud</strong> zou het daarentegen al beter doen ({t} tegenover {tg}).</>,
+  suggestionOccSeg: ({ cat, age, t, tg }) => <>Een <strong>tweedehandse elektrische {cat} van {age}&nbsp;jaar oud</strong> zou het daarentegen al beter doen ({t} tegenover {tg}), als hij volstaat voor uw ritten.</>,
   suggestionSeg: ({ cat, etat, t, tg }) => <>Een {etat} elektrische <strong>{cat}</strong> zou het daarentegen al beter doen ({t} tegenover {tg}), als hij volstaat voor uw ritten.</>,
   tronque: (duree) => `Vergelijking beperkt tot ${duree}: daarna zou de elektrische auto het einde van zijn levensduur bereiken (200.000 km of 18 jaar).`,
   etatNeuve: "nieuwe",

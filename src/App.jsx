@@ -360,10 +360,6 @@ function Decision({ shared, allerExplorer }) {
   const params = { carb, conso, annees, seg, etatVE, ageVE, odoVE: odo, pays, decarb, efBatt: batt.ef };
   const v = decider({ ...params, kmAn });
   const { verdict } = v;
-  // « Garder » : une seule suggestion, celle qui émet le moins par rapport à garder (occasion plus âgée ou catégorie plus légère)
-  const ratioOcc = v.suggererOccasion ? v.tOccasion / v.tGarderOcc : Infinity;
-  const ratioSeg = v.suggestionSegment ? v.suggestionSegment.t / v.suggestionSegment.tg : Infinity;
-  const suggestion = ratioOcc === Infinity && ratioSeg === Infinity ? null : ratioOcc <= ratioSeg ? "occasion" : "segment";
   // Le seuil ne dépend pas du kilométrage : recalculé seulement si une autre réponse change
   const seuil = useMemo(
     () => (etape === 3 ? kmBascule(params) : null),
@@ -480,8 +476,12 @@ function Decision({ shared, allerExplorer }) {
                 </>
               )}
               {/* « Garder » : d'autres électriques qui feraient mieux (occasion plus âgée, catégorie plus légère) */}
-              {verdict === "garder" && suggestion === "occasion" && <> {s.suggestionOcc({ age: f.n0(AGE_SUGGESTION), t: f.t(v.tOccasion), tg: f.t(v.tGarderOcc) })}</>}
-              {verdict === "garder" && suggestion === "segment" && <> {s.suggestionSeg({ cat: minusculeInitiale(s.seg[v.suggestionSegment.segId].nom), etat, t: f.t(v.suggestionSegment.t), tg: f.t(v.suggestionSegment.tg) })}</>}
+              {verdict === "garder" && v.suggestion && (() => {
+                // Une seule suggestion (modèle) : occasion de 6 ans un cran plus légère, de même catégorie, ou catégorie plus légère
+                const g = v.suggestion, cat = minusculeInitiale(s.seg[g.segId].nom), chiffres = { t: f.t(g.t), tg: f.t(g.tg) };
+                if (g.type === "segment") return <> {s.suggestionSeg({ cat, etat, ...chiffres })}</>;
+                return <> {g.plusLeger ? s.suggestionOccSeg({ cat, age: f.n0(AGE_SUGGESTION), ...chiffres }) : s.suggestionOcc({ age: f.n0(AGE_SUGGESTION), ...chiffres })}</>;
+              })()}
               {v.verdict === "serre" && s.verdictSerre({ a: f.t(v.tGarder), b: f.t(v.tRemplacer), duree: f.ans(v.horizon) })}
             </p>
             {v.tronque && <p className="verdict-note">{s.tronque(f.ans(v.horizon))}</p>}

@@ -208,6 +208,10 @@ export function decider({ carb, conso, annees, seg, etatVE, ageVE, odoVE = ageVE
   const partOccSugg = fenetre({ occasion: true, odo: odoSugg, age: AGE_SUGGESTION, kmAn, revente: true, detention: hzOcc }).ratioFab;
   const tOccasion = fabTot * partOccSugg + (usageVE * hzOcc * kmAn) / 1e6;
   const tGarderOcc = (usageVieille * hzOcc * kmAn) / 1e6;
+  // Même occasion de 6 ans, un cran plus légère (citadine : même catégorie), pour que l'idée « plus petite » reste visible
+  const iSeg = SEGMENTS.findIndex((x) => x.id === seg.id);
+  const leger = SEGMENTS[Math.max(0, iSeg - 1)];
+  const tOccLeger = fabEV(leger, efBatt) * partOccSugg + (usageElec(leger.ev, gridG) * hzOcc * kmAn) / 1e6;
   const VERDICTS = { a: "remplacer", b: "garder", serre: "serre" };
   // Catégorie plus légère qui ferait mieux que garder (la plus lourde d'entre elles), même état, âge et compteur
   let suggestionSegment = null;
@@ -222,6 +226,17 @@ export function decider({ carb, conso, annees, seg, etatVE, ageVE, odoVE = ageVE
     suggererOccasion:
       (etatVE === "neuf" || ageVE < AGE_SUGGESTION - 1) && departager(tOccasion, tGarderOcc) === "a",
     tOccasion, tGarderOcc, suggestionSegment,
+    // Une seule suggestion sous « garder » : occasion de 6 ans un cran plus légère si c'est nettement mieux, sinon de même catégorie,
+    // sinon une catégorie plus légère (neuve ou de même état)
+    suggestion: (() => {
+      const occPossible = etatVE === "neuf" || ageVE < AGE_SUGGESTION - 1;
+      const legerGagne = occPossible && leger.id !== seg.id && departager(tOccLeger, tGarderOcc) === "a";
+      const memeGagne = occPossible && departager(tOccasion, tGarderOcc) === "a";
+      // Garde-fou : on ne propose de « descendre » d'une catégorie que si c'est nettement mieux (seuil de 10 %, SEUIL_SERRE)
+      if (legerGagne && (!memeGagne || departager(tOccLeger, tOccasion) === "a")) return { type: "occasion", segId: leger.id, plusLeger: true, t: tOccLeger, tg: tGarderOcc };
+      if (memeGagne) return { type: "occasion", segId: seg.id, plusLeger: false, t: tOccasion, tg: tGarderOcc };
+      return suggestionSegment && { type: "segment", ...suggestionSegment, plusLeger: true };
+    })(),
   };
 }
 

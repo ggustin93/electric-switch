@@ -116,6 +116,20 @@ test("suggestion : une catégorie plus légère qui ferait mieux que garder", ()
   assert.equal(decider({ carb: "essence", conso: 6, annees: 2, seg: byId(SEGMENTS, "citadine"), etatVE: "neuf", ageVE: 0, pays: byId(PAYS, "BE"), kmAn: 12000, decarb: true, efBatt: 73 }).suggestionSegment, null);
 });
 
+test("suggestion unique : occasion de 6 ans un cran plus légère d'abord, sinon même catégorie, sinon catégorie plus légère", () => {
+  const base = { carb: "essence", conso: 7.4, annees: 5, etatVE: "neuf", ageVE: 0, pays: byId(PAYS, "FR"), kmAn: 12000, decarb: true, efBatt: 73 };
+  const v = decider({ ...base, seg: byId(SEGMENTS, "berline") });
+  assert.equal(v.verdict, "garder");
+  assert.deepEqual([v.suggestion.type, v.suggestion.segId, v.suggestion.plusLeger], ["occasion", "compacte", true]);
+  assert.equal(departager(v.suggestion.t, v.suggestion.tg), "a");
+  // Citadine : pas plus léger, même catégorie
+  const c = decider({ ...base, seg: byId(SEGMENTS, "citadine"), kmAn: 5000 });
+  if (c.suggestion?.type === "occasion") assert.ok(c.suggestion.segId === "citadine" && !c.suggestion.plusLeger);
+  // Garde-fou : SUV compact → berline (même batterie de 75 kWh) ne fait pas nettement mieux, on reste en SUV d'occasion
+  const suv = decider({ ...base, seg: byId(SEGMENTS, "suv") });
+  if (suv.suggestion?.type === "occasion") assert.equal(suv.suggestion.segId, "suv");
+});
+
 test("pivot : null si jamais rattrapé, 0 si d'emblée devant", () => {
   assert.equal(kmPivot({ usage: 200, fabAttr: 10 }, { usage: 150, fabAttr: 6 }, 1e5), null);
   assert.equal(kmPivot({ usage: 20, fabAttr: 5 }, { usage: 150, fabAttr: 6 }, 1e5), 0);
