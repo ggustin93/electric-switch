@@ -1383,6 +1383,10 @@ h2 + .bascule {
 .pied .credit a {
   font-weight: 800;
 }
+.pied .version {
+  font-size: var(--fs-xs);
+  color: var(--ink-2);
+}
 
 /* Icônes d'onglets (Tabler Icons, MIT) dessinées en masque CSS : aucun nœud DOM ajouté */
 .onglets [role="tab"] {

@@ -97,7 +97,7 @@ export default {
   verdictSerre: ({ a, b, duree }) => <>Less than 10% apart: {a} versus {b} over {duree}. Budget, local air pollution or low-emission zones can decide.</>,
   voirHypo: "Calculation assumptions: A3",
   suggestionOcc: ({ age, t, tg }) => <>However, a <strong>{age}-year-old used electric car</strong> would already do better ({t} versus {tg}).</>,
-  suggestionSeg: ({ cat, t, tg }) => <>A lighter electric car, in the <strong>{cat}</strong> category, would do better ({t} versus {tg}).</>,
+  suggestionSeg: ({ cat, etat, t, tg }) => <>However, a {etat} electric <strong>{cat}</strong> would already do better ({t} versus {tg}), if it is enough for your trips.</>,
   tronque: (duree) => `Comparison limited to ${duree}: beyond that, the electric car would reach the end of its life (200,000 km or 18 years).`,
   etatNeuve: "new",
   etatOccasion: "used",

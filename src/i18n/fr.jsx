@@ -98,7 +98,7 @@ export default {
   verdictSerre: ({ a, b, duree }) => <>Écart inférieur à 10 % : {a} contre {b} sur {duree}. Budget, pollution locale ou zones à faibles émissions peuvent trancher.</>,
   voirHypo: "Hypothèses du calcul : H3",
   suggestionOcc: ({ age, t, tg }) => <>En revanche, une <strong>électrique d'occasion de {age}&nbsp;ans</strong> ferait déjà mieux ({t} contre {tg}).</>,
-  suggestionSeg: ({ cat, t, tg }) => <>Une électrique plus légère, en catégorie <strong>{cat}</strong>, ferait mieux ({t} contre {tg}).</>,
+  suggestionSeg: ({ cat, etat, t, tg }) => <>En revanche, une électrique <strong>{cat}</strong> {etat} ferait déjà mieux ({t} contre {tg}), si elle suffit à vos trajets.</>,
   tronque: (duree) => `Comparaison limitée à ${duree} : au-delà, l'électrique atteindrait sa fin de vie (200 000 km ou 18 ans).`,
   etatNeuve: "neuve",
   etatOccasion: "d'occasion",
