@@ -500,6 +500,8 @@ function Decision({ shared, allerExplorer }) {
               </p>
             )}
 
+            {/* Renvoi léger vers l'hypothèse (votre voiture actuelle cesse de rouler, H3), sans texte de plus sur la carte */}
+            {verdict === "remplacer" && <p className="verdict-note">{lierHyp(s.voirHypo, s.prefixeHyp, f.lang)}</p>}
             <div className="face-a-face">
               <Colonne gagne={verdict === "garder"} titre={s.colGarder(carb)} t={v.tGarder}
                 sous={s.colGarderSous(f.gkm(v.usageVieille))} />

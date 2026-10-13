@@ -97,6 +97,7 @@ export default {
   verdictSerre: ({ a, b, duree }) => <>Less than 10% apart: {a} versus {b} over {duree}. Budget, local air pollution or low-emission zones can decide.</>,
   prochaineOui: ({ bas, garder, duree }) => <>Replacing now only brings that purchase forward. Over {duree}, the electric car would emit <strong>{bas}</strong>, against {garder} for your car.</>,
   prochaineNon: ({ haut, garder, fab, duree }) => <>Over {duree}, your car would emit <strong>{garder}</strong>, against {haut} for the electric car, {fab} of which just to build it.</>,
+  voirHypo: "Calculation assumptions: A3",
   hypoPrudent: (duree) => `Cautious calculation: all manufacturing is counted. Would you buy a new electric car in ${duree} anyway?`,
   hypoAvance: (duree) => `Assumption: you would buy a new electric car in ${duree} anyway.`,
   voirAvance: "See this calculation",

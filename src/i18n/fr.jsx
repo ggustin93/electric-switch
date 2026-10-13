@@ -98,6 +98,7 @@ export default {
   verdictSerre: ({ a, b, duree }) => <>Écart inférieur à 10 % : {a} contre {b} sur {duree}. Budget, pollution locale ou zones à faibles émissions peuvent trancher.</>,
   prochaineOui: ({ bas, garder, duree }) => <>Remplacer maintenant ne fait qu'avancer cet achat. Sur {duree}, l'électrique émettrait <strong>{bas}</strong>, contre {garder} pour votre voiture.</>,
   prochaineNon: ({ haut, garder, fab, duree }) => <>Sur {duree}, votre voiture émettrait <strong>{garder}</strong>, contre {haut} pour l'électrique, dont {fab} rien que pour la fabriquer.</>,
+  voirHypo: "Hypothèses du calcul : H3",
   hypoPrudent: (duree) => `Calcul prudent : on compte toute la fabrication. Vous rachèteriez de toute façon une électrique neuve dans ${duree}${N}?`,
   hypoAvance: (duree) => `Hypothèse : vous rachèteriez de toute façon une électrique neuve dans ${duree}.`,
   voirAvance: "Voir ce calcul",
