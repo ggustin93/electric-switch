@@ -478,6 +478,7 @@ function Decision({ shared, allerExplorer }) {
                 : s.verdictSerre({ a: f.t(v.tGarder), b: f.t(v.tRemplacer), duree: f.ans(v.horizon) }))}
             </p>
             {v.tronque && <p className="verdict-note">{s.tronque(f.ans(v.horizon))}</p>}
+            {(v.verdict === "remplacer" || v.selonProchaine) && <p className="verdict-note">{s.noteCasse}</p>}
 
             <div className="face-a-face">
               <Colonne gagne={v.verdict === "garder"} titre={s.colGarder(carb)} t={v.tGarder}
