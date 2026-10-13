@@ -138,6 +138,23 @@ test("occasion : estimation haute (part restante) au-dessus de H2, signalée seu
   assert.ok(k("tRemplacerHaut") >= k("tRemplacer"));
 });
 
+test("vétusté : à âge égal, plus le compteur est élevé, plus la part H2 baisse ; compteur par défaut inchangé", () => {
+  const part = (odo) => fenetre({ occasion: true, odo, age: 2, kmAn: 12000, revente: true, detention: 2 }).ratioFab;
+  assert.ok(part(24000) > part(100000) && part(100000) > part(174000));
+  assert.ok(part(174000) < 0.05);
+  // Compteur sous l'âge × 12 000 km : l'âge réel l'emporte, comme avant (seule la vie restante varie un peu)
+  assert.ok(Math.abs(part(10000) - part(24000)) < 0.01);
+});
+
+test("suggestion : une catégorie plus légère qui ferait mieux que garder", () => {
+  const v = decider({ carb: "essence", conso: 6.9, annees: 2, seg: byId(SEGMENTS, "grandsuv"), etatVE: "occasion", ageVE: 1, pays: byId(PAYS, "BE"), kmAn: 12000, decarb: true, efBatt: 73 });
+  assert.equal(v.verdict, "garder");
+  assert.ok(v.suggestionSegment);
+  const autre = byId(SEGMENTS, v.suggestionSegment.segId);
+  assert.ok(autre.masse < byId(SEGMENTS, "grandsuv").masse && departager(v.suggestionSegment.t, v.suggestionSegment.tg) === "a");
+  assert.equal(decider({ carb: "essence", conso: 6, annees: 2, seg: byId(SEGMENTS, "citadine"), etatVE: "neuf", ageVE: 0, pays: byId(PAYS, "BE"), kmAn: 12000, decarb: true, efBatt: 73 }).suggestionSegment, null);
+});
+
 test("pivot : null si jamais rattrapé, 0 si d'emblée devant", () => {
   assert.equal(kmPivot({ usage: 200, fabAttr: 10 }, { usage: 150, fabAttr: 6 }, 1e5), null);
   assert.equal(kmPivot({ usage: 20, fabAttr: 5 }, { usage: 150, fabAttr: 6 }, 1e5), 0);

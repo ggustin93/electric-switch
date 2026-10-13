@@ -155,9 +155,12 @@ export function fenetre({ occasion, odo, age, kmAn, revente, detention, marginal
     ? Math.max(0, Math.min(VIE_KM - odoEff - kmVous, (VIE_ANS - ageFinVous) * KM_AN_PARC))
     : 0;
   const ageMort = revente ? ageFinVous + kmRepreneur / KM_AN_PARC : ageFinVous;
+  // Vétusté (H2, ADR 0014) : la décote part de l'âge équivalent, le plus élevé de l'âge réel et du compteur à 12 000 km/an (H4).
+  // Une occasion qui a beaucoup roulé vaut moins ; avec le compteur par défaut (âge × 12 000 km), rien ne change.
+  const ageEq = Math.max(ageEff, odoEff / KM_AN_PARC);
   return {
-    kmVous, kmRepreneur, odoEff, ageEff, ageFinVous, ageMort,
-    ratioFab: marginal && !occasion ? 1 : partFab(ageEff, ageFinVous, ageMort),
+    kmVous, kmRepreneur, odoEff, ageEff, ageEq, ageFinVous, ageMort,
+    ratioFab: marginal && !occasion ? 1 : partFab(ageEq, ageEq + ageFinVous - ageEff, ageEq + ageMort - ageEff),
     // Vous gardez le véhicule jusqu'à sa limite d'âge, avant sa borne kilométrique
     borneParAge: anneesVous === anneesRest && anneesRest * kmAn < VIE_KM - odoEff,
   };
@@ -185,7 +188,7 @@ export function departager(a, b) {
 // --- Onglet Décision : garder sa thermique ou passer à un VE ---
 // Neuf : fabrication avancée (borne basse) et 100 % (H3, borne haute) ; le verdict ne tranche que si elles concordent.
 // Occasion : allocation économique (H2), avec la part restante comme borne haute (partHaute). Horizon borné par la vie restante du VE (H1).
-export function decider({ carb, conso, annees, seg, etatVE, ageVE, odoVE = ageVE * KM_AN_PARC, pays, kmAn, decarb, efBatt }) {
+export function decider({ carb, conso, annees, seg, etatVE, ageVE, odoVE = ageVE * KM_AN_PARC, pays, kmAn, decarb, efBatt, sansSuggestion = false }) {
   const occasion = etatVE !== "neuf";
   const ageDebut = occasion ? ageVE : 0;
   // Même fenêtre que « Comparer » : le compteur réduit la vie restante (borne 200 000 km), une même règle partout
@@ -217,6 +220,12 @@ export function decider({ carb, conso, annees, seg, etatVE, ageVE, odoVE = ageVE
   const tOccasion = fabTot * partOccSugg + (usageVE * hzOcc * kmAn) / 1e6;
   const tGarderOcc = (usageVieille * hzOcc * kmAn) / 1e6;
   const VERDICTS = { a: "remplacer", b: "garder", serre: "serre" };
+  // Catégorie plus légère qui ferait mieux que garder (la plus lourde d'entre elles), même état, âge et compteur
+  let suggestionSegment = null;
+  if (!sansSuggestion) for (const autre of SEGMENTS.filter((x) => x.masse < seg.masse).reverse()) {
+    const w = decider({ carb, conso, annees, seg: autre, etatVE, ageVE, odoVE, pays, kmAn, decarb, efBatt, sansSuggestion: true });
+    if (departager(w.tRemplacer, w.tGarder) === "a") { suggestionSegment = { segId: autre.id, t: w.tRemplacer, tg: w.tGarder }; break; }
+  }
   // Verdict tranché seulement si les deux bornes concordent ; sinon « serré », selon la prochaine voiture (ADR 0013)
   const vHaut = departager(tRemplacer, tGarder), vBas = departager(tRemplacerBas, tGarder);
   const verdict = vHaut === "a" ? "a" : vBas === "b" ? "b" : "serre";
@@ -229,7 +238,7 @@ export function decider({ carb, conso, annees, seg, etatVE, ageVE, odoVE = ageVE
     selonProchaine: vHaut !== vBas,
     suggererOccasion:
       (etatVE === "neuf" || ageVE < AGE_SUGGESTION - 1) && departager(tOccasion, tGarderOcc) === "a",
-    tOccasion, tGarderOcc,
+    tOccasion, tGarderOcc, suggestionSegment,
   };
 }
 
@@ -255,7 +264,7 @@ export function calcConfig(cfg, { pays, kmAn, decarb, efBatt, marginal, detentio
 // cle : le total comparé (« tRemplacerBas » : neuve en fabrication avancée, ADR 0013 ; « tRemplacerHaut » : occasion en part restante, ADR 0012)
 export function kmBascule(params, cle = "tRemplacer") {
   for (let kmAn = 3000; kmAn <= 40000; kmAn += 500) {
-    const v = decider({ ...params, kmAn });
+    const v = decider({ ...params, kmAn, sansSuggestion: true });
     if (v[cle] <= v.tGarder) return kmAn;
   }
   return null;

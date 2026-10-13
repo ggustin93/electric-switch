@@ -488,9 +488,11 @@ function Decision({ shared, allerExplorer }) {
                     km: f.kmAn(kmAn), etat, duree: f.ans(v.horizon), t: f.tco2(v.tRemplacer - v.tGarder),
                     amorti: Number.isFinite(v.amortiAns) ? f.ans(v.amortiAns) : null,
                   })}
-                  {v.suggererOccasion && <> {s.suggestionOcc({ age: f.n0(AGE_SUGGESTION), t: f.t(v.tOccasion), tg: f.t(v.tGarderOcc) })}</>}
                 </>
               )}
+              {/* « Garder » : d'autres électriques qui feraient mieux (occasion plus âgée, catégorie plus légère) */}
+              {verdict === "garder" && v.suggererOccasion && <> {s.suggestionOcc({ age: f.n0(AGE_SUGGESTION), t: f.t(v.tOccasion), tg: f.t(v.tGarderOcc) })}</>}
+              {verdict === "garder" && v.suggestionSegment && <> {s.suggestionSeg({ cat: minusculeInitiale(s.seg[v.suggestionSegment.segId].nom), t: f.t(v.suggestionSegment.t), tg: f.t(v.suggestionSegment.tg) })}</>}
               {!v.selonProchaine && !haut && v.verdict === "serre" && s.verdictSerre({ a: f.t(v.tGarder), b: f.t(v.tRemplacer), duree: f.ans(v.horizon) })}
             </p>
             {v.tronque && <p className="verdict-note">{s.tronque(f.ans(v.horizon))}</p>}
@@ -597,6 +599,9 @@ function usage(s, f, parAn) {
   if (Math.abs(parAn) < 50) return s.budgetUsagePareil;
   return parAn > 0 ? s.budgetUsageMoins(f.eur(parAn)) : s.budgetUsagePlus(f.eur(-parAn));
 }
+
+// « Compacte » → « compacte » au milieu d'une phrase, mais « SUV compact » garde son sigle
+const minusculeInitiale = (t) => (/^\p{Lu}\p{Ll}/u.test(t) ? t[0].toLowerCase() + t.slice(1) : t);
 
 function texteBascule(s, f, seuil) {
   if (seuil === null) return s.basculeJamais;
