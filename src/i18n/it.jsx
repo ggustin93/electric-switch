@@ -102,7 +102,7 @@ export default {
   prochaineOui: ({ bas, garder, duree }) => <>Sostituire ora anticipa soltanto quell'acquisto. In {duree} l'elettrica emetterebbe <strong>{bas}</strong>, contro {garder} della tua auto.</>,
   prochaineNon: ({ haut, garder, fab, duree }) => <>In {duree} la tua auto emetterebbe <strong>{garder}</strong>, contro {haut} dell'elettrica, di cui {fab} solo per produrla.</>,
   voirHypo: "Ipotesi del calcolo: I3",
-  hypoPrudent: (duree) => `Calcolo prudente: si conta tutta la produzione. Tra ${duree} compreresti comunque un'elettrica nuova?`,
+  hypoPrudent: (duree) => `Tra ${duree} compreresti comunque un'elettrica nuova?`,
   hypoAvance: (duree) => `Ipotesi: tra ${duree} compreresti comunque un'elettrica nuova.`,
   voirAvance: "Vedi questo calcolo",
   voirPrudent: "Torna al calcolo prudente",

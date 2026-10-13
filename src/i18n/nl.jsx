@@ -98,7 +98,7 @@ export default {
   prochaineOui: ({ bas, garder, duree }) => <>Nu vervangen haalt die aankoop alleen naar voren. Over {duree} zou de elektrische <strong>{bas}</strong> uitstoten, tegenover {garder} voor uw auto.</>,
   prochaineNon: ({ haut, garder, fab, duree }) => <>Over {duree} zou uw auto <strong>{garder}</strong> uitstoten, tegenover {haut} voor de elektrische, waarvan {fab} alleen al om hem te bouwen.</>,
   voirHypo: "Aannames van de berekening: A3",
-  hypoPrudent: (duree) => `Voorzichtige berekening: de volledige productie telt mee. Zou u over ${duree} hoe dan ook een nieuwe elektrische kopen?`,
+  hypoPrudent: (duree) => `Zou u over ${duree} hoe dan ook een nieuwe elektrische kopen?`,
   hypoAvance: (duree) => `Aanname: u zou over ${duree} hoe dan ook een nieuwe elektrische kopen.`,
   voirAvance: "Deze berekening bekijken",
   voirPrudent: "Terug naar de voorzichtige berekening",
