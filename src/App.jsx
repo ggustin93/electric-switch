@@ -344,7 +344,7 @@ function Decision({ shared, allerExplorer }) {
   const { pays, paysId, setPaysId, kmAn, setKmAn, decarb, batt, segId, setSegId, etatVE, setEtatVE, ageVE, setAgeVE, odo, odoEstime, setOdo,
     carb, setCarb, conso, setConso, annees, setAnnees, setVoitureSaisie } = shared;
   const [etape, setEtape] = useState(0);
-  const [prochaine, setProchaine] = useState("nsp"); // prochaine voiture électrique de toute façon ? (ADR 0013)
+  const [avance, setAvance] = useState(false); // calcul prudent (100 %) par défaut ; « Voir ce calcul » : fabrication avancée (ADR 0013)
   const [maxEtape, setMaxEtape] = useState(0);
   // Aide facultative pour estimer les années restantes de la voiture actuelle (compteur estimé tant qu'il n'est pas saisi)
   const [ageAct, setAgeAct] = useState(10);
@@ -359,10 +359,10 @@ function Decision({ shared, allerExplorer }) {
   const params = { carb, conso, annees, seg, etatVE, ageVE, odoVE: odo, pays, decarb, efBatt: batt.ef };
   const v = decider({ ...params, kmAn });
   // Neuve, bornes en désaccord : la réponse de la personne tranche (oui : fabrication avancée ; non : 100 %)
-  const choisi = v.selonProchaine && prochaine !== "nsp";
-  const tVE = v.selonProchaine && prochaine === "oui" ? v.tRemplacerBas : v.tRemplacer;
-  const verdict = choisi ? { a: "remplacer", b: "garder", serre: "serre" }[departager(tVE, v.tGarder)] : v.verdict;
-  const ouvert = v.selonProchaine && !choisi;
+  // Neuve, bornes en désaccord : verdict au calcul prudent (100 %), ou à la fabrication avancée sur demande
+  const bas = v.selonProchaine && avance;
+  const tVE = bas ? v.tRemplacerBas : v.tRemplacer;
+  const verdict = v.selonProchaine ? { a: "remplacer", b: "garder", serre: "serre" }[departager(tVE, v.tGarder)] : v.verdict;
   // Le seuil ne dépend pas du kilométrage : recalculé seulement si une autre réponse change
   const seuil = useMemo(
     () => (etape === 3 ? kmBascule(params) : null),
@@ -381,7 +381,7 @@ function Decision({ shared, allerExplorer }) {
     else if (etapePrec.current !== etape) titreRef.current?.focus();
     if (etape === 3 && etapePrec.current !== 3) {
       // Valeurs grossières uniquement (kilométrage arrondi à 5 000 km) : rien d'identifiant
-      mesurer("verdict", { verdict: v.verdict, pays: pays.id, segment: segId, etat: etatVE, km: Math.round(kmAn / 5000) * 5000, lang: f.lang });
+      mesurer("verdict", { verdict, pays: pays.id, segment: segId, etat: etatVE, km: Math.round(kmAn / 5000) * 5000, lang: f.lang });
     }
     etapePrec.current = etape;
   }, [etape]);
@@ -470,15 +470,11 @@ function Decision({ shared, allerExplorer }) {
       {etape === 3 && (
         <>
           <section className={`verdict sombre verdict-${verdict}`} aria-live="polite">
-            <h2 ref={titreRef} tabIndex={-1} className="verdict-titre">{ouvert ? s.verdictTitreProchaine(f.ans(v.horizon)) : s.verdictTitre[verdict]}</h2>
-            {v.selonProchaine && (
-              <Choix label={s.questionProchaine(f.ans(v.horizon))} value={prochaine} onChange={setProchaine}
-                options={["oui", "non", "nsp"].map((x) => ({ v: x, label: s.reponsesProchaine[x] }))} />
-            )}
+            <h2 ref={titreRef} tabIndex={-1} className="verdict-titre">{s.verdictTitre[verdict]}</h2>
             <p className="verdict-texte">
-              {v.selonProchaine && (ouvert
-                ? s.verdictProchaine({ garder: f.t(v.tGarder), bas: f.t(v.tRemplacerBas), haut: f.t(v.tRemplacer), fab: f.t(v.fabVE), duree: f.ans(v.horizon) })
-                : (prochaine === "oui" ? s.prochaineOui : s.prochaineNon)({ garder: f.t(v.tGarder), bas: f.t(v.tRemplacerBas), haut: f.t(v.tRemplacer), duree: f.ans(v.horizon) }))}
+              {v.selonProchaine && (bas ? s.prochaineOui : s.prochaineNon)({
+                garder: f.t(v.tGarder), bas: f.t(v.tRemplacerBas), haut: f.t(v.tRemplacer), fab: f.t(v.fabVE), duree: f.ans(v.horizon),
+              })}
               {!v.selonProchaine && v.verdict === "remplacer" && s.verdictRemplacer({
                 duree: f.ans(v.horizon), km: f.km(v.km), t: f.tco2(v.tGarder - v.tRemplacer), amorti: f.ans(v.amortiAns), etat,
               })}
@@ -494,21 +490,25 @@ function Decision({ shared, allerExplorer }) {
               {!v.selonProchaine && v.verdict === "serre" && s.verdictSerre({ a: f.t(v.tGarder), b: f.t(v.tRemplacer), duree: f.ans(v.horizon) })}
             </p>
             {v.tronque && <p className="verdict-note">{s.tronque(f.ans(v.horizon))}</p>}
-            {(verdict === "remplacer" || ouvert) && <p className="verdict-note">{s.noteCasse}</p>}
+            {v.selonProchaine && (
+              <p className="verdict-hypo">
+                {bas ? s.hypoAvance(f.ans(v.horizon)) : s.hypoPrudent(f.ans(v.horizon))}{" "}
+                <button type="button" className="lien-inline" onClick={() => setAvance(!bas)}>{bas ? s.voirPrudent : s.voirAvance}</button>
+              </p>
+            )}
+            {verdict === "remplacer" && <p className="verdict-note">{s.noteCasse}</p>}
 
             <div className="face-a-face">
               <Colonne gagne={verdict === "garder"} titre={s.colGarder(carb)} t={v.tGarder}
                 sous={s.colGarderSous(f.gkm(v.usageVieille))} />
               <Colonne gagne={verdict === "remplacer"} titre={s.colVE(s.seg[segId].nom, etat)} t={tVE}
-                chiffre={ouvert ? `${f.n1(v.tRemplacerBas)}–${f.t(v.tRemplacer)}` : null}
-                sous={s.colVESous(f.t(prochaine === "oui" && choisi ? v.fabVE * v.partAvancee : v.fabVE))} />
+                sous={s.colVESous(f.t(bas ? v.fabVE * v.partAvancee : v.fabVE))} />
             </div>
           </section>
 
           <section className="carte">
             <p className="bascule">
-              {texteBascule(s, f, choisi && prochaine === "oui" ? seuilBas : seuil)}
-              {ouvert && seuilBas !== null && seuilBas !== seuil && <> {s.basculeOui(f.kmAn(seuilBas))}</>}
+              {texteBascule(s, f, bas ? seuilBas : seuil)}
             </p>
             <Curseur id="etsi" label={s.etSi} value={kmAn} min={3000} max={40000} step={500} pas={100} unite={s.unites.kmAn}
               onChange={setKmAn} format={f.kmAn} />
@@ -606,12 +606,12 @@ function classeEtape(i, etape) {
   return "";
 }
 
-function Colonne({ gagne, titre, t, chiffre, sous }) {
+function Colonne({ gagne, titre, t, sous }) {
   const f = useT();
   return (
     <div className={`colonne${gagne ? " gagne" : ""}`}>
       <div className="colonne-titre">{titre}</div>
-      <div className="colonne-chiffre">{chiffre ?? f.t(t)}</div>
+      <div className="colonne-chiffre">{f.t(t)}</div>
       <div className="colonne-sous">{sous}</div>
       {gagne && <div className="etiquette"><Coche />{f.s.moinsEmissions}</div>}
     </div>

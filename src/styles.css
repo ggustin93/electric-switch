@@ -677,13 +677,9 @@ input[type="range"] {
   --m-essence: var(--m-essence-d);
   --m-diesel: var(--m-diesel-d);
 }
-.sombre .option-corps {
-  background: transparent;
-  border-color: color-mix(in srgb, var(--on-v) 45%, transparent);
-  color: var(--on-v);
-}
-.sombre .option:hover .option-corps {
-  border-color: var(--on-v);
+.verdict-hypo {
+  margin-top: var(--s3);
+  font-size: var(--fs-sm);
 }
 .sombre ::selection {
   background: color-mix(in srgb, var(--m-ev-d) 35%, transparent);
