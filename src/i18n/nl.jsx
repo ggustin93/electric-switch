@@ -85,7 +85,7 @@ export default {
   continuer: "Verder",
   retour: "Terug",
   voirVerdict: "Bekijk het oordeel",
-  partOcc: ({ pc, a, b }) => <>U krijgt ongeveer <strong>{pc}</strong> van de productie toegerekend: het deel van de waarde dat u verbruikt van {a} tot {b} (A2).</>,
+  partOcc: ({ pc, duree }) => <>U krijgt ongeveer <strong>{pc}</strong> van de productie toegerekend: het deel van de waarde dat u verbruikt in de {duree} dat u nog met uw huidige auto zou hebben gereden (A2).</>,
   estimerTitre: "Schatten op basis van leeftijd en kilometerstand",
   estimation: (n) => <>Schatting: nog ongeveer <strong>{n}</strong>, tot hij 18 jaar of 200.000 km bereikt, wat het eerst komt (A1).</>,
   utiliserEstimation: "Deze schatting gebruiken",

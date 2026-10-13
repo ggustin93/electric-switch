@@ -85,7 +85,7 @@ export default {
   continuer: "Continuar",
   retour: "Volver",
   voirVerdict: "Ver el veredicto",
-  partOcc: ({ pc, a, b }) => <>Se te atribuye aproximadamente <strong>{pc}</strong> de su fabricación: la parte de su valor que consumes de {a} a {b} (H2).</>,
+  partOcc: ({ pc, duree }) => <>Se te atribuye aproximadamente <strong>{pc}</strong> de su fabricación: la parte de su valor que consumes durante los {duree} que aún habrías circulado con tu coche actual (H2).</>,
   estimerTitre: "Estimar a partir de su antigüedad y kilometraje",
   estimation: (n) => <>Estimación: unos <strong>{n}</strong> más, antes de llegar a 18 años o 200{N}000 km, lo que ocurra primero (H1).</>,
   utiliserEstimation: "Usar esta estimación",

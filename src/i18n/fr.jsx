@@ -86,7 +86,7 @@ export default {
   continuer: "Continuer",
   retour: "Retour",
   voirVerdict: "Voir le verdict",
-  partOcc: ({ pc, a, b }) => <>On vous attribue environ <strong>{pc}</strong> de sa fabrication : la part de sa valeur que vous consommez de {a} à {b} (H2).</>,
+  partOcc: ({ pc, duree }) => <>On vous attribue environ <strong>{pc}</strong> de sa fabrication : la part de sa valeur que vous consommez pendant les {duree} où vous auriez encore roulé avec votre voiture actuelle (H2).</>,
   estimerTitre: "Estimer à partir de son âge et de son kilométrage",
   estimation: (n) => <>Estimation : encore <strong>{n}</strong> environ, avant d'atteindre 18 ans ou 200{N}000 km, la première limite atteinte (H1).</>,
   utiliserEstimation: "Utiliser cette estimation",

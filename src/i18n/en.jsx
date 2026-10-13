@@ -85,7 +85,7 @@ export default {
   continuer: "Continue",
   retour: "Back",
   voirVerdict: "See the verdict",
-  partOcc: ({ pc, a, b }) => <>You are assigned about <strong>{pc}</strong> of its manufacturing: the share of its value you use up from {a} to {b} (A2).</>,
+  partOcc: ({ pc, duree }) => <>You are assigned about <strong>{pc}</strong> of its manufacturing: the share of its value you use up over the {duree} you would still have driven your current car (A2).</>,
   estimerTitre: "Estimate from its age and mileage",
   estimation: (n) => <>Estimate: about <strong>{n}</strong> more, before it reaches 18 years or 200,000 km, whichever comes first (A1).</>,
   utiliserEstimation: "Use this estimate",

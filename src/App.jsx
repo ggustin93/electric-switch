@@ -457,7 +457,7 @@ function Decision({ shared, allerExplorer }) {
                   <Curseur id="odove" label={s.champ.odo} aide={s.aide.odo} value={odo} min={0} max={190000} step={1000} pas={500}
                     unite={odoEstime ? s.unites.kmEstime : s.unites.km}
                     onChange={setOdo} format={f.km} />
-                  <p className="note">{s.partOcc({ pc: f.pc(Math.round(v.partVE * 100) / 100), a: f.age(ageVE), b: f.age(ageVE + v.horizon) })}</p>
+                  <p className="note">{s.partOcc({ pc: f.pc(Math.round(v.partVE * 100) / 100), duree: f.ans(v.horizon) })}</p>
                 </>
               )}
             </>

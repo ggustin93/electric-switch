@@ -89,7 +89,7 @@ export default {
   continuer: "Continua",
   retour: "Indietro",
   voirVerdict: "Vedi il verdetto",
-  partOcc: ({ pc, a, b }) => <>Ti viene attribuito circa il <strong>{pc}</strong> della sua produzione: la quota del suo valore che consumi da {a} a {b} (I2).</>,
+  partOcc: ({ pc, duree }) => <>Ti viene attribuito circa il <strong>{pc}</strong> della sua produzione: la quota del suo valore che consumi nei {duree} in cui avresti ancora guidato la tua auto attuale (I2).</>,
   estimerTitre: "Stima in base a età e chilometraggio",
   estimation: (n) => <>Stima: ancora circa <strong>{n}</strong>, prima di arrivare a 18 anni o 200.000 km, il primo limite raggiunto (I1).</>,
   utiliserEstimation: "Usa questa stima",
