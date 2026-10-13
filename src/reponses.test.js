@@ -37,9 +37,9 @@ const CHIFFRES = {
   questions: [
     [Math.round(vie("BE", "ev").totalT), Math.round(vie("BE", "essence").totalT), Math.round(ecart("BE") * 100),
       ...RESEAU_BE.map((g) => Math.round(ecart("BE", "ev", 0, { g }) * 100)).sort((a, b) => a - b)],
-    [...PIVOT_BE, kmBascule(profil), kmBascule(profil, "tRemplacerBas")],
+    [...PIVOT_BE, kmBascule(profil), kmBascule({ ...profil, annees: 8 })],
     [seg.battKwh, ef, r1((seg.battKwh * ef) / 1000), r1(vie("BE", "ev").fabTotale), r1(vie("BE", "essence").fabTotale), ...PIVOT_BE],
-    [Math.round(occasion.partVE * 100), r1(occasion.tRemplacer), r1(occasion.tGarder), r1(decider(profil).tRemplacer), r1(decider(profil).tRemplacerBas)],
+    [Math.round(occasion.partVE * 100), r1(occasion.tRemplacer), r1(occasion.tGarder), r1(decider(profil).tRemplacer)],
     // Compteurs embarqués 17 à 26 %, défaut 30 % ; enquêtes 45 à 50 % ; flottes 11 à 15 % (H11)
     [17, 26, 30, 45, 50, pc5(ecart("BE", "phev", 0.5)), pc5(ecart("BE", "phev", 0.3)), pcBas(ecart("BE", "phev", 0.11)), pcBas(ecart("BE", "phev", 0.15))],
     // Belgique : chiffre exact, comme en Q1 ; Allemagne et Pologne : réseau figé puis qui se décarbone
@@ -65,7 +65,7 @@ test("les chiffres du modèle restent ceux qu'annoncent les textes (Belgique, pr
   assert.deepEqual(CHIFFRES, {
     lede: [60],
     questions: [
-      [16, 44, 63, 60, 64], [25000, 30000, 16000, 4500], [55, 73, 4, 11.4, 7, 25000, 30000], [22, 4.3, 10.5, 13.1, 5.1],
+      [16, 44, 63, 60, 64], [25000, 30000, 16000, 10000], [55, 73, 4, 11.4, 7, 25000, 30000], [22, 4.3, 10.5, 13.1],
       [17, 26, 30, 45, 50, 30, 15, 0, 2], [70, 70, 63, 45, 50, 15, 35],
     ],
   });

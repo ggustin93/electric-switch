@@ -96,25 +96,7 @@ test("occasion : H2 dans toutes les conventions et dans « Ma décision » (ADR 
   const occ = (marginal) => fenetre({ occasion: true, odo: 27000, age: 1, kmAn: 12000, revente: true, detention: 1, marginal }).ratioFab;
   assert.equal(occ(true), occ(false));
   const v = decider({ carb: "essence", conso: 6.9, annees: 1, seg: byId(SEGMENTS, "compacte"), etatVE: "occasion", ageVE: 1, odoVE: 27000, pays: PAYS[0], kmAn: 12000, decarb: true, efBatt: 73 });
-  assert.ok(v.partVE < 0.2 && v.partAvancee === v.partVE && !v.selonProchaine);
-});
-
-test("neuve : fabrication avancée h / L en borne basse, 100 % en borne haute ; verdict tranché seulement si elles concordent", () => {
-  const base = { carb: "essence", conso: 6.9, seg: byId(SEGMENTS, "compacte"), etatVE: "neuf", ageVE: 0, pays: byId(PAYS, "BE"), decarb: true, efBatt: 73 };
-  const v = decider({ ...base, annees: 5, kmAn: 12000 });
-  assert.ok(Math.abs(v.partAvancee - 5 / Math.min(VIE_ANS, VIE_KM / 12000)) < 1e-9); // L = 16,7 ans à 12 000 km/an
-  assert.ok(v.tRemplacerBas < v.tRemplacer && v.partVE === 1);
-  assert.equal(decider({ ...base, annees: 12, kmAn: 30000 }).partAvancee, 1); // h ≥ L : plafonnée à 100 %
-  for (const kmAn of [5000, 12000, 20000]) for (const annees of [1, 3, 5, 10]) {
-    const w = decider({ ...base, annees, kmAn });
-    const haut = departager(w.tRemplacer, w.tGarder), bas = departager(w.tRemplacerBas, w.tGarder);
-    assert.equal(w.selonProchaine, haut !== bas);
-    if (haut === bas) assert.equal(w.verdict, { a: "remplacer", b: "garder", serre: "serre" }[haut]);
-    else assert.equal(w.verdict, haut === "a" ? "remplacer" : bas === "b" ? "garder" : "serre");
-  }
-  // Occasion : une seule valeur (H2), jamais « selon la prochaine voiture »
-  const o = decider({ ...base, annees: 5, kmAn: 12000, etatVE: "occasion", ageVE: 3 });
-  assert.ok(o.partAvancee === o.partVE && !o.selonProchaine);
+  assert.ok(v.partVE < 0.2);
 });
 
 test("vétusté : à âge égal, plus le compteur est élevé, plus la part H2 baisse ; compteur par défaut inchangé", () => {

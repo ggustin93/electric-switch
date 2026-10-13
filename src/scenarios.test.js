@@ -153,11 +153,10 @@ test("part de fabrication : occasion de 6 ans gardée 5 ans de 15 à 35 %, neuf 
   assert.equal(f({ occasion: false, marginal: true }), 1);
 });
 
-test("profils : petit rouleur → serré selon la prochaine voiture (l'occasion gagne), gros rouleur → remplacer, VTC tronqué, retraité polonais", () => {
-  // a : citadine essence, FR, 5 000 km/an : garder à 100 % de fabrication, remplacer en fabrication avancée → serré (ADR 0013)
+test("profils : petit rouleur → garder (l'occasion gagne), gros rouleur → remplacer, VTC tronqué, retraité polonais", () => {
+  // a : citadine essence, FR, 5 000 km/an
   const a = { carb: "essence", conso: 6, annees: 4, seg: "citadine", pays: "FR", kmAn: 5000 };
-  assert.equal(dec(a).verdict, "serre");
-  assert.ok(dec(a).selonProchaine);
+  assert.equal(dec(a).verdict, "garder");
   assert.ok(dec(a).suggererOccasion);
   assert.equal(dec({ ...a, etatVE: "occasion", ageVE: 6 }).verdict, "remplacer");
   assert.ok(budget({ ...a, seg: S(a.seg), prix: PRIX_ENERGIE.FR, entretien: ENTRETIEN }).economieUsageAn > 0);

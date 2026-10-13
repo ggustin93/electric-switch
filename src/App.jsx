@@ -344,8 +344,6 @@ function Decision({ shared, allerExplorer }) {
   const { pays, paysId, setPaysId, kmAn, setKmAn, decarb, batt, segId, setSegId, etatVE, setEtatVE, ageVE, setAgeVE, odo, odoEstime, setOdo,
     carb, setCarb, conso, setConso, annees, setAnnees, setVoitureSaisie } = shared;
   const [etape, setEtape] = useState(0);
-  const [avance, setAvance] = useState(false); // « Voir ce calcul » (neuve) : fabrication avancée (ADR 0013) ; remise à zéro si neuve/occasion change
-  useEffect(() => setAvance(false), [etatVE]);
   const [maxEtape, setMaxEtape] = useState(0);
   // Aide facultative pour estimer les années restantes de la voiture actuelle (compteur estimé tant qu'il n'est pas saisi)
   const [ageAct, setAgeAct] = useState(10);
@@ -359,19 +357,10 @@ function Decision({ shared, allerExplorer }) {
   const seg = byId(SEGMENTS, segId);
   const params = { carb, conso, annees, seg, etatVE, ageVE, odoVE: odo, pays, decarb, efBatt: batt.ef };
   const v = decider({ ...params, kmAn });
-  // Neuve, estimations en désaccord : calcul prudent (100 %) par défaut, fabrication avancée sur « Voir ce calcul » (ADR 0013)
-  const bas = v.selonProchaine && avance;
-  const tVE = bas ? v.tRemplacerBas : v.tRemplacer;
-  const fabAffichee = bas ? v.fabTot * v.partAvancee : v.fabVE;
-  const verdict = v.selonProchaine ? { a: "remplacer", b: "garder", serre: "serre" }[departager(tVE, v.tGarder)] : v.verdict;
+  const { verdict } = v;
   // Le seuil ne dépend pas du kilométrage : recalculé seulement si une autre réponse change
   const seuil = useMemo(
     () => (etape === 3 ? kmBascule(params) : null),
-    [etape, carb, conso, annees, segId, etatVE, ageVE, odo, pays, decarb, batt], // eslint-disable-line react-hooks/exhaustive-deps
-  );
-  // Seuil avec la fabrication avancée (neuve)
-  const seuilAutre = useMemo(
-    () => (etape === 3 && etatVE === "neuf" ? kmBascule(params, "tRemplacerBas") : null),
     [etape, carb, conso, annees, segId, etatVE, ageVE, odo, pays, decarb, batt], // eslint-disable-line react-hooks/exhaustive-deps
   );
   const etat = etatVE === "neuf" ? s.etatNeuve : s.etatOcc(f.n0(ageVE), ageVE);
@@ -473,13 +462,10 @@ function Decision({ shared, allerExplorer }) {
           <section className={`verdict sombre verdict-${verdict}`} aria-live="polite">
             <h2 ref={titreRef} tabIndex={-1} className="verdict-titre">{s.verdictTitre[verdict]}</h2>
             <p className="verdict-texte">
-              {v.selonProchaine && (bas ? s.prochaineOui : s.prochaineNon)({
-                garder: f.t(v.tGarder), bas: f.t(v.tRemplacerBas), haut: f.t(v.tRemplacer), fab: f.t(v.fabVE), duree: f.ans(v.horizon),
-              })}
-              {!v.selonProchaine && v.verdict === "remplacer" && s.verdictRemplacer({
+              {v.verdict === "remplacer" && s.verdictRemplacer({
                 duree: f.ans(v.horizon), km: f.km(v.km), t: f.tco2(v.tGarder - v.tRemplacer), amorti: f.ans(v.amortiAns), etat,
               })}
-              {!v.selonProchaine && v.verdict === "garder" && (
+              {v.verdict === "garder" && (
                 <>
                   {s.verdictGarder({
                     km: f.kmAn(kmAn), etat, duree: f.ans(v.horizon), t: f.tco2(v.tRemplacer - v.tGarder),
@@ -490,29 +476,23 @@ function Decision({ shared, allerExplorer }) {
               {/* « Garder » : d'autres électriques qui feraient mieux (occasion plus âgée, catégorie plus légère) */}
               {verdict === "garder" && v.suggererOccasion && <> {s.suggestionOcc({ age: f.n0(AGE_SUGGESTION), t: f.t(v.tOccasion), tg: f.t(v.tGarderOcc) })}</>}
               {verdict === "garder" && v.suggestionSegment && <> {s.suggestionSeg({ cat: minusculeInitiale(s.seg[v.suggestionSegment.segId].nom), t: f.t(v.suggestionSegment.t), tg: f.t(v.suggestionSegment.tg) })}</>}
-              {!v.selonProchaine && v.verdict === "serre" && s.verdictSerre({ a: f.t(v.tGarder), b: f.t(v.tRemplacer), duree: f.ans(v.horizon) })}
+              {v.verdict === "serre" && s.verdictSerre({ a: f.t(v.tGarder), b: f.t(v.tRemplacer), duree: f.ans(v.horizon) })}
             </p>
             {v.tronque && <p className="verdict-note">{s.tronque(f.ans(v.horizon))}</p>}
-            {v.selonProchaine && (
-              <p className="verdict-hypo">
-                {bas ? s.hypoAvance(f.ans(v.horizon)) : s.hypoPrudent(f.ans(v.horizon))}{" "}
-                <button type="button" className="lien-inline" onClick={() => setAvance(!bas)}>{bas ? s.voirPrudent : s.voirAvance}</button>
-              </p>
-            )}
 
             {/* Renvoi léger vers l'hypothèse (votre voiture actuelle cesse de rouler, H3), sans texte de plus sur la carte */}
             {verdict === "remplacer" && <p className="verdict-note">{lierHyp(s.voirHypo, s.prefixeHyp, f.lang)}</p>}
             <div className="face-a-face">
               <Colonne gagne={verdict === "garder"} titre={s.colGarder(carb)} t={v.tGarder}
                 sous={s.colGarderSous(f.gkm(v.usageVieille))} />
-              <Colonne gagne={verdict === "remplacer"} titre={s.colVE(s.seg[segId].nom, etat)} t={tVE}
-                sous={s.colVESous(f.t(fabAffichee))} />
+              <Colonne gagne={verdict === "remplacer"} titre={s.colVE(s.seg[segId].nom, etat)} t={v.tRemplacer}
+                sous={s.colVESous(f.t(v.fabVE))} />
             </div>
           </section>
 
           <section className="carte">
             <p className="bascule">
-              {texteBascule(s, f, bas ? seuilAutre : seuil)}
+              {texteBascule(s, f, seuil)}
             </p>
             <Curseur id="etsi" label={s.etSi} value={kmAn} min={3000} max={40000} step={500} pas={100} unite={s.unites.kmAn}
               onChange={setKmAn} format={f.kmAn} />

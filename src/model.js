@@ -201,10 +201,6 @@ export function decider({ carb, conso, annees, seg, etatVE, ageVE, odoVE = ageVE
   const fabVE = fabTot * partVE;
   const tGarder = (usageVieille * km) / 1e6;
   const tRemplacer = fabVE + (usageVE * km) / 1e6;
-  // Neuve : borne basse = fabrication avancée de h ans (Lenski et al. 2010, éq. 3 ; ICCT 2020), si la prochaine voiture
-  // aurait de toute façon été une électrique comparable. Borne haute = 100 % (H3). Occasion : une seule valeur (H2).
-  const partAvancee = occasion ? partVE : Math.min(1, horizon / Math.min(VIE_ANS, VIE_KM / kmAn));
-  const tRemplacerBas = fabTot * partAvancee + (usageVE * km) / 1e6;
   const amortiAns = usageVieille > usageVE ? (fabVE * 1e6) / ((usageVieille - usageVE) * kmAn) : Infinity;
   // Occasion suggérée : 6 ans, compteur moyen (12 000 km/an), même fenêtre
   const odoSugg = AGE_SUGGESTION * KM_AN_PARC;
@@ -219,15 +215,10 @@ export function decider({ carb, conso, annees, seg, etatVE, ageVE, odoVE = ageVE
     const w = decider({ carb, conso, annees, seg: autre, etatVE, ageVE, odoVE, pays, kmAn, decarb, efBatt, sansSuggestion: true });
     if (departager(w.tRemplacer, w.tGarder) === "a") { suggestionSegment = { segId: autre.id, t: w.tRemplacer, tg: w.tGarder }; break; }
   }
-  // Verdict tranché seulement si les deux bornes concordent ; sinon « serré », selon la prochaine voiture (ADR 0013)
-  const vHaut = departager(tRemplacer, tGarder), vBas = departager(tRemplacerBas, tGarder);
-  const verdict = vHaut === "a" ? "a" : vBas === "b" ? "b" : "serre";
   return {
     horizon, km, usageVieille, usageVE, fabVE, partVE, tGarder, tRemplacer, amortiAns,
-    fabTot, partAvancee, tRemplacerBas,
     tronque: horizon < annees,
-    verdict: VERDICTS[verdict],
-    selonProchaine: vHaut !== vBas,
+    verdict: VERDICTS[departager(tRemplacer, tGarder)],
     suggererOccasion:
       (etatVE === "neuf" || ageVE < AGE_SUGGESTION - 1) && departager(tOccasion, tGarderOcc) === "a",
     tOccasion, tGarderOcc, suggestionSegment,
@@ -253,11 +244,10 @@ export function calcConfig(cfg, { pays, kmAn, decarb, efBatt, marginal, detentio
 // --- Kilométrage annuel à partir duquel remplacer devient préférable (curseur 3 000 à 40 000 km/an).
 // 3000 si l'électrique gagne déjà au minimum, null s'il ne gagne jamais. Premier franchissement seulement :
 // d'occasion, quand la borne de 200 000 km tronque l'horizon, le verdict peut ensuite repasser à « garder » (ADR 0002).
-// cle : le total comparé (« tRemplacerBas » : neuve en fabrication avancée, ADR 0013)
-export function kmBascule(params, cle = "tRemplacer") {
+export function kmBascule(params) {
   for (let kmAn = 3000; kmAn <= 40000; kmAn += 500) {
     const v = decider({ ...params, kmAn, sansSuggestion: true });
-    if (v[cle] <= v.tGarder) return kmAn;
+    if (v.tRemplacer <= v.tGarder) return kmAn;
   }
   return null;
 }
