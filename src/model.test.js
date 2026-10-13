@@ -3,7 +3,7 @@ import assert from "node:assert/strict";
 import {
   gainAccroche,
   PAYS, SEGMENTS, BATTERIES, MOTORS, VIE_ANS, VIE_KM, byId,
-  partFab, partRestante, mixMoyen, calc, fenetre, decider, kmPivot, kmBascule, budget, departager, calcConfig, paysProbable, KM_AN_PARC, anneesRestantes, voitureActuelle,
+  partFab, mixMoyen, calc, fenetre, decider, kmPivot, kmBascule, budget, departager, calcConfig, paysProbable, KM_AN_PARC, anneesRestantes, voitureActuelle,
 } from "./model.js";
 
 test("grille : empreintes finies et positives, part de fabrication dans [0,1]", () => {
@@ -92,17 +92,11 @@ test("convention marginale : un neuf revendu porte 100 % de sa fabrication", () 
   assert.ok(fenetre({ occasion: false, kmAn: 12000, revente: true, detention: 8 }).ratioFab < 1);
 });
 
-test("part restante (borne haute) : 100 % neuve, plus petit des ratios km et âge, jamais négative", () => {
-  assert.equal(partRestante(0, 0), 1);
-  assert.ok(Math.abs(partRestante(27000, 1) - 0.865) < 1e-9);
-  assert.ok(Math.abs(partRestante(50000, 10) - (1 - 10 / VIE_ANS)) < 1e-9); // l'âge borne avant le compteur
-  assert.equal(partRestante(VIE_KM + 1000, 5), 0);
-  // Occasion : H2 dans toutes les conventions ; la part restante n'est qu'affichée (ADR 0012)
+test("occasion : H2 dans toutes les conventions et dans « Ma décision » (ADR 0012)", () => {
   const occ = (marginal) => fenetre({ occasion: true, odo: 27000, age: 1, kmAn: 12000, revente: true, detention: 1, marginal }).ratioFab;
   assert.equal(occ(true), occ(false));
-  // Décision : la part comptée reste H2 (basse), la part restante n'est qu'affichée
   const v = decider({ carb: "essence", conso: 6.9, annees: 1, seg: byId(SEGMENTS, "compacte"), etatVE: "occasion", ageVE: 1, odoVE: 27000, pays: PAYS[0], kmAn: 12000, decarb: true, efBatt: 73 });
-  assert.ok(v.partVE < 0.2 && v.partHaute === partRestante(27000, 1));
+  assert.ok(v.partVE < 0.2 && v.partAvancee === v.partVE && !v.selonProchaine);
 });
 
 test("neuve : fabrication avancée h / L en borne basse, 100 % en borne haute ; verdict tranché seulement si elles concordent", () => {
@@ -121,21 +115,6 @@ test("neuve : fabrication avancée h / L en borne basse, 100 % en borne haute ; 
   // Occasion : une seule valeur (H2), jamais « selon la prochaine voiture »
   const o = decider({ ...base, annees: 5, kmAn: 12000, etatVE: "occasion", ageVE: 3 });
   assert.ok(o.partAvancee === o.partVE && !o.selonProchaine);
-});
-
-test("occasion : estimation haute (part restante) au-dessus de H2, signalée seulement si elle change le verdict", () => {
-  const base = { carb: "essence", conso: 6.9, seg: byId(SEGMENTS, "compacte"), pays: byId(PAYS, "BE"), decarb: true, efBatt: 73, etatVE: "occasion" };
-  for (const ageVE of [1, 3, 6, 10]) for (const kmAn of [5000, 12000, 20000]) for (const annees of [2, 5]) {
-    const v = decider({ ...base, ageVE, kmAn, annees });
-    assert.ok(v.tRemplacerHaut >= v.tRemplacer - 1e-9);
-    assert.equal(v.selonAchat, departager(v.tRemplacerHaut, v.tGarder) !== departager(v.tRemplacer, v.tGarder));
-  }
-  const neuve = decider({ ...base, etatVE: "neuf", ageVE: 0, kmAn: 12000, annees: 5 });
-  assert.ok(!neuve.selonAchat && neuve.tRemplacerHaut === neuve.tRemplacer);
-  // Le seuil suit le total demandé : estimation haute ≥ défaut ≥ fabrication avancée
-  const p = { ...base, ageVE: 1, annees: 5 };
-  const k = (cle) => kmBascule(p, cle) ?? Infinity;
-  assert.ok(k("tRemplacerHaut") >= k("tRemplacer"));
 });
 
 test("vétusté : à âge égal, plus le compteur est élevé, plus la part H2 baisse ; compteur par défaut inchangé", () => {

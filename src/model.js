@@ -72,10 +72,6 @@ export function partFab(ageDebut, ageFin, ageMort) {
   return Math.min(1, Math.max(0, (valeur(ageDebut) - valeur(fin)) / Math.max(denom, 1e-6)));
 }
 
-// --- Part restante (H3, borne haute) : fabrication que la voiture n'a pas encore « consommée » à l'achat,
-// au plus petit des deux ratios (km sur VIE_KM, âge sur VIE_ANS), sans crédit à la revente. Neuve : 1.
-// Additionnée sur les propriétaires successifs, elle dépasse 100 % : estimation haute, pas une allocation.
-export const partRestante = (odo, age) => Math.max(0, Math.min(1 - odo / VIE_KM, 1 - age / VIE_ANS));
 
 // --- Intensité moyenne du mix sur n années : moyenne d'une décroissance géométrique (H6) ---
 export function mixMoyen(g0, annees, actif, r) {
@@ -187,7 +183,7 @@ export function departager(a, b) {
 
 // --- Onglet Décision : garder sa thermique ou passer à un VE ---
 // Neuf : fabrication avancée (borne basse) et 100 % (H3, borne haute) ; le verdict ne tranche que si elles concordent.
-// Occasion : allocation économique (H2), avec la part restante comme borne haute (partHaute). Horizon borné par la vie restante du VE (H1).
+// Occasion : allocation économique (H2). Horizon borné par la vie restante du VE (H1).
 export function decider({ carb, conso, annees, seg, etatVE, ageVE, odoVE = ageVE * KM_AN_PARC, pays, kmAn, decarb, efBatt, sansSuggestion = false }) {
   const occasion = etatVE !== "neuf";
   const ageDebut = occasion ? ageVE : 0;
@@ -209,9 +205,6 @@ export function decider({ carb, conso, annees, seg, etatVE, ageVE, odoVE = ageVE
   // aurait de toute façon été une électrique comparable. Borne haute = 100 % (H3). Occasion : une seule valeur (H2).
   const partAvancee = occasion ? partVE : Math.min(1, horizon / Math.min(VIE_ANS, VIE_KM / kmAn));
   const tRemplacerBas = fabTot * partAvancee + (usageVE * km) / 1e6;
-  // Occasion : estimation haute = toute la fabrication qui lui reste (ADR 0012), affichée seulement si elle change le verdict
-  const partHaute = occasion ? partRestante(odoEff, ageDebut) : 1;
-  const tRemplacerHaut = fabTot * partHaute + (usageVE * km) / 1e6;
   const amortiAns = usageVieille > usageVE ? (fabVE * 1e6) / ((usageVieille - usageVE) * kmAn) : Infinity;
   // Occasion suggérée : 6 ans, compteur moyen (12 000 km/an), même fenêtre
   const odoSugg = AGE_SUGGESTION * KM_AN_PARC;
@@ -230,9 +223,8 @@ export function decider({ carb, conso, annees, seg, etatVE, ageVE, odoVE = ageVE
   const vHaut = departager(tRemplacer, tGarder), vBas = departager(tRemplacerBas, tGarder);
   const verdict = vHaut === "a" ? "a" : vBas === "b" ? "b" : "serre";
   return {
-    horizon, km, usageVieille, usageVE, fabVE, partVE, partHaute, tGarder, tRemplacer, amortiAns,
-    fabTot, partAvancee, tRemplacerBas, tRemplacerHaut,
-    selonAchat: occasion && departager(tRemplacerHaut, tGarder) !== departager(tRemplacer, tGarder),
+    horizon, km, usageVieille, usageVE, fabVE, partVE, tGarder, tRemplacer, amortiAns,
+    fabTot, partAvancee, tRemplacerBas,
     tronque: horizon < annees,
     verdict: VERDICTS[verdict],
     selonProchaine: vHaut !== vBas,
@@ -261,7 +253,7 @@ export function calcConfig(cfg, { pays, kmAn, decarb, efBatt, marginal, detentio
 // --- Kilométrage annuel à partir duquel remplacer devient préférable (curseur 3 000 à 40 000 km/an).
 // 3000 si l'électrique gagne déjà au minimum, null s'il ne gagne jamais. Premier franchissement seulement :
 // d'occasion, quand la borne de 200 000 km tronque l'horizon, le verdict peut ensuite repasser à « garder » (ADR 0002).
-// cle : le total comparé (« tRemplacerBas » : neuve en fabrication avancée, ADR 0013 ; « tRemplacerHaut » : occasion en part restante, ADR 0012)
+// cle : le total comparé (« tRemplacerBas » : neuve en fabrication avancée, ADR 0013)
 export function kmBascule(params, cle = "tRemplacer") {
   for (let kmAn = 3000; kmAn <= 40000; kmAn += 500) {
     const v = decider({ ...params, kmAn, sansSuggestion: true });
