@@ -146,6 +146,15 @@ Workflow `/deep-research`: 6 search angles, 24 sources fetched, 25 claims put to
 - **Nos Gestes Climat** dropped an earlier front-loaded 10-year amortisation and now amortises by km (3-0).
 - **Refuted:** the ICCT German scrappage design (0-3) and that Schaubroeck 2020 applies a production ratio below 100 % by default (1-2).
 
+## 8. Which default? Deep-research check (added 2026-10-13)
+Workflow `/deep-research` (101 agents, 3-vote adversarial checks) on choosing between A (100 %) and B (h / L) as the default.
+- **Households mostly buy used, and new BEVs are a minority** (3-0): France 2025, used cars 76.9 % of passenger-car purchases (SDES, 11/02/2026); households registered only 46 % of new cars in 2024 (CCFA 2025, p. 38); BEV share of new registrations 19.9 % in France 2025, 17.4 % EU 2025, 20.7 % EU H1 2026 (ACEA, 23/07/2026); Belgium, 5.9 % of used-car registrations in H1 2026 (secondary).
+- **2035 is still law but under revision** (3-0): Regulation (EU) 2023/851 keeps −100 % in 2035; the Commission's 16/12/2025 proposal (2025/0420(COD)) would lower it to −90 % with steel and fuel credits; the Council was divided in June 2026 (ST 10065/26 REV 1) and the Parliament plenary is expected on 23/11/2026. Re-check before citing.
+- **After 2035 a new car would most likely be electric either way** (medium): ICCT models 80–90 % EV shares of new sales even at −90 %.
+- **Lenski's B rests on a fleet-level "flow-through" counterfactual**, and the authors note that many consumers would have bought used (3-0). Kagawa 2013 charges the full new car (A) (medium). The ILCD gives no mechanical answer; the choice must be justified and transparent (3-0).
+- **Conclusion (synthesis):** B is not justified as the single default for a typical household; A is the conservative bound and fits households that would buy used or keep their car longer. Best: show both, decide only when they agree, otherwise let the person say whether they would buy a new EV anyway, with A by default. If one number must be shown, use A and state B as the alternative.
+- **Gaps:** nothing verified on how ADEME, Which?, ADAC, T&E or the IEA frame the question; household data mostly French; market shares cover all buyers, not end-of-life replacements.
+
 ## Not verified
 - Full texts and methods of Kagawa 2013, Kim 2003, Spitzley 2005, Van Wee 2000, Schaubroeck 2020, Campbell & Geyer 2026, Montoya-Torres 2023 and Gastaldi & Cibrario 2026 (paywalls or 403). In particular: how Kagawa counts manufacturing, and how Kim and Spitzley handle the end of the window.
 - ADEME's « faut-il changer sa voiture » page: none on the Agir site (archived listing, § 6.1). Pages blocked to scripts (ADEME guide « Bouger autrement au quotidien », librairie 5790) were not read.
