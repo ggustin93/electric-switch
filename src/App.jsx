@@ -499,7 +499,6 @@ function Decision({ shared, allerExplorer }) {
                 <button type="button" className="lien-inline" onClick={() => setAvance(!bas)}>{bas ? s.voirPrudent : s.voirAvance}</button>
               </p>
             )}
-            {verdict === "remplacer" && <p className="verdict-note">{s.noteCasse}</p>}
 
             <div className="face-a-face">
               <Colonne gagne={verdict === "garder"} titre={s.colGarder(carb)} t={v.tGarder}

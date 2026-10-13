@@ -105,7 +105,6 @@ export default {
   hypoAvance: (duree) => `Ipotesi: tra ${duree} compreresti comunque un'elettrica nuova.`,
   voirAvance: "Vedi questo calcolo",
   voirPrudent: "Torna al calcolo prudente",
-  noteCasse: "Ipotesi: la tua auto attuale smette di circolare. Se rivenduta, il guadagno dipende da cosa sostituisce.",
   suggestionOcc: ({ age, t, tg }) => <>Invece, un'<strong>auto elettrica usata di {age}&nbsp;anni</strong> farebbe già meglio ({t} contro {tg}).</>,
   suggestionSeg: ({ cat, t, tg }) => <>Un'elettrica più leggera, di categoria <strong>{cat}</strong>, farebbe meglio ({t} contro {tg}).</>,
   tronque: (duree) => `Confronto limitato a ${duree}: oltre, l'auto elettrica arriverebbe a fine vita (200.000 km o 18 anni).`,

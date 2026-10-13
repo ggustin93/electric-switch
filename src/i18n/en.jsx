@@ -101,7 +101,6 @@ export default {
   hypoAvance: (duree) => `Assumption: you would buy a new electric car in ${duree} anyway.`,
   voirAvance: "See this calculation",
   voirPrudent: "Back to the cautious calculation",
-  noteCasse: "Assumption: your current car stops being driven. If sold on, the gain depends on what it replaces.",
   suggestionOcc: ({ age, t, tg }) => <>However, a <strong>{age}-year-old used electric car</strong> would already do better ({t} versus {tg}).</>,
   suggestionSeg: ({ cat, t, tg }) => <>A lighter electric car, in the <strong>{cat}</strong> category, would do better ({t} versus {tg}).</>,
   tronque: (duree) => `Comparison limited to ${duree}: beyond that, the electric car would reach the end of its life (200,000 km or 18 years).`,

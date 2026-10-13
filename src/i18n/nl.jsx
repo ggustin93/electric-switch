@@ -101,7 +101,6 @@ export default {
   hypoAvance: (duree) => `Aanname: u zou over ${duree} hoe dan ook een nieuwe elektrische kopen.`,
   voirAvance: "Deze berekening bekijken",
   voirPrudent: "Terug naar de voorzichtige berekening",
-  noteCasse: "Aanname: uw huidige auto rijdt niet meer. Doorverkocht hangt de winst af van wat hij vervangt.",
   suggestionOcc: ({ age, t, tg }) => <>Een <strong>tweedehandse elektrische auto van {age}&nbsp;jaar oud</strong> zou het daarentegen al beter doen ({t} tegenover {tg}).</>,
   suggestionSeg: ({ cat, t, tg }) => <>Een lichtere elektrische, in de categorie <strong>{cat}</strong>, zou het beter doen ({t} tegenover {tg}).</>,
   tronque: (duree) => `Vergelijking beperkt tot ${duree}: daarna zou de elektrische auto het einde van zijn levensduur bereiken (200.000 km of 18 jaar).`,

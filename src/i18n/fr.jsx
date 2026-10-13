@@ -102,7 +102,6 @@ export default {
   hypoAvance: (duree) => `Hypothèse : vous rachèteriez de toute façon une électrique neuve dans ${duree}.`,
   voirAvance: "Voir ce calcul",
   voirPrudent: "Revenir au calcul prudent",
-  noteCasse: "Hypothèse : votre voiture actuelle cesse de rouler. Revendue, le gain dépend de ce qu'elle remplace.",
   suggestionOcc: ({ age, t, tg }) => <>En revanche, une <strong>électrique d'occasion de {age}&nbsp;ans</strong> ferait déjà mieux ({t} contre {tg}).</>,
   suggestionSeg: ({ cat, t, tg }) => <>Une électrique plus légère, en catégorie <strong>{cat}</strong>, ferait mieux ({t} contre {tg}).</>,
   tronque: (duree) => `Comparaison limitée à ${duree} : au-delà, l'électrique atteindrait sa fin de vie (200 000 km ou 18 ans).`,
