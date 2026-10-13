@@ -459,7 +459,7 @@ function Decision({ shared, allerExplorer }) {
       {etape === 3 && (
         <>
           <section className={`verdict sombre verdict-${v.verdict}`} aria-live="polite">
-            <h2 ref={titreRef} tabIndex={-1} className="verdict-titre">{s.verdictTitre[v.verdict]}</h2>
+            <h2 ref={titreRef} tabIndex={-1} className="verdict-titre">{v.selonProchaine ? s.verdictTitreProchaine : s.verdictTitre[v.verdict]}</h2>
             <p className="verdict-texte">
               {v.verdict === "remplacer" && s.verdictRemplacer({
                 duree: f.ans(v.horizon), km: f.km(v.km), t: f.tco2(v.tGarder - v.tRemplacer), amorti: f.ans(v.amortiAns), etat,
@@ -473,7 +473,9 @@ function Decision({ shared, allerExplorer }) {
                   {v.suggererOccasion && <> {s.suggestionOcc({ age: f.n0(AGE_SUGGESTION), t: f.t(v.tOccasion), tg: f.t(v.tGarderOcc) })}</>}
                 </>
               )}
-              {v.verdict === "serre" && s.verdictSerre({ a: f.t(v.tGarder), b: f.t(v.tRemplacer), duree: f.ans(v.horizon) })}
+              {v.verdict === "serre" && (v.selonProchaine
+                ? s.verdictProchaine({ garder: f.t(v.tGarder), bas: f.t(v.tRemplacerBas), haut: f.t(v.tRemplacer), pc: f.pc(Math.round(v.partAvancee * 100) / 100), duree: f.ans(v.horizon) })
+                : s.verdictSerre({ a: f.t(v.tGarder), b: f.t(v.tRemplacer), duree: f.ans(v.horizon) }))}
             </p>
             {v.tronque && <p className="verdict-note">{s.tronque(f.ans(v.horizon))}</p>}
 

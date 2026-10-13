@@ -1,7 +1,7 @@
 /* Données communes à toutes les langues : références des hypothèses, sources, langues disponibles. */
 
 // Références [n] de chaque hypothèse H1–H14 (communes à toutes les langues)
-export const HYP_REFS = [[1, 8, 14, 22, 23], [10], [11], [3, 8], [2, 4, 5, 6, 9], [4, 13], [6], [7, 8], [8, 12, 14], [8, 16], [8, 15, 16, 21], [8], [8, 14], [18, 19, 20, 24, 25]];
+export const HYP_REFS = [[1, 8, 14, 22, 23], [10], [11, 26, 27], [3, 8], [2, 4, 5, 6, 9], [4, 13], [6], [7, 8], [8, 12, 14], [8, 16], [8, 15, 16, 21], [8], [8, 14], [18, 19, 20, 24, 25]];
 
 // Langues publiées : une page par langue (/fr/, /en/…), nom affiché dans sa propre langue
 export const LANGUES = [["fr", "Français"], ["en", "English"], ["nl", "Nederlands"], ["it", "Italiano"], ["es", "Español"]];
@@ -33,9 +33,11 @@ export const SOURCES = [
   <>SDES / CGDD (2026). 40 millions de voitures en circulation en France au 1er janvier 2026.</>,
   <>CCFA (2025). L'industrie automobile française — Analyse et statistiques 2025, consommation automobile des ménages (d'après l'INSEE).</>,
   <>SDES / CGDD (2025). Bilan annuel des transports en 2024, partie G : bilan de la circulation.</>,
+  <>Lenski, S. M., Keoleian, G. A. &amp; Bolon, K. M. (2010). “The impact of ‘Cash for Clunkers’ on greenhouse gas emissions: a life cycle perspective”. Environmental Research Letters 5, 044003.</>,
+  <>Bieker, G. &amp; Mock, P. (2020). Green vehicle replacement programs as a response to the COVID-19 crisis. ICCT briefing.</>,
 ];
 
-// Adresse de chaque source (même ordre que SOURCES), vérifiée joignable le 08/10/2026 (21 à 25 : le 12/10/2026).
+// Adresse de chaque source (même ordre que SOURCES), vérifiée joignable le 08/10/2026 (21 à 25 : le 12/10/2026 ; 26 et 27 : le 13/10/2026).
 // Affichée en texte, pas en lien : 20 <a> feraient sortir la page Méthode de l'EcoIndex A.
 export const SOURCES_URL = [
   "https://www.carbone4.com/files/359_publication_faq_vehicule_electrique.pdf",
@@ -63,6 +65,8 @@ export const SOURCES_URL = [
   "https://www.statistiques.developpement-durable.gouv.fr/40-millions-de-voitures-en-circulation-en-france-au-1er-janvier-2026",
   "https://ccfa.fr/wp-content/uploads/2026/05/CCFA-2025-FR-65.pdf",
   "https://www.statistiques.developpement-durable.gouv.fr/sites/default/files/2025-11/statistiques_sdes_datalab_143_bilan_transports_2024_novembre2025.pdf",
+  "doi:10.1088/1748-9326/5/4/044003",
+  "https://theicct.org/wp-content/uploads/2021/06/Vehicle-replacement-programs-COVID-Jun2020.pdf",
 ];
 
 // Dernière mise à jour de la méthode (ISO 8601) : affichée sur la page Méthode, reprise dans les données structurées.
