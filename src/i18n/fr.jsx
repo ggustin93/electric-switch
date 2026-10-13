@@ -99,7 +99,7 @@ export default {
   verdictTitreProchaine: (duree) => `Cela dépend de ce que vous achèterez dans ${duree}`,
   questionProchaine: (duree) => `Dans ${duree}, votre voiture sera usée. Achèteriez-vous alors une électrique de toute façon${N}?`,
   reponsesProchaine: { oui: "Oui", non: "Non", nsp: "Je ne sais pas" },
-  verdictProchaine: ({ garder, bas, haut }) => <>Si oui, changez maintenant : {bas} au lieu de {garder}, car vous ne faites qu'avancer cet achat. Si non, gardez votre voiture : {garder} au lieu de {haut}.</>,
+  verdictProchaine: ({ garder, bas, haut, fab, duree }) => <>Si oui, changez maintenant : sur {duree}, l'électrique émettrait {bas}, contre {garder} pour votre voiture, car vous ne faites qu'avancer cet achat. Si non, gardez votre voiture : elle émettrait {garder}, contre {haut} pour l'électrique, dont {fab} rien que pour la fabriquer.</>,
   prochaineOui: ({ bas, garder, duree }) => <>Vous achèteriez de toute façon une électrique : la prendre maintenant ne fait qu'avancer cet achat. Sur {duree}, <strong>{bas}</strong> au lieu de {garder}.</>,
   prochaineNon: ({ haut, garder, duree }) => <>Sans achat prévu, toute la fabrication de l'électrique compte. Sur {duree}, elle émettrait <strong>{haut}</strong>, contre {garder} en gardant votre voiture.</>,
   noteCasse: "On suppose votre voiture actuelle mise à la casse. Revendue, elle continuerait de rouler, et le gain pourrait disparaître.",

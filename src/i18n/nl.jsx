@@ -98,7 +98,7 @@ export default {
   verdictTitreProchaine: (duree) => `Het hangt af van wat u over ${duree} koopt`,
   questionProchaine: (duree) => `Over ${duree} is uw auto versleten. Zou u dan hoe dan ook een elektrische kopen?`,
   reponsesProchaine: { oui: "Ja", non: "Nee", nsp: "Ik weet het niet" },
-  verdictProchaine: ({ garder, bas, haut }) => <>Zo ja, stap nu over: {bas} in plaats van {garder}, want u haalt die aankoop alleen naar voren. Zo nee, houd uw auto: {garder} in plaats van {haut}.</>,
+  verdictProchaine: ({ garder, bas, haut, fab, duree }) => <>Zo ja, stap nu over: over {duree} zou de elektrische {bas} uitstoten, tegenover {garder} voor uw auto, want u haalt die aankoop alleen naar voren. Zo nee, houd uw auto: hij zou {garder} uitstoten, tegenover {haut} voor de elektrische, waarvan {fab} alleen al om hem te bouwen.</>,
   prochaineOui: ({ bas, garder, duree }) => <>U zou hoe dan ook een elektrische kopen: hem nu nemen haalt die aankoop alleen naar voren. Over {duree}: <strong>{bas}</strong> in plaats van {garder}.</>,
   prochaineNon: ({ haut, garder, duree }) => <>Zonder geplande aankoop telt de volledige productie van de elektrische. Over {duree} zou hij <strong>{haut}</strong> uitstoten, tegenover {garder} als u uw auto houdt.</>,
   noteCasse: "We gaan ervan uit dat uw huidige auto wordt gesloopt. Doorverkocht zou hij blijven rijden, en de winst kan verdwijnen.",

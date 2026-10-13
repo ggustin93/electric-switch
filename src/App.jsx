@@ -477,7 +477,7 @@ function Decision({ shared, allerExplorer }) {
             )}
             <p className="verdict-texte">
               {v.selonProchaine && (ouvert
-                ? s.verdictProchaine({ garder: f.t(v.tGarder), bas: f.t(v.tRemplacerBas), haut: f.t(v.tRemplacer) })
+                ? s.verdictProchaine({ garder: f.t(v.tGarder), bas: f.t(v.tRemplacerBas), haut: f.t(v.tRemplacer), fab: f.t(v.fabVE), duree: f.ans(v.horizon) })
                 : (prochaine === "oui" ? s.prochaineOui : s.prochaineNon)({ garder: f.t(v.tGarder), bas: f.t(v.tRemplacerBas), haut: f.t(v.tRemplacer), duree: f.ans(v.horizon) }))}
               {!v.selonProchaine && v.verdict === "remplacer" && s.verdictRemplacer({
                 duree: f.ans(v.horizon), km: f.km(v.km), t: f.tco2(v.tGarder - v.tRemplacer), amorti: f.ans(v.amortiAns), etat,

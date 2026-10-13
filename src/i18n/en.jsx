@@ -98,7 +98,7 @@ export default {
   verdictTitreProchaine: (duree) => `It depends on what you will buy in ${duree}`,
   questionProchaine: (duree) => `In ${duree}, your car will be worn out. Would you buy an electric car then anyway?`,
   reponsesProchaine: { oui: "Yes", non: "No", nsp: "I don't know" },
-  verdictProchaine: ({ garder, bas, haut }) => <>If yes, switch now: {bas} instead of {garder}, because you only bring that purchase forward. If no, keep your car: {garder} instead of {haut}.</>,
+  verdictProchaine: ({ garder, bas, haut, fab, duree }) => <>If yes, switch now: over {duree}, the electric car would emit {bas}, against {garder} for your car, because you only bring that purchase forward. If no, keep your car: it would emit {garder}, against {haut} for the electric car, {fab} of which just to build it.</>,
   prochaineOui: ({ bas, garder, duree }) => <>You would buy an electric car anyway: taking it now only brings that purchase forward. Over {duree}, <strong>{bas}</strong> instead of {garder}.</>,
   prochaineNon: ({ haut, garder, duree }) => <>With no purchase planned, the electric car's whole manufacturing counts. Over {duree}, it would emit <strong>{haut}</strong>, against {garder} if you keep your car.</>,
   noteCasse: "Your current car is assumed scrapped. If sold on, it would keep running, and the gain could disappear.",

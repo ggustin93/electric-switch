@@ -102,7 +102,7 @@ export default {
   verdictTitreProchaine: (duree) => `Dipende da cosa comprerai tra ${duree}`,
   questionProchaine: (duree) => `Tra ${duree} la tua auto sarà da cambiare. Compreresti comunque un'elettrica?`,
   reponsesProchaine: { oui: "Sì", non: "No", nsp: "Non lo so" },
-  verdictProchaine: ({ garder, bas, haut }) => <>Se sì, passa ora: {bas} invece di {garder}, perché anticipi soltanto quell'acquisto. Se no, tieni la tua auto: {garder} invece di {haut}.</>,
+  verdictProchaine: ({ garder, bas, haut, fab, duree }) => <>Se sì, passa ora: in {duree} l'elettrica emetterebbe {bas}, contro {garder} della tua auto, perché anticipi soltanto quell'acquisto. Se no, tieni la tua auto: emetterebbe {garder}, contro {haut} dell'elettrica, di cui {fab} solo per produrla.</>,
   prochaineOui: ({ bas, garder, duree }) => <>Compreresti comunque un'elettrica: prenderla ora anticipa soltanto quell'acquisto. In {duree}, <strong>{bas}</strong> invece di {garder}.</>,
   prochaineNon: ({ haut, garder, duree }) => <>Senza un acquisto previsto, conta tutta la produzione dell'elettrica. In {duree} emetterebbe <strong>{haut}</strong>, contro {garder} tenendo la tua auto.</>,
   noteCasse: "Si suppone che la tua auto attuale venga rottamata. Se rivenduta, continuerebbe a circolare, e il guadagno potrebbe sparire.",

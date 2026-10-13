@@ -98,7 +98,7 @@ export default {
   verdictTitreProchaine: (duree) => `Depende de lo que compres dentro de ${duree}`,
   questionProchaine: (duree) => `Dentro de ${duree}, tu coche estará gastado. ¿Comprarías entonces un eléctrico de todos modos?`,
   reponsesProchaine: { oui: "Sí", non: "No", nsp: "No lo sé" },
-  verdictProchaine: ({ garder, bas, haut }) => <>Si es así, cámbiate ahora: {bas} en lugar de {garder}, porque solo adelantas esa compra. Si no, conserva tu coche: {garder} en lugar de {haut}.</>,
+  verdictProchaine: ({ garder, bas, haut, fab, duree }) => <>Si es así, cámbiate ahora: en {duree} el eléctrico emitiría {bas}, frente a {garder} de tu coche, porque solo adelantas esa compra. Si no, conserva tu coche: emitiría {garder}, frente a {haut} del eléctrico, de las que {fab} solo para fabricarlo.</>,
   prochaineOui: ({ bas, garder, duree }) => <>Comprarías un eléctrico de todos modos: tenerlo ahora solo adelanta esa compra. En {duree}, <strong>{bas}</strong> en lugar de {garder}.</>,
   prochaineNon: ({ haut, garder, duree }) => <>Sin una compra prevista, cuenta toda la fabricación del eléctrico. En {duree} emitiría <strong>{haut}</strong>, frente a {garder} conservando tu coche.</>,
   noteCasse: "Se supone que tu coche actual va al desguace. Revendido, seguiría circulando, y la ganancia podría desaparecer.",
