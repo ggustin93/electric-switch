@@ -142,7 +142,7 @@ export function gainAccroche(pays) {
 }
 
 // --- Fenêtre de détention : km parcourus et part de fabrication ---
-// marginal : l'achat porte toute la fabrication qui reste (H3) : 100 % pour un neuf, même revendu ensuite
+// marginal : un achat neuf porte 100 % de sa fabrication (H3), même revendu ensuite ; une occasion reste en H2 partout (ADR 0012)
 export function fenetre({ occasion, odo, age, kmAn, revente, detention, marginal = false }) {
   const ageEff = occasion ? age : 0;
   // Le compteur saisi (celui de l'annonce) est respecté : la vraie borne est la fin de vie à 200 000 km
@@ -157,7 +157,7 @@ export function fenetre({ occasion, odo, age, kmAn, revente, detention, marginal
   const ageMort = revente ? ageFinVous + kmRepreneur / KM_AN_PARC : ageFinVous;
   return {
     kmVous, kmRepreneur, odoEff, ageEff, ageFinVous, ageMort,
-    ratioFab: marginal ? partRestante(odoEff, ageEff) : partFab(ageEff, ageFinVous, ageMort),
+    ratioFab: marginal && !occasion ? 1 : partFab(ageEff, ageFinVous, ageMort),
     // Vous gardez le véhicule jusqu'à sa limite d'âge, avant sa borne kilométrique
     borneParAge: anneesVous === anneesRest && anneesRest * kmAn < VIE_KM - odoEff,
   };

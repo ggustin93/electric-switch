@@ -97,8 +97,9 @@ test("part restante (borne haute) : 100 % neuve, plus petit des ratios km et âg
   assert.ok(Math.abs(partRestante(27000, 1) - 0.865) < 1e-9);
   assert.ok(Math.abs(partRestante(50000, 10) - (1 - 10 / VIE_ANS)) < 1e-9); // l'âge borne avant le compteur
   assert.equal(partRestante(VIE_KM + 1000, 5), 0);
-  const f = fenetre({ occasion: true, odo: 27000, age: 1, kmAn: 12000, revente: true, detention: 1, marginal: true });
-  assert.equal(f.ratioFab, partRestante(27000, 1));
+  // Occasion : H2 dans toutes les conventions ; la part restante n'est qu'affichée (ADR 0012)
+  const occ = (marginal) => fenetre({ occasion: true, odo: 27000, age: 1, kmAn: 12000, revente: true, detention: 1, marginal }).ratioFab;
+  assert.equal(occ(true), occ(false));
   // Décision : la part comptée reste H2 (basse), la part restante n'est qu'affichée
   const v = decider({ carb: "essence", conso: 6.9, annees: 1, seg: byId(SEGMENTS, "compacte"), etatVE: "occasion", ageVE: 1, odoVE: 27000, pays: PAYS[0], kmAn: 12000, decarb: true, efBatt: 73 });
   assert.ok(v.partVE < 0.2 && v.partHaute === partRestante(27000, 1));

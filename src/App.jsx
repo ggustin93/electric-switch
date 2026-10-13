@@ -759,7 +759,7 @@ function Comparateur({ shared, profil }) {
             <>
               <Curseur id="det" label={s.champ.detention} value={detention} min={2} max={15} step={1} unite={s.unites.ans}
                 onChange={setDetention} format={f.ans} />
-              {conv === "partagee" && <p className="note">{s.partRevente({ pc: f.pc(fen.ratioFab), a: f.age(fen.ageEff), b: f.age(fen.ageFinVous), km: f.km(fen.kmRepreneur) })}</p>}
+              {(conv === "partagee" || occasion) && <p className="note">{s.partRevente({ pc: f.pc(fen.ratioFab), a: f.age(fen.ageEff), b: f.age(fen.ageFinVous), km: f.km(fen.kmRepreneur) })}</p>}
             </>
           )}
           {fen.borneParAge && <p className="note">{s.borneAge(f.km(fen.kmVous))}</p>}
