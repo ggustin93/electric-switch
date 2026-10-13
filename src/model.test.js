@@ -123,6 +123,21 @@ test("neuve : fabrication avancée h / L en borne basse, 100 % en borne haute ; 
   assert.ok(o.partAvancee === o.partVE && !o.selonProchaine);
 });
 
+test("occasion : estimation haute (part restante) au-dessus de H2, signalée seulement si elle change le verdict", () => {
+  const base = { carb: "essence", conso: 6.9, seg: byId(SEGMENTS, "compacte"), pays: byId(PAYS, "BE"), decarb: true, efBatt: 73, etatVE: "occasion" };
+  for (const ageVE of [1, 3, 6, 10]) for (const kmAn of [5000, 12000, 20000]) for (const annees of [2, 5]) {
+    const v = decider({ ...base, ageVE, kmAn, annees });
+    assert.ok(v.tRemplacerHaut >= v.tRemplacer - 1e-9);
+    assert.equal(v.selonAchat, departager(v.tRemplacerHaut, v.tGarder) !== departager(v.tRemplacer, v.tGarder));
+  }
+  const neuve = decider({ ...base, etatVE: "neuf", ageVE: 0, kmAn: 12000, annees: 5 });
+  assert.ok(!neuve.selonAchat && neuve.tRemplacerHaut === neuve.tRemplacer);
+  // Le seuil suit le total demandé : estimation haute ≥ défaut ≥ fabrication avancée
+  const p = { ...base, ageVE: 1, annees: 5 };
+  const k = (cle) => kmBascule(p, cle) ?? Infinity;
+  assert.ok(k("tRemplacerHaut") >= k("tRemplacer"));
+});
+
 test("pivot : null si jamais rattrapé, 0 si d'emblée devant", () => {
   assert.equal(kmPivot({ usage: 200, fabAttr: 10 }, { usage: 150, fabAttr: 6 }, 1e5), null);
   assert.equal(kmPivot({ usage: 20, fabAttr: 5 }, { usage: 150, fabAttr: 6 }, 1e5), 0);

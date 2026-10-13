@@ -37,7 +37,7 @@ const CHIFFRES = {
   questions: [
     [Math.round(vie("BE", "ev").totalT), Math.round(vie("BE", "essence").totalT), Math.round(ecart("BE") * 100),
       ...RESEAU_BE.map((g) => Math.round(ecart("BE", "ev", 0, { g }) * 100)).sort((a, b) => a - b)],
-    [...PIVOT_BE, kmBascule(profil), kmBascule(profil, true)],
+    [...PIVOT_BE, kmBascule(profil), kmBascule(profil, "tRemplacerBas")],
     [seg.battKwh, ef, r1((seg.battKwh * ef) / 1000), r1(vie("BE", "ev").fabTotale), r1(vie("BE", "essence").fabTotale), ...PIVOT_BE],
     [Math.round(occasion.partVE * 100), r1(occasion.tRemplacer), r1(occasion.tGarder), r1(decider(profil).tRemplacer), r1(decider(profil).tRemplacerBas)],
     // Compteurs embarqués 17 à 26 %, défaut 30 % ; enquêtes 45 à 50 % ; flottes 11 à 15 % (H11)

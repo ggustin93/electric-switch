@@ -206,6 +206,9 @@ export function decider({ carb, conso, annees, seg, etatVE, ageVE, odoVE = ageVE
   // aurait de toute façon été une électrique comparable. Borne haute = 100 % (H3). Occasion : une seule valeur (H2).
   const partAvancee = occasion ? partVE : Math.min(1, horizon / Math.min(VIE_ANS, VIE_KM / kmAn));
   const tRemplacerBas = fabTot * partAvancee + (usageVE * km) / 1e6;
+  // Occasion : estimation haute = toute la fabrication qui lui reste (ADR 0012), affichée seulement si elle change le verdict
+  const partHaute = occasion ? partRestante(odoEff, ageDebut) : 1;
+  const tRemplacerHaut = fabTot * partHaute + (usageVE * km) / 1e6;
   const amortiAns = usageVieille > usageVE ? (fabVE * 1e6) / ((usageVieille - usageVE) * kmAn) : Infinity;
   // Occasion suggérée : 6 ans, compteur moyen (12 000 km/an), même fenêtre
   const odoSugg = AGE_SUGGESTION * KM_AN_PARC;
@@ -218,8 +221,9 @@ export function decider({ carb, conso, annees, seg, etatVE, ageVE, odoVE = ageVE
   const vHaut = departager(tRemplacer, tGarder), vBas = departager(tRemplacerBas, tGarder);
   const verdict = vHaut === "a" ? "a" : vBas === "b" ? "b" : "serre";
   return {
-    horizon, km, usageVieille, usageVE, fabVE, partVE, partHaute: occasion ? partRestante(odoEff, ageDebut) : 1, tGarder, tRemplacer, amortiAns,
-    partAvancee, tRemplacerBas,
+    horizon, km, usageVieille, usageVE, fabVE, partVE, partHaute, tGarder, tRemplacer, amortiAns,
+    fabTot, partAvancee, tRemplacerBas, tRemplacerHaut,
+    selonAchat: occasion && departager(tRemplacerHaut, tGarder) !== departager(tRemplacer, tGarder),
     tronque: horizon < annees,
     verdict: VERDICTS[verdict],
     selonProchaine: vHaut !== vBas,
@@ -248,11 +252,11 @@ export function calcConfig(cfg, { pays, kmAn, decarb, efBatt, marginal, detentio
 // --- Kilométrage annuel à partir duquel remplacer devient préférable (curseur 3 000 à 40 000 km/an).
 // 3000 si l'électrique gagne déjà au minimum, null s'il ne gagne jamais. Premier franchissement seulement :
 // d'occasion, quand la borne de 200 000 km tronque l'horizon, le verdict peut ensuite repasser à « garder » (ADR 0002).
-// bas : avec la fabrication avancée (borne basse d'une neuve, ADR 0013)
-export function kmBascule(params, bas = false) {
+// cle : le total comparé (« tRemplacerBas » : neuve en fabrication avancée, ADR 0013 ; « tRemplacerHaut » : occasion en part restante, ADR 0012)
+export function kmBascule(params, cle = "tRemplacer") {
   for (let kmAn = 3000; kmAn <= 40000; kmAn += 500) {
     const v = decider({ ...params, kmAn });
-    if ((bas ? v.tRemplacerBas : v.tRemplacer) <= v.tGarder) return kmAn;
+    if (v[cle] <= v.tGarder) return kmAn;
   }
   return null;
 }

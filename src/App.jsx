@@ -344,7 +344,8 @@ function Decision({ shared, allerExplorer }) {
   const { pays, paysId, setPaysId, kmAn, setKmAn, decarb, batt, segId, setSegId, etatVE, setEtatVE, ageVE, setAgeVE, odo, odoEstime, setOdo,
     carb, setCarb, conso, setConso, annees, setAnnees, setVoitureSaisie } = shared;
   const [etape, setEtape] = useState(0);
-  const [avance, setAvance] = useState(false); // calcul prudent (100 %) par défaut ; « Voir ce calcul » : fabrication avancée (ADR 0013)
+  const [avance, setAvance] = useState(false); // « Voir ce calcul » : l'autre estimation (ADR 0012, 0013) ; remise à zéro si neuve/occasion change
+  useEffect(() => setAvance(false), [etatVE]);
   const [maxEtape, setMaxEtape] = useState(0);
   // Aide facultative pour estimer les années restantes de la voiture actuelle (compteur estimé tant qu'il n'est pas saisi)
   const [ageAct, setAgeAct] = useState(10);
@@ -358,19 +359,21 @@ function Decision({ shared, allerExplorer }) {
   const seg = byId(SEGMENTS, segId);
   const params = { carb, conso, annees, seg, etatVE, ageVE, odoVE: odo, pays, decarb, efBatt: batt.ef };
   const v = decider({ ...params, kmAn });
-  // Neuve, bornes en désaccord : la réponse de la personne tranche (oui : fabrication avancée ; non : 100 %)
-  // Neuve, bornes en désaccord : verdict au calcul prudent (100 %), ou à la fabrication avancée sur demande
+  // Autre estimation, proposée seulement si elle change le verdict (lien « Voir ce calcul ») :
+  // neuve → fabrication avancée (ADR 0013) ; occasion → toute la fabrication qui lui reste (ADR 0012)
   const bas = v.selonProchaine && avance;
-  const tVE = bas ? v.tRemplacerBas : v.tRemplacer;
-  const verdict = v.selonProchaine ? { a: "remplacer", b: "garder", serre: "serre" }[departager(tVE, v.tGarder)] : v.verdict;
+  const haut = v.selonAchat && avance;
+  const tVE = bas ? v.tRemplacerBas : haut ? v.tRemplacerHaut : v.tRemplacer;
+  const fabAffichee = bas ? v.fabTot * v.partAvancee : haut ? v.fabTot * v.partHaute : v.fabVE;
+  const verdict = v.selonProchaine || v.selonAchat ? { a: "remplacer", b: "garder", serre: "serre" }[departager(tVE, v.tGarder)] : v.verdict;
   // Le seuil ne dépend pas du kilométrage : recalculé seulement si une autre réponse change
   const seuil = useMemo(
     () => (etape === 3 ? kmBascule(params) : null),
     [etape, carb, conso, annees, segId, etatVE, ageVE, odo, pays, decarb, batt], // eslint-disable-line react-hooks/exhaustive-deps
   );
-  // Seuil avec la fabrication avancée (neuve, si la prochaine voiture devait de toute façon être électrique)
-  const seuilBas = useMemo(
-    () => (etape === 3 && etatVE === "neuf" ? kmBascule(params, true) : null),
+  // Seuil avec l'autre estimation (neuve : fabrication avancée ; occasion : part restante)
+  const seuilAutre = useMemo(
+    () => (etape === 3 ? kmBascule(params, etatVE === "neuf" ? "tRemplacerBas" : "tRemplacerHaut") : null),
     [etape, carb, conso, annees, segId, etatVE, ageVE, odo, pays, decarb, batt], // eslint-disable-line react-hooks/exhaustive-deps
   );
   const etat = etatVE === "neuf" ? s.etatNeuve : s.etatOcc(f.n0(ageVE), ageVE);
@@ -454,7 +457,7 @@ function Decision({ shared, allerExplorer }) {
                   <Curseur id="odove" label={s.champ.odo} aide={s.aide.odo} value={odo} min={0} max={190000} step={1000} pas={500}
                     unite={odoEstime ? s.unites.kmEstime : s.unites.km}
                     onChange={setOdo} format={f.km} />
-                  <p className="note">{s.partOcc({ pc: f.pc(Math.round(v.partVE * 100) / 100), haut: f.pc(Math.round(v.partHaute * 100) / 100), a: f.age(ageVE), b: f.age(ageVE + v.horizon) })}</p>
+                  <p className="note">{s.partOcc({ pc: f.pc(Math.round(v.partVE * 100) / 100), a: f.age(ageVE), b: f.age(ageVE + v.horizon) })}</p>
                 </>
               )}
             </>
@@ -472,13 +475,14 @@ function Decision({ shared, allerExplorer }) {
           <section className={`verdict sombre verdict-${verdict}`} aria-live="polite">
             <h2 ref={titreRef} tabIndex={-1} className="verdict-titre">{s.verdictTitre[verdict]}</h2>
             <p className="verdict-texte">
+              {haut && s.occasionHaut({ haut: f.t(v.tRemplacerHaut), garder: f.t(v.tGarder), duree: f.ans(v.horizon), pc: f.pc(Math.round(v.partHaute * 100) / 100) })}
               {v.selonProchaine && (bas ? s.prochaineOui : s.prochaineNon)({
                 garder: f.t(v.tGarder), bas: f.t(v.tRemplacerBas), haut: f.t(v.tRemplacer), fab: f.t(v.fabVE), duree: f.ans(v.horizon),
               })}
-              {!v.selonProchaine && v.verdict === "remplacer" && s.verdictRemplacer({
+              {!v.selonProchaine && !haut && v.verdict === "remplacer" && s.verdictRemplacer({
                 duree: f.ans(v.horizon), km: f.km(v.km), t: f.tco2(v.tGarder - v.tRemplacer), amorti: f.ans(v.amortiAns), etat,
               })}
-              {!v.selonProchaine && v.verdict === "garder" && (
+              {!v.selonProchaine && !haut && v.verdict === "garder" && (
                 <>
                   {s.verdictGarder({
                     km: f.kmAn(kmAn), etat, duree: f.ans(v.horizon), t: f.tco2(v.tRemplacer - v.tGarder),
@@ -487,7 +491,7 @@ function Decision({ shared, allerExplorer }) {
                   {v.suggererOccasion && <> {s.suggestionOcc({ age: f.n0(AGE_SUGGESTION), t: f.t(v.tOccasion), tg: f.t(v.tGarderOcc) })}</>}
                 </>
               )}
-              {!v.selonProchaine && v.verdict === "serre" && s.verdictSerre({ a: f.t(v.tGarder), b: f.t(v.tRemplacer), duree: f.ans(v.horizon) })}
+              {!v.selonProchaine && !haut && v.verdict === "serre" && s.verdictSerre({ a: f.t(v.tGarder), b: f.t(v.tRemplacer), duree: f.ans(v.horizon) })}
             </p>
             {v.tronque && <p className="verdict-note">{s.tronque(f.ans(v.horizon))}</p>}
             {v.selonProchaine && (
@@ -496,19 +500,25 @@ function Decision({ shared, allerExplorer }) {
                 <button type="button" className="lien-inline" onClick={() => setAvance(!bas)}>{bas ? s.voirPrudent : s.voirAvance}</button>
               </p>
             )}
+            {v.selonAchat && (
+              <p className="verdict-hypo">
+                {haut ? s.hypoOccasionHaut : s.hypoOccasion(f.pc(Math.round(v.partHaute * 100) / 100))}{" "}
+                <button type="button" className="lien-inline" onClick={() => setAvance(!haut)}>{haut ? s.voirRetour : s.voirAvance}</button>
+              </p>
+            )}
             {verdict === "remplacer" && <p className="verdict-note">{s.noteCasse}</p>}
 
             <div className="face-a-face">
               <Colonne gagne={verdict === "garder"} titre={s.colGarder(carb)} t={v.tGarder}
                 sous={s.colGarderSous(f.gkm(v.usageVieille))} />
               <Colonne gagne={verdict === "remplacer"} titre={s.colVE(s.seg[segId].nom, etat)} t={tVE}
-                sous={s.colVESous(f.t(bas ? v.fabVE * v.partAvancee : v.fabVE))} />
+                sous={s.colVESous(f.t(fabAffichee))} />
             </div>
           </section>
 
           <section className="carte">
             <p className="bascule">
-              {texteBascule(s, f, bas ? seuilBas : seuil)}
+              {texteBascule(s, f, bas || haut ? seuilAutre : seuil)}
             </p>
             <Curseur id="etsi" label={s.etSi} value={kmAn} min={3000} max={40000} step={500} pas={100} unite={s.unites.kmAn}
               onChange={setKmAn} format={f.kmAn} />
