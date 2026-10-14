@@ -10,7 +10,7 @@ import STR_PAGE from "@langue";
 import { HYP_REFS, SOURCES, SOURCES_URL, METHODE_MAJ, LANGUES } from "./i18n/commun.jsx";
 import { Icone } from "./icones.jsx";
 import { version } from "../package.json";
-import { mesurer } from "./mesure.js";
+import { mesurer, vue as pageVue, suivreClic, refuse, choisirRefus } from "./mesure.js";
 import { chemin, ancienneAncre } from "./routes.js";
 
 /* ============================================================
@@ -51,7 +51,7 @@ function BoutonAide({ id, label, open, setOpen }) {
   const { s } = useT();
   return (
     <button type="button" className="aide" aria-expanded={open} aria-controls={`${id}-aide`}
-      aria-label={s.aideOuvrir(label)} onClick={() => setOpen(!open)}>
+      aria-label={s.aideOuvrir(label)} data-ev={open ? undefined : "aide"} data-id={id} onClick={() => setOpen(!open)}>
     </button>
   );
 }
@@ -215,16 +215,18 @@ export default function App({ page = "outil" }) {
       const d = langueRef.current;
       if (d?.open && (e.key === "Escape" || (e.type === "click" && !d.contains(e.target)))) d.open = false;
     };
+    const clic = (e) => suivreClic(e.target, lang);
     document.addEventListener("click", fermer);
+    document.addEventListener("click", clic);
     document.addEventListener("keydown", fermer);
-    return () => { document.removeEventListener("click", fermer); document.removeEventListener("keydown", fermer); };
+    return () => { document.removeEventListener("click", fermer); document.removeEventListener("click", clic); document.removeEventListener("keydown", fermer); };
   }, []);
 
   // Après hydratation, avant l'affichage : ancien lien (#methode/h5) vers sa vraie page, pays probable du navigateur
   useLayoutEffect(() => {
     const ancien = page === "outil" && ancienneAncre(location.hash, lang);
     if (ancien) { location.replace(ancien); return; }
-    if (page !== "outil") mesurer("page", { nom: page, lang });
+    pageVue();
     setPaysId(paysProbable({
       fuseau: Intl.DateTimeFormat().resolvedOptions().timeZone, langues: navigator.languages ?? [navigator.language],
     }));
@@ -302,7 +304,7 @@ export default function App({ page = "outil" }) {
           <Decision shared={shared} allerExplorer={allerExplorer} />
         </div>
         <div role="tabpanel" id="panel-explorer" aria-labelledby="tab-explorer" hidden={onglet !== "explorer"}>
-          {visites.explorer && <Explorer shared={shared} vue={vue} setVue={setVue} />}
+          {visites.explorer && <Explorer shared={shared} vue={vue} setVue={(v) => { mesurer("vue", { id: v, lang }); setVue(v); }} />}
         </div>
         <div role="tabpanel" id="panel-modes" aria-labelledby="tab-modes" hidden={onglet !== "modes"}>
           {visites.modes && <Modes />}
@@ -371,6 +373,7 @@ function Decision({ shared, allerExplorer }) {
   useEffect(() => {
     if (focusPays.current) { focusPays.current = false; document.getElementById("pays")?.focus(); }
     else if (etapePrec.current !== etape) titreRef.current?.focus();
+    if (etape > etapePrec.current && etape < 3) mesurer("etape", { n: etape, lang: f.lang });
     if (etape === 3 && etapePrec.current !== 3) {
       // Valeurs grossières uniquement (kilométrage arrondi à 5 000 km) : rien d'identifiant
       mesurer("verdict", { verdict, pays: pays.id, segment: segId, etat: etatVE, km: Math.round(kmAn / 5000) * 5000, lang: f.lang });
@@ -424,7 +427,7 @@ function Decision({ shared, allerExplorer }) {
                   unite={kmActSaisi === null ? s.unites.kmEstime : s.unites.km} onChange={setKmAct} format={f.km} />
                 <p className="note">{s.estimation(f.ans(estAnnees))}</p>
                 <div className="actions actions-debut">
-                  <button type="button" className="btn btn-contour" disabled={estAnnees === annees} onClick={() => setAnnees(estAnnees)}>
+                  <button type="button" className="btn btn-contour" disabled={estAnnees === annees} data-ev="cta" data-id="estimer-annees" onClick={() => setAnnees(estAnnees)}>
                     {s.utiliserEstimation}
                   </button>
                 </div>
@@ -513,9 +516,9 @@ function Decision({ shared, allerExplorer }) {
           <section className="carte">
             <h2>{s.allerPlusLoin}</h2>
             <div className="actions actions-debut">
-              <button type="button" className="btn btn-plein" onClick={() => allerExplorer("tout")}>{s.ctaTout}</button>
-              <button type="button" className="btn btn-contour" onClick={() => allerExplorer("duel")}>{s.ctaDuel}</button>
-              <button type="button" className="btn btn-texte" onClick={() => aller(0)}>{s.modifier}</button>
+              <button type="button" className="btn btn-plein" data-ev="cta" data-id="tout" onClick={() => allerExplorer("tout")}>{s.ctaTout}</button>
+              <button type="button" className="btn btn-contour" data-ev="cta" data-id="duel" onClick={() => allerExplorer("duel")}>{s.ctaDuel}</button>
+              <button type="button" className="btn btn-texte" data-ev="cta" data-id="modifier" onClick={() => aller(0)}>{s.modifier}</button>
             </div>
           </section>
         </>
@@ -551,7 +554,7 @@ function Budget({ carb, conso, kmAn, seg, paysId, changerPays }) {
       <h2>{s.budgetTitre}</h2>
       {/* Le pays est nommé : les montants viennent de ses prix de l'énergie. Il est deviné, donc cliquable : retour à l'étape 1, sur le champ pays */}
       <p className="bascule">{s.budgetUsageTitre(usage(s, f, th - ve),
-        <button type="button" className="lien-inline" onClick={changerPays}>{s.pays[paysId]}</button>)}</p>
+        <button type="button" className="lien-inline" data-ev="cta" data-id="budget-pays" onClick={changerPays}>{s.pays[paysId]}</button>)}</p>
       {/* Une phrase visible ; le détail (même périmètre par an, énergie seule aux 100 km) et les prix sont repliés.
           Pas d'amortissement : sans prix d'achat ni revente, il ne serait qu'une redite trompeuse de l'écart annuel. */}
       <Repli className="replie" titre={s.budgetAjuster}>
@@ -1129,6 +1132,10 @@ const REFS_ECO = [
 // Éditeur repris des mentions légales de pwablo.be (pwablo.be/terms) ; rien d'inventé
 function PageMentions() {
   const { s } = useT();
+  // Lu après hydratation : la page prérendue ne connaît pas le choix de la personne
+  const [refus, setRefus] = useState(false);
+  useEffect(() => setRefus(refuse()), []);
+  const basculer = () => { choisirRefus(!refus); setRefus(!refus); };
   return (
     <article className="carte lecture">
       <RetourOutil />
@@ -1139,6 +1146,8 @@ function PageMentions() {
           {lignes.map((l, i) => <p key={i}>{l}</p>)}
         </section>
       ))}
+      <p>{refus ? s.refusMesure.fait : s.refusMesure.intro}{" "}
+        <button type="button" className="lien-inline" onClick={basculer}>{refus ? s.refusMesure.annuler : s.refusMesure.refuser}</button></p>
     </article>
   );
 }
@@ -1205,7 +1214,7 @@ function Repli({ id, className, titre, children }) {
   const [ouvert, setOuvert] = useState(false);
   return (
     <details id={id} className={className} open={ouvert} onToggle={(e) => setOuvert(e.currentTarget.open)}>
-      <summary>{titre}</summary>
+      <summary data-ev={ouvert ? undefined : "repli"} data-id={id}>{titre}</summary>
       {ouvert && children}
     </details>
   );

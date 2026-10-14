@@ -212,6 +212,7 @@ export default {
   navSite: "Pagina's van de site",
   pages: { methode: "Methode", ecoconception: "Ecodesign", mentions: "Juridische informatie", questions: "Veelvoorkomende vragen", apropos: "Over" },
   credit: (lien) => <>Ontworpen en ontwikkeld door {lien}.</>,
+  refusMesure: { intro: "U kunt de bezoekersmeting op dit toestel weigeren:", refuser: "Niet meten", fait: "Bezoekersmeting uitgeschakeld op dit toestel (keuze bewaard in uw browser).", annuler: "Opnieuw meten" },
   mentions: [
     ["Uitgever", [
       "Productions Associées ASBL — Guillaume Gustin (Pwablo), activiteit uitgeoefend onder Smart-nummer 30546.",
@@ -221,7 +222,7 @@ export default {
     ["Hosting", ["Infomaniak Network SA, Rue Eugène-Marziano 25, 1227 Les Acacias (GE), Zwitserland."]],
     ["Persoonsgegevens", [
       "De simulator vraagt en bewaart geen persoonsgegevens: de berekeningen gebeuren in uw browser. Uw taalkeuze wordt alleen op uw toestel onthouden.",
-      "Bezoekersmeting: Umami Cloud (gehost in de Europese Unie), zonder cookies of identificatoren; enkele anonieme gebeurtenissen (oordeel verkregen, pagina's geopend); ‘Do Not Track’ wordt gerespecteerd. Voor vragen: contact@electricornot.eu.",
+      "Bezoekersmeting: Umami Cloud, gegevens opgeslagen in de regio Europese Unie (Frankfurt); de uitgever, Umami Software, Inc., en sommige van zijn technische dienstverleners zijn gevestigd in de Verenigde Staten, vandaar een verwerkersovereenkomst en de standaardcontractbepalingen van de Europese Commissie. Paginaweergaven en anonieme gebeurtenissen (stappen, oordeel, tabbladen, hulp, knoppen, uitgaande links, taal); er wordt geen cookie of identificator op uw toestel opgeslagen. Rechtsgrond: ons gerechtvaardigd belang om het gebruik van de site te kennen; gegevens 6 maanden bewaard. ‘Do Not Track’, GPC en de link hieronder worden gerespecteerd. Voor vragen: contact@electricornot.eu.",
     ]],
     ["Aansprakelijkheid", ["Educatief hulpmiddel: de resultaten zijn grootteordes (onzekerheid van ongeveer ±20%), gebaseerd op de aannames en bronnen op de pagina Methode. Ze vormen geen financieel advies en geen aankoopaanbeveling."]],
     ["Credits en licenties", [
@@ -268,7 +269,7 @@ export default {
     "Eén zelfstandige pagina: stijlen, code en lettertype passen in één bestand.",
     "Een minimale interfacebibliotheek (Preact, ongeveer 4 kB) in plaats van React.",
     "Eén lettertype, beperkt tot de gebruikte tekens (14 kB); de rest van de tekst gebruikt het lettertype van uw toestel.",
-    "Zuinige bezoekersmeting: Umami Cloud (gehost in de EU), zonder cookies of persoonsgegevens; geen verzoek bij het laden van de simulator, alleen enkele anonieme gebeurtenissen (oordeel verkregen, tabblad of leespagina geopend; een leespagina stuurt er één bij het openen); ‘Do Not Track’ wordt gerespecteerd. Geen andere externe diensten, geen externe lettertypes.",
+    "Zuinige bezoekersmeting: Umami Cloud (EU-regio), zonder cookies of persoonsgegevens; één klein anoniem verzoek per geopende pagina, daarna één per handeling (stap, oordeel, tabblad, hulp, knop, uitgaande link), zonder extern script; ‘Do Not Track’ en GPC worden gerespecteerd. Geen andere externe diensten, geen externe lettertypes.",
     "De berekeningen gebeuren in uw browser: er worden geen gegevens verstuurd.",
     "Inhoud op aanvraag opgebouwd: de tabbladen worden pas getoond als u ze opent; Methode, Ecodesign en Juridische informatie zijn aparte pagina's, alleen geladen als u ze opent.",
     "Grafieken in HTML en CSS, zonder grafiekbibliotheek.",

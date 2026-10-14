@@ -214,6 +214,7 @@ export default {
   navSite: "Pages du site",
   pages: { methode: "Méthode", ecoconception: "Écoconception", mentions: "Mentions légales", questions: "Questions courantes", apropos: "À propos" },
   credit: (lien) => <>Conçu et développé par {lien}.</>,
+  refusMesure: { intro: "Vous pouvez refuser la mesure d'audience sur cet appareil :", refuser: "Ne pas être mesuré", fait: "Mesure d'audience désactivée sur cet appareil (choix gardé dans votre navigateur).", annuler: "Être de nouveau mesuré" },
   mentions: [
     ["Éditeur", [
       "Productions Associées ASBL — Guillaume Gustin (Pwablo), activité exercée sous le numéro Smart 30546.",
@@ -223,7 +224,7 @@ export default {
     ["Hébergement", ["Infomaniak Network SA, Rue Eugène-Marziano 25, 1227 Les Acacias (GE), Suisse."]],
     ["Données personnelles", [
       "Le simulateur ne demande ni ne conserve aucune donnée personnelle : les calculs se font dans votre navigateur. Votre choix de langue est mémorisé sur votre appareil uniquement.",
-      "Mesure d'audience : Umami Cloud (hébergé dans l'Union européenne), sans cookie ni identifiant ; quelques événements anonymes (verdict obtenu, pages ouvertes) ; « Do Not Track » respecté. Pour toute question : contact@electricornot.eu.",
+      "Mesure d'audience : Umami Cloud, données stockées dans sa région Union européenne (Francfort) ; l'éditeur, Umami Software, Inc., et certains de ses prestataires techniques sont établis aux États-Unis, d'où un contrat de sous-traitance et les clauses contractuelles types de la Commission européenne. Pages vues et événements anonymes (étapes, verdict, onglets, aides, boutons, liens sortants, langue) ; aucun cookie ni identifiant n'est enregistré sur votre appareil. Base légale : notre intérêt légitime à connaître l'usage du site ; données conservées 6 mois. « Do Not Track », GPC et le lien ci-dessous sont respectés. Pour toute question : contact@electricornot.eu.",
     ]],
     ["Responsabilité", ["Outil pédagogique : les résultats sont des ordres de grandeur (incertitude d'environ ±20 %), fondés sur les hypothèses et sources de la page Méthode. Ils ne constituent ni un conseil financier ni une recommandation d'achat."]],
     ["Crédits et licences", [
@@ -270,7 +271,7 @@ export default {
     "Une seule page autonome : styles, code et police tiennent dans un fichier.",
     "Bibliothèque d'interface minimale (Preact, environ 4 Ko) plutôt que React.",
     "Une seule police, réduite aux caractères utilisés (14 Ko) ; le reste du texte utilise la police de votre appareil.",
-    "Mesure d'audience sobre : Umami Cloud (hébergé dans l'UE), sans cookie ni donnée personnelle ; aucune requête au chargement du simulateur, seulement quelques événements anonymes (verdict obtenu, onglet ou page de lecture ouverts ; une page de lecture en envoie un à son ouverture) ; « Do Not Track » respecté. Aucun autre service tiers, aucune police externe.",
+    "Mesure d'audience sobre : Umami Cloud (région UE), sans cookie ni donnée personnelle ; une petite requête anonyme par page ouverte, puis à chaque action (étape, verdict, onglet, aide, bouton, lien sortant), sans aucun script tiers ; « Do Not Track » et GPC respectés. Aucun autre service tiers, aucune police externe.",
     "Les calculs se font dans votre navigateur : aucune donnée n'est envoyée.",
     "Contenu construit à la demande : les onglets ne sont affichés qu'à l'ouverture ; Méthode, Écoconception et Mentions légales sont des pages séparées, chargées seulement si vous les ouvrez.",
     "Graphiques en HTML et CSS, sans bibliothèque de graphiques.",

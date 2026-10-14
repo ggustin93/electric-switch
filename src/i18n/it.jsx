@@ -216,6 +216,7 @@ export default {
   navSite: "Pagine del sito",
   pages: { methode: "Metodo", ecoconception: "Ecoprogettazione", mentions: "Note legali", questions: "Domande comuni", apropos: "Chi siamo" },
   credit: (lien) => <>Ideato e sviluppato da {lien}.</>,
+  refusMesure: { intro: "Puoi rifiutare la misurazione del pubblico su questo dispositivo:", refuser: "Non misurarmi", fait: "Misurazione del pubblico disattivata su questo dispositivo (scelta conservata nel tuo browser).", annuler: "Misurami di nuovo" },
   mentions: [
     ["Editore", [
       "Productions Associées ASBL — Guillaume Gustin (Pwablo), attività esercitata con il numero Smart 30546.",
@@ -225,7 +226,7 @@ export default {
     ["Hosting", ["Infomaniak Network SA, Rue Eugène-Marziano 25, 1227 Les Acacias (GE), Svizzera."]],
     ["Dati personali", [
       "Il simulatore non chiede né conserva alcun dato personale: i calcoli avvengono nel tuo browser. La tua scelta della lingua è memorizzata solo sul tuo dispositivo.",
-      "Misurazione del pubblico: Umami Cloud (ospitato nell'Unione europea), senza cookie né identificativi; alcuni eventi anonimi (verdetto ottenuto, pagine aperte); “Do Not Track” rispettato. Per qualsiasi domanda: contact@electricornot.eu.",
+      "Misurazione del pubblico: Umami Cloud, dati conservati nella sua regione Unione europea (Francoforte); l'editore, Umami Software, Inc., e alcuni suoi fornitori tecnici hanno sede negli Stati Uniti, da cui un accordo sul trattamento dei dati e le clausole contrattuali tipo della Commissione europea. Pagine viste ed eventi anonimi (passaggi, verdetto, schede, aiuti, pulsanti, link esterni, lingua); nessun cookie né identificativo viene salvato sul tuo dispositivo. Base giuridica: il nostro legittimo interesse a conoscere l'uso del sito; dati conservati per 6 mesi. “Do Not Track”, GPC e il link qui sotto sono rispettati. Per qualsiasi domanda: contact@electricornot.eu.",
     ]],
     ["Responsabilità", ["Strumento educativo: i risultati sono ordini di grandezza (incertezza di circa ±20%), basati sulle ipotesi e sulle fonti della pagina Metodo. Non costituiscono né una consulenza finanziaria né una raccomandazione d'acquisto."]],
     ["Crediti e licenze", [
@@ -272,7 +273,7 @@ export default {
     "Una sola pagina autonoma: stili, codice e font stanno in un unico file.",
     "Libreria di interfaccia minima (Preact, circa 4 kB) invece di React.",
     "Un solo font, ridotto ai caratteri usati (14 kB); il resto del testo usa il font del tuo dispositivo.",
-    "Misurazione del pubblico sobria: Umami Cloud (ospitato nell'UE), senza cookie né dati personali; nessuna richiesta al caricamento del simulatore, solo alcuni eventi anonimi (verdetto ottenuto, scheda o pagina di lettura aperta; una pagina di lettura ne invia uno all'apertura); “Do Not Track” rispettato. Nessun altro servizio di terze parti, nessun font esterno.",
+    "Misurazione del pubblico sobria: Umami Cloud (regione UE), senza cookie né dati personali; una piccola richiesta anonima per pagina aperta, poi una per azione (passaggio, verdetto, scheda, aiuto, pulsante, link esterno), senza script di terze parti; “Do Not Track” e GPC rispettati. Nessun altro servizio di terze parti, nessun font esterno.",
     "I calcoli avvengono nel tuo browser: nessun dato viene inviato.",
     "Contenuto costruito su richiesta: le schede vengono mostrate solo quando le apri; Metodo, Ecoprogettazione e Note legali sono pagine separate, caricate solo se le apri.",
     "Grafici in HTML e CSS, senza librerie di grafici.",

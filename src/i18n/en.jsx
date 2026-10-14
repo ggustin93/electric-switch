@@ -212,6 +212,7 @@ export default {
   navSite: "Site pages",
   pages: { methode: "Method", ecoconception: "Ecodesign", mentions: "Legal notice", questions: "Common questions", apropos: "About" },
   credit: (lien) => <>Designed and built by {lien}.</>,
+  refusMesure: { intro: "You can opt out of audience measurement on this device:", refuser: "Do not measure me", fait: "Audience measurement turned off on this device (choice kept in your browser).", annuler: "Measure me again" },
   mentions: [
     ["Publisher", [
       "Productions Associées ASBL — Guillaume Gustin (Pwablo), working under Smart number 30546.",
@@ -221,7 +222,7 @@ export default {
     ["Hosting", ["Infomaniak Network SA, Rue Eugène-Marziano 25, 1227 Les Acacias (GE), Switzerland."]],
     ["Personal data", [
       "The simulator neither asks for nor stores any personal data: calculations run in your browser. Your language choice is remembered on your device only.",
-      "Audience measurement: Umami Cloud (hosted in the European Union), no cookies or identifiers; a few anonymous events (verdict reached, pages opened); “Do Not Track” respected. Questions: contact@electricornot.eu.",
+      "Audience measurement: Umami Cloud, data stored in its European Union region (Frankfurt); the publisher, Umami Software, Inc., and some of its technical providers are based in the United States, hence a data processing agreement and the European Commission standard contractual clauses. Page views and anonymous events (steps, verdict, tabs, help, buttons, outbound links, language); no cookie or identifier is stored on your device. Legal basis: our legitimate interest in knowing how the site is used; data kept for 6 months. “Do Not Track”, GPC and the link below are respected. Questions: contact@electricornot.eu.",
     ]],
     ["Liability", ["Educational tool: results are orders of magnitude (uncertainty of about ±20%), based on the assumptions and sources on the Method page. They are neither financial advice nor a purchase recommendation."]],
     ["Credits and licences", [
@@ -268,7 +269,7 @@ export default {
     "A single self-contained page: styles, code and font fit in one file.",
     "A minimal UI library (Preact, about 4 kB) instead of React.",
     "A single font, cut down to the characters used (14 kB); the rest of the text uses your device's font.",
-    "Lightweight audience measurement: Umami Cloud (EU-hosted), no cookies or personal data; no request when the simulator loads, only a few anonymous events (verdict reached, tab or reading page opened; a reading page sends one when it opens); “Do Not Track” respected. No other third-party service, no external fonts.",
+    "Lightweight audience measurement: Umami Cloud (EU region), no cookies or personal data; one small anonymous request per page opened, then one per action (step, verdict, tab, help, button, outbound link), with no third-party script; “Do Not Track” and GPC respected. No other third-party service, no external fonts.",
     "Calculations run in your browser: no data is sent anywhere.",
     "Content built on demand: the tabs are only rendered when opened; Method, Ecodesign and Legal notice are separate pages, loaded only if you open them.",
     "Charts in HTML and CSS, without a charting library.",

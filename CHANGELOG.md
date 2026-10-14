@@ -4,6 +4,9 @@ Notable changes to « Dois-je passer à l'électrique ? ». Format inspired by [
 
 ## [Unreleased]
 
+### Changed
+- **Audience measurement that counts visits** (ADR 0015). Umami's overview showed 0 visitors: the site only sent events, never page views. Now a cookieless page view on every page (path with language, external referrer, `utm_*`), plus events on actions: `etape`, `verdict`, `onglet`, `vue`, `aide`, `repli`, `cta`, `sortie` (outbound link), `langue`, `contact`, each sent once per page. New « Ne pas être mesuré » link on the Mentions page, next to Do Not Track and GPC. Mentions and Écoconception rewritten in 5 languages: EU region (Frankfurt), US publisher under standard contractual clauses, legitimate interest, 6-month retention.
+
 ## [7.7.0] — 2026-10-13
 
 ### Changed
