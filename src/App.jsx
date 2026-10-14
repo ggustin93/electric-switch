@@ -483,7 +483,9 @@ function Decision({ shared, allerExplorer }) {
                 // Une seule suggestion (modèle) : occasion de 6 ans un cran plus légère, de même catégorie, ou catégorie plus légère
                 const g = v.suggestion, cat = minusculeInitiale(s.seg[g.segId].nom), chiffres = { t: f.t(g.t), tg: f.t(g.tg) };
                 if (g.type === "segment") return <> {s.suggestionSeg({ cat, etat, ...chiffres })}</>;
-                return <> {g.plusLeger ? s.suggestionOccSeg({ cat, age: f.n0(AGE_SUGGESTION), ...chiffres }) : s.suggestionOcc({ age: f.n0(AGE_SUGGESTION), ...chiffres })}</>;
+                // Chiffres sur une durée plus courte que le verdict : la dire, sinon « contre X t » contredit la colonne « Garder »
+                const duree = g.hz < v.horizon && s.suggestionDuree(f.ans(g.hz));
+                return <> {g.plusLeger ? s.suggestionOccSeg({ cat, age: f.n0(AGE_SUGGESTION), ...chiffres }) : s.suggestionOcc({ age: f.n0(AGE_SUGGESTION), ...chiffres })}{duree && <> {duree}</>}</>;
               })()}
               {v.verdict === "serre" && s.verdictSerre({ a: f.t(v.tGarder), b: f.t(v.tRemplacer), duree: f.ans(v.horizon) })}
             </p>

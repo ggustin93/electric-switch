@@ -98,6 +98,7 @@ export default {
   voirHypo: "Hipótesis del cálculo: H3",
   suggestionOcc: ({ age, t, tg }) => <>En cambio, un <strong>eléctrico de segunda mano de {age}&nbsp;años</strong> ya saldría mejor ({t} frente a {tg}).</>,
   suggestionOccSeg: ({ cat, age, t, tg }) => <>En cambio, un <strong>eléctrico {cat} de segunda mano de {age}&nbsp;años</strong> ya saldría mejor ({t} frente a {tg}), si basta para tus trayectos.</>,
+  suggestionDuree: (duree) => `Comparación en ${duree}: este eléctrico llegaría después al final de su vida útil.`,
   suggestionSeg: ({ cat, etat, t, tg }) => <>En cambio, un eléctrico <strong>{cat}</strong> {etat} ya saldría mejor ({t} frente a {tg}), si basta para tus trayectos.</>,
   tronque: (duree) => `Comparación limitada a ${duree}: después, el eléctrico llegaría al final de su vida útil (200 000 km o 18 años).`,
   etatNeuve: "nuevo",

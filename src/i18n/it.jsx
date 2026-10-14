@@ -102,6 +102,7 @@ export default {
   voirHypo: "Ipotesi del calcolo: I3",
   suggestionOcc: ({ age, t, tg }) => <>Invece, un'<strong>auto elettrica usata di {age}&nbsp;anni</strong> farebbe già meglio ({t} contro {tg}).</>,
   suggestionOccSeg: ({ cat, age, t, tg }) => <>Invece, un'<strong>elettrica {cat} usata di {age}&nbsp;anni</strong> farebbe già meglio ({t} contro {tg}), se basta per i tuoi spostamenti.</>,
+  suggestionDuree: (duree) => `Confronto su ${duree}: questa elettrica raggiungerebbe poi la fine della sua vita.`,
   suggestionSeg: ({ cat, etat, t, tg }) => <>Invece, un'elettrica <strong>{cat}</strong> {etat} farebbe già meglio ({t} contro {tg}), se basta per i tuoi spostamenti.</>,
   tronque: (duree) => `Confronto limitato a ${duree}: oltre, l'auto elettrica arriverebbe a fine vita (200.000 km o 18 anni).`,
   etatNeuve: "nuova",

@@ -227,14 +227,14 @@ export function decider({ carb, conso, annees, seg, etatVE, ageVE, odoVE = ageVE
       (etatVE === "neuf" || ageVE < AGE_SUGGESTION - 1) && departager(tOccasion, tGarderOcc) === "a",
     tOccasion, tGarderOcc, suggestionSegment,
     // Une seule suggestion sous « garder » : occasion de 6 ans un cran plus légère si c'est nettement mieux, sinon de même catégorie,
-    // sinon une catégorie plus légère (neuve ou de même état)
+    // sinon une catégorie plus légère (neuve ou de même état). hz : durée comparée, plus courte si l'occasion atteint avant sa fin de vie (H1)
     suggestion: (() => {
       const occPossible = etatVE === "neuf" || ageVE < AGE_SUGGESTION - 1;
       const legerGagne = occPossible && leger.id !== seg.id && departager(tOccLeger, tGarderOcc) === "a";
       const memeGagne = occPossible && departager(tOccasion, tGarderOcc) === "a";
       // Garde-fou : on ne propose de « descendre » d'une catégorie que si c'est nettement mieux (seuil de 10 %, SEUIL_SERRE)
-      if (legerGagne && (!memeGagne || departager(tOccLeger, tOccasion) === "a")) return { type: "occasion", segId: leger.id, plusLeger: true, t: tOccLeger, tg: tGarderOcc };
-      if (memeGagne) return { type: "occasion", segId: seg.id, plusLeger: false, t: tOccasion, tg: tGarderOcc };
+      if (legerGagne && (!memeGagne || departager(tOccLeger, tOccasion) === "a")) return { type: "occasion", segId: leger.id, plusLeger: true, t: tOccLeger, tg: tGarderOcc, hz: hzOcc };
+      if (memeGagne) return { type: "occasion", segId: seg.id, plusLeger: false, t: tOccasion, tg: tGarderOcc, hz: hzOcc };
       return suggestionSegment && { type: "segment", ...suggestionSegment, plusLeger: true };
     })(),
   };

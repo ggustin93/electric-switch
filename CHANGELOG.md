@@ -4,6 +4,11 @@ Notable changes to « Dois-je passer à l'électrique ? ». Format inspired by [
 
 ## [Unreleased]
 
+## [7.8.1] — 2026-10-14
+
+### Fixed
+- **Suggestion under « Gardez votre voiture »: same period as the verdict, or said.** When the suggested 6-year-old used EV would reach its end of life (18 years or 200,000 km, H1) before the compared period ends, its « … contre X t » was computed over fewer years than the « Garder » column (151 profiles in a grid, e.g. Belgium, large SUV, 8,000 km/yr over 15 years: 15.5 t in the sentence, 19.4 t in the column). The sentence now adds « Comparaison sur 12 ans : cette électrique atteindrait ensuite sa fin de vie. » in 5 languages; `decider().suggestion.hz` carries that period, with a regression test.
+
 ## [7.8.0] — 2026-10-14
 
 ### Changed

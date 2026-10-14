@@ -98,6 +98,7 @@ export default {
   voirHypo: "Calculation assumptions: A3",
   suggestionOcc: ({ age, t, tg }) => <>However, a <strong>{age}-year-old used electric car</strong> would already do better ({t} versus {tg}).</>,
   suggestionOccSeg: ({ cat, age, t, tg }) => <>However, a <strong>{age}-year-old used electric {cat}</strong> would already do better ({t} versus {tg}), if it is enough for your trips.</>,
+  suggestionDuree: (duree) => `Compared over ${duree}: this EV would then reach the end of its life.`,
   suggestionSeg: ({ cat, etat, t, tg }) => <>However, a {etat} electric <strong>{cat}</strong> would already do better ({t} versus {tg}), if it is enough for your trips.</>,
   tronque: (duree) => `Comparison limited to ${duree}: beyond that, the electric car would reach the end of its life (200,000 km or 18 years).`,
   etatNeuve: "new",

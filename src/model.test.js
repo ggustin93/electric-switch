@@ -218,3 +218,12 @@ test("voiture actuelle : usage seul (fabrication déjà payée), ligne arrêtée
   const dec = decider({ carb: "essence", conso: 6.5, annees: 5, seg, etatVE: "neuf", ageVE: 3, pays, kmAn: 12000, decarb: true, efBatt: 73 });
   assert.ok(Math.abs((v.usage * v.kmFin) / 1e6 - dec.tGarder) < 1e-9);
 });
+
+test("suggestion d'occasion : sa durée de comparaison est donnée quand elle est plus courte que celle du verdict", () => {
+  const v = decider({ carb: "essence", conso: 6, annees: 15, seg: byId(SEGMENTS, "grandsuv"), etatVE: "neuf", ageVE: 0,
+    pays: byId(PAYS, "BE"), kmAn: 8000, decarb: true, efBatt: 73 });
+  assert.equal(v.verdict, "garder");
+  assert.equal(v.suggestion.type, "occasion");
+  assert.ok(v.suggestion.hz < v.horizon, "l'occasion de 6 ans atteint sa fin de vie (18 ans) avant la fin de la période");
+  assert.equal(v.suggestion.hz, 12);
+});
