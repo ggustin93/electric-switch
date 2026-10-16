@@ -62,6 +62,7 @@ The site is built to have the lowest footprint we could reach for the service it
 - **Energy prices are fetched at build time**, never in the visitor's browser; a weekly workflow refreshes them.
 - **Audience measurement without cookies or identifiers** (Umami Cloud, EU region): one small request per page, events on actions, Do Not Track, GPC and an opt-out link respected.
 - **The build fails** if any of the 30 pages drops below EcoIndex A ([`src/ecoindex.js`](src/ecoindex.js), official CNUMR method).
+- **How we got there**, step by step, in the decision records: Preact instead of React ([0003](docs/adr/0003-stack-sobre-preact.md)), one self-contained page with a subset font ([0004](docs/adr/0004-page-unique.md)), one page per language ([0006](docs/adr/0006-une-page-par-langue.md)), build-time pre-rendering ([0008](docs/adr/0008-pre-rendu.md)), energy prices fetched at build time ([0011](docs/adr/0011-prix-energie-au-build.md)).
 
 ### EcoIndex (computed on the built pages, 2026-10-16)
 
@@ -120,7 +121,7 @@ src/prix.json         energy prices, refreshed weekly by scripts/prix.mjs
 build.mjs             builds the 30 pages, sitemap, robots, llms.txt, .htaccess
 scripts/              prices, previews, scores, IndexNow, post-deploy check
 docs/research/        source verification of every hypothesis
-docs/adr/             decision records on the model (allocation, used cars, odometer)
+docs/adr/             decision records: model (allocation, used cars, odometer) and eco-design (stack, single page, pre-rendering, prices)
 GLOSSARY.md           terms of the model, in one table
 CHANGELOG.md          release notes
 ```

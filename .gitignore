@@ -22,6 +22,11 @@ docs/adr/*
 !docs/adr/0012-occasion-fourchette.md
 !docs/adr/0013-fabrication-avancee.md
 !docs/adr/0014-compteur-vetuste.md
+!docs/adr/0003-stack-sobre-preact.md
+!docs/adr/0004-page-unique.md
+!docs/adr/0006-une-page-par-langue.md
+!docs/adr/0008-pre-rendu.md
+!docs/adr/0011-prix-energie-au-build.md
 docs/agents/
 CLAUDE.md
 AGENTS.md
