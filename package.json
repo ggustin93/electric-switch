@@ -1,7 +1,15 @@
 {
   "name": "electric-switch",
   "private": true,
-  "version": "7.8.1",
+  "version": "7.9.0",
+  "description": "Should I switch to electric? A life-cycle (manufacturing + use) CO₂e simulator in five languages, eco-designed (EcoIndex A).",
+  "license": "MIT",
+  "author": "Guillaume Gustin (Pwablo) <hello@pwablo.be>",
+  "homepage": "https://electricornot.eu",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/ggustin93/electric-switch.git"
+  },
   "type": "module",
   "scripts": {
     "dev": "vite",

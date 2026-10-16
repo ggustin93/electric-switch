@@ -22,7 +22,7 @@ export function entetesSecurite(pages) {
     `style-src ${[...styles].join(" ")}`,
     "font-src data:", // police intégrée (ADR 0004)
     "img-src data:", // icônes en masques CSS
-    "connect-src https://cloud.umami.is", // événements Umami (src/mesure.js)
+    "connect-src 'self' https://cloud.umami.is", // événements Umami (src/mesure.js) ; 'self' : lecture de robots.txt par les auditeurs (Lighthouse)
     "base-uri 'none'",
     "form-action 'none'",
     "frame-ancestors 'none'",

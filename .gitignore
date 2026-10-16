@@ -10,3 +10,8 @@ dist
 
 # outils locaux (Serena MCP)
 .serena/
+
+# notes privées et outils locaux (jamais versionnés)
+.scratch/
+.claude/skills/
+.impeccable/

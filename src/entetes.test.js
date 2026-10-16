@@ -23,7 +23,7 @@ test("CSP : hache les <script> et <style> en ligne de toutes les pages, sans 'un
 
 test("CSP : rien par défaut, police et masques en data:, Umami seul tiers, pas d'encadrement", () => {
   const c = csp(entetesSecurite([page]));
-  for (const d of ["default-src 'none'", "font-src data:", "img-src data:", "connect-src https://cloud.umami.is",
+  for (const d of ["default-src 'none'", "font-src data:", "img-src data:", "connect-src 'self' https://cloud.umami.is",
     "base-uri 'none'", "form-action 'none'", "frame-ancestors 'none'"]) assert.ok(c.includes(d), d);
 });
 

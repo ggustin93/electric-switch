@@ -177,6 +177,7 @@ const Coche = () => (
    ============================================================ */
 
 const ONGLETS = ["decision", "explorer", "modes"];
+const lienCode = (t) => <a href="https://github.com/ggustin93/electric-switch" target="_blank" rel="noreferrer">{t}</a>;
 const lienCarbone4 = (t) => <a href="https://www.carbone4.com/analyse-faq-voiture-electrique" target="_blank" rel="noreferrer">{t}</a>;
 
 // page : "outil" ou une page de lecture (routes.js), donnée par le build au pré-rendu et par l'adresse au navigateur (main.jsx).
@@ -274,8 +275,8 @@ export default function App({ page = "outil" }) {
             <h1>{page === "outil" ? s.h1 : <a className="titre-lien" href={chemin(lang)}>{s.h1}</a>}</h1>
             {/* Langue repliée en menu (réglage qu'on touche une fois) ; Méthode est dans le pied, avec les autres pages.
                 Liens réels, lisibles sans JavaScript et par les moteurs. */}
-            <details className="langue" ref={langueRef}>
-              <summary aria-label={`${s.langue} (${lang.toUpperCase()})`}>{lang.toUpperCase()}</summary>
+            <details className="langue" ref={langueRef} aria-label={s.langue}>
+              <summary>{lang.toUpperCase()}</summary>
               <nav aria-label={s.langue}>
                 {/* Même page dans chaque langue ; l'ancre (#h5…) suit au clic */}
                 {LANGUES.map(([l, nom]) => (
@@ -287,8 +288,8 @@ export default function App({ page = "outil" }) {
           </div>
         </header>
 
-        {/* Fragment, pas de <div> : l'élément économisé paie le lien « Questions » du pied (EcoIndex A, ticket 05) */}
-        {page === "outil" && <>
+        {/* <main> : repère de navigation (Lighthouse « landmark-one-main ») ; un seul élément pour les onglets et leurs panneaux */}
+        {page === "outil" && <main>
         <div className="onglets" role="tablist" aria-label="Sections" onKeyDown={clavierOnglets}>
           {ONGLETS.map((o, i) => (
             <button key={o} ref={(el) => (tabsRef.current[i] = el)} role="tab" id={`tab-${o}`}
@@ -309,7 +310,7 @@ export default function App({ page = "outil" }) {
         <div role="tabpanel" id="panel-modes" aria-labelledby="tab-modes" hidden={onglet !== "modes"}>
           {visites.modes && <Modes />}
         </div>
-        </>}
+        </main>}
 
         {page === "methode" && <PageMethode />}
         {page === "ecoconception" && <PageEco />}
@@ -1099,7 +1100,7 @@ function RetourOutil() {
 function PageMethode() {
   const { s, lang } = useT();
   return (
-    <article className="carte lecture">
+    <main className="carte lecture">
       <RetourOutil />
       <h2>{s.methodeTitre}</h2>
       {/* Date de mise à jour dans le chapeau, pas dans un paragraphe à part : la page reste en EcoIndex A */}
@@ -1120,7 +1121,7 @@ function PageMethode() {
           <li key={i} id={`src-${i + 1}`}>{src} {SOURCES_URL[i]}{s.sourcesNotes[i + 1] && <> {s.sourcesNotes[i + 1]}</>}</li>
         ))}
       </ol>
-    </article>
+    </main>
   );
 }
 
@@ -1139,7 +1140,7 @@ function PageMentions() {
   useEffect(() => setRefus(refuse()), []);
   const basculer = () => { choisirRefus(!refus); setRefus(!refus); };
   return (
-    <article className="carte lecture">
+    <main className="carte lecture">
       <RetourOutil />
       <h2>{s.pages.mentions}</h2>
       {s.mentions.map(([titre, lignes]) => (
@@ -1150,7 +1151,7 @@ function PageMentions() {
       ))}
       <p>{refus ? s.refusMesure.fait : s.refusMesure.intro}{" "}
         <button type="button" className="lien-inline" onClick={basculer}>{refus ? s.refusMesure.annuler : s.refusMesure.refuser}</button></p>
-    </article>
+    </main>
   );
 }
 
@@ -1160,12 +1161,12 @@ function PageApropos() {
   const { s, lang } = useT();
   const lien = (page, t) => <a href={chemin(lang, page)}>{t}</a>;
   return (
-    <article className="carte lecture">
+    <main className="carte lecture">
       <RetourOutil />
       <h2>{s.pages.apropos}</h2>
       <p className="lede-carte">{s.aproposIntro}</p>
-      {s.apropos({ lien, carbone4: lienCarbone4 }).flatMap(([titre, texte, id]) => [<h3 key={titre} id={id}>{titre}</h3>, <p key={`${titre}-p`}>{lierHyp(texte, s.prefixeHyp, lang)}</p>])}
-    </article>
+      {s.apropos({ lien, carbone4: lienCarbone4, code: lienCode, version: version.split(".").slice(0, 2).join(".") }).flatMap(([titre, texte, id]) => [<h3 key={titre} id={id}>{titre}</h3>, <p key={`${titre}-p`}>{lierHyp(texte, s.prefixeHyp, lang)}</p>])}
+    </main>
   );
 }
 
@@ -1181,19 +1182,19 @@ function PageQuestions() {
   const { s, lang } = useT();
   const lier = (r) => lierSources(r, s.source, lang).flatMap((m) => typeof m === "string" ? lierHyp(m, s.prefixeHyp, lang) : [m]);
   return (
-    <article className="carte lecture">
+    <main className="carte lecture">
       <RetourOutil />
       <h2>{s.pages.questions}</h2>
       <p className="lede-carte">{s.questionsIntro}</p>
       {s.questions.flatMap(([q, r]) => [<h3 key={q}>{q}</h3>, <p key={r}>{lier(r)}</p>])}
-    </article>
+    </main>
   );
 }
 
 function PageEco() {
   const { s } = useT();
   return (
-    <article className="carte lecture eco">
+    <main className="carte lecture eco">
       <RetourOutil />
       <h2>{s.ecoTitre}</h2>
       <p className="lede-carte">{s.ecoIntro}</p>
@@ -1207,7 +1208,7 @@ function PageEco() {
       <p>{s.ecoLimites}</p>
       <h3>{s.ecoRefs}</h3>
       <ul>{REFS_ECO.map(([t, u]) => <li key={u}><a href={u} target="_blank" rel="noreferrer">{t}</a></li>)}</ul>
-    </article>
+    </main>
   );
 }
 
