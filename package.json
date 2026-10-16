@@ -1,7 +1,7 @@
 {
   "name": "electric-switch",
   "private": true,
-  "version": "7.9.0",
+  "version": "7.10.0",
   "description": "Should I switch to electric? A life-cycle (manufacturing + use) CO₂e simulator in five languages, eco-designed (EcoIndex A).",
   "license": "MIT",
   "author": "Guillaume Gustin (Pwablo) <hello@pwablo.be>",

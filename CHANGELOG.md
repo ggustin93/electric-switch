@@ -4,6 +4,14 @@ Notable changes to « Dois-je passer à l'électrique ? ». Format inspired by [
 
 ## [Unreleased]
 
+## [7.10.0] — 2026-10-16
+
+### Added
+- **Your last simulation is remembered on your device** (`src/sauvegarde.js`, localStorage only, nothing sent): when you reach the verdict, the answers of « Ma décision » are saved; on the next visit the fields are prefilled and a note offers « Revoir le verdict » or « Les effacer ». Mentions légales updated in 5 languages.
+
+### Fixed
+- **Used EV verdict cites H2 and H3**, not H3 alone: the manufacturing share of a used car comes from H2 (economic allocation), H3 covers the purchase convention.
+
 ## [7.9.0] — 2026-10-16
 
 ### Added

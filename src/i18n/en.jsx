@@ -95,7 +95,8 @@ export default {
     ? <>At {km}, the manufacturing of a {etat} electric car would only be paid back after <strong>{amorti}</strong>, beyond the period compared ({duree}). Keeping your car emits <strong>{t} less</strong>.</>
     : <>At {km} and on this grid, the manufacturing of a {etat} electric car would never be paid back. Keeping your car emits <strong>{t} less</strong>.</>,
   verdictSerre: ({ a, b, duree }) => <>Less than 10% apart: {a} versus {b} over {duree}. Budget, local air pollution or low-emission zones can decide.</>,
-  voirHypo: "Calculation assumptions: A3",
+  voirHypo: (occasion) => `Calculation assumptions: ${occasion ? "A2, A3" : "A3"}`,
+  reprise: { trouvee: (date) => `Your answers from ${date} were found on this device.`, revoir: "See the verdict again", effacer: "Forget them" },
   suggestionOcc: ({ age, t, tg }) => <>However, a <strong>{age}-year-old used electric car</strong> would already do better ({t} versus {tg}).</>,
   suggestionOccSeg: ({ cat, age, t, tg }) => <>However, a <strong>{age}-year-old used electric {cat}</strong> would already do better ({t} versus {tg}), if it is enough for your trips.</>,
   suggestionDuree: (duree) => `Compared over ${duree}: this EV would then reach the end of its life.`,
@@ -222,7 +223,7 @@ export default {
     ]],
     ["Hosting", ["Infomaniak Network SA, Rue Eugène-Marziano 25, 1227 Les Acacias (GE), Switzerland."]],
     ["Personal data", [
-      "The simulator neither asks for nor stores any personal data: calculations run in your browser. Your language choice is remembered on your device only.",
+      "The simulator neither asks for nor stores any personal data: calculations run in your browser. Your language choice and your latest answers to the simulator are remembered on your device only, so you can find your verdict again.",
       "Audience measurement: Umami Cloud, data stored in its European Union region (Frankfurt); the publisher, Umami Software, Inc., and some of its technical providers are based in the United States, hence a data processing agreement and the European Commission standard contractual clauses. Page views and anonymous events (steps, verdict, tabs, help, buttons, outbound links, language); no cookie or identifier is stored on your device. Legal basis: our legitimate interest in knowing how the site is used; data kept for 6 months. “Do Not Track”, GPC and the link below are respected. Questions: contact@electricornot.eu.",
     ]],
     ["Liability", ["Educational tool: results are orders of magnitude (uncertainty of about ±20%), based on the assumptions and sources on the Method page. They are neither financial advice nor a purchase recommendation."]],

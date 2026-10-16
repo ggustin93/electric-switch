@@ -95,7 +95,8 @@ export default {
     ? <>Bij {km} zou de productie van een {etat} elektrische auto pas gecompenseerd zijn na <strong>{amorti}</strong>, voorbij de vergeleken periode ({duree}). Uw auto houden stoot <strong>{t} minder</strong> uit.</>
     : <>Bij {km} en met dit net zou de productie van een {etat} elektrische auto nooit gecompenseerd worden. Uw auto houden stoot <strong>{t} minder</strong> uit.</>,
   verdictSerre: ({ a, b, duree }) => <>Verschil kleiner dan 10%: {a} tegenover {b} over {duree}. Budget, lokale luchtvervuiling of lage-emissiezones kunnen de doorslag geven.</>,
-  voirHypo: "Aannames van de berekening: A3",
+  voirHypo: (occasion) => `Aannames van de berekening: ${occasion ? "A2, A3" : "A3"}`,
+  reprise: { trouvee: (date) => `Uw antwoorden van ${date} zijn op dit toestel teruggevonden.`, revoir: "Oordeel opnieuw bekijken", effacer: "Wissen" },
   suggestionOcc: ({ age, t, tg }) => <>Een <strong>tweedehandse elektrische auto van {age}&nbsp;jaar oud</strong> zou het daarentegen al beter doen ({t} tegenover {tg}).</>,
   suggestionOccSeg: ({ cat, age, t, tg }) => <>Een <strong>tweedehandse elektrische {cat} van {age}&nbsp;jaar oud</strong> zou het daarentegen al beter doen ({t} tegenover {tg}), als hij volstaat voor uw ritten.</>,
   suggestionDuree: (duree) => `Vergeleken over ${duree}: deze elektrische auto bereikt daarna het einde van zijn levensduur.`,
@@ -222,7 +223,7 @@ export default {
     ]],
     ["Hosting", ["Infomaniak Network SA, Rue Eugène-Marziano 25, 1227 Les Acacias (GE), Zwitserland."]],
     ["Persoonsgegevens", [
-      "De simulator vraagt en bewaart geen persoonsgegevens: de berekeningen gebeuren in uw browser. Uw taalkeuze wordt alleen op uw toestel onthouden.",
+      "De simulator vraagt en bewaart geen persoonsgegevens: de berekeningen gebeuren in uw browser. Uw taalkeuze en uw laatste antwoorden in de simulator worden alleen op uw toestel onthouden, zodat u uw oordeel terugvindt.",
       "Bezoekersmeting: Umami Cloud, gegevens opgeslagen in de regio Europese Unie (Frankfurt); de uitgever, Umami Software, Inc., en sommige van zijn technische dienstverleners zijn gevestigd in de Verenigde Staten, vandaar een verwerkersovereenkomst en de standaardcontractbepalingen van de Europese Commissie. Paginaweergaven en anonieme gebeurtenissen (stappen, oordeel, tabbladen, hulp, knoppen, uitgaande links, taal); er wordt geen cookie of identificator op uw toestel opgeslagen. Rechtsgrond: ons gerechtvaardigd belang om het gebruik van de site te kennen; gegevens 6 maanden bewaard. ‘Do Not Track’, GPC en de link hieronder worden gerespecteerd. Voor vragen: contact@electricornot.eu.",
     ]],
     ["Aansprakelijkheid", ["Educatief hulpmiddel: de resultaten zijn grootteordes (onzekerheid van ongeveer ±20%), gebaseerd op de aannames en bronnen op de pagina Methode. Ze vormen geen financieel advies en geen aankoopaanbeveling."]],

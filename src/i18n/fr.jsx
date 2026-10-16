@@ -96,7 +96,8 @@ export default {
     ? <>À {km}, la fabrication d'une électrique {etat} ne serait compensée qu'après <strong>{amorti}</strong>, au-delà de la période comparée ({duree}). Garder votre voiture émet <strong>{t} de moins</strong>.</>
     : <>À {km} et avec ce réseau, la fabrication d'une électrique {etat} ne serait jamais compensée. Garder votre voiture émet <strong>{t} de moins</strong>.</>,
   verdictSerre: ({ a, b, duree }) => <>Écart inférieur à 10 % : {a} contre {b} sur {duree}. Budget, pollution locale ou zones à faibles émissions peuvent trancher.</>,
-  voirHypo: "Hypothèses du calcul : H3",
+  voirHypo: (occasion) => `Hypothèses du calcul : ${occasion ? "H2, H3" : "H3"}`,
+  reprise: { trouvee: (date) => `Vos réponses du ${date} ont été retrouvées sur cet appareil.`, revoir: "Revoir le verdict", effacer: "Les effacer" },
   suggestionOcc: ({ age, t, tg }) => <>En revanche, une <strong>électrique d'occasion de {age}&nbsp;ans</strong> ferait déjà mieux ({t} contre {tg}).</>,
   suggestionOccSeg: ({ cat, age, t, tg }) => <>En revanche, une <strong>électrique {cat} d'occasion de {age}&nbsp;ans</strong> ferait déjà mieux ({t} contre {tg}), si elle suffit à vos trajets.</>,
   suggestionDuree: (duree) => `Comparaison sur ${duree} : cette électrique atteindrait ensuite sa fin de vie.`,
@@ -224,7 +225,7 @@ export default {
     ]],
     ["Hébergement", ["Infomaniak Network SA, Rue Eugène-Marziano 25, 1227 Les Acacias (GE), Suisse."]],
     ["Données personnelles", [
-      "Le simulateur ne demande ni ne conserve aucune donnée personnelle : les calculs se font dans votre navigateur. Votre choix de langue est mémorisé sur votre appareil uniquement.",
+      "Le simulateur ne demande ni ne conserve aucune donnée personnelle : les calculs se font dans votre navigateur. Votre choix de langue et vos dernières réponses au simulateur sont mémorisés sur votre appareil uniquement, pour retrouver votre verdict.",
       "Mesure d'audience : Umami Cloud, données stockées dans sa région Union européenne (Francfort) ; l'éditeur, Umami Software, Inc., et certains de ses prestataires techniques sont établis aux États-Unis, d'où un contrat de sous-traitance et les clauses contractuelles types de la Commission européenne. Pages vues et événements anonymes (étapes, verdict, onglets, aides, boutons, liens sortants, langue) ; aucun cookie ni identifiant n'est enregistré sur votre appareil. Base légale : notre intérêt légitime à connaître l'usage du site ; données conservées 6 mois. « Do Not Track », GPC et le lien ci-dessous sont respectés. Pour toute question : contact@electricornot.eu.",
     ]],
     ["Responsabilité", ["Outil pédagogique : les résultats sont des ordres de grandeur (incertitude d'environ ±20 %), fondés sur les hypothèses et sources de la page Méthode. Ils ne constituent ni un conseil financier ni une recommandation d'achat."]],

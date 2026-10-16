@@ -11,6 +11,7 @@ import { HYP_REFS, SOURCES, SOURCES_URL, METHODE_MAJ, LANGUES } from "./i18n/com
 import { Icone } from "./icones.jsx";
 import { version } from "../package.json";
 import { mesurer, vue as pageVue, suivreClic, refuse, choisirRefus } from "./mesure.js";
+import { lireSimulation, ecrireSimulation, effacerSimulation } from "./sauvegarde.js";
 import { chemin, ancienneAncre } from "./routes.js";
 
 /* ============================================================
@@ -358,6 +359,15 @@ function Decision({ shared, allerExplorer }) {
   const titreRef = useRef(null);
   const etapePrec = useRef(etape);
   const focusPays = useRef(false); // retour à l'étape 1 depuis le budget : le focus va au champ pays, pas au titre
+  // Dernière simulation mémorisée sur l'appareil : réponses restaurées après hydratation, verdict à un clic (date affichée)
+  const [reprise, setReprise] = useState(null);
+  useEffect(() => {
+    const sv = lireSimulation();
+    if (!sv || !PAYS.some((p) => p.id === sv.paysId) || !SEGMENTS.some((x) => x.id === sv.segId)) return;
+    setPaysId(sv.paysId); setKmAn(sv.kmAn); setCarb(sv.carb); setConso(sv.conso); setAnnees(sv.annees); setAgeAct(sv.ageAct); setKmAct(sv.kmAct);
+    setSegId(sv.segId); setEtatVE(sv.etatVE); setAgeVE(sv.ageVE); setOdo(sv.odo);
+    setVoitureSaisie(true); setMaxEtape(3); setReprise(sv.date);
+  }, []);
 
   const seg = byId(SEGMENTS, segId);
   const params = { carb, conso, annees, seg, etatVE, ageVE, odoVE: odo, pays, decarb, efBatt: batt.ef };
@@ -376,6 +386,7 @@ function Decision({ shared, allerExplorer }) {
     else if (etapePrec.current !== etape) titreRef.current?.focus();
     if (etape > etapePrec.current && etape < 3) mesurer("etape", { n: etape, lang: f.lang });
     if (etape === 3 && etapePrec.current !== 3) {
+      ecrireSimulation({ paysId, kmAn, carb, conso, annees, ageAct, kmAct: kmActSaisi, segId, etatVE, ageVE, odo: odoEstime ? null : odo, date: new Date().toISOString() });
       // Valeurs grossières uniquement (kilométrage arrondi à 5 000 km) : rien d'identifiant
       mesurer("verdict", { verdict, pays: pays.id, segment: segId, etat: etatVE, km: Math.round(kmAn / 5000) * 5000, lang: f.lang });
     }
@@ -388,6 +399,13 @@ function Decision({ shared, allerExplorer }) {
     <>
       {/* Intro du parcours « Ma décision » : seulement avant de commencer, ensuite elle repousserait les réponses */}
       {etape === 0 && <p className="lede">{accroche(s, pays)}</p>}
+      {etape === 0 && reprise && (
+        <p className="note">
+          {s.reprise.trouvee(new Intl.DateTimeFormat(s.locale, { dateStyle: "long" }).format(new Date(reprise)))}{" "}
+          <button type="button" className="lien-inline" data-ev="cta" data-id="revoir" onClick={() => aller(3)}>{s.reprise.revoir}</button> ·{" "}
+          <button type="button" className="lien-inline" onClick={() => { effacerSimulation(); setReprise(null); }}>{s.reprise.effacer}</button>
+        </p>
+      )}
       <ol className="etapes" aria-label={s.etapeSur(etape + 1, 4)}>
         {s.etapes.map((e, i) => (
           <li key={i} aria-current={i === etape ? "step" : undefined}>
@@ -493,7 +511,7 @@ function Decision({ shared, allerExplorer }) {
             {v.tronque && <p className="verdict-note">{s.tronque(f.ans(v.horizon))}</p>}
 
             {/* Renvoi léger vers l'hypothèse (votre voiture actuelle cesse de rouler, H3), sans texte de plus sur la carte */}
-            {verdict === "remplacer" && <p className="verdict-note">{lierHyp(s.voirHypo, s.prefixeHyp, f.lang)}</p>}
+            {verdict === "remplacer" && <p className="verdict-note">{lierHyp(s.voirHypo(etatVE !== "neuf"), s.prefixeHyp, f.lang)}</p>}
             <div className="face-a-face">
               <Colonne gagne={verdict === "garder"} titre={s.colGarder(carb)} t={v.tGarder}
                 sous={s.colGarderSous(f.gkm(v.usageVieille))} />

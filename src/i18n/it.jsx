@@ -99,7 +99,8 @@ export default {
     ? <>A {km}, la produzione di un'auto elettrica {etat} sarebbe compensata solo dopo <strong>{amorti}</strong>, oltre il periodo confrontato ({duree}). Tenere la tua auto emette <strong>{t} in meno</strong>.</>
     : <>A {km} e con questa rete, la produzione di un'auto elettrica {etat} non sarebbe mai compensata. Tenere la tua auto emette <strong>{t} in meno</strong>.</>,
   verdictSerre: ({ a, b, duree }) => <>Differenza inferiore al 10%: {a} contro {b} in {duree}. Budget, inquinamento locale o zone a basse emissioni possono fare la differenza.</>,
-  voirHypo: "Ipotesi del calcolo: I3",
+  voirHypo: (occasion) => `Ipotesi del calcolo: ${occasion ? "I2, I3" : "I3"}`,
+  reprise: { trouvee: (date) => `Le tue risposte del ${date} sono state ritrovate su questo dispositivo.`, revoir: "Rivedi il verdetto", effacer: "Cancellale" },
   suggestionOcc: ({ age, t, tg }) => <>Invece, un'<strong>auto elettrica usata di {age}&nbsp;anni</strong> farebbe già meglio ({t} contro {tg}).</>,
   suggestionOccSeg: ({ cat, age, t, tg }) => <>Invece, un'<strong>elettrica {cat} usata di {age}&nbsp;anni</strong> farebbe già meglio ({t} contro {tg}), se basta per i tuoi spostamenti.</>,
   suggestionDuree: (duree) => `Confronto su ${duree}: questa elettrica raggiungerebbe poi la fine della sua vita.`,
@@ -226,7 +227,7 @@ export default {
     ]],
     ["Hosting", ["Infomaniak Network SA, Rue Eugène-Marziano 25, 1227 Les Acacias (GE), Svizzera."]],
     ["Dati personali", [
-      "Il simulatore non chiede né conserva alcun dato personale: i calcoli avvengono nel tuo browser. La tua scelta della lingua è memorizzata solo sul tuo dispositivo.",
+      "Il simulatore non chiede né conserva alcun dato personale: i calcoli avvengono nel tuo browser. La tua scelta della lingua e le tue ultime risposte al simulatore sono memorizzate solo sul tuo dispositivo, per ritrovare il tuo verdetto.",
       "Misurazione del pubblico: Umami Cloud, dati conservati nella sua regione Unione europea (Francoforte); l'editore, Umami Software, Inc., e alcuni suoi fornitori tecnici hanno sede negli Stati Uniti, da cui un accordo sul trattamento dei dati e le clausole contrattuali tipo della Commissione europea. Pagine viste ed eventi anonimi (passaggi, verdetto, schede, aiuti, pulsanti, link esterni, lingua); nessun cookie né identificativo viene salvato sul tuo dispositivo. Base giuridica: il nostro legittimo interesse a conoscere l'uso del sito; dati conservati per 6 mesi. “Do Not Track”, GPC e il link qui sotto sono rispettati. Per qualsiasi domanda: contact@electricornot.eu.",
     ]],
     ["Responsabilità", ["Strumento educativo: i risultati sono ordini di grandezza (incertezza di circa ±20%), basati sulle ipotesi e sulle fonti della pagina Metodo. Non costituiscono né una consulenza finanziaria né una raccomandazione d'acquisto."]],
