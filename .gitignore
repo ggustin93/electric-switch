@@ -15,3 +15,11 @@ dist
 .scratch/
 .claude/skills/
 .impeccable/
+# notes de travail (popote), gardées en local seulement
+docs/adr/
+docs/agents/
+CLAUDE.md
+AGENTS.md
+PRODUCT.md
+DESIGN.md
+GLOSSARY.md

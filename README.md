@@ -44,11 +44,10 @@ Two more tabs compare every powertrain (petrol, diesel, hybrid, plug-in hybrid, 
 ## How it works
 
 - **Scope:** manufacturing (body plus battery, from vehicle mass and battery capacity) and use (fuel or grid electricity) in CO₂e, over the kilometres you will drive. Recycling credits are deliberately left out and the vehicle life is set below the ICCT's: both choices lean against the electric car, so its advantage is not overstated.
-- **Your current car** carries no manufacturing: it already exists. A **new electric car** carries 100 % of its manufacturing (marginal convention, H3). A **used electric car** carries the share of its value you consume while you own it (economic allocation, H2, ADR 0012), with the remaining share shown as a high estimate.
+- **Your current car** carries no manufacturing: it already exists. A **new electric car** carries 100 % of its manufacturing (marginal convention, H3). A **used electric car** carries the share of its value you consume while you own it (economic allocation, H2), with the remaining share shown as a high estimate.
 - **Grid:** 14 national grids (Belgium, France, Germany, the Netherlands, Italy, Spain, Poland, Norway, Sweden, the UK, the EU average, the US, China, India), each decarbonising over the comparison period.
 - **Vehicles:** 5 size categories, 5 powertrains, battery chemistry (NMC, LFP, EU sales mix), odometer and age for used cars.
 - **Honesty rules:** results are orders of magnitude (about ±20 %); gaps under 10 % are reported as ties; the assumptions page lists 13 numbered hypotheses (H1–H13) and 27 sources (Carbone 4, ICCT, Ember, Electricity Maps, ADEME, IPCC AR5, ISO 14044, RTE, Eurostat…), each with its verification status in [`docs/research/`](docs/research/).
-- **Decisions** that shaped the model and the site are recorded as ADRs in [`docs/adr/`](docs/adr/): allocation conventions, used-car estimates, early replacement, odometer and age, energy prices at build time, hosting, audience measurement.
 
 The full method, in five languages: [electricornot.eu/fr/methode/](https://electricornot.eu/fr/methode/).
 
@@ -58,8 +57,8 @@ The site is built to have the lowest footprint we could reach for the service it
 
 - **One request per page.** Each language and page is a single self-contained HTML file (CSS, JavaScript, a 13.7 kB subset of the title font and the icons inlined), pre-rendered at build time. No external font, no image, no third-party script, no cookie.
 - **About 62 kB compressed** for the simulator, with a strict Content-Security-Policy (`default-src 'none'`, scripts and styles allowed by hash).
-- **Energy prices are fetched at build time**, never in the visitor's browser (ADR 0011); a weekly workflow refreshes them.
-- **Audience measurement without cookies or identifiers** (Umami Cloud, EU region): one small request per page, events on actions, Do Not Track, GPC and an opt-out link respected (ADR 0015).
+- **Energy prices are fetched at build time**, never in the visitor's browser; a weekly workflow refreshes them.
+- **Audience measurement without cookies or identifiers** (Umami Cloud, EU region): one small request per page, events on actions, Do Not Track, GPC and an opt-out link respected.
 - **The build fails** if any of the 30 pages drops below EcoIndex A ([`src/ecoindex.js`](src/ecoindex.js), official CNUMR method).
 
 ### EcoIndex (computed on the built pages, 2026-10-16)
@@ -88,11 +87,11 @@ Accessibility targets WCAG 2.2 AA: keyboard-operable tabs and steps, visible foc
 
 ## Tech
 
-- **[Preact](https://preactjs.com) 10 + [Vite](https://vite.dev) 8**, no router, no state library, no UI kit (ADR 0003, 0004). The whole app is one component file plus a pure model.
+- **[Preact](https://preactjs.com) 10 + [Vite](https://vite.dev) 8**, no router, no state library, no UI kit. The whole app is one component file plus a pure model.
 - **Pure model** in [`src/model.js`](src/model.js): every figure the site shows comes from it, and [`src/reponses.test.js`](src/reponses.test.js) checks that the numbers published on the Questions page still match the model.
-- **Pre-rendered static pages** (`preact-render-to-string`): 5 languages × 6 pages, canonical and hreflang links, JSON-LD, sitemap, `llms.txt`, a `.htaccess` with security headers (ADR 0006, 0008, 0009).
+- **Pre-rendered static pages** (`preact-render-to-string`): 5 languages × 6 pages, canonical and hreflang links, JSON-LD, sitemap, `llms.txt`, a `.htaccess` with security headers.
 - **83 tests** with Node's built-in `node:test`, no test framework: model, scenarios, i18n keys, headers, SEO, prices, measurement.
-- **Hosting:** Infomaniak (Switzerland) static hosting (ADR 0010). **CI:** GitHub Actions runs the tests, builds, mirrors `dist/` over FTP, then verifies the live site byte for byte and pings IndexNow.
+- **Hosting:** Infomaniak (Switzerland) static hosting. **CI:** GitHub Actions runs the tests, builds, mirrors `dist/` over FTP, then verifies the live site byte for byte and pings IndexNow.
 
 ## Run locally
 
@@ -105,7 +104,7 @@ npm run build        # dist/: 5 languages × 6 pages; fails below EcoIndex A
 node scripts/scores.mjs   # EcoIndex table of the built pages
 ```
 
-Requires Node 22. The production URL is read from `SITE_URL` at build time (ADR 0008).
+Requires Node 22. The production URL is read from `SITE_URL` at build time.
 
 ## Project layout
 
@@ -118,9 +117,8 @@ src/mesure.js         cookieless audience measurement
 src/prix.json         energy prices, refreshed weekly by scripts/prix.mjs
 build.mjs             builds the 30 pages, sitemap, robots, llms.txt, .htaccess
 scripts/              prices, previews, scores, IndexNow, post-deploy check
-docs/adr/             architecture and model decisions (ADR 0001–0015)
 docs/research/        source verification of every hypothesis
-PRODUCT.md · DESIGN.md · GLOSSARY.md · CHANGELOG.md
+CHANGELOG.md          release notes
 ```
 
 ## Data sources and licences
