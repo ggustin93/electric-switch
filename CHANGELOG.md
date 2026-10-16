@@ -10,7 +10,7 @@ Notable changes to « Dois-je passer à l'électrique ? ». Format inspired by [
 - **Public repository** under the MIT licence (`LICENSE`, `NOTICE.md` for Tabler Icons, Bricolage Grotesque, ADEME and EU price data): « À propos » now links to github.com/ggustin93/electric-switch in 5 languages and reads the version from `package.json`. New README with screenshots (`docs/images/`), EcoIndex and Lighthouse tables; `scripts/scores.mjs` prints the EcoIndex of the built pages.
 
 ### Changed
-- **Lighthouse 100 / 100 / 100 / 100** (mobile and desktop): a `<main>` landmark on every page, the language menu's accessible name equals its visible text (`aria-label` moved to the `<details>` group), and `connect-src 'self'` in the CSP so auditors can read robots.txt (it was blocked, which failed the SEO audit).
+- **Lighthouse 100 / 100 / 100 / 100 on desktop, 99 / 100 / 100 / 100 on mobile** (accessibility and SEO were 99 and 92): a `<main>` landmark on every page, the language menu's accessible name equals its visible text (`aria-label` moved to the `<details>` group), and `connect-src 'self'` in the CSP so auditors can read robots.txt (it was blocked, which failed the SEO audit).
 - `.scratch/` (private notes), `.claude/skills/` and `.impeccable/` are no longer versioned.
 
 ## [7.8.1] — 2026-10-14

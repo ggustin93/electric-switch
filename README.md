@@ -3,7 +3,7 @@
 [![Licence MIT](https://img.shields.io/badge/licence-MIT-0b7a5e)](LICENSE)
 [![Deploy](https://github.com/ggustin93/electric-switch/actions/workflows/deploy.yml/badge.svg)](https://github.com/ggustin93/electric-switch/actions/workflows/deploy.yml)
 [![EcoIndex A](https://img.shields.io/badge/EcoIndex-A%20%2892--94%29-0b7a5e)](#eco-design-and-performance)
-[![Lighthouse 100](https://img.shields.io/badge/Lighthouse-100%20%C2%B7%20100%20%C2%B7%20100%20%C2%B7%20100-0b7a5e)](#eco-design-and-performance)
+[![Lighthouse 99–100](https://img.shields.io/badge/Lighthouse-99%E2%80%93100-0b7a5e)](#eco-design-and-performance)
 [![5 languages](https://img.shields.io/badge/languages-FR%20EN%20NL%20IT%20ES-555)](https://electricornot.eu)
 
 **A life-cycle CO₂e simulator that answers one personal question: should *you* keep your current car, or switch to an electric one, new or used?** Manufacturing and use are both counted, every assumption is numbered and sourced, and the whole site is eco-designed: one request per page, no third-party script, EcoIndex A.
@@ -79,10 +79,10 @@ Reproduce with `npm run build && node scripts/scores.mjs [lang]`. The official t
 
 | https://electricornot.eu/fr/ | Performance | Accessibility | Best practices | SEO |
 |---|:---:|:---:|:---:|:---:|
-| Mobile (simulated Moto G, slow 4G) | 100 | 100 | 100 | 100 |
+| Mobile (simulated Moto G, slow 4G) | 99 | 100 | 100 | 100 |
 | Desktop | 100 | 100 | 100 | 100 |
 
-Mobile metrics: first contentful paint 1.2 s, largest contentful paint 2.2 s, total blocking time 0 ms, cumulative layout shift 0. Desktop: FCP 0.4 s, LCP 0.6 s.
+Mobile metrics: first contentful paint 1.3 s, largest contentful paint 2.0 s, total blocking time 0 ms, cumulative layout shift 0. Desktop: FCP 0.4 s, LCP 0.7 s. Run with `lighthouse@13.5.0` in headless Chromium; mobile performance varies between 98 and 100 from one run to the next.
 
 Accessibility targets WCAG 2.2 AA: keyboard-operable tabs and steps, visible focus, landmarks, labels on every control, light and dark themes following the system preference.
 
