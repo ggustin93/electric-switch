@@ -169,7 +169,7 @@ Notable changes to « Dois-je passer à l'électrique ? ». Format inspired by [
 ## [7.4.0] — 2026-10-08
 
 ### Added
-- **Reading pages « Méthode » and « Écoconception »** (d9ea8c4):
+- **Reading pages « Méthode » and « Écoconception »** (8b864af):
   - linked from the header (« Méthode », next to FR/EN) and from the footer;
   - kept in the same file (`#methode`, `#methode/h5`, `#ecoconception`), so still 1 request;
   - answers are kept when you switch pages, and the browser Back button works;
@@ -221,7 +221,7 @@ Notable changes to « Dois-je passer à l'électrique ? ». Format inspired by [
 ## [7.3.0] — 2026-10-07
 
 ### Added
-- **« Et côté budget ? » block** under the verdict, as a second reading of it. How it evolved during the release (e3361a0 → 23034b6):
+- **« Et côté budget ? » block** under the verdict, as a second reading of it. How it evolved during the release (9033bd3 → 9f63f33):
   - first a full cost estimate;
   - then the running cost first, with the purchase total folded;
   - then the purchase estimate only in the euro area, with a note on country defaults;
