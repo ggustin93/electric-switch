@@ -16,10 +16,14 @@ dist
 .claude/skills/
 .impeccable/
 # notes de travail (popote), gardées en local seulement
-docs/adr/
+docs/adr/*
+!docs/adr/0001-allocation-economique.md
+!docs/adr/0002-corrections-modele-v6.md
+!docs/adr/0012-occasion-fourchette.md
+!docs/adr/0013-fabrication-avancee.md
+!docs/adr/0014-compteur-vetuste.md
 docs/agents/
 CLAUDE.md
 AGENTS.md
 PRODUCT.md
 DESIGN.md
-GLOSSARY.md

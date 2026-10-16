@@ -49,6 +49,8 @@ Two more tabs compare every powertrain (petrol, diesel, hybrid, plug-in hybrid, 
 - **Vehicles:** 5 size categories, 5 powertrains, battery chemistry (NMC, LFP, EU sales mix), odometer and age for used cars.
 - **Honesty rules:** results are orders of magnitude (about ±20 %); gaps under 10 % are reported as ties; the assumptions page lists 13 numbered hypotheses (H1–H13) and 27 sources (Carbone 4, ICCT, Ember, Electricity Maps, ADEME, IPCC AR5, ISO 14044, RTE, Eurostat…), each with its verification status in [`docs/research/`](docs/research/).
 
+- **Why these conventions:** the five decision records in [`docs/adr/`](docs/adr/) explain the choices and the alternatives set aside: economic allocation between owners ([0001](docs/adr/0001-allocation-economique.md)), model corrections ([0002](docs/adr/0002-corrections-modele-v6.md)), low and high estimates for used cars ([0012](docs/adr/0012-occasion-fourchette.md)), why the brought-forward manufacturing is not in the verdict ([0013](docs/adr/0013-fabrication-avancee.md)), odometer and age ([0014](docs/adr/0014-compteur-vetuste.md)). [`GLOSSARY.md`](GLOSSARY.md) defines the terms used in the model.
+
 The full method, in five languages: [electricornot.eu/fr/methode/](https://electricornot.eu/fr/methode/).
 
 ## Eco-design and performance
@@ -118,6 +120,8 @@ src/prix.json         energy prices, refreshed weekly by scripts/prix.mjs
 build.mjs             builds the 30 pages, sitemap, robots, llms.txt, .htaccess
 scripts/              prices, previews, scores, IndexNow, post-deploy check
 docs/research/        source verification of every hypothesis
+docs/adr/             decision records on the model (allocation, used cars, odometer)
+GLOSSARY.md           terms of the model, in one table
 CHANGELOG.md          release notes
 ```
 
