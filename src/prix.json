@@ -7,31 +7,31 @@
     "elecPeriode": "2026-S1"
   },
   "SE": {
-    "essence": 1.69,
-    "diesel": 2.05,
+    "essence": 1.64,
+    "diesel": 2.04,
     "elec": 0.306,
-    "carbDate": "2026-10-12",
+    "carbDate": "2026-10-19",
     "elecPeriode": "2026-S1"
   },
   "FR": {
-    "essence": 2.21,
-    "diesel": 2.33,
+    "essence": 2.23,
+    "diesel": 2.35,
     "elec": 0.249,
-    "carbDate": "2026-10-12",
+    "carbDate": "2026-10-19",
     "elecPeriode": "2026-S1"
   },
   "ES": {
-    "essence": 1.79,
+    "essence": 1.78,
     "diesel": 1.89,
     "elec": 0.251,
-    "carbDate": "2026-10-12",
+    "carbDate": "2026-10-19",
     "elecPeriode": "2026-S1"
   },
   "BE": {
-    "essence": 1.98,
-    "diesel": 2.34,
+    "essence": 1.99,
+    "diesel": 2.35,
     "elec": 0.358,
-    "carbDate": "2026-10-12",
+    "carbDate": "2026-10-19",
     "elecPeriode": "2026-S1"
   },
   "UK": {
@@ -42,24 +42,24 @@
     "elecPeriode": null
   },
   "EU": {
-    "essence": 2.01,
+    "essence": 1.99,
     "diesel": 2.14,
-    "elec": 0.29,
-    "carbDate": "2026-10-12",
-    "elecPeriode": "2025-S2"
+    "elec": 0.283,
+    "carbDate": "2026-10-19",
+    "elecPeriode": "2026-S1"
   },
   "IT": {
     "essence": 2.02,
     "diesel": 2.24,
     "elec": 0.314,
-    "carbDate": "2026-10-12",
+    "carbDate": "2026-10-19",
     "elecPeriode": "2026-S1"
   },
   "DE": {
-    "essence": 2.21,
+    "essence": 2.18,
     "diesel": 2.27,
     "elec": 0.362,
-    "carbDate": "2026-10-12",
+    "carbDate": "2026-10-19",
     "elecPeriode": "2026-S1"
   },
   "US": {
@@ -84,10 +84,10 @@
     "elecPeriode": null
   },
   "PL": {
-    "essence": 1.57,
+    "essence": 1.56,
     "diesel": 1.79,
     "elec": 0.3,
-    "carbDate": "2026-10-12",
+    "carbDate": "2026-10-19",
     "elecPeriode": "2026-S1"
   },
   "IN": {
